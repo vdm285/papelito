@@ -8,3 +8,4 @@ Thumbs.db
 # Downloads, caches, scratch and raw sources stay on D:, under the project, never committed.
 data/cache/
 data/sources/
+dist-audit/
