@@ -64,6 +64,9 @@ and look at the captures in `data/cache/shots/` (phone and desk, both themes, ca
 - **Relays**: "OK" does not mean stored (read back); relay.ditto.pub keeps every version (the merge takes care of it); damus answers 503 often; wellorder drops idle connections; nostr.wine and nostr.land are paid. Probe data: `docs/research/2026-10-21-transport.md`.
 - **A phone that joins by link must not pick its ink before seeing the others'**: inks are resolved after every merge (`store.resolveInk`).
 - **The Vite dev server answers a missing JSON with `index.html` and 200**: `src/data/dict.js` checks the content type.
+- **Vite's `watch.ignored` must name only the top-level `data/` folder**: a pattern like `**/data/**` also hid `src/data/`, and the dev server kept serving a stale module with no error. If a change does not show up, `curl` the module from the dev server and grep it.
+- **Python patch scripts**: write them to `data/cache/patch-*.py` and run `python -I <file>`; open files with `newline=''`; a JS escape like `\uFE0F` must be written `\\uFE0F` inside a Python string.
+- **Margin doodles** come from `public/fonts/doodles.woff2` (monochrome Noto Emoji subset by `tools/build-doodles.py` to the dictionary's emoji): rebuild it after `npm run dict` whenever emoji change. Whether iPhone draws them with this font or with Apple's colour emoji is unverified on a device (the text-presentation selector U+FE0E is appended to ask for the font).
 
 ## Renaming (when the owner picks a name)
 
