@@ -47,6 +47,7 @@ export class Session {
     this.relays = opts.relays || RELAYS;
     this.onStatus = opts.onStatus || (() => {});
     this.onLive = opts.onLive || (() => {});
+    this.onMoved = opts.onMoved || (() => {});
     this.pool = null;
     this.keys = null;
     this.mySlot = '';
@@ -58,6 +59,9 @@ export class Session {
     this.timer = 0;
     this.repairTimer = 0;
     this.slotsAt = new Map(); // relay → created_at of our slot it holds
+    this.slots = new Set(); // every slot tag seen for this list (ours and the other phones')
+    this.maxSeen = 0; // newest created_at seen on any slot (markers must sort after all of them)
+    this.moved = false;
     this.peers = new Map(); // device → { ink, name, at, typing }
     this.listId = '';
     this.status = 'connecting';
@@ -67,6 +71,7 @@ export class Session {
     this.listId = rec.id;
     this.keys = await listKeys(rec.secret);
     this.mySlot = await slotTag(this.keys.slotKey, this.store.device);
+    this.slots.add(this.mySlot);
     this.pool = new RelayPool(this.relays, {
       sk: this.keys.sk,
       onEvent: (ev, url) => this.receive(ev, url),
@@ -110,7 +115,7 @@ export class Session {
   }
 
   async publish(force = false) {
-    if (!this.pool || this.store.rec.id !== this.listId) return;
+    if (!this.pool || this.moved || this.store.rec.id !== this.listId) return;
     const doc = this.store.doc;
     const hash = canonical(doc);
     if (!force && hash === this.lastHash && this.lastEvent) return;
@@ -138,6 +143,8 @@ export class Session {
     if (!ev || ev.pubkey !== this.keys.pk || typeof ev.content !== 'string') return;
     if (ev.kind === KIND) {
       const slot = dTag(ev);
+      if (/^[0-9a-f]{32}$/.test(slot)) this.slots.add(slot);
+      if (Number.isFinite(ev.created_at) && ev.created_at > this.maxSeen) this.maxSeen = ev.created_at;
       if (slot === this.mySlot) {
         this.slotsAt.set(url, Math.max(this.slotsAt.get(url) || 0, ev.created_at));
         if (ev.created_at > this.lastCreated) this.lastCreated = ev.created_at; // our copy from another tab or an old install
@@ -146,6 +153,11 @@ export class Session {
       this.seenIds.add(ev.id);
       if (this.seenIds.size > 3000) this.seenIds = new Set([...this.seenIds].slice(-1000));
       const value = await open(this.keys.encKey, ev.content, this.aad(slot));
+      if (value && value.v === 2 && value.moved) {
+        // the sheet got a new link: stop publishing here (it would only put the list back on the old link)
+        if (!this.moved) { this.moved = true; clearTimeout(this.timer); clearTimeout(this.repairTimer); this.onMoved(); }
+        return;
+      }
       if (!value || value.v !== 2 || !value.doc) return; // not ours, tampered, or a newer format
       const changes = this.store.applyRemote(value.doc);
       this.store.noteSynced(ev.created_at);
@@ -176,6 +188,34 @@ export class Session {
       }
     }, 800);
     if (this.status !== 'synced') { this.status = 'synced'; this.reportStatus(); }
+  }
+
+  /**
+   * The sheet moved to a new link: replace every slot we know under the OLD key with a sealed
+   * "moved" marker (we still hold the old signing key), so the old link stops carrying the list
+   * on relays that keep only the newest record per slot. Phones still on the old link see a notice.
+   */
+  async scrubForMove() {
+    if (!this.pool || !this.keys) return 0;
+    const now = Math.floor(Date.now() / 1000);
+    // first, a NIP-09 deletion of every old version of every slot (relay.ditto.pub keeps them
+    // all), dated before the markers so the markers themselves survive
+    const upTo = Math.max(now, this.lastCreated + 1, this.maxSeen + 1);
+    const del = await signEvent(this.keys.sk, { kind: 5, created_at: upTo, tags: [...this.slots].map((s) => ['a', `${KIND}:${this.keys.pk}:${s}`]), content: '' });
+    this.pool.publish(del);
+    this.lastCreated = upTo;
+    let n = 0;
+    for (const slot of this.slots) {
+      const created = Math.max(now, this.lastCreated + 1);
+      this.lastCreated = created;
+      const content = await seal(this.keys.encKey, { v: 2, moved: true }, this.aad(slot));
+      const ev = await signEvent(this.keys.sk, { kind: KIND, created_at: created, tags: [['d', slot], ['expiration', String(now + 30 * 86400)]], content });
+      this.seenIds.add(ev.id);
+      this.pool.publish(ev);
+      n++;
+    }
+    await new Promise((r) => setTimeout(r, 1500)); // let the relays take them before closing
+    return n;
   }
 
   /** Ephemeral: "this phone has the sheet open" (and in which ink). */

@@ -4,7 +4,8 @@
 // Run: node tools/sync-live.mjs [--relays=wss://a,wss://b]
 import { Store } from '../src/app/store.js';
 import { Session, RELAYS, listKeys } from '../src/sync/session.js';
-import { newSecret } from '../src/sync/crypto.js';
+import { newSecret, open } from '../src/sync/crypto.js';
+import { RelayPool, dTag } from '../src/sync/nostr.js';
 import { liveItems, isDone } from '../src/model/doc.js';
 
 class MemoryStorage {
@@ -101,6 +102,56 @@ await sa2.start(A.rec);
 const back = await until(() => liveItems(A.doc).some((i) => i.t[0] === 'tomate verde'), 20000);
 check('a phone coming back gets what changed while it was away', back >= 0, `${back} ms`);
 sa2.stop();
+
+// A makes a new link: the old link stops carrying the list (old slots scrubbed and deleted)
+const sa3 = new Session(A, { relays });
+await sa3.start(A.rec);
+await sleep(2500);
+const oldSecret = A.rec.secret;
+const scrubbed = await sa3.scrubForMove();
+sa3.stop();
+check('rotating the link replaces every old slot with a "moved" marker', scrubbed >= 2, `${scrubbed} slots`);
+await sleep(2500);
+const D = new Store(new MemoryStorage());
+const { room: oldRoom } = await listKeys(oldSecret);
+D.openShared(oldSecret, oldRoom);
+let movedSeen = false;
+const sd = new Session(D, { relays, onMoved: () => { movedSeen = true; } });
+await sd.start(D.rec);
+await sleep(6000);
+check('a phone opening the old link learns that the sheet moved', movedSeen);
+// scrubbing the old copies off the relays is best effort (each relay deletes at its own pace,
+// and none promises to): report it; the guarantee is the next check
+console.log(`info  old copies still served to the old link right after rotating: ${liveItems(D.doc).length} items`);
+// the guarantee: what is written after the rotation never reaches the old link
+const sa4 = new Session(A, { relays });
+A.setSecret((await import('../src/sync/crypto.js')).newSecret(), 'x'.repeat(32));
+const { room: newRoom } = await listKeys(A.rec.secret);
+A.setSecret(A.rec.secret, newRoom);
+await sa4.start(A.rec);
+A.on((kind) => { if (kind === 'change') sa4.changed(); });
+A.add('secreto nuevo');
+await sleep(4000);
+check('what is written after rotating never reaches the old link', !liveItems(D.doc).some((i) => i.t[0] === 'secreto nuevo'));
+sa4.stop();
+sd.stop();
+if (process.argv.includes('--debug-scrub')) {
+  const ok = await listKeys(oldSecret);
+  for (const url of relays) {
+    const got = [];
+    const pool = new RelayPool([url], { sk: ok.sk, onEvent: (ev) => got.push(ev), onEose: () => {} });
+    pool.subscribe('q', [{ kinds: [30078], authors: [ok.pk], limit: 60 }]);
+    pool.start();
+    await sleep(2500);
+    pool.stop();
+    const out = [];
+    for (const ev of got) {
+      const v = await open(ok.encKey, ev.content, `ll2|${ok.pk}|${dTag(ev)}`);
+      out.push(`${dTag(ev).slice(0, 6)}@${ev.created_at % 1000}:${v ? (v.moved ? 'moved' : 'FULL') : '?'}`);
+    }
+    console.log(`  ${url.replace('wss://', '').padEnd(24)} ${out.join(' ')}`);
+  }
+}
 const healthy = sc.pool.relays.filter((r) => r.state === 'open').map((r) => r.url.replace('wss://', ''));
 console.log(`relays open for C: ${healthy.length}/${relays.length}: ${healthy.join(', ')}`);
 const banned = sc.pool.relays.filter((r) => r.banned).map((r) => `${r.url} (${r.error})`);

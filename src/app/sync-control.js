@@ -43,6 +43,7 @@ export const sync = {
     session = new Session(store, {
       onStatus: (s) => { this.state = s; this.emit(); },
       onLive: () => this.emit(),
+      onMoved: () => { if (!store.notices.some((n) => n.kind === 'moved')) { store.notices.push({ kind: 'moved' }); this.emit(); } },
     });
     await session.start(rec);
     this.emit();
@@ -75,7 +76,8 @@ export const sync = {
     const { listKeys } = await import('../sync/session.js');
     const secret = newSecret();
     const { room } = await listKeys(secret);
-    if (session) { session.stop(); session = null; sessionList = ''; }
+    // the old link stops carrying the list: its slots are replaced with a "moved" marker
+    if (session) { await session.scrubForMove().catch(() => 0); session.stop(); session = null; sessionList = ''; }
     store.setSecret(secret, room);
     await this.follow();
   },

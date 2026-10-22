@@ -68,8 +68,9 @@ export class PapelApp extends LitElement {
   disconnectedCallback() { super.disconnectedCallback(); this.off(); this.offSync(); this.ro.disconnect(); }
 
   firstUpdated() {
-    setTimeout(() => { store.notices = store.notices.filter((n) => n.kind === 'legacy'); this.rev++; }, 14000);
-    setTimeout(() => { store.notices = []; this.rev++; }, 40000);
+    // notices fade; "the link moved" stays, because the sheet no longer syncs here
+    setTimeout(() => { store.notices = store.notices.filter((n) => n.kind === 'legacy' || n.kind === 'moved'); this.rev++; }, 14000);
+    setTimeout(() => { store.notices = store.notices.filter((n) => n.kind === 'moved'); this.rev++; }, 40000);
     // strikes are measured on the text: measure again once the handwriting font has arrived
     document.fonts.ready.then(() => this.redrawStrikes());
     document.fonts.addEventListener('loadingdone', () => this.redrawStrikes());
@@ -443,6 +444,7 @@ export class PapelApp extends LitElement {
       if (n.kind === 'firstShared') notes.push(t.firstShared);
       if (n.kind === 'legacy') notes.push(t.legacyImported(n.n));
       if (n.kind === 'legacyMissing') notes.push(t.legacyLinkMissing);
+      if (n.kind === 'moved') notes.push(t.linkMoved);
     }
     return notes.length ? html`<p class="status-line">${notes.join(' ')}</p>` : nothing;
   }

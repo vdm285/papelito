@@ -82,6 +82,7 @@ const es = {
   someone: 'Alguien',
   you: 'Tú',
   // legacy
+  linkMoved: 'Esta hoja ahora tiene otro enlace y aquí ya no recibe cambios. Pide el nuevo a quien te la compartió.',
   legacyImported: (n) => (n === 1 ? 'Recuperamos 1 lista de la versión anterior.' : `Recuperamos ${n} listas de la versión anterior.`),
   legacyShared: 'Esta lista se compartía en la versión anterior. Para seguir compartiéndola, toca Compartir y manda el enlace nuevo.',
   legacyLinkMissing: 'Ese enlace es de la versión anterior y la lista no está en este teléfono. Pide que te la compartan otra vez.',
@@ -179,6 +180,7 @@ const en = {
   nameLabel: 'Your name on this sheet (optional)',
   someone: 'Someone',
   you: 'You',
+  linkMoved: 'This sheet now has another link and no longer receives changes here. Ask whoever shared it for the new one.',
   legacyImported: (n) => (n === 1 ? 'We recovered 1 list from the previous version.' : `We recovered ${n} lists from the previous version.`),
   legacyShared: 'This list was shared in the previous version. To keep sharing it, tap Share and send the new link.',
   legacyLinkMissing: 'That link is from the previous version and the list is not on this phone. Ask for it to be shared again.',

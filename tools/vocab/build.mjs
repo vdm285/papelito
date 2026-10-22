@@ -74,7 +74,12 @@ const dropList = listFile('drop.txt');
 const blockList = listFile('brands-block.txt');
 const allowList = listFile('brands-allow.txt');
 for (const x of [...dropList, ...blockList, ...allowList]) if (!x.why) errors.push(`${x.file}:${x.line}: no "# why"`);
-const dropKeys = new Map(dropList.map((x) => [keyOf(x.text), x]));
+const dropKeys = new Map();
+for (const x of dropList) {
+  const k = keyOf(x.text);
+  if (dropKeys.has(k)) errors.push(`drop.txt:${x.line}: "${x.text}" is the same word to the matcher as line ${dropKeys.get(k).line}`);
+  else dropKeys.set(k, x);
+}
 const blocked = new Set(blockList.map((x) => fold(x.text)));
 const allowed = new Set(allowList.map((x) => fold(x.text)));
 
@@ -220,7 +225,7 @@ const STOP_HEADS = new Set(['para', 'otro', 'otra', 'producto', 'articulo', 'ali
     if (STOP_HEADS.has(w) || w.length < 3 || phrases.size < HEAD_MIN) continue;
     const existing = terms.get(w);
     if (existing && existing.cands.length) continue;
-    if (dropKeys.has(w)) continue;
+    if (dropKeys.has(w)) { dropKeys.get(w).used = true; continue; }
     const counts = new Map();
     for (const p of phrases.values()) counts.set(p.aisle, (counts.get(p.aisle) || 0) + 1);
     const [aisle, n] = [...counts.entries()].sort((a, b) => b[1] - a[1] || aisleRank(a[0]) - aisleRank(b[0]))[0];
@@ -272,7 +277,7 @@ let brandTerms = 0;
     if (b.rows < BRAND_MIN_ROWS) { dropped.push([display, aisle, `brand seen in fewer than ${BRAND_MIN_ROWS} QQP rows (${b.rows})`, ref]); continue; }
     if (share < BRAND_PURITY) { review.push(['brand-multi-aisle', display, aisle, detail]); continue; }
     if (key.split(' ').length === 1 && commonWords.has(key) && !allowed.has(bk)) { review.push(['brand-common-word', display, aisle, detail]); continue; }
-    if (dropKeys.has(key)) continue;
+    if (dropKeys.has(key)) { dropKeys.get(key).used = true; dropped.push([display, aisle, `drop.txt:${dropKeys.get(key).line}: ${dropKeys.get(key).why}`, ref]); continue; }
     add(display, aisle, PRIO.brand, ref);
     brandTerms++;
   }
