@@ -31,7 +31,7 @@ Round 1b (performance critic), re-measured with its own scripts after the fixes 
 - Sync latency over 21 edits on the live relays: median 0.37 s, 0.21–0.68 s, both phones writing at once included (was median 0.8 s; about 3 s at once): a pending edit is never postponed by a republish, and records are spaced 0.6 s.
 - Not done, flagged: reading from all six relays doubles the download (each record comes back from every relay; about 1.4 MB down in 5 minutes on a 200-item two-phone sheet). Reading from three would halve it, at some cost in resilience: a decision for the next round.
 
-**Numbers now** (each from the tool's own output, 2026-10-22; updated after the verification round below): `npm test` 83; `node tools/smoke.mjs` 44 (46 with `--sync`), on the dev server, the production build and the live site; `node tools/keyboard.mjs` 9; `node tools/sync-live.mjs` 14 (add 0.24–0.34 s, strike 0.49–0.64 s, both at once 0.66–0.68 s); `node tools/contrast.mjs`: text ≥4.5:1, struck words and placeholders ≥3:1, both themes; dictionary 1,717 terms, 11,989 B gzip; doodle font 74 emoji, 27,060 B.
+**Numbers now** (each from the tool's own output, 2026-10-22; updated after the verification rounds below): `npm test` 85; `node tools/smoke.mjs` 44 (46 with `--sync`), on the dev server, the production build and the live site; `node tools/keyboard.mjs` 9; `node tools/sync-live.mjs` 14 (add 0.24–0.34 s, strike 0.49–0.64 s, both at once 0.66–0.68 s); `node tools/contrast.mjs`: text ≥4.5:1, struck words and placeholders ≥3:1, both themes; dictionary 1,717 terms, 11,989 B gzip; doodle font 74 emoji, 27,060 B.
 
 **Decisions taken without the owner in this round** (the way back in brackets):
 1. The writing line has no length limit, because whole lists are pasted into it; a single line longer than the paper's 160 characters splits at a word [`MAX` in `src/model/parse.js`; a `maxlength` on the composer would cut pastes].
@@ -57,14 +57,18 @@ Round 1b (performance critic), re-measured with its own scripts after the fixes 
 
 **Verification round 1** (`data/cache/audit/verify1.js`, results in `verify1-results.json`, local): four fresh verifiers re-measured the 54 round-1 findings on a production build, default "not fixed": 31 fixed, 20 partial, 2 not fixed (both flagged on purpose: px sizes, the slashed zero), 1 regressed (the shared-sheet notice, which an automatic ink choice dismissed), and 23 new defects, the worst a fake "cambió el título" toast on a phone joining by link whose Deshacer blanked the shared title. Fixed in *Verification round, accessibility…* and *Verification round: the join toast…*; their messages list every item. Numbers after: `npm test` 83, smoke 46 with two phones, keyboard 9, live relays 14.
 
+**Verification round 2** (`data/cache/audit/verify2.js`, results in `verify2-results.json`, local): four fresh verifiers on the 46 items the first round left open: 21 fixed, 19 partial, 3 regressed (two caused by round-1 fixes: quiet undo entries made a deletion's Deshacer undo a later action, and never capping the own copy let a link holder's floods pile up), 3 not fixed on purpose, and 19 new defects (4 major). Fixed in *Verification round 2: each toast undoes its own action…*, whose message lists every item. Numbers after: `npm test` 85, smoke 44 on the production build and 46 with two phones on dev, keyboard 9, live relays 14, contrast: every ink ≥4.5:1 on the highlighter in both themes.
+
+**Still open after round 2 (known, not fixed)**: px font sizes (question 9); the slashed zero (question 10); the old-link phone keeps accepting writes that stay on it (by design, said on screen); a strike that settles 1.4 s later can still move rows under a finger that lands exactly then without having been down (when a finger is down, rows wait); aisle headings are hidden from screen readers (the aisle groups are named lists, but there is no heading per aisle); Deshacer is still 16 Tabs away from a row (Ctrl+Z is the keyboard path, and is announced); doodle coverage is 19 of 40 everyday items (only exact CLDR names or override choices); a long stuck writing block can sit a few px off the body's rule grid at some scroll positions; reading from six relays doubles the download. Next round's candidates, in that order of value.
+
 ### In flight
 
-- Verification round 2 (`data/cache/audit/verify2.js`): the partials and new defects of round 1, re-measured on the newest build.
+- Nothing. The checkpoint is waiting for the owner.
 
 ### Next
 
 1. The owner's answers to the checkpoint questions, then the 20-minute test on the two real phones.
-2. The fixes the verification round confirms; px → rem if the owner agrees.
+2. The "still open" list above; px → rem if the owner agrees.
 3. Then: prices and a total, or learning each store's aisle order (VISION, "Parked").
 
 ## 2026-10-22 · Round 1 (unguided, toward the first checkpoint) — state at night
