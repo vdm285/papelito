@@ -41,7 +41,7 @@ Round 1b (honesty and docs critics):
 
 **Checkpoint material**: `docs/CHECKPOINT.md`; the three demos in `docs/portfolio/` and as private artifacts (links there); the checkpoint page is a private artifact in the owner's gallery ("Papelito Checkpoint One").
 
-**Deploy**: GitHub Pages was on "deploy from a branch" (serving the January app from the root of `main`). It is switched to "GitHub Actions" in the same step as the first push of the rebuild (AGENTS.md, "Common changes"); see the next dated section for the result.
+**Deploy** (done 2026-10-22): GitHub Pages was on "deploy from a branch", serving the January app from the root of `main`. It was switched to "GitHub Actions" (`gh api -X PUT repos/vdm285/listolista/pages -f build_type=workflow`) just before the first push of the rebuild (`01821bd..ef1f85f`). The Pages run passed (tests, dictionary check, build, deploy); https://vdm285.github.io/listolista/ serves Papelito with its CSP; `node tools/smoke.mjs --base=https://vdm285.github.io/listolista/ --sync` passed 46 of 46 against the live site (a second phone opened the link in 1.4 s; an add reached it in 0.9 s). Lists the old app saved in a browser are imported the first time that browser opens the new one.
 
 ### In flight
 
