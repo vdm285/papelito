@@ -5,7 +5,7 @@
 const es = {
   appName: 'Papelito',
   tagline: 'La lista del súper en una hoja que dos teléfonos comparten.',
-  emptyNote: 'Escribe aquí lo que falta. Compártela y aparece en el otro teléfono.',
+  emptyNote: 'Compártela, y lo que escriba cualquiera de los dos aparece en los dos teléfonos.',
   untitled: 'Lista del súper',
   write: 'Escribe lo que falta…',
   writeMore: 'Algo más…',
@@ -105,7 +105,7 @@ const es = {
 const en = {
   ...es,
   tagline: 'A shopping list on one sheet of paper that two phones share.',
-  emptyNote: 'Write what you need. Share it and it shows up on the other phone.',
+  emptyNote: 'Share it, and what either of you writes shows up on both phones.',
   untitled: 'Shopping list',
   write: 'Write what you need…',
   writeMore: 'Anything else…',

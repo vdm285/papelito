@@ -153,6 +153,12 @@ papel-app { display: block; min-height: 100%; }
   background-color: var(--paper);
   isolation: isolate;
 }
+:root[data-theme='pizarron'] .sheet { /* a used school chalkboard: faint clouds where chalk was erased */
+  background-image:
+    radial-gradient(ellipse 60% 38% at 28% 18%, rgba(255, 255, 255, .045), transparent 70%),
+    radial-gradient(ellipse 48% 32% at 78% 62%, rgba(255, 255, 255, .035), transparent 70%),
+    radial-gradient(ellipse 40% 28% at 18% 88%, rgba(255, 255, 255, .03), transparent 70%);
+}
 .sheet::before { /* paper grain, drawn once as a tiled SVG; no images */
   content: '';
   position: absolute; inset: 0;
@@ -456,6 +462,8 @@ ol.rows, ul.rows { list-style: none; margin: 0; padding: 0; }
   transform: translateY(var(--hand-shift));
 }
 .hand-molde .empty-note { font: 400 16px/var(--line) var(--font-ui); }
+.empty-note.writing .w { display: inline-block; white-space: pre; animation: write-word .32s cubic-bezier(.4, .1, .4, 1) both; animation-delay: calc(var(--i) * 110ms + 450ms); }
+@keyframes write-word { from { clip-path: inset(-20% 100% -20% 0); } to { clip-path: inset(-20% 0 -20% 0); } }
 
 /* ---------- cards (menus, share, an item) ---------- */
 

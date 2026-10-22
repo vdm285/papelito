@@ -305,6 +305,7 @@ export class PapelApp extends LitElement {
   }
 
   updated() {
+    this.welcome();
     const sheet = this.querySelector('.sheet');
     if (sheet && this.observed !== sheet) { this.observed = sheet; this.ro.disconnect(); this.ro.observe(sheet); }
     const reduce = !store.prefs.motion || matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -327,6 +328,17 @@ export class PapelApp extends LitElement {
         if (Math.abs(dy) > 2) row.animate([{ transform: `translateY(${dy}px)` }, { transform: 'none' }], { duration: 340, easing: 'cubic-bezier(.2,.8,.2,1)' });
       }
     }
+  }
+
+  /** The very first visit: the pencil note writes itself, once. */
+  welcome() {
+    const note = this.querySelector('.empty-note');
+    if (!note || this.welcomed) return;
+    this.welcomed = true;
+    let first = false;
+    try { first = !localStorage.getItem('ll.welcomed'); localStorage.setItem('ll.welcomed', '1'); } catch { /* ignore */ }
+    if (!first || !store.prefs.motion || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    note.classList.add('writing'); // CSS staggers the words (lit does not bind this class)
   }
 
   redrawStrikes() {
@@ -364,7 +376,7 @@ export class PapelApp extends LitElement {
                 <button class="link" @click=${() => store.clearStruck()}>${t.clearStruck}</button>
               </div>
               ${showStruck ? html`<ol class="rows struck" role="list">${repeat(struck, (i) => i.id, (i) => this.renderRow(i, idx, fixes, true))}</ol>` : nothing}` : nothing}
-            ${!items.length ? html`<p class="empty-note">${t.emptyNote}</p>` : nothing}
+            ${!items.length ? html`<p class="empty-note">${t.emptyNote.split(' ').map((w, i) => html`<span class="w" style="--i:${i}">${w} </span>`)}</p>` : nothing}
             <div class="write-zone" @click=${() => this.focusComposer()} aria-hidden="true"></div>
           </section>
         </main>
