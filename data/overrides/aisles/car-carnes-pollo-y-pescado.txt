@@ -1,0 +1,30 @@
+# Carnes, pollo y pescado (car): meat-counter words that PROFECO QQP and INEGI ENIGH 2024 miss or spell differently.
+# Drafted by Claude (AI) on 2026-10-22 from the sources' gaps; awaiting owner review.
+# Lines: "+ término [= emoji]  # why" adds a term here (an emoji is a human choice; "= -" means no emoji);
+# "- término  # why" drops a source term from this aisle; "término > aba  # why" moves a source term elsewhere.
+# Every line needs a "# why": what it is and, where one exists, the source term it is the everyday name for.
+
+# emoji choices for source terms
++ pollo = 🍗  # human choice: 🍗 (CLDR es-419 "pata de pollo"); QQP "Carne Pollo", ENIGH 01122F
++ carne = 🥩  # human choice: 🥩 (CLDR "corte de carne"); head noun of QQP "Carne Res", "Carne Cerdo", "Carne Pollo"
+
+# cuts and pieces sold by these names
++ suadero  # beef cut for tacos; QQP "Carne Res" (no source names the cut)
++ aguayón  # beef cut; QQP "Carne Res" (no source names the cut)
++ chamorro  # pork shank (QQP "Carne Cerdo") or beef shank (ENIGH 181116 "Chamorro de res"); the single word is in no source
++ cecina  # thin salted beef, sold at the meat counter; ENIGH 011234 "Machaca y carne seca" is the same family
++ alitas  # chicken wings; ENIGH 011245 "Otras piezas de pollo"
++ alas de pollo  # chicken wings; ENIGH 011245 "Otras piezas de pollo"
++ menudencias  # chicken giblets; QQP "Carne Pollo" (PRESENTACIÓN "Vísceras"), ENIGH 011243 "Vísceras de aves"
++ pancita  # tripe for menudo; QQP "Carne Res" (PRESENTACIÓN "Panza", "Menudo")
++ tripas  # beef or pork tripe; ENIGH 011241 "Vísceras de res", 011242 "Vísceras de puerco"
++ puerco  # the everyday word for pork; ENIGH writes "de puerco" (011228 to 01122C), QQP "Carne Cerdo"
++ carne de puerco  # pork; ENIGH 01122A "Pulpa de puerco", QQP "Carne Cerdo"
++ carnitas  # cooked pork sold by weight at the meat counter (store-dependent); QQP "Carne Cerdo"; ENIGH names it only as food bought ready to eat (111122 "Carnitas")
++ mariscos  # shellfish in general; ENIGH 011342 "Mariscos frescos"
+
+# source terms that should not ship
+- bandera  # QQP fish "Bandera" (1,758 rows in 20 months): alone the word means a flag, which supermarkets also sell
+
+# Added by the auditor (Claude, AI) on 2026-10-22 after running 160 shopping-list lines through the app's matcher.
++ hamburguesas  # hamburger patties; ENIGH 181158 "Hamburguesas de res para asar" (store-dependent: frozen ones are in congelados, and "hamburguesas congeladas" goes there through forms.tsv)

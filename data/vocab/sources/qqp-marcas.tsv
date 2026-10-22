@@ -1,0 +1,1141 @@
+# qqp-marcas.tsv: brand × product × rows, groceries and household goods only (no medicines or durables), 1133 rows, 693 brands
+# source: PROFECO (Procuraduría Federal del Consumidor), «Quién es Quién en los Precios» (QQP), open data of the Government of Mexico
+# url: https://datos.profeco.gob.mx/datos_abiertos/qqp.php (dataset record: https://www.datos.gob.mx/dataset/programa_quien_es_quien_precios_2026)
+# licence: Creative Commons Attribution 4.0 (CC BY 4.0), https://creativecommons.org/licenses/by/4.0/ (datos.gob.mx record, checked 2026-10-21); changes: aggregated and reshaped by Papelito
+# retrieved: archives downloaded by CompaPrecio; QQP_2026.rar 59971365 bytes sha256 903f67db03c0339a12b2f1aba66ec5ecc60ad74997ef6eed38f01de9172a5ffa retrieved 2026-10-21; QQP_2025.rar 85141166 bytes sha256 41ca4cd962e696f9f19cca598566d11ce60b200e37b5a5ef46c3b6a1ae58dc59 retrieved 2026-10-21
+# inputs: 40 CSV files, 22658981 rows covering 2025-01-02 to 2026-08-31; streamed read-only by tools/vocab/fetch-sources.mjs on 2026-10-21
+# columns: marca (base brand: MARCA before the first ". " when that part has 3+ letters or digits, e.g. "Nescafé. Clásico" → Nescafé, "H-24. Doméstico" → H-24, "Dr. Pepper" stays; "S/M" and "Cualquier Marca" left out), producto, categoria, rows
+marca	producto	categoria	rows
+1_2_3	Aceite	Aceites y Grasas Veg. Comestibles	33409
+1_2_3	Detergente P/ropa	Detergentes y Productos Similares	6266
+3 Minutos	Avena	Arroz y Cereales Preparados	15505
+3 Minutos	Granola	Arroz y Cereales Preparados	5867
+5 Estrellas	Azúcar	Azúcar	81
+7 Semillas	Arroz	Arroz y Cereales Preparados	73
+7 Semillas	Frijol	Legumbres Secas	68
+7 Up	Refresco	Refrescos Envasados	15051
+Abbott	Glucómetro	Arts. para el Cuidado Personal	8581
+Abuelita	Chocolate en Tablillas	Chocolates y Golosinas	8266
+Accu-chek	Tiras Reactivas	Arts. para el Cuidado Personal	16427
+Accu-chek	Glucómetro	Arts. para el Cuidado Personal	10029
+Accu-chek	Lancetas	Arts. para el Cuidado Personal	7829
+Ace	Detergente P/ropa	Detergentes y Productos Similares	36258
+Ades	Jugo de Fruta	Refrescos Envasados	8866
+Adorable	Papel Higiénico	Arts. de Papel P/higiene Personal	11
+Aguascalientes	Leche Ultrapasteurizada	Leche Procesada	1431
+Ajax Amonia	Limpiador Líquido P/piso	Detergentes y Productos Similares	12262
+Aladino	Crema de Cacahuate	Chocolates y Golosinas	10299
+Alert	Shampoo	Arts. para el Cuidado Personal	5213
+Alfa Medical	Cubrebocas	Arts. para el Cuidado Personal	2413
+Alimentación para el Bienestar	Harina de Maíz	Tortillas y Derivados del Maíz	450
+Alimentación para el Bienestar	Harina de Trigo	Galletas Pastas y Harinas de Trigo	386
+All-bran	Cereales	Arroz y Cereales Preparados	21980
+Alpino	Salchicha	Carnes Frías Secas y Embutidos	13417
+Alpino	Queso de Puerco	Carnes Frías Secas y Embutidos	8341
+Alpino	Jamón	Carnes Frías Secas y Embutidos	6040
+Alpino	Carne Cerdo	Carnes Frías Secas y Embutidos	2462
+Alpura	Leche Ultrapasteurizada	Leche Procesada	95903
+Alpura	Yoghurt	Derivados de Leche	48122
+Alpura	Crema	Derivados de Leche	45679
+Alpura	Leche en Polvo	Leche Procesada	30102
+Alpura	Mantequilla	Derivados de Leche	21786
+Alpura	Leche Pasteurizada	Leche Fresca	5345
+Altamar	Sardina	Pescados y Mariscos en Conserva	501
+Always	Toalla Femenina	Arts. de Papel P/higiene Personal	32064
+Always	Pantiprotectores	Arts. para el Cuidado Personal	13519
+Ancla	Atún	Pescados y Mariscos en Conserva	7500
+Andre	Vino de Mesa	Vinos y Licores	304
+Andreas	Bacalao	Productos de Temporada (navideños)	4
+Aprecio	Arroz	Arroz y Cereales Preparados	146
+Aprecio	Frijol	Legumbres Secas	135
+Aprecio	Papel Higiénico	Arts. de Papel P/higiene Personal	135
+Aprecio	Sardina	Pescados y Mariscos en Conserva	121
+Aprecio	Servilletas de Papel Blanco	Arts. de Papel P/higiene Personal	24
+Araceli	Leche Ultrapasteurizada	Leche Procesada	161
+Ariel	Detergente P/ropa	Detergentes y Productos Similares	24326
+Atrix	Crema Sólida	Arts. para el Cuidado Personal	12748
+Atún la Mar	Atún	Pescados y Mariscos en Conserva	578
+Aurrera	Azúcar	Azúcar	23655
+Aurrera	Huevo	Huevo	16780
+Aurrera	Pasta para Sopa	Galletas Pastas y Harinas de Trigo	11591
+Aurrera	Sardina	Pescados y Mariscos en Conserva	9753
+Aurrera	Frijol	Legumbres Secas	7595
+Aurrera	Arroz	Arroz y Cereales Preparados	7072
+Aurrera	Pan de Caja	Pan	5471
+Aurrera	Aceite	Aceites y Grasas Veg. Comestibles	4301
+Aurrera	Jabón de Tocador	Arts. para el Cuidado Personal	3892
+Aurrera	Margarina	Aceites y Grasas Veg. Comestibles	1126
+Ave	Aceite	Aceites y Grasas Veg. Comestibles	6238
+Avena 1	Avena	Arroz y Cereales Preparados	5959
+Avícola	Huevo	Huevo	46
+Axe	Desodorante	Arts. para el Cuidado Personal	5853
+Axion	Detergente P/trastes	Detergentes y Productos Similares	25320
+Azteca de Oro	Brandy	Vinos y Licores	14651
+Azucaradas	Cereales	Arroz y Cereales Preparados	380
+Baby Dove	Jabón de Tocador para Bebé	Arts. para el Cuidado Personal	6066
+Baby Magic	Talco para Bebé	Arts. para el Cuidado Personal	29183
+Baby Magic	Jabón de Tocador para Bebé	Arts. para el Cuidado Personal	12814
+Baby Magic	Talco	Arts. para el Cuidado Personal	4
+Baby Magic	Jabón de Tocador	Arts. para el Cuidado Personal	2
+Bacardí	Ron	Vinos y Licores	26400
+Bachoco	Huevo	Huevo	62127
+Bachoco	Carne Pollo	Carne de Ave	16966
+Bachoco	Carne Cerdo	Carne y Vísceras de Cerdo	2490
+Bafar	Salchicha	Carnes Frías Secas y Embutidos	9476
+Bafar	Jamón	Carnes Frías Secas y Embutidos	8458
+Bafar	Mortadela	Carnes Frías Secas y Embutidos	190
+Bafar	Pechuga de Pavo	Carnes Frías Secas y Embutidos	60
+Bali Dreams	Jabón de Tocador	Arts. para el Cuidado Personal	185
+Banana Boat	Protector Solar	Arts. para el Cuidado Personal	13698
+Barajas	Camarón	Pescados y Mariscos	3264
+Barcel	Papas Fritas y Similares	Chocolates y Golosinas	55077
+Barcel	Cacahuates	Chocolates y Golosinas	12815
+Barefoot	Vino de Mesa	Vinos y Licores	248
+Barilla	Pasta para Sopa	Galletas Pastas y Harinas de Trigo	55139
+Barrilito	Cerveza	Cerveza	17301
+Barrilito	Vinagre	Condimentos	6103
+Baygon	Insecticida Aerosol	Detergentes y Productos Similares	41747
+Be-light	Agua Sin Gas	Refrescos Envasados	18003
+Bela	Papel Higiénico	Arts. de Papel P/higiene Personal	80
+Benesta	Lancetas	Arts. para el Cuidado Personal	3230
+Benesta	Termómetro	Arts. para el Cuidado Personal	41
+Beronia	Vino de Mesa	Vinos y Licores	368
+Bic	Rastrillos Desechables	Arts. para el Cuidado Personal	6965
+Bida	Jugo de Fruta	Refrescos Envasados	9153
+Bimbo	Pan de Caja	Pan	137078
+Bimbo	Pastelillos y Pan Dulce Empaquetado	Pan	122016
+Bimbo	Empanizadores	Pan	39585
+Bimbo	Barras de Cereal	Arroz y Cereales Preparados	7717
+Bioexpert	Shampoo	Arts. para el Cuidado Personal	4795
+Blanca Nieves	Detergente P/ropa	Detergentes y Productos Similares	22634
+Blue Nun	Vino de Mesa	Vinos y Licores	51
+Blue Rhin	Vino de Mesa	Vinos y Licores	16
+Blue Rhin Liebfraumilch	Vino de Mesa	Vinos y Licores	68
+Bohemia	Cerveza	Cerveza	12478
+Boing!	Jugo de Fruta	Refrescos Envasados	22886
+Bold 3	Detergente P/ropa	Detergentes y Productos Similares	9460
+Bonafont	Agua Sin Gas	Refrescos Envasados	48559
+Borden	Leche Ultrapasteurizada	Leche Procesada	238
+Borges	Aceite de Oliva	Productos de Temporada (navideños)	8900
+Bormioli	Vajilla	Enseres Menores	48
+Brasso	Limpiador Líquido P/piso	Detergentes y Productos Similares	4802
+Brut	Desodorante	Arts. para el Cuidado Personal	5382
+Bueno	Frijol	Legumbres Secas	3718
+Búfalo	Salsa Picante y Similares	Condimentos	35228
+Búfalo	Aceituna	Productos de Temporada (navideños)	10695
+Bumy Medical	Tapete Sanitizante	Arts. para el Cuidado Personal	193
+Burr	Jamón	Carnes Frías Secas y Embutidos	24
+Butterball	Pavo	Productos de Temporada (navideños)	291
+Calahua	Bebida Varias	Refrescos Envasados	1327
+California	Vino de Mesa	Vinos y Licores	266
+California Bay	Sardina	Pescados y Mariscos en Conserva	561
+Calixa	Vino de Mesa	Vinos y Licores	297
+Calmex	Sardina	Pescados y Mariscos en Conserva	8026
+Calmex	Atún	Pescados y Mariscos en Conserva	180
+Camay	Jabón de Tocador	Arts. para el Cuidado Personal	1
+Campanario	Sidra	Productos de Temporada (navideños)	727
+Campoamor	Alcaparra	Productos de Temporada (navideños)	195
+Canada Dry	Agua con Gas	Refrescos Envasados	5622
+Canoil	Aceite	Aceites y Grasas Veg. Comestibles	21438
+Cantaburros	Vino de Mesa	Vinos y Licores	22
+Capent	Crema para Rozaduras	Arts. para el Cuidado Personal	5801
+Caperucita	Queso Manchego	Derivados de Leche	17150
+Caperucita	Queso Panela	Derivados de Leche	13518
+Caperucita	Queso Oaxaca	Derivados de Leche	4215
+Caperucita	Queso Americano	Derivados de Leche	4176
+Capistrano	Jamón	Carnes Frías Secas y Embutidos	28505
+Capistrano	Salchicha	Carnes Frías Secas y Embutidos	5172
+Capistrano	Queso de Puerco	Carnes Frías Secas y Embutidos	245
+Caprice	Shampoo	Arts. para el Cuidado Personal	10891
+Caprice	Acondicionador y Enjuague	Arts. para el Cuidado Personal	6346
+Caprice Naturals	Shampoo	Arts. para el Cuidado Personal	16068
+Capullo	Aceite	Aceites y Grasas Veg. Comestibles	9392
+Carapelli	Aceite de Oliva	Productos de Temporada (navideños)	546
+Carbonell	Aceite de Oliva	Productos de Temporada (navideños)	22464
+Carbonell	Aceituna	Productos de Temporada (navideños)	401
+Carbonell	Alcaparra	Productos de Temporada (navideños)	272
+Caricia	Jabón de Tocador	Arts. para el Cuidado Personal	6920
+Carisma	Jabón de Pasta	Detergentes y Productos Similares	14706
+Carlo Rossi	Vino de Mesa	Vinos y Licores	650
+Carlota	Miel de Abeja	Chocolates y Golosinas	19299
+Carnation	Leche Evaporada	Leche Procesada	40529
+Carnaval	Azúcar	Azúcar	72
+Casero	Arroz	Arroz y Cereales Preparados	152
+Castillo del Rhin	Vino de Mesa	Vinos y Licores	291
+Catarino´s	Canela	Productos de Temporada (navideños)	1491
+Catarino´s	Pimienta	Condimentos	1376
+Catarino´s	Ajonjolí	Condimentos	880
+Catarino´s	Comino	Condimentos	452
+Cazadores	Tequila	Vinos y Licores	10095
+Cazerola	Frijol	Legumbres Secas	406
+Cazerola	Haba	Legumbres Secas	30
+Cazerola	Garbanzo	Legumbres Secas	24
+Cazerola	Lenteja	Legumbres Secas	16
+Cereales Don Luis	Amaranto	Legumbres Secas	5633
+Chantilly	Crema Batida	Derivados de Leche	14311
+Charras	Tostadas de Maíz	Tortillas y Derivados del Maíz	4621
+Chateau Domecq	Vino de Mesa	Vinos y Licores	337
+Chedraui	Frijol	Legumbres Secas	6173
+Chedraui	Azúcar	Azúcar	6007
+Chedraui	Arroz	Arroz y Cereales Preparados	4826
+Chedraui	Aceite	Aceites y Grasas Veg. Comestibles	2127
+Chedraui	Sardina	Pescados y Mariscos en Conserva	1999
+Chedraui	Pasta para Sopa	Galletas Pastas y Harinas de Trigo	1780
+Chedraui	Jabón de Pasta	Detergentes y Productos Similares	1678
+Chedraui	Limpiador Líquido P/piso	Detergentes y Productos Similares	1041
+Chedraui	Harina de Trigo	Galletas Pastas y Harinas de Trigo	817
+Chedraui	Café Soluble	Café	672
+Chedraui	Suavizante P/ropa	Detergentes y Productos Similares	446
+Chedraui	Servilletas de Papel Blanco	Arts. de Papel P/higiene Personal	7
+Chedraui	Mantequilla	Derivados de Leche	3
+Chedraui	Huevo	Huevo	2
+Chefmarker	Taza para Café	Enseres Menores	5
+Chen	Queso Oaxaca	Derivados de Leche	720
+Chen	Queso Manchego	Derivados de Leche	369
+Chicolastic	Pañales Desechables	Arts. de Papel P/higiene Personal	19616
+Chilchota	Queso Doble Crema	Derivados de Leche	536
+Chilchota	Queso Canasto	Derivados de Leche	520
+Chilchota	Queso Panela	Derivados de Leche	443
+Chilchota	Leche Pasteurizada	Leche Fresca	80
+Chilchota	Queso Sierra	Derivados de Leche	64
+Chimex	Jamón	Carnes Frías Secas y Embutidos	12237
+Chimex	Salchicha	Carnes Frías Secas y Embutidos	1090
+Chipilo	Mantequilla	Derivados de Leche	10930
+Choco Choco	Polvo P/preparar Bebidas Sabor Chocolate	Chocolates y Golosinas	612
+Choco Krispis	Cereales	Arroz y Cereales Preparados	26626
+Choco Milk	Polvo P/preparar Bebidas Sabor Chocolate	Chocolates y Golosinas	36284
+Choicemmed	Nebulizador	Arts. para el Cuidado Personal	5762
+Ciel	Agua Sin Gas	Refrescos Envasados	56895
+Ciel	Agua con Gas	Refrescos Envasados	11974
+Ciervo	Vinagre	Condimentos	595
+Citizen	Termómetro	Arts. para el Cuidado Personal	11908
+City Fresh	Bacalao	Productos de Temporada (navideños)	9
+Clarasol	Blanqueador	Detergentes y Productos Similares	141
+Clemente Jacques	Salsa Picante y Similares	Condimentos	48215
+Clemente Jacques	Chiles	Frutas y Legumbres Procesadas	35745
+Clemente Jacques	Vinagre	Condimentos	23461
+Clemente Jacques	Salsa Catsup	Condimentos	16192
+Clemente Jacques	Mermelada	Frutas y Legumbres Procesadas	12984
+Clemente Jacques	Elote	Hortalizas Frescas	11473
+Clemente Jacques	Coctel de Frutas en Almíbar	Frutas y Legumbres Procesadas	9309
+Clemente Jacques	Piña en Almíbar	Frutas y Legumbres Procesadas	9210
+Clemente Jacques	Duraznos en Almíbar	Frutas y Legumbres Procesadas	9114
+Clight	Polvo P/preparar Bebidas	Chocolates y Golosinas	14081
+Cloralex	Blanqueador	Detergentes y Productos Similares	22660
+Cloralex	Spray Desinfectante	Detergentes y Productos Similares	1631
+Clorox	Blanqueador	Detergentes y Productos Similares	14128
+Clorox	Toallitas Desinfectantes	Detergentes y Productos Similares	4358
+Coca Cola	Refresco	Refrescos Envasados	131772
+Cocoroco	Huevo	Huevo	2
+Colgate	Crema Dental	Arts. para el Cuidado Personal	55146
+Concha y Toro	Vino de Mesa	Vinos y Licores	1604
+Cono Sur	Vino de Mesa	Vinos y Licores	1
+Contour Plus	Glucómetro	Arts. para el Cuidado Personal	8121
+Contour Plus	Tiras Reactivas	Arts. para el Cuidado Personal	5886
+Corina	Sardina	Pescados y Mariscos en Conserva	194
+Corn Flakes	Cereales	Arroz y Cereales Preparados	31718
+Corn Pops	Cereales	Arroz y Cereales Preparados	13572
+Corona	Cerveza	Cerveza	9726
+Corona	Jamón	Carnes Frías Secas y Embutidos	1411
+Corona	Queso de Puerco	Carnes Frías Secas y Embutidos	727
+Corona	Pechuga de Pavo	Carnes Frías Secas y Embutidos	725
+Corona	Jabón de Pasta	Detergentes y Productos Similares	29
+Corona Extra	Cerveza	Cerveza	302
+Coronado	Cajeta	Chocolates y Golosinas	35907
+Coronado	Rompope	Vinos y Licores	783
+Coronita Cero	Cerveza	Botanas y Bebidas	1489
+Creative Medical	Oxímetro	Arts. para el Cuidado Personal	4631
+Crest	Crema Dental	Arts. para el Cuidado Personal	618
+Crío	Huevo	Huevo	1869
+Crío	Carne Pollo	Carne de Ave	1066
+Cristal	Aceite	Aceites y Grasas Veg. Comestibles	688
+Cruz Blanca	Vino de Mesa	Vinos y Licores	4
+Cuatro Soles	Vino de Mesa	Vinos y Licores	235
+Cuétara	Galletas Populares	Galletas Pastas y Harinas de Trigo	5680
+Cuétara	Galletas Dulces	Galletas Pastas y Harinas de Trigo	288
+Cune	Vino de Mesa	Vinos y Licores	276
+D´gari	Gelatina en Polvo	Chocolates y Golosinas	54087
+D´gari	Flan	Chocolates y Golosinas	15535
+D´héctor	Jamón	Carnes Frías Secas y Embutidos	217
+D´héctor	Salchicha	Carnes Frías Secas y Embutidos	153
+D´oro	Huevo	Huevo	84
+Dalux	Guantes de Látex	Arts. para el Cuidado Personal	21759
+Danone	Yoghurt	Derivados de Leche	52335
+Dátiles del Desierto	Dátil	Productos de Temporada (navideños)	60
+De la Fuente	Huevo	Huevo	5
+De la Olla	Frijol	Legumbres Secas	57
+De la Viuda	Salsa Picante y Similares	Condimentos	274
+Del Fuerte	Puré de Tomate	Frutas y Legumbres Procesadas	20054
+Del Monte	Elote	Hortalizas Frescas	35365
+Del Monte	Salsa Catsup	Condimentos	8946
+Del Monte	Chícharos en Lata	Frutas y Legumbres Procesadas	8656
+Del Valle	Jugo de Fruta	Refrescos Envasados	25495
+Del Valle	Agua con Gas	Refrescos Envasados	21902
+Delaware Punch	Refresco	Botanas y Bebidas	1109
+Delicia	Margarina	Aceites y Grasas Veg. Comestibles	921
+Deliciosa	Jarabe P/preparar Bebidas	Chocolates y Golosinas	8664
+Delsey	Papel Higiénico	Arts. de Papel P/higiene Personal	2698
+Delsey	Servilletas de Papel Blanco	Arts. de Papel P/higiene Personal	61
+Diamante	Vino de Mesa	Vinos y Licores	260
+Diamante	Arroz	Arroz y Cereales Preparados	81
+Diamcers	Arroz	Arroz y Cereales Preparados	128
+Diluvio	Harina de Trigo	Galletas Pastas y Harinas de Trigo	34
+Dípalu	Cubrebocas	Arts. para el Cuidado Personal	601
+Diva Cup 1	Copa Menstrual	Arts. para el Cuidado Personal	27
+Diva Cup 2	Copa Menstrual	Arts. para el Cuidado Personal	24
+Dody´s	Toallita Húmeda Limpiadora	Arts. de Papel P/higiene Personal	5930
+Dolce Kristal	Azúcar	Azúcar	45
+Dolores	Atún	Pescados y Mariscos en Conserva	81874
+Dolores	Sardina	Pescados y Mariscos en Conserva	17654
+Domino	Azúcar	Azúcar	4557
+Don Generozo	Frijol	Legumbres Secas	31
+Don Zabor	Almendras	Productos de Temporada (navideños)	1935
+Doña Jimena	Turrón	Productos de Temporada (navideños)	121
+Doña Jimena	Figuritas de Mazapán	Productos de Temporada (navideños)	12
+Doña María	Mole Rojo en Pasta	Condimentos	21577
+Dorado	Huevo	Huevo	66
+Dos Equis Lager	Cerveza	Cerveza	22830
+Dove	Desodorante	Arts. para el Cuidado Personal	31108
+Dove	Jabón de Tocador	Arts. para el Cuidado Personal	20822
+Dove	Crema Líquida	Arts. para el Cuidado Personal	9932
+Dove	Shampoo	Arts. para el Cuidado Personal	3397
+Downy	Suavizante P/ropa	Detergentes y Productos Similares	34230
+Dr. Pepper	Refresco	Botanas y Bebidas	1297
+Duby	Pastel Pimiento	Carnes Frías Secas y Embutidos	5981
+Duracell	Pilas Eléctricas	Accesorios Domésticos	17523
+Ecko	Juego de Cubiertos	Enseres Menores	18
+Eclipsol	Protector Solar	Arts. para el Cuidado Personal	5657
+Eficaz	Detergente P/trastes	Detergentes y Productos Similares	4944
+Ego Black	Gel Fijador	Arts. para el Cuidado Personal	16081
+Ekco	Olla de Presión Express	Utensilios Domésticos	2056
+Ekco	Baterías de Cocina	Enseres Menores	19
+El Almendro	Turrón	Productos de Temporada (navideños)	163
+El Almendro	Figuritas de Mazapán	Productos de Temporada (navideños)	60
+El Calvario	Huevo	Huevo	30019
+El Ciervo	Queso Manchego	Derivados de Leche	4054
+El Ciervo	Queso Oaxaca	Derivados de Leche	2992
+El Ciervo	Queso Panela	Derivados de Leche	2711
+El Ciervo	Queso Americano	Derivados de Leche	2194
+El Clásico de Morelos	Arroz	Arroz y Cereales Preparados	2354
+El Coto	Vino de Mesa	Vinos y Licores	55
+El Cuernito	Canela	Productos de Temporada (navideños)	80
+El Cuernito	Pimienta	Condimentos	75
+El Cuernito	Pasa (uva Pasa)	Chocolates y Golosinas	73
+El Cuernito	Ajonjolí	Condimentos	65
+El Dorado	Atún	Pescados y Mariscos en Conserva	17140
+El Duende Frijolín	Frijol	Legumbres Secas	700
+El Faro	Aceite	Aceites y Grasas Veg. Comestibles	15
+El Fresno	Frijol	Legumbres Secas	64
+El Jarro	Arroz	Arroz y Cereales Preparados	240
+El Jarro	Frijol	Legumbres Secas	91
+El Jimador	Tequila	Vinos y Licores	12695
+El Labrador	Frijol	Legumbres Secas	81
+El Mayu	Sidra	Productos de Temporada (navideños)	94
+El Milagro	Arroz	Arroz y Cereales Preparados	82
+El Milagro	Frijol	Legumbres Secas	80
+El Pomar	Sidra	Productos de Temporada (navideños)	4
+El Serpis	Alcaparra	Productos de Temporada (navideños)	7952
+El Yucateco	Salsa Picante y Similares	Condimentos	347
+El Yuka	Jarabe P/preparar Bebidas	Chocolates y Golosinas	4
+Elefante	Sal Molida de Mesa	Condimentos	1494
+Elite	Papel Higiénico	Arts. de Papel P/higiene Personal	16785
+Elite	Toalla de Papel	Arts. de Papel P/higiene Personal	6508
+Elite	Servilletas de Papel Blanco	Arts. de Papel P/higiene Personal	5835
+Elvive	Shampoo	Arts. para el Cuidado Personal	11209
+Energizer Max	Pilas Eléctricas	Accesorios Domésticos	14155
+Enerplex	Bebidas Hidratantes	Refrescos Envasados	1208
+Ensueño	Suavizante P/ropa	Detergentes y Productos Similares	12119
+Epura	Agua Sin Gas	Refrescos Envasados	50752
+Escosa	Pimienta	Condimentos	504
+Escudo	Jabón de Tocador	Arts. para el Cuidado Personal	18688
+Escudo	Gel Antibacterial	Arts. para el Cuidado Personal	8718
+Escudo	Spray Desinfectante	Detergentes y Productos Similares	39
+Esmeralda	Queso Panela	Derivados de Leche	15084
+Esmeralda	Queso Oaxaca	Derivados de Leche	12320
+Esmeralda	Queso Manchego	Derivados de Leche	6537
+Esmeralda	Queso Americano	Derivados de Leche	1334
+Esmeralda	Queso Cotija	Derivados de Leche	121
+Eugenia	Mantequilla	Derivados de Leche	1781
+Eveready	Pilas Eléctricas	Accesorios Domésticos	2618
+Evian	Agua Sin Gas	Refrescos Envasados	4620
+Extra Especial	Rosca de Reyes	Pan	60
+Fabuloso	Limpiador Líquido P/piso	Detergentes y Productos Similares	16225
+Family Guard	Spray Desinfectante	Detergentes y Productos Similares	18371
+Fancy	Servilletas de Papel Blanco	Arts. de Papel P/higiene Personal	14518
+Fancy	Papel Higiénico	Arts. de Papel P/higiene Personal	188
+Fanta	Refresco	Refrescos Envasados	46053
+Farmacom	Cubrebocas	Arts. para el Cuidado Personal	2038
+Farmacom	Gel Antibacterial	Arts. para el Cuidado Personal	1925
+Federico Paternina	Vino de Mesa	Vinos y Licores	134
+Ferrero	Chocolate	Chocolates y Golosinas	84
+Ferrero Rocher	Chocolate	Chocolates y Golosinas	1976
+Filippo Berio	Aceite de Oliva	Productos de Temporada (navideños)	2318
+Finca las Moras	Vino de Mesa	Vinos y Licores	1205
+Fior Di Pasta	Pasta para Sopa	Galletas Pastas y Harinas de Trigo	516
+Fiore	Toalla Femenina	Arts. de Papel P/higiene Personal	20
+Fish & Fresh	Bacalao	Productos de Temporada (navideños)	1
+Fisha Tuna	Atún	Pescados y Mariscos en Conserva	7664
+Fitness	Cereales	Arroz y Cereales Preparados	9239
+Flama	Cerillos	Cigarrillos	11462
+Flash	Limpiador Líquido P/piso	Detergentes y Productos Similares	8870
+Floral	Papel Higiénico	Arts. de Papel P/higiene Personal	151
+Florida 7	Jugo de Fruta	Refrescos Envasados	9486
+Foca	Detergente P/ropa	Detergentes y Productos Similares	30060
+Folicuré	Shampoo	Arts. para el Cuidado Personal	29340
+Forti Plus	Producto Lácteo	Leche Procesada	16022
+Franja	Queso Oaxaca	Derivados de Leche	6213
+Free Style	Tiras Reactivas	Arts. para el Cuidado Personal	5845
+French S Classic Yellow	Mostaza	Condimentos	12019
+Fresca	Refresco	Refrescos Envasados	49553
+Fresh-co	Jabón de Tocador	Arts. para el Cuidado Personal	1095
+Fresh Label	Sardina	Pescados y Mariscos en Conserva	21435
+Fresh Label	Atún	Pescados y Mariscos en Conserva	17049
+Froot Loops	Cereales	Arroz y Cereales Preparados	2504
+Fud	Jamón	Carnes Frías Secas y Embutidos	76763
+Fud	Salchicha	Carnes Frías Secas y Embutidos	63479
+Fud	Queso Panela	Derivados de Leche	21609
+Fud	Tocino Ahumado	Carnes Frías Secas y Embutidos	17019
+Fud	Queso de Puerco	Carnes Frías Secas y Embutidos	13418
+Fud	Pastel Pimiento	Carnes Frías Secas y Embutidos	9706
+Fud	Queso Oaxaca	Derivados de Leche	9333
+Fud	Queso Americano	Derivados de Leche	8301
+Fud	Pechuga de Pavo	Carnes Frías Secas y Embutidos	7675
+Fud	Chorizo	Carnes Frías Secas y Embutidos	6819
+Fud	Mortadela	Carnes Frías Secas y Embutidos	4321
+Fud	Queso Manchego	Derivados de Leche	551
+Fun Fruit	Fruta Seca	Productos de Temporada (navideños)	81
+Fuze Tea	Té Preparado	Refrescos Envasados	12588
+Galicia	Jamón	Carnes Frías Secas y Embutidos	347
+Galicia	Queso de Puerco	Carnes Frías Secas y Embutidos	111
+Galicia	Salchicha	Carnes Frías Secas y Embutidos	41
+Gallo Family	Vino de Mesa	Vinos y Licores	211
+Gamesa	Galletas Saladas	Galletas Pastas y Harinas de Trigo	50742
+Gamesa	Galletas Populares	Galletas Pastas y Harinas de Trigo	36711
+Gamesa	Galletas Dulces	Galletas Pastas y Harinas de Trigo	22461
+Gamesa	Harina Hot Cakes	Galletas Pastas y Harinas de Trigo	8861
+Gamma	Cuchillo	Enseres Menores	7
+Ganata	Producto Lácteo	Leche Procesada	66
+Garnier	Tinte para el Cabello	Arts. para el Cuidado Personal	16663
+Garnier	Shampoo	Arts. para el Cuidado Personal	12585
+Garnier	Acondicionador y Enjuague	Arts. para el Cuidado Personal	3711
+Gato Negro	Vino de Mesa	Vinos y Licores	582
+Gatorade	Bebidas Hidratantes	Refrescos Envasados	9986
+Gena	Huevo	Huevo	7
+Gerber	Alimento Preparado para Niños	Frutas y Legumbres Procesadas	34551
+Gillette	Rastrillos Desechables	Arts. para el Cuidado Personal	66974
+Gillette	Repuestos de Navajas	Arts. para el Cuidado Personal	16407
+Gillette	Desodorante	Arts. para el Cuidado Personal	13524
+Gillette	Espuma de Afeitar	Arts. para el Cuidado Personal	10779
+Gloria	Mantequilla	Derivados de Leche	30643
+Goicoechea	Crema Líquida	Arts. para el Cuidado Personal	11236
+Golden Hills	Azúcar	Azúcar	4127
+Golondrina	Blanqueador	Detergentes y Productos Similares	247
+Gota Blanca	Leche Ultrapasteurizada	Leche Procesada	194
+Gran Coronas Torres	Vino de Mesa	Vinos y Licores	56
+Gran Cosecha	Arroz	Arroz y Cereales Preparados	4
+Gran Tarapacá	Vino de Mesa	Vinos y Licores	52
+Gran Tradición	Aceite	Aceites y Grasas Veg. Comestibles	22369
+Grand Brand	Leche Ultrapasteurizada	Leche Procesada	603
+Grand Brand	Atún	Pescados y Mariscos en Conserva	73
+Grano de Oro	Aceite	Aceites y Grasas Veg. Comestibles	119
+Grano de Oro	Frijol	Legumbres Secas	74
+Grano de Oro	Arroz	Arroz y Cereales Preparados	60
+Grano de Oro	Azúcar	Azúcar	49
+Granvita	Avena	Arroz y Cereales Preparados	13941
+Granvita 0%	Avena	Arroz y Cereales Preparados	17211
+Great Day	Jabón de Tocador	Arts. para el Cuidado Personal	1015
+Great Day	Toalla Femenina	Arts. de Papel P/higiene Personal	9
+Great Value	Aceite	Aceites y Grasas Veg. Comestibles	19125
+Great Value	Frijol	Legumbres Secas	11116
+Great Value	Atún	Pescados y Mariscos en Conserva	10175
+Great Value	Leche Ultrapasteurizada	Leche Procesada	8734
+Great Value	Arroz	Arroz y Cereales Preparados	7346
+Great Value	Azúcar	Azúcar	7044
+Great Value	Harina de Trigo	Galletas Pastas y Harinas de Trigo	7013
+Great Value	Café Soluble	Café	6474
+Great Value	Polvo P/preparar Bebidas Sabor Chocolate	Chocolates y Golosinas	6166
+Great Value	Sal Molida de Mesa	Condimentos	6135
+Great Value	Servilletas de Papel Blanco	Arts. de Papel P/higiene Personal	6108
+Great Value	Mantequilla	Derivados de Leche	4895
+Great Value	Papel Higiénico	Arts. de Papel P/higiene Personal	4621
+Great Value	Toalla de Papel	Arts. de Papel P/higiene Personal	2771
+Great Value	Lámpara Ahorradora	Accesorios Domésticos	1584
+Great Value	Margarina	Aceites y Grasas Veg. Comestibles	86
+Great Value	Jabón de Pasta	Detergentes y Productos Similares	2
+Grisi	Shampoo	Arts. para el Cuidado Personal	21475
+Grisi	Jabón de Tocador	Arts. para el Cuidado Personal	17648
+Grisi	Jabón de Tocador para Bebé	Arts. para el Cuidado Personal	16488
+Grisi	Shampoo para Bebés/niños	Arts. para el Cuidado Personal	15619
+Guacamaya	Salsa Picante y Similares	Condimentos	600
+Guadalupe	Huevo	Huevo	9526
+Guaymex	Sardina	Pescados y Mariscos en Conserva	28924
+H-24	Insecticida Aerosol	Detergentes y Productos Similares	43769
+Hands	Gel Antibacterial	Arts. para el Cuidado Personal	227
+Hawaiian Tropic	Protector Solar	Arts. para el Cuidado Personal	7508
+Head & Shoulders	Shampoo	Arts. para el Cuidado Personal	16579
+Head & Shoulders	Acondicionador y Enjuague	Arts. para el Cuidado Personal	3877
+Heb	Carne Res	Carne y Vísceras de Res	634
+Heb	Tortilla de Maíz	Tortillas y Derivados del Maíz	581
+Heb	Pan de Caja	Pan	390
+Heb	Papa	Hortalizas Frescas	339
+Heb Supreme	Carne Res	Carne y Vísceras de Res	200
+Heineken	Cerveza	Cerveza	15410
+Heineken 0.0	Cerveza	Botanas y Bebidas	4529
+Heinz	Salsa Catsup	Condimentos	18154
+Hellmann´s	Mayonesa	Condimentos	42989
+Heno de Pravia	Jabón de Tocador	Arts. para el Cuidado Personal	7038
+Herbal Essences	Acondicionador y Enjuague	Arts. para el Cuidado Personal	9522
+Herbal Essences	Shampoo	Arts. para el Cuidado Personal	9316
+Herdez	Elote	Hortalizas Frescas	40729
+Herdez	Atún	Pescados y Mariscos en Conserva	36751
+Herdez	Chícharos en Lata	Frutas y Legumbres Procesadas	10638
+Herdez	Puré de Tomate	Frutas y Legumbres Procesadas	1277
+Herederos del Marqués de Riscal	Vino de Mesa	Vinos y Licores	160
+Hershey´s	Chocolate	Chocolates y Golosinas	1106
+Hershey´s Kisses	Chocolate	Chocolates y Golosinas	270
+Hill Country	Papel Higiénico	Arts. de Papel P/higiene Personal	233
+Hill Country Fare	Azúcar	Azúcar	1057
+Hill Country Fare	Pasta para Sopa	Galletas Pastas y Harinas de Trigo	872
+Hill Country Fare	Atún	Pescados y Mariscos en Conserva	742
+Hill Country Fare	Carne Pollo	Carne de Ave	557
+Hill Country Fare	Frijol	Legumbres Secas	419
+Hill Country Fare	Leche Ultrapasteurizada	Leche Procesada	391
+Hill Country Fare	Huevo	Huevo	372
+Hill Country Fare	Arroz	Arroz y Cereales Preparados	107
+Hill Country Fare	Jabón de Tocador	Arts. para el Cuidado Personal	52
+Hill Country Fare	Tortilla de Maíz	Tortillas y Derivados del Maíz	30
+Hill Country Fare	Jamón	Carnes Frías Secas y Embutidos	9
+Hill Country Fare	Papel Higiénico	Arts. de Papel P/higiene Personal	1
+Hinds	Crema Líquida	Arts. para el Cuidado Personal	7160
+Holanda	Helado	Derivados de Leche	8637
+Home Care	Termómetro	Arts. para el Cuidado Personal	10
+Home Care Diagnostic	Oxímetro	Arts. para el Cuidado Personal	78
+Honey Suckle White	Pavo	Productos de Temporada (navideños)	14
+Hortensia	Papel Higiénico	Arts. de Papel P/higiene Personal	265
+Hortensia	Servilletas de Papel Blanco	Arts. de Papel P/higiene Personal	24
+Huggies	Pañales Desechables	Arts. de Papel P/higiene Personal	78947
+Huggies	Toallita Húmeda Limpiadora	Arts. de Papel P/higiene Personal	30896
+Huggies	Jabón de Tocador para Bebé	Arts. para el Cuidado Personal	10048
+Huggies	Shampoo para Bebés/niños	Arts. para el Cuidado Personal	5692
+I Cant Believe Its Not Butter!	Margarina	Aceites y Grasas Veg. Comestibles	7089
+Ibarra	Chocolate en Tablillas	Chocolates y Golosinas	11702
+Ibarra	Jabón de Tocador	Arts. para el Cuidado Personal	1427
+Iberia	Margarina	Aceites y Grasas Veg. Comestibles	31453
+Ibero	Jamón	Carnes Frías Secas y Embutidos	14168
+Imperial	Aceite	Aceites y Grasas Veg. Comestibles	2101
+Inca	Grasa Comestible	Aceites y Grasas Veg. Comestibles	16673
+Indio	Cerveza	Cerveza	25998
+Infusiónate	Chía	Legumbres Secas	929
+Inhala Care o Home Care	Oxímetro	Arts. para el Cuidado Personal	3801
+Internacional	Café Tostado y Molido	Café	4654
+Internacional Americano	Café Tostado y Molido	Café	11083
+Íntima	Toalla Femenina	Arts. de Papel P/higiene Personal	1271
+Iris	Papel Higiénico	Arts. de Papel P/higiene Personal	1003
+Isadora	Frijoles	Frutas y Legumbres Procesadas	19585
+Italpasta	Pasta para Sopa	Galletas Pastas y Harinas de Trigo	11548
+Jarritos	Refresco	Refrescos Envasados	12869
+Jell-o	Gelatina en Polvo	Chocolates y Golosinas	16176
+Jell-o	Flan	Chocolates y Golosinas	14604
+Jersey	Leche Ultrapasteurizada	Leche Procesada	14
+Jevsa	Huevo	Huevo	179
+Johnnie Walker	Whisky	Vinos y Licores	14781
+Johnson´s	Shampoo para Bebés/niños	Arts. para el Cuidado Personal	7407
+Johnson´s Baby	Jabón de Tocador para Bebé	Arts. para el Cuidado Personal	15411
+Johnson´s Baby	Crema Líquida	Arts. para el Cuidado Personal	10103
+Jolca	Aceituna	Productos de Temporada (navideños)	1082
+José Cuervo	Tequila	Vinos y Licores	29691
+Jovan Musk	Desodorante	Arts. para el Cuidado Personal	1
+Jumex	Jugo de Fruta	Refrescos Envasados	16020
+Jumex	Bebidas Hidratantes	Refrescos Envasados	3647
+Karate	Cacahuates	Botanas y Bebidas	944
+Kartamus	Aceite	Aceites y Grasas Veg. Comestibles	1990
+Ke Precio	Azúcar	Azúcar	1621
+Ke Precio	Aceite	Aceites y Grasas Veg. Comestibles	1360
+Ke Precio	Pasta para Sopa	Galletas Pastas y Harinas de Trigo	1351
+Ke Precio	Arroz	Arroz y Cereales Preparados	1337
+Ke Precio	Jabón de Tocador	Arts. para el Cuidado Personal	251
+Kellogg´s	Empanizadores	Pan	13465
+King Blue	Papel Higiénico	Arts. de Papel P/higiene Personal	69
+Kir	Jamón	Carnes Frías Secas y Embutidos	35823
+Kir	Salchicha	Carnes Frías Secas y Embutidos	14086
+Kir	Tocino Ahumado	Carnes Frías Secas y Embutidos	9603
+Kir	Mortadela	Carnes Frías Secas y Embutidos	5275
+Kirkland	Leche Ultrapasteurizada	Leche Procesada	47
+Kleen Bebé	Pañales Desechables	Arts. de Papel P/higiene Personal	44025
+Kleen Bebé	Toallita Húmeda Limpiadora	Arts. de Papel P/higiene Personal	15866
+Kleenex	Papel Higiénico	Arts. de Papel P/higiene Personal	20253
+Kleenex	Servilletas de Papel Blanco	Arts. de Papel P/higiene Personal	11552
+Knorr	Concentrado de Pollo	Condimentos	36933
+Kotex	Toalla Femenina	Arts. de Papel P/higiene Personal	85905
+Kotex	Tampones	Arts. de Papel P/higiene Personal	45998
+Kotex	Pantiprotectores	Arts. para el Cuidado Personal	9701
+Kotex	Copa Menstrual	Arts. para el Cuidado Personal	1420
+Kraft	Queso Americano	Derivados de Leche	9579
+L. a. Cetto	Vino de Mesa	Vinos y Licores	1602
+L Oreal Kids	Shampoo para Bebés/niños	Arts. para el Cuidado Personal	11725
+L´oréal Paris	Tinte para el Cabello	Arts. para el Cuidado Personal	10328
+L´oréeal Paris	Tinte para el Cabello	Arts. para el Cuidado Personal	14306
+La Carreta	Pimienta	Condimentos	70
+La Central	Cerillos	Cigarrillos	12687
+La Cocinera	Vinagre	Condimentos	84
+La Comer	Rosca de Reyes	Pan	10
+La Costeña	Chiles	Frutas y Legumbres Procesadas	117541
+La Costeña	Piña en Almíbar	Frutas y Legumbres Procesadas	22465
+La Costeña	Elote	Hortalizas Frescas	20645
+La Costeña	Puré de Tomate	Frutas y Legumbres Procesadas	17894
+La Costeña	Mayonesa	Condimentos	17249
+La Costeña	Mermelada	Frutas y Legumbres Procesadas	17241
+La Costeña	Mole Rojo en Pasta	Condimentos	15153
+La Costeña	Frijoles	Frutas y Legumbres Procesadas	15032
+La Costeña	Duraznos en Almíbar	Frutas y Legumbres Procesadas	14571
+La Costeña	Chícharos en Lata	Frutas y Legumbres Procesadas	13926
+La Costeña	Vinagre	Condimentos	13728
+La Costeña	Coctel de Frutas en Almíbar	Frutas y Legumbres Procesadas	13160
+La Costeña	Salsa Catsup	Condimentos	11402
+La Costeña	Mostaza	Condimentos	7521
+La Costeña	Chiles Largos en Escabeche	Productos de Temporada (navideños)	428
+La Fina	Sal Molida de Mesa	Condimentos	12765
+La Holandesa	Rompope	Vinos y Licores	223
+La Huerta	Mezcla California	Frutas y Legumbres Procesadas	13662
+La Huerta	Guarnición de Verduras	Frutas y Legumbres Procesadas	13032
+La Huerta	Combinado Primavera	Frutas y Legumbres Procesadas	11683
+La Huerta	Floretes de Brócoli	Frutas y Legumbres Procesadas	10771
+La Huerta	Mezcla Campesina	Frutas y Legumbres Procesadas	9709
+La Huerta	Granos de Elote	Frutas y Legumbres Procesadas	9246
+La Lechera	Leche Condensada	Leche Procesada	61875
+La Merced	Frijol	Legumbres Secas	36793
+La Merced	Arroz	Arroz y Cereales Preparados	28841
+La Merced	Lenteja	Legumbres Secas	13113
+La Merced	Alubia	Legumbres Secas	7727
+La Merced	Haba	Legumbres Secas	6077
+La Moderna	Pasta para Sopa	Galletas Pastas y Harinas de Trigo	46862
+La Moderna	Harina de Trigo	Galletas Pastas y Harinas de Trigo	6357
+La Morena	Chiles	Frutas y Legumbres Procesadas	6673
+La Pasiega	Alcaparra	Productos de Temporada (navideños)	288
+La Perla	Pasta para Sopa	Galletas Pastas y Harinas de Trigo	16223
+La Perla	Harina de Trigo	Galletas Pastas y Harinas de Trigo	342
+La Posada	Azúcar	Azúcar	1355
+La Rendidora	Atún	Pescados y Mariscos en Conserva	5
+La Sanitaria	Camarón	Pescados y Mariscos	514
+La Sierra	Frijoles	Frutas y Legumbres Procesadas	31998
+La Sierra	Frijol	Legumbres Secas	6
+La Villita	Queso Manchego	Derivados de Leche	21835
+La Villita	Queso Oaxaca	Derivados de Leche	16754
+La Villita	Queso Americano	Derivados de Leche	14267
+La Villita	Queso Panela	Derivados de Leche	13815
+La Villita	Margarina	Aceites y Grasas Veg. Comestibles	11614
+La Villita	Queso Fresco	Derivados de Leche	4944
+Lady Speed Stick	Desodorante	Arts. para el Cuidado Personal	8603
+Lala	Yoghurt	Derivados de Leche	76227
+Lala	Leche Ultrapasteurizada	Leche Procesada	70337
+Lala	Crema	Derivados de Leche	56942
+Lala	Queso Manchego	Derivados de Leche	22985
+Lala	Leche Pasteurizada	Leche Fresca	20982
+Lala	Mantequilla	Derivados de Leche	16902
+Lala	Queso Americano	Derivados de Leche	15815
+Lala	Queso Oaxaca	Derivados de Leche	14562
+Lala	Queso Chihuahua	Derivados de Leche	8238
+Lala	Queso Panela	Derivados de Leche	7790
+Lala	Margarina	Aceites y Grasas Veg. Comestibles	6317
+Lala	Queso Crema	Botanas y Bebidas	1462
+Lan	Vino de Mesa	Vinos y Licores	82
+Lancers	Vino de Mesa	Vinos y Licores	10
+Le Roy	Cubrebocas	Arts. para el Cuidado Personal	28967
+Legal	Café Tostado y Molido	Café	29461
+Legal	Café Soluble	Café	132
+León	Leche Ultrapasteurizada	Leche Procesada	487
+Ley	Azúcar	Azúcar	1341
+Ley	Frijol	Legumbres Secas	698
+Ley	Arroz	Arroz y Cereales Preparados	674
+Ley	Pasta para Sopa	Galletas Pastas y Harinas de Trigo	661
+Ley	Sardina	Pescados y Mariscos en Conserva	197
+Liconsa	Leche Ultrapasteurizada	Leche Procesada	153
+Lindt	Chocolate	Chocolates y Golosinas	609
+Lirio	Jabón de Pasta	Detergentes y Productos Similares	11714
+Lirio	Jabón de Tocador	Arts. para el Cuidado Personal	4156
+Lirio	Grasa Comestible	Aceites y Grasas Veg. Comestibles	652
+Livean	Polvo P/preparar Bebidas	Chocolates y Golosinas	493
+Lluvia de Oro	Frijol	Legumbres Secas	155
+Los Portales	Café Tostado y Molido	Café	5023
+Los Portales de Córdoba	Café Soluble	Café	15918
+Los Vascos	Vino de Mesa	Vinos y Licores	10
+Los Volcanes	Queso Panela	Derivados de Leche	7393
+Los Volcanes	Queso Oaxaca	Derivados de Leche	7249
+Los Volcanes	Leche Ultrapasteurizada	Leche Procesada	2021
+Los Volcanes	Queso Manchego	Derivados de Leche	818
+Lubriderm	Crema Líquida	Arts. para el Cuidado Personal	15170
+Lys	Papel Higiénico	Arts. de Papel P/higiene Personal	8789
+Lys	Servilletas de Papel Blanco	Arts. de Papel P/higiene Personal	357
+Lysol	Spray Desinfectante	Detergentes y Productos Similares	23222
+Lysol	Toallitas Desinfectantes	Detergentes y Productos Similares	11884
+M&m´s	Chocolate	Chocolates y Golosinas	10749
+Maceite	Aceite	Aceites y Grasas Veg. Comestibles	69
+Madison Farms	Pavo	Productos de Temporada (navideños)	175
+Maestro Limpio	Detergente P/ropa	Detergentes y Productos Similares	6795
+Maggi	Salsa Inglesa	Condimentos	11475
+Maggi	Salsa de Soya	Condimentos	6351
+Mainstays	Vajilla	Enseres Menores	55
+Mainstays	Juego de Cubiertos	Enseres Menores	20
+Mainstays	Plato Trinche/extendido	Enseres Menores	14
+Maizena	Harina de Maíz	Tortillas y Derivados del Maíz	14637
+Mamá Gallina	Huevo	Huevo	805
+Manila	Jabón de Tocador	Arts. para el Cuidado Personal	1716
+Manzanita Sol	Refresco	Refrescos Envasados	14797
+Maravilla	Aceite	Aceites y Grasas Veg. Comestibles	391
+Marina Azul	Atún	Pescados y Mariscos en Conserva	21
+Marinela	Galletas Dulces	Galletas Pastas y Harinas de Trigo	85234
+Marinela	Pastelillos y Pan Dulce Empaquetado	Pan	60232
+Marinero	Sardina	Pescados y Mariscos en Conserva	85
+Marketside	Manzana	Frutas Frescas	1232
+Marketside	Bacalao	Productos de Temporada (navideños)	387
+Marketside	Pavo	Productos de Temporada (navideños)	117
+Marketside	Rosca de Reyes	Pan	41
+Marli	Papel Higiénico	Arts. de Papel P/higiene Personal	71
+Marques de Caceres	Vino de Mesa	Vinos y Licores	181
+Martuna	Atún	Pescados y Mariscos en Conserva	136
+Maruchan	Alimentos Preparados	Galletas Pastas y Harinas de Trigo	33922
+Mas Color	Detergente P/ropa	Detergentes y Productos Similares	5417
+Mas Oscura	Detergente P/ropa	Detergentes y Productos Similares	8210
+Maseca	Harina de Maíz	Tortillas y Derivados del Maíz	20765
+Max Select	Tortilla de Maíz	Tortillas y Derivados del Maíz	289
+Max Select	Atún	Pescados y Mariscos en Conserva	275
+Max Select	Azúcar	Azúcar	195
+Max Select	Frijol	Legumbres Secas	142
+Max Select	Leche Ultrapasteurizada	Leche Procesada	128
+Max Ten	Jabón de Tocador	Arts. para el Cuidado Personal	46
+Mazatún	Atún	Pescados y Mariscos en Conserva	25356
+Mazola	Aceite	Aceites y Grasas Veg. Comestibles	8171
+Mc Cormick	Mayonesa	Condimentos	51749
+Mc Cormick	Mermelada	Frutas y Legumbres Procesadas	27859
+Mc Cormick	Mostaza	Condimentos	20341
+Mc Cormick	Canela	Productos de Temporada (navideños)	11864
+Mc Cormick	Ajo	Condimentos	10798
+Mc Cormick	Pimienta	Condimentos	8373
+Mc Cormick	Cúrcuma	Condimentos	7941
+Mc Cormick	Té	Té	7363
+Mc Cormick	Orégano	Condimentos	4163
+Mc Cormick	Hojas de Laurel	Condimentos	4057
+Mc Cormick	Tomillo	Productos de Temporada (navideños)	1239
+Medimart	Gel Antibacterial	Arts. para el Cuidado Personal	13864
+Medimart	Cubrebocas	Arts. para el Cuidado Personal	7761
+Medimart	Guantes de Látex	Arts. para el Cuidado Personal	3526
+Mennen	Shampoo	Arts. para el Cuidado Personal	13890
+Mennen	Shampoo para Bebés/niños	Arts. para el Cuidado Personal	13682
+Mexsana	Talco	Arts. para el Cuidado Personal	7077
+Mi Marca	Pasta para Sopa	Galletas Pastas y Harinas de Trigo	131
+Mi Tienda del Ahorro	Aceite	Aceites y Grasas Veg. Comestibles	431
+Mi Tienda del Ahorro	Huevo	Huevo	428
+Mi Tienda del Ahorro	Arroz	Arroz y Cereales Preparados	424
+Mi Tienda del Ahorro	Carne Pollo	Carne de Ave	394
+Mi Tienda del Ahorro	Papel Higiénico	Arts. de Papel P/higiene Personal	314
+Mi Tienda del Ahorro	Frijol	Legumbres Secas	254
+Mi Tienda del Ahorro	Azúcar	Azúcar	46
+Mi Tienda del Ahorro	Jitomate	Hortalizas Frescas	17
+Mi Tienda del Ahorro	Lenteja	Legumbres Secas	9
+Michelob Ultra	Cerveza	Cerveza	14903
+Microdyn	Microbicida	Detergentes y Productos Similares	7737
+Microlet	Lancetas	Arts. para el Cuidado Personal	4902
+Microlife	Termómetro	Arts. para el Cuidado Personal	14278
+Milpa Real	Tostadas de Maíz	Tortillas y Derivados del Maíz	15207
+Mimarca	Azúcar	Azúcar	342
+Mimarca	Aceite	Aceites y Grasas Veg. Comestibles	100
+Mimarca	Pan de Caja	Pan	66
+Minsa	Harina de Maíz	Tortillas y Derivados del Maíz	7043
+Mirinda	Refresco	Refrescos Envasados	22233
+Mission	Tortilla de Harina de Trigo	Tortillas y Derivados del Maíz	405
+Modelo Especial	Cerveza	Cerveza	12576
+Molina	Vainilla	Condimentos	3967
+Molinera	Azúcar	Azúcar	81
+Monarca	Leche Pasteurizada	Leche Fresca	187
+Monte Haro	Vino de Mesa	Vinos y Licores	135
+Monte Xanic	Vino de Mesa	Vinos y Licores	628
+More Value	Papel Higiénico	Arts. de Papel P/higiene Personal	633
+More Value	Aceite	Aceites y Grasas Veg. Comestibles	561
+Morelia	Polvo P/preparar Bebidas Sabor Chocolate	Chocolates y Golosinas	15975
+Multibran	Cereales	Arroz y Cereales Preparados	2585
+Mutualidad	Huevo	Huevo	24
+Mybrand	Pan de Caja	Pan	147
+Nabisco	Galletas Dulces	Galletas Pastas y Harinas de Trigo	28410
+Nabisco	Galletas Saladas	Galletas Pastas y Harinas de Trigo	16683
+Nair	Producto para Depilación	Arts. para el Cuidado Personal	22196
+Nair	Atún	Pescados y Mariscos en Conserva	26
+Nan 1	Fórmula Láctea	Leche Procesada	13036
+Nan 2	Fórmula Láctea	Leche Procesada	12287
+Nature´s Heart	Bebida Varias	Refrescos Envasados	18
+Naturella	Toalla Femenina	Arts. de Papel P/higiene Personal	45229
+Nebucor	Nebulizador	Arts. para el Cuidado Personal	35255
+Negra Modelo	Cerveza	Cerveza	13142
+Nescafé	Café Soluble	Café	98206
+Nesquik	Polvo P/preparar Bebidas Sabor Chocolate	Chocolates y Golosinas	37587
+Nesquik	Cereales	Arroz y Cereales Preparados	17191
+Nestlé	Helado	Derivados de Leche	6795
+Nestlé	Agua Sin Gas	Refrescos Envasados	2134
+Nido	Leche en Polvo	Leche Procesada	59331
+Nissin	Alimentos Preparados	Galletas Pastas y Harinas de Trigo	17853
+Nivea	Desodorante	Arts. para el Cuidado Personal	46434
+Nivea	Crema Líquida	Arts. para el Cuidado Personal	31727
+Nivea	Crema Sólida	Arts. para el Cuidado Personal	22733
+Nivea Men	Espuma de Afeitar	Arts. para el Cuidado Personal	9335
+Nivea Sun	Protector Solar	Arts. para el Cuidado Personal	48282
+Noche Buena	Queso Manchego	Derivados de Leche	35094
+Noche Buena	Queso Panela	Derivados de Leche	2716
+Noche Buena	Queso Oaxaca	Derivados de Leche	2603
+Norteñita	Crema	Derivados de Leche	535
+Norteñita	Margarina	Aceites y Grasas Veg. Comestibles	392
+Norteño	Queso Oaxaca	Derivados de Leche	304
+Norteño	Queso Sierra	Derivados de Leche	255
+Nutella	Crema de Avellanas con Cacao	Chocolates y Golosinas	5964
+Nutri	Producto Lácteo	Leche Procesada	22054
+Nutri	Yoghurt	Derivados de Leche	13454
+Nutri	Queso Americano	Derivados de Leche	7490
+Nutrioli	Aceite	Aceites y Grasas Veg. Comestibles	21053
+Nutripavo	Pavo	Productos de Temporada (navideños)	2
+Nutrypollo	Carne Pollo	Carne de Ave	728
+Obao	Desodorante	Arts. para el Cuidado Personal	28476
+Oikos	Yoghurt	Derivados de Leche	47282
+Ojai	Huevo	Huevo	152
+Okko	Chía	Legumbres Secas	643
+Old Spice	Desodorante	Arts. para el Cuidado Personal	18190
+Oleico	Aceite	Aceites y Grasas Veg. Comestibles	18655
+Oli	Aceite de Oliva	Productos de Temporada (navideños)	789
+Omron	Nebulizador	Arts. para el Cuidado Personal	34791
+Omron	Termómetro	Arts. para el Cuidado Personal	17410
+Onetouch	Tiras Reactivas	Arts. para el Cuidado Personal	15939
+Onetouch	Glucómetro	Arts. para el Cuidado Personal	4742
+Onetouch	Lancetas	Arts. para el Cuidado Personal	3716
+Opal Glass Corinthio Hs	Plato Sopero	Enseres Menores	4
+Oral-b	Cepillo Dental	Arts. para el Cuidado Personal	22981
+Orange Crush	Refresco	Refrescos Envasados	12146
+Oroweat	Pan de Caja	Pan	17469
+Osram	Lámpara Ahorradora	Accesorios Domésticos	4924
+Ovarb	Maíz Pozolero	Tortillas y Derivados del Maíz	7658
+Ovarb-lolita	Maíz Pozolero	Tortillas y Derivados del Maíz	5580
+Pacífico	Cerveza	Cerveza	460
+Paco	Frijol	Legumbres Secas	53
+Paisa	Frijol	Legumbres Secas	79
+Palmolive	Jabón de Tocador	Arts. para el Cuidado Personal	41412
+Palmolive	Desodorante	Arts. para el Cuidado Personal	14318
+Palmolive	Crema Líquida	Arts. para el Cuidado Personal	12993
+Palmolive Optims	Shampoo	Arts. para el Cuidado Personal	16687
+Pam	Aceite de Oliva	Productos de Temporada (navideños)	436
+Pantene	Shampoo	Arts. para el Cuidado Personal	29236
+Pantene	Acondicionador y Enjuague	Arts. para el Cuidado Personal	27882
+Parma	Jamón	Carnes Frías Secas y Embutidos	17521
+Parma	Tocino Ahumado	Carnes Frías Secas y Embutidos	11106
+Parma	Queso de Puerco	Carnes Frías Secas y Embutidos	9313
+Parma	Chorizo	Carnes Frías Secas y Embutidos	7829
+Parma	Queso Manchego	Derivados de Leche	5047
+Parma	Queso Oaxaca	Derivados de Leche	3844
+Pasa	Salsa de Soya	Condimentos	6795
+Pasa	Vainilla	Condimentos	481
+Patsa	Carne Pollo	Carne de Ave	813
+Pearl Milling Company	Harina Hot Cakes	Galletas Pastas y Harinas de Trigo	10084
+Peña Blanca	Azúcar	Azúcar	3
+Peñafiel	Agua con Gas	Refrescos Envasados	36518
+Peñafiel	Refresco	Refrescos Envasados	12883
+Peñaranda	Tocino Ahumado	Carnes Frías Secas y Embutidos	4865
+Pepsi	Refresco	Refrescos Envasados	39591
+Perfetta	Pasta para Sopa	Galletas Pastas y Harinas de Trigo	27
+Perma Sharp Ii	Rastrillos Desechables	Arts. para el Cuidado Personal	3941
+Persil	Detergente P/ropa	Detergentes y Productos Similares	8079
+Pert	Shampoo	Arts. para el Cuidado Personal	12883
+Pert	Acondicionador y Enjuague	Arts. para el Cuidado Personal	4507
+Pétalo	Servilletas de Papel Blanco	Arts. de Papel P/higiene Personal	22433
+Pétalo	Toalla de Papel	Arts. de Papel P/higiene Personal	21695
+Pétalo	Papel Higiénico	Arts. de Papel P/higiene Personal	9002
+Philadelphia	Queso Crema	Botanas y Bebidas	5616
+Philadelphia	Queso Americano	Derivados de Leche	4963
+Philips	Lámpara Ahorradora	Accesorios Domésticos	320
+Pilgrim`s	Carne Pollo	Carne de Ave	13478
+Pilgrims	Pavo	Productos de Temporada (navideños)	133
+Pinol	Limpiador Líquido P/piso	Detergentes y Productos Similares	19588
+Poett	Limpiador Líquido P/piso	Detergentes y Productos Similares	8622
+Poma Rosa	Sidra	Productos de Temporada (navideños)	2
+Pond´s	Crema Sólida	Arts. para el Cuidado Personal	41141
+Portola	Sardina	Pescados y Mariscos en Conserva	7219
+Powerade	Bebidas Hidratantes	Refrescos Envasados	31085
+Pradel	Leche Ultrapasteurizada	Leche Procesada	137
+Precíssimo	Pasta para Sopa	Galletas Pastas y Harinas de Trigo	71443
+Precíssimo	Azúcar	Azúcar	19269
+Precíssimo	Frijol	Legumbres Secas	17036
+Precíssimo	Arroz	Arroz y Cereales Preparados	13389
+Precíssimo	Aceite	Aceites y Grasas Veg. Comestibles	13212
+Precíssimo	Huevo	Huevo	13049
+Precíssimo	Papel Higiénico	Arts. de Papel P/higiene Personal	9926
+Precíssimo	Mantequilla	Derivados de Leche	8108
+Precíssimo	Jabón de Tocador	Arts. para el Cuidado Personal	6346
+Precíssimo	Harina de Trigo	Galletas Pastas y Harinas de Trigo	4349
+Precíssimo	Toalla de Papel	Arts. de Papel P/higiene Personal	4296
+Precíssimo	Jabón de Pasta	Detergentes y Productos Similares	3703
+Precíssimo	Margarina	Aceites y Grasas Veg. Comestibles	3612
+Precíssimo	Sal Molida de Mesa	Condimentos	3564
+Precíssimo	Limpiador Líquido P/piso	Detergentes y Productos Similares	2904
+Precíssimo	Suavizante P/ropa	Detergentes y Productos Similares	2383
+Precíssimo	Pan de Caja	Pan	1753
+Precíssimo	Café Soluble	Café	1658
+Precíssimo	Lenteja	Legumbres Secas	1278
+Precíssimo	Servilletas de Papel Blanco	Arts. de Papel P/higiene Personal	1272
+Presto	Olla de Presión Express	Utensilios Domésticos	11193
+Primavera Chantilly	Margarina	Aceites y Grasas Veg. Comestibles	43509
+Primavera Light	Margarina	Aceites y Grasas Veg. Comestibles	8902
+Primor	Grasa Comestible	Aceites y Grasas Veg. Comestibles	492
+Princesa	Jarabe P/preparar Bebidas	Chocolates y Golosinas	3419
+Pro	Cepillo Dental	Arts. para el Cuidado Personal	8368
+Proan	Manteca de Cerdo	Grasas Animales Comestibles	3525
+Progreso	Azúcar	Azúcar	1214
+Progreso	Arroz	Arroz y Cereales Preparados	415
+Pronto	Flan	Chocolates y Golosinas	23352
+Pronto	Gelatina en Polvo	Chocolates y Golosinas	18821
+Pronto	Harina Hot Cakes	Galletas Pastas y Harinas de Trigo	15333
+Pronto Ligeros	Harina Hot Cakes	Galletas Pastas y Harinas de Trigo	3486
+Protect	Cubrebocas	Arts. para el Cuidado Personal	10443
+Provincia de Cádiz	Jerez	Productos de Temporada (navideños)	71
+Pure Hs	Cubrebocas	Arts. para el Cuidado Personal	485
+Quaker	Granola	Arroz y Cereales Preparados	6910
+Quaker	Barras de Avena	Arroz y Cereales Preparados	4977
+Quaker Oats	Avena	Arroz y Cereales Preparados	15745
+Quality Day	Gel Antibacterial	Arts. para el Cuidado Personal	8245
+Quality Day	Cubrebocas	Arts. para el Cuidado Personal	6728
+Raffaello	Chocolate	Chocolates y Golosinas	771
+Raid	Insecticida Aerosol	Detergentes y Productos Similares	37381
+Rancho Grande	Huevo	Huevo	225
+Red Cola	Refresco	Refrescos Envasados	6368
+Regio	Papel Higiénico	Arts. de Papel P/higiene Personal	17385
+Regio	Servilletas de Papel Blanco	Arts. de Papel P/higiene Personal	2943
+Regio	Toalla de Papel	Arts. de Papel P/higiene Personal	20
+Rexal	Polvo P/hornear	Condimentos	6043
+Rexona	Desodorante	Arts. para el Cuidado Personal	71082
+Rexona	Talco	Arts. para el Cuidado Personal	12802
+Riko Pollo	Concentrado de Pollo	Condimentos	9110
+Rinde Hogar	Papel Higiénico	Arts. de Papel P/higiene Personal	83
+Riunite	Vino de Mesa	Vinos y Licores	693
+Rogelio Bueno	Mole Rojo en Pasta	Condimentos	529
+Roma	Detergente P/ropa y Trastes	Detergentes y Productos Similares	37620
+Roma	Jabón de Pasta	Detergentes y Productos Similares	12818
+Ros	Jamón	Carnes Frías Secas y Embutidos	1231
+Ros	Salchicha	Carnes Frías Secas y Embutidos	904
+Rosa Venus	Jabón de Tocador	Arts. para el Cuidado Personal	1410
+Royal	Polvo P/hornear	Condimentos	372
+Ruffino Chianti	Vino de Mesa	Vinos y Licores	12
+Saba	Toalla Femenina	Arts. de Papel P/higiene Personal	121168
+Saba	Tampones	Arts. de Papel P/higiene Personal	27979
+Saba	Pantiprotectores	Arts. para el Cuidado Personal	26221
+Saba V-cup	Copa Menstrual	Arts. para el Cuidado Personal	5405
+Sabritas	Papas Fritas y Similares	Chocolates y Golosinas	142566
+Sabritas	Cacahuates	Chocolates y Golosinas	18825
+Sabro	Huevo	Huevo	5
+Sabrosano	Aceite	Aceites y Grasas Veg. Comestibles	20800
+Sahuayo	Frijol	Legumbres Secas	81
+Sahuayo	Arroz	Arroz y Cereales Preparados	77
+Sal Sol	Sal de Mar	Condimentos	4247
+Saladino	Fruta Seca	Productos de Temporada (navideños)	85
+Salvo	Detergente P/trastes	Detergentes y Productos Similares	40192
+San Antonio	Harina de Trigo	Galletas Pastas y Harinas de Trigo	12959
+San Antonio	Jamón	Carnes Frías Secas y Embutidos	512
+San Antonio	Salchicha	Carnes Frías Secas y Embutidos	130
+San Blas	Harina de Trigo	Galletas Pastas y Harinas de Trigo	12023
+San Diego	Arroz	Arroz y Cereales Preparados	128
+San Jose	Arroz	Arroz y Cereales Preparados	535
+San Juan	Huevo	Huevo	52318
+San Lázaro	Chile Seco	Legumbres Secas	2831
+San Lázaro	Haba	Legumbres Secas	1308
+San Lázaro	Almendras	Productos de Temporada (navideños)	1192
+San Lázaro	Lenteja	Legumbres Secas	949
+San Lázaro	Nuez	Condimentos	815
+San Marcos	Chiles	Frutas y Legumbres Procesadas	33352
+San Marcos	Leche Ultrapasteurizada	Leche Procesada	27045
+San Miguel	Pan de Caja	Pan	13
+San Rafael	Jamón	Carnes Frías Secas y Embutidos	54771
+San Rafael	Salchicha	Carnes Frías Secas y Embutidos	24380
+San Rafael	Tocino Ahumado	Carnes Frías Secas y Embutidos	10459
+San Rafael	Chorizo	Carnes Frías Secas y Embutidos	7587
+Sangre de Cristo	Vino de Mesa	Vinos y Licores	341
+Sangre de Toro	Vino de Mesa	Vinos y Licores	652
+Sangría Señorial	Refresco	Botanas y Bebidas	3081
+Saníssimo	Tostadas de Maíz	Tortillas y Derivados del Maíz	17716
+Santa Anita	Plato Sopero	Enseres Menores	54
+Santa Anita	Taza para Café	Enseres Menores	54
+Santa Anita	Plato Trinche/extendido	Enseres Menores	39
+Santa Clara	Leche Ultrapasteurizada	Leche Procesada	53195
+Santa Clara	Rompope	Vinos y Licores	658
+Santa Helena	Vino de Mesa	Vinos y Licores	118
+Santa Maria	Agua Sin Gas	Refrescos Envasados	7999
+Santa Rita	Vino de Mesa	Vinos y Licores	271
+Santo Tomas	Vino de Mesa	Vinos y Licores	129
+Sarita	Aceite	Aceites y Grasas Veg. Comestibles	241
+Savilé	Shampoo	Arts. para el Cuidado Personal	8105
+Savilé	Jabón de Tocador	Arts. para el Cuidado Personal	38
+Sayes	Gelatina en Polvo	Chocolates y Golosinas	206
+Schettino	Arroz	Arroz y Cereales Preparados	33230
+Schettino	Frijol	Legumbres Secas	27313
+Schettino	Maíz Palomero	Legumbres Secas	7455
+Schettino	Lenteja	Legumbres Secas	7133
+Scotch Brite	Fibra para Cocina	Utensilios Domésticos	13617
+Seara	Pavo	Productos de Temporada (navideños)	3
+Season´s Select	Limón	Frutas Frescas	343
+Sedal	Shampoo	Arts. para el Cuidado Personal	16328
+Sedal	Acondicionador y Enjuague	Arts. para el Cuidado Personal	15316
+Selección de la Casa	Azúcar	Azúcar	56
+Selección de la Casa	Frijol	Legumbres Secas	47
+Selección de la Casa	Arroz	Arroz y Cereales Preparados	31
+Selecta	Harina de Trigo	Galletas Pastas y Harinas de Trigo	18916
+Selecto Brand	Pan de Caja	Pan	2174
+Selecto Brand	Leche Ultrapasteurizada	Leche Procesada	1999
+Selecto Brand	Mantequilla	Derivados de Leche	1418
+Selecto Brand	Margarina	Aceites y Grasas Veg. Comestibles	1110
+Sello Rojo	Leche Ultrapasteurizada	Leche Procesada	3614
+Sello Rojo	Leche Pasteurizada	Leche Fresca	1764
+Sello Rojo	Crema	Derivados de Leche	766
+Sello Rojo	Yoghurt	Derivados de Leche	508
+Sensodyne	Crema Dental	Arts. para el Cuidado Personal	3036
+Senzao	Refresco	Botanas y Bebidas	626
+Serpis	Aceituna	Productos de Temporada (navideños)	1633
+Sidral Aga	Refresco	Refrescos Envasados	728
+Sidral Mundet	Refresco	Refrescos Envasados	32590
+Sidral Mundet Light	Refresco	Refrescos Envasados	5283
+Siglo	Vino de Mesa	Vinos y Licores	88
+Smart	Azúcar	Azúcar	391
+Smart	Pasta para Sopa	Galletas Pastas y Harinas de Trigo	226
+Smart	Huevo	Huevo	200
+Smart	Pan de Caja	Pan	191
+Soberano	Arroz	Arroz y Cereales Preparados	777
+Sol	Sal Molida de Mesa	Condimentos	600
+Sol de Oro	Harina de Trigo	Galletas Pastas y Harinas de Trigo	225
+Soriana	Gel Antibacterial	Arts. para el Cuidado Personal	4055
+Soriana	Cubrebocas	Arts. para el Cuidado Personal	4014
+Soriana	Azúcar	Azúcar	42
+Soriana	Rosca de Reyes	Pan	5
+Sos	Arroz	Arroz y Cereales Preparados	13095
+Special K	Cereales	Arroz y Cereales Preparados	13290
+Speed Stick	Desodorante	Arts. para el Cuidado Personal	16116
+Splenda	Sustituto de Azúcar	Azúcar	13149
+Splenda	Polvo P/preparar Bebidas	Chocolates y Golosinas	10593
+Sprite	Refresco	Refrescos Envasados	51817
+Squirt	Refresco	Refrescos Envasados	33109
+Star Milk	Leche Pasteurizada	Leche Fresca	141
+Stefano	Desodorante	Arts. para el Cuidado Personal	14620
+Suavel	Papel Higiénico	Arts. de Papel P/higiene Personal	28689
+Suavel	Servilletas de Papel Blanco	Arts. de Papel P/higiene Personal	11922
+Suavitel	Suavizante P/ropa	Detergentes y Productos Similares	32456
+Sukarne	Carne Res	Carne y Vísceras de Res	9068
+Súper Value	Arroz	Arroz y Cereales Preparados	234
+Súper Value	Papel Higiénico	Arts. de Papel P/higiene Personal	62
+Supra Med	Termómetro	Arts. para el Cuidado Personal	242
+Svetia	Sustituto de Azúcar	Azúcar	12350
+T-fal	Olla de Presión Express	Utensilios Domésticos	5880
+Tabasco	Salsa Picante y Similares	Condimentos	15364
+Tajín	Salsa Picante y Similares	Condimentos	10005
+Tamariz	Producto Lácteo	Leche Procesada	377
+Tamariz	Leche Ultrapasteurizada	Leche Procesada	143
+Tampax	Tampones	Arts. de Papel P/higiene Personal	25155
+Tang	Polvo P/preparar Bebidas	Chocolates y Golosinas	13946
+Teatrical	Crema Líquida	Arts. para el Cuidado Personal	4391
+Tecate	Cerveza	Cerveza	17805
+Tecate 0.0	Cerveza	Botanas y Bebidas	1531
+Tehuacán	Huevo	Huevo	9969
+Ten Stars	Papel Higiénico	Arts. de Papel P/higiene Personal	54
+Tena	Ropa Interior Desechable y Similares	Arts. de Papel P/higiene Personal	25587
+Tena Lady Discret	Ropa Interior Desechable y Similares	Arts. de Papel P/higiene Personal	15034
+Tepeyac	Jabón de Pasta	Detergentes y Productos Similares	12166
+Tepeyac	Jabón de Tocador	Arts. para el Cuidado Personal	1521
+Tersso	Jabón de Tocador	Arts. para el Cuidado Personal	150
+Topo Chico	Agua con Gas	Refrescos Envasados	1003
+Torres 10	Brandy	Vinos y Licores	14953
+Tortillinas Tía Rosa	Tortilla de Harina de Trigo	Tortillas y Derivados del Maíz	30149
+Tostitos	Dip	Botanas y Bebidas	7209
+Tramontina	Cuchara Sopera	Enseres Menores	170
+Tramontina	Tenedor	Enseres Menores	145
+Tramontina	Cuchillo	Enseres Menores	125
+Tramontina	Olla de Presión Express	Utensilios Domésticos	58
+Tramontina	Juego de Cubiertos	Enseres Menores	29
+Tres Coronas	Vino de Mesa	Vinos y Licores	1088
+Tres Estrellas	Harina de Arroz	Arroz y Cereales Preparados	20261
+Tres Estrellas	Harina Hot Cakes	Galletas Pastas y Harinas de Trigo	14150
+Tres Estrellas	Harina de Trigo	Galletas Pastas y Harinas de Trigo	8342
+Tucan	Jarabe P/preparar Bebidas	Chocolates y Golosinas	4639
+Tuny	Atún	Pescados y Mariscos en Conserva	26838
+Turín	Chocolate	Chocolates y Golosinas	1659
+Turkey Supreme	Pavo	Productos de Temporada (navideños)	2
+V8 Splash	Jugo de Fruta	Refrescos Envasados	17
+Vaca Pinta	Leche Ultrapasteurizada	Leche Procesada	80
+Valentina	Salsa Picante y Similares	Condimentos	18742
+Valle Redondo	Sidra	Productos de Temporada (navideños)	1279
+Valley Foods	Atún	Pescados y Mariscos en Conserva	19505
+Valley Foods	Leche Ultrapasteurizada	Leche Procesada	13000
+Valley Foods	Sardina	Pescados y Mariscos en Conserva	6207
+Valley Foods	Manzana	Frutas Frescas	1209
+Valley Foods	Pavo	Productos de Temporada (navideños)	188
+Valley Foods	Bacalao	Productos de Temporada (navideños)	172
+Valley Foods	Rosca de Reyes	Pan	41
+Vanart	Shampoo	Arts. para el Cuidado Personal	12166
+Vasconia	Baterías de Cocina	Enseres Menores	18
+Vaseline	Vaselina	Arts. para el Cuidado Personal	9305
+Vasenol	Crema Líquida	Arts. para el Cuidado Personal	10900
+Veet	Producto para Depilación	Arts. para el Cuidado Personal	2994
+Vel Rosita	Detergente P/ropa	Detergentes y Productos Similares	16739
+Venus	Jabón de Tocador	Arts. para el Cuidado Personal	203
+Venus.rosa	Jabón de Tocador	Arts. para el Cuidado Personal	112
+Verde Valle	Frijol	Legumbres Secas	74152
+Verde Valle	Arroz	Arroz y Cereales Preparados	22422
+Verde Valle	Lenteja	Legumbres Secas	16596
+Verde Valle	Maíz Palomero	Legumbres Secas	13991
+Verde Valle	Garbanzo	Legumbres Secas	13068
+Verde Valle	Canela	Productos de Temporada (navideños)	9875
+Verde Valle	Chile Seco	Legumbres Secas	9578
+Verde Valle	Alubia	Legumbres Secas	7484
+Verde Valle	Chía	Legumbres Secas	7169
+Verde Valle	Haba	Legumbres Secas	6888
+Verde Valle	Linaza	Legumbres Secas	6637
+Verde Valle	Ajonjolí	Condimentos	5948
+Verde Valle	Nuez	Condimentos	5536
+Verde Valle	Almendras	Productos de Temporada (navideños)	5329
+Victoria	Cerveza	Cerveza	22387
+Villa Campo	Arroz	Arroz y Cereales Preparados	74
+Villacampo	Frijol	Legumbres Secas	74
+Viña Maipo	Vino de Mesa	Vinos y Licores	412
+Virginians Turkey	Pavo	Productos de Temporada (navideños)	172
+Vita Real	Miel de Abeja	Chocolates y Golosinas	1449
+Vitalínea	Yoghurt	Derivados de Leche	2644
+Vitascom	Cubrebocas	Arts. para el Cuidado Personal	7047
+Vitascom	Gel Antibacterial	Arts. para el Cuidado Personal	5452
+Vitascom	Guantes de Látex	Arts. para el Cuidado Personal	4616
+Viva	Detergente P/ropa	Detergentes y Productos Similares	15217
+Viva	Salchicha	Carnes Frías Secas y Embutidos	282
+Vogue	Toalla de Papel	Arts. de Papel P/higiene Personal	7360
+Vogue	Papel Higiénico	Arts. de Papel P/higiene Personal	526
+Wand´s	Chía	Legumbres Secas	4789
+Wand´s	Semilla de Girasol	Legumbres Secas	2555
+Wand´s	Linaza	Legumbres Secas	1996
+Weber´s	Pan de Caja	Pan	210
+Wella	Tinte para el Cabello	Arts. para el Cuidado Personal	27234
+Wella Koleston	Tinte para el Cabello	Arts. para el Cuidado Personal	17169
+William Lawson´s	Whisky	Vinos y Licores	13506
+Worcestershire Crosse & Blackwell	Salsa Inglesa	Condimentos	36362
+World Table	Sidra	Productos de Temporada (navideños)	76
+X-a. Domecq	Vino de Mesa	Vinos y Licores	877
+X-a. Vinos Domecq	Vino de Mesa	Vinos y Licores	6
+Xignal	Oxímetro	Arts. para el Cuidado Personal	4027
+Xtreme	Gel Fijador	Arts. para el Cuidado Personal	9393
+Yaber	Pasta para Sopa	Galletas Pastas y Harinas de Trigo	165
+Yaqui	Leche Ultrapasteurizada	Leche Procesada	7
+Yavaros	Sardina	Pescados y Mariscos en Conserva	3025
+Ybarra	Aceite de Oliva	Productos de Temporada (navideños)	1320
+Yemina	Pasta para Sopa	Galletas Pastas y Harinas de Trigo	293
+Yoplait	Yoghurt	Derivados de Leche	88973
+Yurécuaro	Margarina	Aceites y Grasas Veg. Comestibles	1157
+Zest	Jabón de Tocador	Arts. para el Cuidado Personal	20737
+Zote	Jabón de Pasta	Detergentes y Productos Similares	41393
+Zucaritas	Cereales	Arroz y Cereales Preparados	37820
+Zukar´s	Azúcar	Azúcar	92
+Zuko	Polvo P/preparar Bebidas	Chocolates y Golosinas	15279
+Zulka	Azúcar	Azúcar	62308
+Zuum	Gel Antibacterial	Arts. para el Cuidado Personal	25387
+Zwan	Jamón	Carnes Frías Secas y Embutidos	54720
+Zwan	Salchicha	Carnes Frías Secas y Embutidos	36179
+Zwan	Queso Manchego	Derivados de Leche	12633
+Zwan	Queso Panela	Derivados de Leche	11464
+Zwan	Queso Oaxaca	Derivados de Leche	9563
+Zwan	Queso Fresco	Derivados de Leche	9514
+Zwan	Queso Americano	Derivados de Leche	8237
+Zwan	Chorizo	Carnes Frías Secas y Embutidos	8166
+Zwan	Tocino Ahumado	Carnes Frías Secas y Embutidos	6786

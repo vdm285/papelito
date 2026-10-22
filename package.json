@@ -14,7 +14,9 @@
     "smoke": "node tools/smoke.mjs",
     "shots": "node tools/shots.mjs",
     "lf": "node tools/lf.mjs",
-    "fonts": "python -I tools/build-fonts.py"
+    "fonts": "python -I tools/build-fonts.py",
+    "dict": "node tools/vocab/build.mjs && node tools/vocab/check.mjs",
+    "dict:sources": "node tools/vocab/fetch-sources.mjs --from-cache"
   },
   "devDependencies": {
     "puppeteer-core": "^24.43.1",

@@ -1,0 +1,14 @@
+# Tortillería (tor): tortilla-counter words that PROFECO QQP and INEGI ENIGH 2024 miss or spell differently.
+# Drafted by Claude (AI) on 2026-10-22 from the sources' gaps; awaiting owner review.
+# Lines: "+ término [= emoji]  # why" adds a term here (an emoji is a human choice; "= -" means no emoji);
+# "- término  # why" drops a source term from this aisle; "término > aba  # why" moves a source term elsewhere.
+# Every line needs a "# why": what it is and, where one exists, the source term it is the everyday name for.
+# The sources already cover this counter well (tortillas, tostadas, masa); only a few lines are needed.
+
++ tortilla = 🫓  # human choice: 🫓 (CLDR es-MX "pan plano", emoji 13.0) is a flatbread; QQP "Tortilla de Maíz", ENIGH 011131
++ masa  # masa for tortillas and tamales, sold by the kilo at the tortillería; ENIGH 011193 "Masa de maíz"
++ totopos  # fried tortilla chips, sold by the tortillería; ENIGH 011194 "Otros productos de maíz para ser preparados" (store-dependent: bagged ones sit with snacks)
++ sopes  # thick masa bases sold ready to fry at the tortillería; ENIGH 011194 "Otros productos de maíz para ser preparados"
+
+# Added by the auditor (Claude, AI) on 2026-10-22 after running 160 shopping-list lines through the app's matcher.
++ tortillinas  # packaged flour tortillas, by the name on Tía Rosa's pack; QQP brand "Tortillinas Tía Rosa" (Tortilla de Harina de Trigo)

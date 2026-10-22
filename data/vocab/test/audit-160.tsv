@@ -1,0 +1,169 @@
+# 160 shopping-list lines written by the auditor (Claude, AI) on 2026-10-22, each with the aisle a shopper in a Mexican
+# supermarket would look in (16-aisle scheme), BEFORE running them through the matcher.
+# WHO CHOSE THE AISLES: an AI. They are judgments, not facts.
+# Set a (80 everyday lines) scored 79/80 on the dictionary as the builder left it; set b (80 harder lines: colloquial names,
+# brands, compounds, form words) scored 66/79 (its last line, "servitoallas", was added after that run). The override and
+# drop lines written after seeing those misses fix most of them, so this file, like test-60 and tricky-40, is a regression
+# guard and not evidence of coverage. store = 1 marks a store-dependent row (left out of the score's denominator).
+# Columns: item, aisle (expected), store, note
+item	aisle	store	note
+1 kg de jitomate saladet	fru	0	set a
+aguacates hass	fru	0	set a
+3 cebollas moradas	fru	0	set a
+1/2 de chile serrano	fru	0	set a
+elotes	fru	0	set a
+ejotes	fru	0	set a
+chayotes	fru	0	set a
+naranjas para jugo	fru	0	set a
+platanos machos	fru	0	set a
+manzanas rojas	fru	0	set a
+2 kg de papas	fru	0	set a
+1 kilo de tortillas	tor	0	set a
+tortillas de harina	tor	0	set a
+totopos	tor	1	set a
+bolillos	pan	0	set a
+6 teleras	pan	0	set a
+pan para hamburguesa	pan	0	set a
+pan integral	pan	0	set a
+medio kilo de bistec	car	0	set a
+pechugas de pollo	car	0	set a
+1 kg carne molida de res	car	0	set a
+costillas de cerdo	car	0	set a
+arrachera	car	0	set a
+camarones	car	0	set a
+jamón de pavo	sal	0	set a
+salchichas para hot dog	sal	0	set a
+queso de puerco	sal	0	set a
+leche deslactosada	lac	0	set a
+queso cotija	lac	0	set a
+crema ácida	lac	0	set a
+yogurt natural	lac	0	set a
+leche condensada	lac	1	set a
+frijol bayo	aba	0	set a
+aceite 123	aba	0	set a
+azúcar morena	aba	0	set a
+café soluble	aba	0	set a
+atún en agua	aba	0	set a
+sopa de codo	aba	0	set a
+caldo de pollo knorr	aba	0	set a
+chiles chipotles	aba	0	set a
+puré de tomate	aba	0	set a
+lentejas	aba	0	set a
+avena quaker	aba	0	set a
+cereal zucaritas	aba	0	set a
+harina de trigo	aba	0	set a
+flor de jamaica	aba	0	set a
+elote en lata	aba	0	set a
+sabritas	bot	0	set a
+cacahuates japoneses	bot	0	set a
+chicles	bot	0	set a
+coca cola 3 litros	beb	0	set a
+6 caguamas	beb	0	set a
+garrafón de agua	beb	0	set a
+jugo del valle	beb	0	set a
+agua mineral peñafiel	beb	0	set a
+helado	con	0	set a
+bolsa de hielo	con	0	set a
+nuggets de pollo	con	0	set a
+chícharos congelados	con	0	set a
+detergente para ropa	lim	0	set a
+jabón para trastes	lim	0	set a
+fibras	lim	0	set a
+bolsas para basura	lim	0	set a
+servilletas	lim	0	set a
+focos	lim	0	set a
+pilas AA	lim	0	set a
+papel de baño	hig	1	set a
+pasta de dientes colgate	hig	0	set a
+crema para peinar	hig	0	set a
+rastrillos	hig	0	set a
+toallas sanitarias	hig	0	set a
+hilo dental	hig	0	set a
+pañales etapa 3	bbe	0	set a
+toallitas húmedas	bbe	0	set a
+croquetas para perro	mas	0	set a
+arena para gato	mas	0	set a
+paracetamol	far	0	set a
+curitas	far	0	set a
+alcohol	far	0	set a
+pastillas para la tos	far	0	set a
+lima para uñas	hig	0	set b
+jabón líquido para manos	hig	0	set b
+papel aluminio	lim	0	set b
+carbón para asar	lim	1	set b
+encendedor	lim	1	set b
+pan molido	aba	0	set b
+chicharrón de cerdo	car	1	set b
+chicharrones de harina	bot	0	set b
+salsa verde herdez	aba	0	set b
+mole doña maría	aba	0	set b
+caldo de res	aba	1	set b
+gelatina de fresa	aba	0	set b
+leche de almendra	lac	1	set b
+queso crema philadelphia	lac	0	set b
+media crema	lac	0	set b
+leche en polvo nido	lac	0	set b
+carne para deshebrar	car	0	set b
+pollo rostizado	car	1	set b
+pescado congelado	con	0	set b
+camarón congelado	con	0	set b
+fresas congeladas	con	0	set b
+pizza congelada	con	0	set b
+hamburguesas congeladas	con	0	set b
+papas fritas	bot	1	set b
+galletas emperador	aba	0	set b
+pan bimbo	pan	0	set b
+gansitos	pan	1	set b
+donas	pan	0	set b
+cuernitos	pan	0	set b
+tortillinas	tor	0	set b
+masa para tamales	tor	0	set b
+hojas para tamal	aba	1	set b
+chiles secos	aba	0	set b
+chile guajillo	aba	0	set b
+chiles jalapeños en lata	aba	0	set b
+rajas en escabeche	aba	0	set b
+aceitunas	aba	0	set b
+vinagre de manzana	aba	0	set b
+salsa de soya	aba	0	set b
+salsa inglesa	aba	0	set b
+sal de grano	aba	0	set b
+pimienta negra	aba	0	set b
+canela en raja	aba	0	set b
+té de manzanilla	aba	0	set b
+nescafé	aba	0	set b
+chocolate abuelita	aba	1	set b
+cerveza indio	beb	0	set b
+vino tinto	beb	0	set b
+tecate light	beb	0	set b
+agua ciel	beb	0	set b
+jugo de manzana	beb	0	set b
+electrolit	far	1	set b
+suero oral	far	0	set b
+pañales para adulto	hig	0	set b
+toallas húmedas	bbe	1	set b
+jabón zote	lim	0	set b
+escoba	lim	0	set b
+trapeador	lim	0	set b
+cubeta	lim	0	set b
+insecticida raid	lim	0	set b
+veladora	lim	0	set b
+vasos desechables	lim	0	set b
+platos de unicel	lim	0	set b
+bolsas ziploc	lim	0	set b
+desodorante rexona	hig	0	set b
+crema nivea	hig	0	set b
+gel para el cabello	hig	0	set b
+tinte para cabello	hig	0	set b
+cepillo de dientes	hig	0	set b
+enjuague bucal	hig	0	set b
+talco	hig	0	set b
+condones	far	0	set b
+aspirinas	far	0	set b
+vitamina c	far	0	set b
+comida para gato	mas	0	set b
+premios para perro	mas	0	set b
+leche para bebé	bbe	0	set b
+papilla gerber	bbe	0	set b
+mamila	bbe	0	set b
+servitoallas	lim	0	set b

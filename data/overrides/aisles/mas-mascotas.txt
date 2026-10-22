@@ -1,0 +1,23 @@
+# Mascotas (mas): pet words. PROFECO QQP surveys no pet products and INEGI ENIGH 2024 has three generic rows
+# (0932: animals, food, accessories), so this aisle is almost all overrides (data/cache/understand/vocab.md §11.4).
+# Drafted by Claude (AI) on 2026-10-22 from the sources' gaps; awaiting owner review.
+# Lines: "+ término [= emoji]  # why" adds a term here (an emoji is a human choice; "= -" means no emoji);
+# "- término  # why" drops a source term from this aisle; "término > aba  # why" moves a source term elsewhere.
+# Every line needs a "# why": what it is and, where one exists, the source term it is the everyday name for.
+
++ croquetas  # dry pet food, the everyday word; ENIGH 093221 "Alimento para animales domésticos y mascotas" ("croquetas de pollo" are frozen: con.txt)
++ alimento para perro  # dog food; ENIGH 093221 "Alimento para animales domésticos y mascotas"
++ alimento para gato  # cat food; ENIGH 093221
++ comida para perro  # dog food, as people say it; ENIGH 093221
++ comida para gato  # cat food, as people say it; ENIGH 093221
++ perro  # marks pet goods in any item ("premios para el perro", "collar de perro"); ENIGH 0932 "Mascotas"
++ gato  # marks pet goods in any item ("juguete para el gato"); ENIGH 0932 "Mascotas"
++ arena para gato  # cat litter; ENIGH 093222 "Productos y accesorios para animales domésticos y mascotas"
++ arenero  # litter tray; ENIGH 093222
++ antipulgas  # flea treatment for pets; ENIGH 093222
++ shampoo para perro  # dog shampoo; ENIGH 093222; without it it goes to personal care through "shampoo"
++ alpiste  # birdseed; ENIGH 093221 "Alimento para animales domésticos y mascotas"
++ dog chow  # Purina dog food, written by brand; ENIGH 093221 (no source lists pet brands)
++ cat chow  # Purina cat food, written by brand; ENIGH 093221
++ pedigree  # dog food, written by brand; ENIGH 093221
++ whiskas  # cat food, written by brand; ENIGH 093221

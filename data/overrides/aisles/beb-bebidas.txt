@@ -1,0 +1,25 @@
+# Bebidas (beb): drink words that PROFECO QQP and INEGI ENIGH 2024 miss or spell differently.
+# Drafted by Claude (AI) on 2026-10-22 from the sources' gaps; awaiting owner review.
+# Lines: "+ término [= emoji]  # why" adds a term here (an emoji is a human choice; "= -" means no emoji);
+# "- término  # why" drops a source term from this aisle; "término > aba  # why" moves a source term elsewhere.
+# Every line needs a "# why": what it is and, where one exists, the source term it is the everyday name for.
+
+# emoji choices for source terms
++ refresco = 🥤  # human choice: 🥤 (CLDR "vaso con pajita"); QQP "Refresco"
++ cerveza = 🍺  # human choice: 🍺 (CLDR es-419 "tarro de cerveza"); QQP "Cerveza", ENIGH 021301
++ vino = 🍷  # human choice: 🍷 (CLDR "copa de vino"); QQP "Vino de Mesa", ENIGH 021211 "Vino de uva"
+
+# everyday names
++ coca  # short for Coca-Cola, the usual way to write it; QQP brand "Coca Cola" (Refresco)
++ chelas  # slang for beer; QQP "Cerveza", ENIGH 021301 "Cerveza"
++ caguama  # the large returnable beer bottle; QQP "Cerveza" (PRESENTACIÓN "Botella 940 Ml. Retornable. Familiar")
++ clamato  # tomato-clam juice for micheladas, written by brand; ENIGH 012100 "Jugos de frutas o verduras envasados"
+
+# spirits ENIGH groups under "Otras bebidas destiladas"
++ ginebra  # gin; ENIGH 021105 "Otras bebidas destiladas"
++ licor  # liqueur; ENIGH 021105 "Otras bebidas destiladas", 181147 "Licor o cremas de frutas"
+
+# Added by the auditor (Claude, AI) on 2026-10-22 after running 160 shopping-list lines through the app's matcher.
++ corona  # the beer, as people write it ("6 coronas"); QQP's bare brand "Corona" is 77 % beer rows (the rest cold cuts and soap), so the build holds it back; QQP "Cerveza"
++ coronita  # the small Corona bottle, as people write it; QQP brands "Corona" and "Coronita Cero" (Cerveza)
++ dos equis  # the beer, as people write it; QQP brand "Dos Equis Lager" (Cerveza)

@@ -1,0 +1,35 @@
+# Frutas y verduras (fru): words for produce that PROFECO QQP and INEGI ENIGH 2024 miss or spell differently.
+# Drafted by Claude (AI) on 2026-10-22 from the sources' gaps; awaiting owner review.
+# Lines: "+ término [= emoji]  # why" adds a term here (an emoji is a human choice; "= -" means no emoji);
+# "- término  # why" drops a source term from this aisle; "término > aba  # why" moves a source term elsewhere.
+# Every line needs a "# why": what it is and, where one exists, the source term it is the everyday name for.
+
+# emoji choices for source terms (CLDR names the drawing differently, or names it wrongly for Mexico)
++ jitomate = 🍅  # human choice: 🍅 is the red tomato, which is what jitomate means (QQP "Jitomate", ENIGH 011727); CLDR names it "tomate"
++ tomate = -  # no emoji: CLDR names 🍅 "tomate", but QQP's "Tomate" is the green tomatillo (PRESENTACIÓN "verde sin cáscara")
++ manzana = 🍎  # human choice: 🍎 (CLDR "manzana roja") for apples (QQP "Manzana", ENIGH 011633)
++ elote = 🌽  # fresh elotes are produce (ENIGH 011745 "Elote"); QQP's "Elote" is mostly canned kernels and is mapped to abarrotes for its brands (map-qqp-products.tsv), so this line keeps the word here; "elote en lata" still goes to abarrotes through forms.tsv; human choice: 🌽 (CLDR es-419 "mazorca de maíz")
++ chile = 🌶️  # "chile"/"chiles" alone are fresh chiles; QQP's product "Chiles" is canned (La Costeña) and would send them to abarrotes, where "chiles en lata" still goes through forms.tsv; emoji 🌶️ (CLDR es-MX "chile picante")
+
+# everyday names the sources spell another way
++ calabacita  # the everyday name for zucchini; QQP "Calabaza" (PRESENTACIÓN "Italiana", "Japonesa"), ENIGH 011721 "Calabaza"
++ chile morrón  # bell pepper; QQP "Pimiento" (PRESENTACIÓN "Morrón Verde")
++ verduras  # vegetables in general; the sources only name kinds, and ENIGH's "verduras" (012901) is a juice flavour (drop.txt)
++ fruta  # fruit in general; the sources only name kinds of fruit (ENIGH 011654 "Otras frutas frescas")
+
+# produce the sources group under "otras" without naming it
++ yuca  # cassava; ENIGH 011755 "Otros tubérculos"
++ jengibre  # fresh ginger root; ENIGH 011749 "Otras hortalizas de raíz"
++ berenjena  # aubergine; ENIGH 01172A "Otras hortalizas frutales"
++ espárragos  # asparagus; ENIGH 011713 "Otras hortalizas de hoja o tallo"
++ quelites  # wild greens; ENIGH 011713 "Otras hortalizas de hoja o tallo" (it lists quintoniles, a quelite)
++ huitlacoche  # corn smut, sold fresh; ENIGH 011744 "Champiñones, hongos y setas"
++ coco  # coconut; ENIGH 011617 "Otras frutas tropicales"
++ zarzamoras  # blackberries; ENIGH 011642 "Otras bayas"
++ frambuesas  # raspberries; ENIGH 011642 "Otras bayas"
++ arándanos  # blueberries; ENIGH 011642 "Otras bayas" (QQP has them only as a flavour)
++ cerezas  # cherries; ENIGH 011635 "Otras frutas de hueso o pepita"
++ higos  # figs; ENIGH 011654 "Otras frutas frescas"
++ albahaca  # fresh basil; ENIGH 011945 "Otras hierbas culinarias (hierbas de olor)"
++ romero  # fresh rosemary; ENIGH 011945 "hierbas de olor"
++ menta  # fresh mint; ENIGH 011943 "Perejil y hierbabuena"

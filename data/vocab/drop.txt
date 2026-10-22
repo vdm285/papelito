@@ -1,0 +1,118 @@
+# Source phrases that are never shipped: junk left by splitting a label at commas, "y" and "o", or labels that are not
+# something a person writes on a list. One phrase per line, "# why" required. It removes the phrase from every source
+# (QQP, ENIGH, varieties, derived head nouns, brands); an override line can still add it back on purpose.
+# Human file, drafted by Claude (AI) on 2026-10-22 from the first build's review; awaiting owner review.
+refrigerado  # adjective left by splitting ENIGH 011310 "Pescado fresco, refrigerado o congelado" and 011726 "...frescos o refrigerados"
+refrigerada  # adjective left by splitting ENIGH 01122D "...fresca, refrigerada o congelada"
+congelado  # adjective left by splitting ENIGH 011310; freezing is handled by the form word (forms.tsv)
+congelada  # adjective left by splitting ENIGH 01122D; see forms.tsv
+cabra fresca  # half of ENIGH 01122D "Carne de cordero y cabra fresca, refrigerada o congelada"; not a list item
+seco  # adjective left by splitting ENIGH 011321 "Pescado ahumado, seco o salado" and 011351 "Mariscos ahumados, secos o salados"; see forms.tsv
+salado  # adjective left by splitting ENIGH 011321 and 011351 (as above)
+enchilada  # adjective left by splitting ENIGH 011254 "Carne adobada o enchilada" (alone it is the dish)
+empanizados  # adjective left by splitting ENIGH 011331 "Filetes de pescado rebozados o empanizados"
+deshidratados  # adjective left by splitting ENIGH 011670 "Frutos secos o deshidratados"
+confitadas  # adjective left by splitting ENIGH 011692 "Frutas secas, confitadas o cristalizadas"
+cristalizadas  # adjective left by splitting ENIGH 011692
+envasados  # adjective left by splitting ENIGH 011794 "Chiles enlatados, envasados o encurtidos"
+encurtidos  # adjective left by splitting ENIGH 011794; pickling is a form word (forms.tsv)
+tubérculos secos  # piece of ENIGH 011770; not a list item
+hortalizas  # piece of ENIGH 011770 "Hortalizas, papas y tubérculos secos y deshidratados": alone it would send vegetables to abarrotes
+tableta  # piece of ENIGH 011851 "Chocolate en barra o tableta"; alone it is a pill or a tablet
+molido  # piece of ENIGH 012202 "Café en grano o molido"; grinding is a form word (forms.tsv)
+añejo  # ENIGH 021102 "Ron: añejo, blanco, con limón" lists kinds of rum; alone it is an adjective (queso añejo is lácteos)
+blanco  # ENIGH 021102 rum kind; alone it is a colour
+light  # ENIGH 012603 "Refrescos de dieta (light)": alone it is an adjective (leche light, cerveza light)
+bolsas  # piece of ENIGH 05611E and 05619B ("bolsas y filtros..."): "bolsa" is a unit on a list ("bolsa de hielo")
+guantes  # piece of ENIGH 061223 (medical); household rubber gloves are "guantes de hule" (ENIGH 05619B)
+spray  # piece of ENIGH 13120G "Gel, spray, crema para el cabello": alone it could be anything in a can
+polvo  # piece of ENIGH 13120C "Cosméticos, polvo y maquillaje": alone it is the powder form (forms.tsv)
+flor  # piece of ENIGH 012302 "Flor y hojas para infusiones": alone it is a flower
+concentrados  # piece of ENIGH 012905 "Concentrados y polvos para preparar bebidas"; too vague alone
+purés  # piece of ENIGH 011843 "Purés o pastas de frutos secos"; too vague alone
+aislantes  # piece of ENIGH 056194 "Cintas adhesivas y aislantes"; not a list item alone
+circulación  # piece of ENIGH 061223 "calcetines para diabéticos y circulación"
+metal para ropa  # piece of ENIGH 056192 "pinzas de madera o metal para ropa"
+verduras  # piece of ENIGH 012901 "Aguas frescas naturales de frutas o verduras" (bebidas); "verduras" is added to fru by an override
+chiapas  # ENIGH 011616 banana variety; alone it is a state
+dorado  # ENIGH 011616 banana variety; alone it is a fish or a colour
+dominico  # ENIGH 011616 banana variety; not written alone
+guineo  # ENIGH 011616 banana variety; not written alone in central Mexico
+manzano  # ENIGH 011616 banana variety (plátano manzano); alone it is an apple tree
+portalimón  # ENIGH 011616 banana variety; not written alone
+roatán  # ENIGH 011616 banana variety; not written alone
+trastes  # piece of QQP "Detergente P/ropa y Trastes" and ENIGH 056116: alone it means dishes, not a product
+bebida varias  # QQP label (coconut water): not what people write
+barrita de surimi cangre  # QQP label cut short ("Cangre..."); "barrita de surimi" ships
+bolsa reutilizable caliente  # QQP "Bolsa Reutilizable Caliente/frío" (a hot/cold pack): the halves read wrong
+bolsa reutilizable frío  # as above
+recipientes de lámina  # ENIGH 056114 heading; its examples (cubetas, tinas, palanganas) ship
+pastelillos en piezas  # piece of ENIGH 011139 "Pasteles y pastelillos en piezas o a granel"; "pastelillos" ships
+pastas de frutos secos  # piece of ENIGH 011843; not a list item
+callo  # head noun derived from "callo de hacha" and "callo de almeja": alone it means a callus
+hojas  # head noun derived from "hojas de laurel" and "hojas para infusiones": alone it could be paper or corn husks
+mezcla  # head noun derived from QQP's frozen "Mezcla California" and "Mezcla Campesina": alone it could be any mix
+preparaciones  # head noun derived from ENIGH labels ("preparaciones para postres"); not a list item
+barras  # head noun derived from "barras de avena" and "barras de cereal": "barra" is a unit on a list ("barra de jabón")
+acido  # head noun derived from medicine names ("ácido fólico"); not a list item alone
+cardiovasculares  # piece of ENIGH 06111I "Medicamentos para la presión arterial y cardiovasculares"; an adjective alone
+urológicos  # piece of ENIGH 06111C "Medicamentos nefrológicos y urológicos"; an adjective alone
+minerales  # piece of ENIGH 06111L "Vitaminas y minerales"; alone it is vague ("agua mineral" is a drink)
+medidor  # head noun derived from ENIGH 061212 diagnostic devices; alone it could be any meter
+verduras envasados  # piece of ENIGH 012100 "Jugos de frutas o verduras envasados"; not a list item
+tubérculos  # piece of ENIGH 011770; not a list item alone
+legumbres  # piece of ENIGH labels; too vague alone (beans are "frijol", peas "chícharo")
+inhala care o home care  # a QQP brand field that lists two brands; not a name anyone writes
+l'oréeal paris  # misspelt duplicate of the QQP brand "L'oréal Paris", which ships
+french s classic yellow  # a QQP brand field with a broken apostrophe (French's mustard); not written this way
+i cant believe its not butter!  # a QQP margarine brand field; not written on a list
+worcestershire crosse & blackwell  # a QQP brand field that is the sauce's name plus the maker; "salsa inglesa" ships
+tuba  # piece of ENIGH 181148 "Aguamiel, pulque, tlachique, tepache, tuba..." (a palm drink from Colima); alone it is the instrument
+angulas  # piece of ENIGH 181128 (baby eels): a Spanish delicacy, not a Mexican shopping-list word
+# Survey labels nobody writes on a list. Each one is still matched through a shorter term in the same aisle (the
+# auditor checked that every one of these lines gives the same aisle before and after the drop), so dropping them only
+# makes the dictionary smaller and easier to read. Added by the auditor (Claude, AI) on 2026-10-22.
+pan dulce a granel  # ENIGH 011137 survey label; "pan dulce" ships
+pastelillos y pan dulce empaquetado  # QQP product label; "pastelillos" and "pan dulce" ship
+pastelillos empaquetados  # ENIGH 01113A survey label; "pastelillos" ships
+pan blanco bolillo  # QQP product label; "bolillo" ships
+cortes especiales de res  # ENIGH 011223 survey label; "res" ships
+pescado seco salado  # QQP product label (Christmas salt fish); "pescado" and "bacalao" ship
+mariscos ahumados  # ENIGH 011351 survey label; "mariscos" ships
+pechuga de pollo con hueso  # piece of ENIGH 181124; "pechuga" ships
+pechuga de pollo sin hueso  # piece of ENIGH 181125; "pechuga" ships
+leche entera fresca  # ENIGH 011411 survey label; "leche" ships
+leche no pasteurizada  # piece of ENIGH 011412; "leche bronca" and "leche" ship
+huevo de gallina  # ENIGH 011481 survey label; "huevo" ships
+polvo para preparar bebidas  # QQP product label (Tang, Zuko); the brands ship
+concentrados para caldo  # ENIGH 011993 survey label; "consomé", "caldo de pollo" and "cubitos" ship
+pastas italianas  # piece of ENIGH 011150; "pasta" and "spaghetti" ship
+frijol procesado  # ENIGH 011797 survey label; "frijol" ships
+café tostado y molido  # QQP product label; "café tostado" and "café" ship
+sal molida de mesa  # QQP product label; "sal" ships
+galletas populares  # QQP product label; "galletas marías" and "galletas" ship
+mariscos en conserva  # piece of ENIGH 011352; "mariscos en lata" goes to abarrotes through forms.tsv
+frutas en conserva  # piece of ENIGH 011691; "fruta en conserva" goes to abarrotes through forms.tsv
+botanas elaboradas con cereales  # ENIGH 011191 survey label; "botanas" ships
+chocolate en polvo para todos los usos  # piece of ENIGH 011852; "chocolate" and "cacao" ship
+agua mineral sin sabor  # piece of ENIGH 012502; "agua" ships
+agua natural embotellada con sabor  # ENIGH 012902 survey label; "agua" ships
+aguas frescas naturales de frutas  # piece of ENIGH 012901; "agua" ships
+refrescos sabor cola  # ENIGH 012601 survey label; "refresco" ships
+detergente para ropa y trastes  # QQP product label; "detergente para ropa" and "detergente para trastes" ship
+acondicionador y enjuague  # QQP product label; "acondicionador" and "enjuague" ship
+medicamentos para enfermedades inmunoalérgicas  # ENIGH 06111G survey label; "medicamentos" ships
+medicamentos para enfermedades psiquiátricas  # ENIGH 06111H survey label; "medicamentos" ships
+medicamentos para el control de la diabetes  # piece of ENIGH 061117; "insulina" and "medicamentos" ship
+medicamentos para el control de peso  # ENIGH 06111F survey label; "medicamentos" ships
+medicamentos para la presión arterial  # piece of ENIGH 06111I; "medicamentos" ships
+medicamentos gineco-obstétricos  # ENIGH 06111B survey label; "medicamentos" ships
+medicamentos nefrológicos  # piece of ENIGH 06111C; "medicamentos" ships
+medicamentos neurológicos  # ENIGH 06111D survey label; "medicamentos" ships
+# Pieces of survey labels that are not shopping-list items at all (vacuum-cleaner filters, scales, salon products):
+# they now go to Otros. Added by the auditor (Claude, AI) on 2026-10-22.
+filtros desechables para aspiradoras  # piece of ENIGH 05619B; not a list item
+filtros para aspiradoras reutilizables  # piece of ENIGH 05611E; not a list item
+báscula personal analógica  # piece of ENIGH 131204: a bathroom scale, a durable good, not a list item
+líquidos para permanente  # piece of ENIGH 13120I: a salon product, not a list item
+báscula para bebé  # piece of ENIGH 061212: a durable good, not a list item

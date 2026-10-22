@@ -1,0 +1,823 @@
+# qqp-productos.tsv: one row per generic product (PRODUCTO, accent variants merged), 815 rows
+# source: PROFECO (Procuraduría Federal del Consumidor), «Quién es Quién en los Precios» (QQP), open data of the Government of Mexico
+# url: https://datos.profeco.gob.mx/datos_abiertos/qqp.php (dataset record: https://www.datos.gob.mx/dataset/programa_quien_es_quien_precios_2026)
+# licence: Creative Commons Attribution 4.0 (CC BY 4.0), https://creativecommons.org/licenses/by/4.0/ (datos.gob.mx record, checked 2026-10-21); changes: aggregated and reshaped by Papelito
+# retrieved: archives downloaded by CompaPrecio; QQP_2026.rar 59971365 bytes sha256 903f67db03c0339a12b2f1aba66ec5ecc60ad74997ef6eed38f01de9172a5ffa retrieved 2026-10-21; QQP_2025.rar 85141166 bytes sha256 41ca4cd962e696f9f19cca598566d11ce60b200e37b5a5ef46c3b6a1ae58dc59 retrieved 2026-10-21
+# inputs: 40 CSV files, 22658981 rows covering 2025-01-02 to 2026-08-31; streamed read-only by tools/vocab/fetch-sources.mjs on 2026-10-21
+# columns: producto (best spelling), categoria (main), catalogo (all, by rows), rows, first, last (dates seen), marcas (top 6 base brands, text before ". "; no "S/M"), otras_categorias (category:rows)
+producto	categoria	catalogo	rows	first	last	marcas	otras_categorias
+A.s.cor	Medicamentos	Medicamentos	13955	2025-01-02	2026-08-28		
+Acarbosa	Medicamentos	Medicamentos	9073	2025-01-02	2026-08-28		
+Aceite	Aceites y Grasas Veg. Comestibles	Básicos|Pacic|Mercados	208356	2025-01-02	2026-08-31	1_2_3|Gran Tradición|Canoil|Nutrioli|Sabrosano|Great Value	
+Aceite de Oliva	Productos de Temporada (navideños)	Básicos|Navideños	36773	2025-01-02	2026-08-31	Carbonell|Borges|Filippo Berio|Ybarra|Oli|Carapelli	
+Aceituna	Productos de Temporada (navideños)	Básicos|Navideños|Mercados	14107	2025-01-02	2026-08-31	Búfalo|Serpis|Jolca|Carbonell	
+Acelga	Hortalizas Frescas	Frutas y Legumbres	17312	2025-01-02	2026-08-31		
+Aciclovir	Medicamentos	Medicamentos	18729	2025-01-02	2026-08-28		
+Acido Fólico	Medicamentos	Medicamentos	8915	2025-01-02	2026-08-28		
+Aclimafel	Medicamentos	Medicamentos	3644	2025-01-02	2026-08-28		
+Acondicionador y Enjuague	Arts. para el Cuidado Personal	Básicos	71161	2025-01-02	2026-08-31	Pantene|Sedal|Herbal Essences|Caprice|Pert|Head & Shoulders	
+Adalat Oros	Medicamentos	Medicamentos	4222	2025-01-02	2026-08-28		
+Aderogyl 15	Medicamentos	Medicamentos	14741	2025-01-02	2026-08-28		
+Adimod	Medicamentos	Medicamentos	13974	2025-01-02	2026-08-28		
+Afumix	Medicamentos	Medicamentos	14352	2025-01-02	2026-08-28		
+Afungil	Medicamentos	Medicamentos	14417	2025-01-02	2026-08-28		
+Agrifen	Medicamentos	Medicamentos	28981	2025-01-02	2026-08-31		
+Agua con Gas	Refrescos Envasados	Básicos|Especial	77019	2025-01-02	2026-08-31	Peñafiel|Del Valle|Ciel|Canada Dry|Topo Chico	Botanas y Bebidas:2718
+Agua Oxigenada	Medicamentos	Medicamentos	39251	2025-01-02	2026-08-31	Zuum|Medimart|Jaloma|Vitascom|Protect	
+Agua Sin Gas	Refrescos Envasados	Básicos|Mercados	188962	2025-01-02	2026-08-31	Ciel|Epura|Bonafont|Be-light|Santa Maria|Evian	
+Aguacate	Frutas Frescas	Frutas y Legumbres	23689	2025-01-02	2026-08-31		
+Aires Acondicionados	Aparatos Eléctricos	Electrodomésticos	1418	2025-01-02	2026-08-31	Lg|Hisense|Whirlpool	
+Ajo	Condimentos	Básicos|Frutas y Legumbres	20994	2025-01-02	2026-08-31	Mc Cormick	Hortalizas Frescas:10196
+Ajonjolí	Condimentos	Básicos|Mercados	10448	2025-01-02	2026-08-31	Verde Valle|Catarino´s|El Cuernito	
+Alcachofa	Hortalizas Frescas	Frutas y Legumbres	1947	2025-01-02	2026-08-31		
+Alcaparra	Productos de Temporada (navideños)	Básicos|Navideños	8707	2025-01-02	2026-08-31	El Serpis|La Pasiega|Carbonell|Campoamor	
+Alcohol	Medicamentos	Medicamentos	75690	2025-01-02	2026-08-31	Zuum|Protec|Dalux|Medimart|Supra Med|Nodrim	
+Alevian Duo	Medicamentos	Medicamentos	35466	2025-01-02	2026-08-28		
+Algodón	Medicamentos	Medicamentos	48974	2025-01-02	2026-08-31	Protec|Zuum	
+Alimento Preparado para Niños	Frutas y Legumbres Procesadas	Básicos|Mercados	34551	2025-01-02	2026-08-31	Gerber	
+Alimentos Preparados	Galletas Pastas y Harinas de Trigo	Básicos	51775	2025-01-02	2026-08-31	Maruchan|Nissin	
+Alka-seltzer	Medicamentos	Medicamentos	13077	2025-01-02	2026-08-28		
+Almeja	Pescados y Mariscos	Pescados y Mariscos	3968	2025-01-02	2026-08-28		
+Almendras	Productos de Temporada (navideños)	Básicos|Mercados	13356	2025-01-02	2026-08-31	Verde Valle|Don Zabor|San Lázaro	
+Alopurinol	Medicamentos	Medicamentos	13150	2025-01-02	2026-08-28		
+Altruline	Medicamentos	Medicamentos	11707	2025-01-02	2026-08-28		
+Alubia	Legumbres Secas	Básicos	15211	2025-01-02	2026-08-31	La Merced|Verde Valle	
+Amantadina Clorfenamina Paracetamol	Medicamentos	Medicamentos	9347	2025-01-02	2026-08-28		
+Amaranto	Legumbres Secas	Básicos|Mercados	9254	2025-01-02	2026-08-31	Cereales Don Luis	
+Amaryl	Medicamentos	Medicamentos	9033	2025-03-24	2026-08-28		
+Amaryl M	Medicamentos	Medicamentos	8819	2025-01-02	2026-08-28		
+Ambroxol	Medicamentos	Medicamentos	8545	2025-01-02	2026-08-28		
+Ambroxol Dextrometorfano	Medicamentos	Medicamentos	18233	2025-01-02	2026-08-28		
+Ambroxol Salbutamol	Medicamentos	Medicamentos	4425	2025-01-02	2026-08-28		
+Amikacina	Medicamentos	Medicamentos	14924	2025-01-02	2026-08-28		
+Amlodipino	Medicamentos	Medicamentos	24045	2025-01-02	2026-08-28		
+Amoxicilina	Medicamentos	Medicamentos	17229	2025-01-02	2026-08-28		
+Amoxicilina, Acido Clavulanico	Medicamentos	Medicamentos	25246	2025-01-02	2026-08-28		
+Amoxiclav. Bid	Medicamentos	Medicamentos	11151	2025-01-02	2026-08-28		
+Ampicilina	Medicamentos	Medicamentos	10289	2025-01-02	2026-08-28		
+Ampliron Duo	Medicamentos	Medicamentos	13545	2025-01-02	2026-08-28		
+Angeliq a	Medicamentos	Medicamentos	13835	2025-01-02	2026-08-28		
+Antiflu-des	Medicamentos	Medicamentos	15431	2025-01-02	2026-08-28		
+Antiflu-des Jr.	Medicamentos	Medicamentos	15101	2025-01-02	2026-08-28		
+Apio	Hortalizas Frescas	Frutas y Legumbres	18769	2025-01-02	2026-08-31		
+Aprovel	Medicamentos	Medicamentos	10932	2025-01-02	2026-08-28		
+Arava	Medicamentos	Medicamentos	7883	2025-01-02	2026-08-28		
+Arcoxia	Medicamentos	Medicamentos	21678	2025-01-02	2026-08-28		
+Arroz	Arroz y Cereales Preparados	Básicos|Pacic|Mercados	142888	2025-01-02	2026-08-31	Schettino|La Merced|Verde Valle|Precíssimo|Sos|Great Value	
+Artridol	Medicamentos	Medicamentos	3569	2025-01-02	2026-08-28		
+Asenlix	Medicamentos	Medicamentos	8217	2025-01-02	2026-08-28		
+Asistentes de Voz	Aparatos Electrónicos	Electrodomésticos	20112	2025-01-02	2026-08-31	Alexa|Amazon + Alexa|Google	
+Aspiradoras	Aparatos Eléctricos	Electrodomésticos	13566	2025-01-02	2026-08-31	Koblenz	
+Aspirina	Medicamentos	Medicamentos	21406	2025-01-02	2026-08-28		
+Aspirina Protect	Medicamentos	Medicamentos	15235	2025-01-02	2026-08-28		
+Atacand	Medicamentos	Medicamentos	26442	2025-01-02	2026-08-28		
+Atacand Plus	Medicamentos	Medicamentos	13518	2025-01-02	2026-08-28		
+Ativan	Medicamentos	Medicamentos	2383	2025-01-02	2026-08-28		
+Atorvastatina	Medicamentos	Medicamentos	16810	2025-01-02	2026-08-28		
+Atún	Pescados y Mariscos en Conserva	Básicos|Pacic|Pescados y Mariscos|Mercados	258002	2025-01-02	2026-08-31	Dolores|Herdez|Tuny|Mazatún|Valley Foods|El Dorado	Pescados y Mariscos:13070
+Augmentin 12 H.	Medicamentos	Medicamentos	19668	2025-01-02	2026-08-28		
+Autopistas	Arts. de Esparcimiento (juguetes)	Juguetes	7880	2025-01-02	2026-01-02	Hot WheelS/Mattel|Hot Wheels/fisher-price|Mattel|Spin Master|Scalextric	
+Avamys 2a	Medicamentos	Medicamentos	13815	2025-01-02	2026-08-28		
+Avellana	Condimentos	Navideños	1	2025-12-10	2025-12-10		
+Avelox 7d	Medicamentos	Medicamentos	7107	2025-01-02	2026-08-28		
+Avena	Arroz y Cereales Preparados	Básicos	68361	2025-01-02	2026-08-31	Granvita 0%|Quaker Oats|3 Minutos|Granvita|Avena 1	
+Avodart	Medicamentos	Medicamentos	12011	2025-01-02	2026-08-28		
+Azitromicina	Medicamentos	Medicamentos	12078	2025-01-02	2026-08-28		
+Azúcar	Azúcar	Básicos|Pacic|Mercados	141154	2025-01-02	2026-08-31	Zulka|Aurrera|Precíssimo|Great Value|Chedraui|Domino	
+Bacalao	Productos de Temporada (navideños)	Navideños	774	2025-11-18	2025-12-24	Marketside|Valley Foods|City Fresh|Andreas|Fish & Fresh	
+Bactrim F	Medicamentos	Medicamentos	12023	2025-01-02	2026-08-28		
+Bagre	Pescados y Mariscos	Pescados y Mariscos	2601	2025-01-02	2026-08-31		
+Balón Oficial	Artículos Deportivos	Especial	65	2026-02-17	2026-07-23	Adidas	
+Bandera	Pescados y Mariscos	Pescados y Mariscos	1758	2025-01-02	2026-08-28		
+Barra de Sonido	Aparatos Electrónicos	Electrodomésticos	28587	2025-01-02	2026-08-31	Sony|Samsung|Lg|Hisense|Tcl	
+Barras de Avena	Arroz y Cereales Preparados	Básicos	4977	2025-01-02	2026-08-31	Quaker	
+Barras de Cereal	Arroz y Cereales Preparados	Básicos	7717	2025-01-02	2026-08-31	Bimbo	
+Barrita de Surimi o Barrita de Surimi Cangre	Pescados y Mariscos	Pescados y Mariscos	6633	2025-01-02	2026-08-31		
+Basa	Pescados y Mariscos	Pescados y Mariscos	25134	2025-01-02	2026-08-31		
+Bata Escuela Oficial	Material Escolar	Útiles Escolares	5960	2025-06-30	2026-08-28		
+Baterías de Cocina	Enseres Menores	Especial	37	2025-10-28	2025-11-27	Ekco|Vasconia	
+Batidoras	Aparatos Eléctricos	Electrodomésticos	38458	2025-01-02	2026-08-31	Oster|Hamilton Beach|Black+decker|T-fal|Sunbeam	
+Bebida Varias	Refrescos Envasados	Básicos	1345	2025-01-03	2026-08-31	Calahua|Nature´s Heart	
+Bebidas Hidratantes	Refrescos Envasados	Básicos	45926	2025-01-02	2026-08-31	Powerade|Gatorade|Jumex|Enerplex	
+Bedoyecta	Medicamentos	Medicamentos	14764	2025-01-02	2026-08-28		
+Bedoyecta-tri	Medicamentos	Medicamentos	15369	2025-01-02	2026-08-28		
+Bencilpenicilina Procainica	Medicamentos	Medicamentos	9712	2025-01-02	2026-08-28		
+Benzonatato	Medicamentos	Medicamentos	11941	2025-01-02	2026-08-28		
+Besugo	Pescados y Mariscos	Pescados y Mariscos	289	2025-01-27	2026-08-28		
+Betabel	Hortalizas Frescas	Frutas y Legumbres	19194	2025-01-02	2026-08-31		
+Betametasona	Medicamentos	Medicamentos	2431	2025-01-02	2026-08-28		
+Betametasona/ Clotrimazol/ Gentamicina	Medicamentos	Medicamentos	12485	2025-01-02	2026-08-28		
+Bexident Encias	Medicamentos	Medicamentos	7793	2025-01-02	2026-08-28		
+Bezafibrato	Medicamentos	Medicamentos	13593	2025-01-02	2026-08-28		
+Bicolor	Material Escolar	Útiles Escolares	10819	2025-01-20	2026-08-31	Paper Mate|Dixon|Norma	
+Biometrix	Medicamentos	Medicamentos	3826	2025-01-02	2026-08-28		
+Biomics	Medicamentos	Medicamentos	13632	2025-01-02	2026-08-28		
+Blanco del Nilo	Pescados y Mariscos	Pescados y Mariscos	6883	2025-01-02	2026-08-31		
+Blanqueador	Detergentes y Productos Similares	Básicos|Mercados	37176	2025-01-02	2026-08-31	Cloralex|Clorox|Golondrina|Clarasol	
+Block	Material Escolar	Útiles Escolares	2106	2025-01-20	2026-08-28	Scribe	
+Blopress Plus	Medicamentos	Medicamentos	11322	2025-01-02	2026-08-28		
+Blusa Escuela Oficial	Material Escolar	Útiles Escolares	1512	2025-06-30	2026-08-28		
+Bocinas Portátiles	Aparatos Electrónicos	Electrodomésticos	54987	2025-01-02	2026-08-31	Lg|Sony|Jbl|Samsung|Stf	
+Bolígrafo Colores Varios	Material Escolar	Útiles Escolares	24283	2025-01-13	2026-08-31	Bic|Paper Mate|Azor	
+Bolígrafo Tinta Negra	Material Escolar	Útiles Escolares	36855	2025-01-13	2026-08-31	Bic|Paper Mate|Azor|Papermate	
+Bolsa Reutilizable Caliente/frío	Medicamentos	Medicamentos	679	2025-01-02	2026-08-31	3m. Nexcare	
+Bonviva	Medicamentos	Medicamentos	11044	2025-01-02	2026-08-28		
+Brandy	Vinos y Licores	Básicos	29604	2025-01-02	2026-08-31	Torres 10|Azteca de Oro	
+Bredelin	Medicamentos	Medicamentos	13222	2025-01-02	2026-08-28		
+Brócoli	Hortalizas Frescas	Frutas y Legumbres	20295	2025-01-02	2026-08-31		
+Bromuro de Pinaverio	Medicamentos	Medicamentos	11681	2025-01-02	2026-08-28		
+Buscapina Compositum	Medicamentos	Medicamentos	23169	2025-01-02	2026-08-28		
+Butilhioscina	Medicamentos	Medicamentos	11833	2025-01-02	2026-08-28		
+Butilhioscina/ Metamizol Sodico	Medicamentos	Medicamentos	9067	2025-01-02	2026-08-28		
+Cacahuates	Chocolates y Golosinas	Básicos|Frutas y Legumbres|Especial	34628	2025-01-02	2026-08-31	Sabritas|Barcel|Karate	Productos de Temporada (navideños):2044|Botanas y Bebidas:944
+Café Soluble	Café	Básicos|Mercados	123060	2025-01-02	2026-08-31	Nescafé|Los Portales de Córdoba|Great Value|Precíssimo|Chedraui|Legal	
+Café Tostado y Molido	Café	Básicos|Mercados	50221	2025-01-02	2026-08-31	Legal|Internacional Americano|Los Portales|Internacional	
+Cafeteras	Aparatos Eléctricos	Electrodomésticos	58932	2025-01-02	2026-08-31	Oster|Black+decker|T-fal|Hamilton Beach|Daewoo	
+Cafiaspirina	Medicamentos	Medicamentos	71000	2025-01-02	2026-08-31		
+Cajeta	Chocolates y Golosinas	Básicos	35907	2025-01-02	2026-08-31	Coronado	
+Calabaza	Hortalizas Frescas	Frutas y Legumbres	22097	2025-01-02	2026-08-31		
+Calamar	Pescados y Mariscos	Pescados y Mariscos	7963	2025-01-02	2026-08-31		
+Calcitriol	Medicamentos	Medicamentos	7894	2025-01-02	2026-08-28		
+Calculadoras	Material Escolar	Útiles Escolares	14833	2025-01-20	2026-08-28	Casio|Celica|Barrilito|Royal|Mae	
+Callo de Almeja	Pescados y Mariscos	Pescados y Mariscos	110	2026-05-14	2026-08-28		
+Callo de Hacha	Pescados y Mariscos	Pescados y Mariscos	893	2025-01-02	2026-08-28		
+Cámaras Digitales	Aparatos Electrónicos	Electrodomésticos	9025	2025-01-02	2026-08-31	Fujifilm|Canon|Sony	
+Camarón	Pescados y Mariscos	Pescados y Mariscos|Básicos	38050	2025-01-02	2026-08-31	Barajas|La Sanitaria	Pescados y Mariscos en Conserva:8720
+Camisa Escuela Oficial	Material Escolar	Útiles Escolares	2108	2025-06-30	2026-08-28		
+Caña	Productos de Temporada (navideños)	Frutas y Legumbres	1509	2025-01-02	2026-08-05		
+Canela	Productos de Temporada (navideños)	Básicos|Mercados	26679	2025-01-02	2026-08-31	Mc Cormick|Verde Valle|Catarino´s|El Cuernito	
+Canesten V	Medicamentos	Medicamentos	15148	2025-01-02	2026-08-28		
+Captopril	Medicamentos	Medicamentos	12708	2025-01-02	2026-08-28		
+Carbamazepina	Medicamentos	Medicamentos	9499	2025-01-02	2026-08-28		
+Carne Cerdo	Carne y Vísceras de Cerdo	Básicos|Pacic|Mercados	238733	2025-01-02	2026-08-31	Bachoco|Alpino	Carnes Frías Secas y Embutidos:18791
+Carne Pavo	Carne de Ave	Básicos	3472	2025-01-02	2026-08-31		
+Carne Pollo	Carne de Ave	Básicos|Pacic|Mercados	175766	2025-01-02	2026-08-31	Bachoco|Pilgrim`s|Crío|Patsa|Nutrypollo|Hill Country Fare	
+Carne Res	Carne y Vísceras de Res	Básicos|Pacic|Mercados	252909	2025-01-02	2026-08-31	Sukarne|Heb|Heb Supreme	
+Carne Ternera	Carne y Vísceras de Res	Básicos	1424	2025-01-02	2026-08-31		
+Carpa	Pescados y Mariscos	Pescados y Mariscos	1053	2025-01-07	2026-08-28		
+Castañas	Productos de Temporada (navideños)	Frutas y Legumbres	119	2025-01-02	2026-02-26		
+Cazón	Pescados y Mariscos	Pescados y Mariscos	3128	2025-01-02	2026-08-31		
+Cebolla	Hortalizas Frescas	Frutas y Legumbres|Pacic	91361	2025-01-02	2026-08-31		
+Cefaclor	Medicamentos	Medicamentos	2755	2025-01-02	2026-08-28		
+Cefalexina	Medicamentos	Medicamentos	7999	2025-01-02	2026-08-28		
+Cefaxona I.m.	Medicamentos	Medicamentos	11659	2025-01-02	2026-08-28		
+Cefotaxima	Medicamentos	Medicamentos	7152	2025-01-02	2026-08-28		
+Ceftrex Im	Medicamentos	Medicamentos	11187	2025-01-02	2026-08-28		
+Ceftriaxona	Medicamentos	Medicamentos	11253	2025-01-02	2026-08-28		
+Cefuracet	Medicamentos	Medicamentos	11655	2025-01-02	2026-08-28		
+Cefuroxima	Medicamentos	Medicamentos	7324	2025-01-02	2026-08-28		
+Celebrex	Medicamentos	Medicamentos	33527	2025-01-02	2026-08-28		
+Celestamine-ns	Medicamentos	Medicamentos	39168	2025-01-02	2026-08-28		
+Celestone Soluspan	Medicamentos	Medicamentos	12493	2025-01-02	2026-08-28		
+Celulares	Aparatos Electrónicos	Electrodomésticos	62808	2025-01-02	2026-08-31	Motorola|Oppo|Samsung|Xiaomi|Zte|Honor	
+Centro de Lavado	Aparatos Eléctricos	Electrodomésticos	2671	2025-01-02	2026-08-31	Whirlpool|Mabe	
+Cepillo Dental	Arts. para el Cuidado Personal	Básicos	31349	2025-01-02	2026-08-31	Oral-b|Pro	
+Cereales	Arroz y Cereales Preparados	Básicos|Mercados	176905	2025-01-02	2026-08-31	Zucaritas|Corn Flakes|Choco Krispis|All-bran|Nesquik|Corn Pops	
+Cerillos	Cigarrillos	Básicos	24149	2025-01-02	2026-08-31	La Central|Flama	
+Cerveza	Cerveza	Básicos|Especial	192867	2025-01-02	2026-08-31	Indio|Dos Equis Lager|Victoria|Tecate|Barrilito|Heineken	Botanas y Bebidas:7549
+Cetirizina	Medicamentos	Medicamentos	10530	2025-01-02	2026-08-28		
+Chaleco	Material Escolar	Útiles Escolares	568	2025-07-01	2026-08-28		
+Champiñones	Hortalizas Frescas	Frutas y Legumbres	14187	2025-01-02	2026-08-31		
+Charal	Pescados y Mariscos en Conserva	Mercados|Pescados y Mariscos	1307	2025-01-02	2026-08-31		
+Chayote	Hortalizas Frescas	Frutas y Legumbres	21368	2025-01-02	2026-08-31		
+Chazarilla Escuela Oficial	Material Escolar	Útiles Escolares	1007	2025-07-01	2026-08-28		
+Chía	Legumbres Secas	Básicos|Mercados	18150	2025-01-02	2026-08-31	Verde Valle|Wand´s|Infusiónate|Okko	
+Chícharo	Legumbres Secas	Mercados|Básicos	1280	2025-01-02	2026-08-31		
+Chícharos	Hortalizas Frescas	Frutas y Legumbres	7284	2025-01-02	2026-08-31		
+Chícharos en Lata	Frutas y Legumbres Procesadas	Básicos|Mercados	33220	2025-01-02	2026-08-31	La Costeña|Herdez|Del Monte	
+Chile Fresco	Hortalizas Frescas	Frutas y Legumbres|Pacic	139188	2025-01-02	2026-08-31		
+Chile Seco	Legumbres Secas	Mercados|Básicos	26070	2025-01-02	2026-08-31	Verde Valle|San Lázaro	
+Chiles	Frutas y Legumbres Procesadas	Básicos|Mercados	193311	2025-01-02	2026-08-31	La Costeña|Clemente Jacques|San Marcos|La Morena	
+Chiles Largos en Escabeche	Productos de Temporada (navideños)	Navideños	428	2025-01-02	2026-01-05	La Costeña	
+Chiles Largos o Güeros Carricillos	Productos de Temporada (navideños)	Navideños	78	2025-11-19	2025-12-24		
+Chocolate	Chocolates y Golosinas	Básicos|Especial	17224	2025-01-02	2026-08-31	M&m´s|Ferrero Rocher|Turín|Hershey´s|Raffaello|Lindt	
+Chocolate en Tablillas	Chocolates y Golosinas	Básicos|Mercados	19968	2025-01-02	2026-08-31	Ibarra|Abuelita	
+Cholal Modificado	Medicamentos	Medicamentos	13112	2025-01-02	2026-08-28		
+Chorizo	Carnes Frías Secas y Embutidos	Básicos	30401	2025-01-02	2026-08-31	Zwan|Parma|San Rafael|Fud	
+Chucumite	Pescados y Mariscos	Pescados y Mariscos	320	2025-01-27	2026-08-28		
+Cialis	Medicamentos	Medicamentos	41667	2025-01-02	2026-08-28		
+Cilantro	Hortalizas Frescas	Frutas y Legumbres	21448	2025-01-02	2026-08-31		
+Cinarizina	Medicamentos	Medicamentos	11285	2025-01-02	2026-08-28		
+Cinta Adhesiva	Material Escolar	Útiles Escolares	15283	2025-01-20	2026-08-31	Scotch 3m|Scotch|Tuk|Janel|Navitek	
+Cintilla	Pescados y Mariscos	Pescados y Mariscos	61	2025-01-09	2026-07-30		
+Ciproflox	Medicamentos	Medicamentos	14071	2025-01-02	2026-08-28		
+Ciprofloxacino	Medicamentos	Medicamentos	16263	2025-01-02	2026-08-28		
+Ciruela	Frutas Frescas	Frutas y Legumbres	4406	2025-01-02	2026-08-31		
+Ciruela Pasa	Productos de Temporada (navideños)	Mercados|Básicos	4466	2025-01-02	2026-08-31		
+Claritromicina	Medicamentos	Medicamentos	8770	2025-01-02	2026-08-28		
+Clavo	Condimentos	Mercados	2993	2025-01-02	2026-08-31		
+Clendix	Medicamentos	Medicamentos	13329	2025-01-02	2026-08-28		
+Clexane	Medicamentos	Medicamentos	10011	2025-01-02	2026-08-28		
+Clindamicina	Medicamentos	Medicamentos	12220	2025-01-02	2026-08-28		
+Clopidogrel	Medicamentos	Medicamentos	14553	2025-01-02	2026-08-28		
+Cloramfeni Ofteno	Medicamentos	Medicamentos	11185	2025-01-02	2026-08-28		
+Clorfenamina Compuesta	Medicamentos	Medicamentos	6427	2025-01-02	2026-08-28		
+Co-diovan	Medicamentos	Medicamentos	18361	2025-01-02	2026-08-28		
+Coctel de Frutas en Almíbar	Frutas y Legumbres Procesadas	Básicos	22469	2025-01-02	2026-08-31	La Costeña|Clemente Jacques	
+Col	Hortalizas Frescas	Frutas y Legumbres	37939	2025-01-02	2026-08-31		
+Colación	Productos de Temporada (navideños)	Navideños	4	2025-11-26	2025-12-18		
+Coliflor	Hortalizas Frescas	Frutas y Legumbres	18344	2025-01-02	2026-08-31		
+Colores de Madera	Material Escolar	Útiles Escolares	85486	2025-01-13	2026-08-31	Crayola|Bic|Maped|Dixon|Norma|Prismacolor Junior	
+Combinado Primavera	Frutas y Legumbres Procesadas	Básicos	11683	2025-01-02	2026-08-31	La Huerta	
+Combivent	Medicamentos	Medicamentos	12565	2025-01-02	2026-08-28		
+Combivent. Respimat	Medicamentos	Medicamentos	13697	2025-01-02	2026-08-28		
+Comino	Condimentos	Básicos	452	2025-01-02	2026-08-28	Catarino´s	
+Compas	Material Escolar	Útiles Escolares	7857	2025-01-20	2026-08-31	Maped	
+Competact	Medicamentos	Medicamentos	5256	2025-01-02	2026-08-28		
+Componentes de Audio	Aparatos Electrónicos	Electrodomésticos	6456	2025-01-02	2026-08-31	Lg	
+Computadoras Portátiles	Aparatos Electrónicos	Electrodomésticos|Útiles Escolares	10767	2025-01-02	2026-08-31	Lenovo|Hp|Asus	
+Concentrado de Pollo	Condimentos	Básicos|Mercados	48883	2025-01-02	2026-08-31	Knorr|Riko Pollo	
+Conjunto de Pants Deportivo Escolar	Material Escolar	Útiles Escolares	775	2026-07-27	2026-08-28		
+Contac	Medicamentos	Medicamentos	27661	2025-01-02	2026-08-31		
+Controlip	Medicamentos	Medicamentos	12514	2025-01-02	2026-08-28		
+Copa Menstrual	Arts. para el Cuidado Personal	Básicos	6876	2025-01-02	2026-08-31	Saba V-cup|Kotex|Diva Cup 1|Diva Cup 2	
+Crayones	Material Escolar	Útiles Escolares	55004	2025-01-13	2026-08-31	Crayola|Vividel|Pelikan|Paper Mate|Pelikan Pelicrayones	
+Crema	Derivados de Leche	Básicos|Mercados	105852	2025-01-02	2026-08-31	Lala|Alpura|Sello Rojo|Norteñita	
+Crema Batida	Derivados de Leche	Básicos	14311	2025-01-02	2026-08-31	Chantilly	
+Crema de Avellanas con Cacao	Chocolates y Golosinas	Básicos	5964	2025-12-01	2026-08-31	Nutella	
+Crema de Cacahuate	Chocolates y Golosinas	Básicos	10299	2025-01-02	2026-08-31	Aladino	
+Crema Dental	Arts. para el Cuidado Personal	Básicos	58800	2025-01-02	2026-08-31	Colgate|Sensodyne|Crest	
+Crema Líquida	Arts. para el Cuidado Personal	Básicos	113612	2025-01-02	2026-08-31	Nivea|Lubriderm|Palmolive|Goicoechea|Vasenol|Johnson´s Baby	
+Crema para Rozaduras	Arts. para el Cuidado Personal	Básicos	5801	2025-01-02	2026-08-31	Capent	
+Crema Sólida	Arts. para el Cuidado Personal	Básicos	76622	2025-01-02	2026-08-31	Pond´s|Nivea|Atrix	
+Crestor	Medicamentos	Medicamentos	24535	2025-01-02	2026-08-28		
+Cuaderno Forma College	Material Escolar	Útiles Escolares	5757	2025-01-20	2026-08-31	Norma|Scribe	
+Cuaderno Forma Francesa	Material Escolar	Útiles Escolares	18233	2025-01-20	2026-08-31	Scribe|Norma	
+Cuaderno Forma Italiana	Material Escolar	Útiles Escolares	11489	2025-01-13	2026-08-31	Norma|Scribe	
+Cuaderno Profesional	Material Escolar	Útiles Escolares	60297	2025-01-13	2026-08-31	Norma|Scribe|Upak	
+Cubrebocas	Arts. para el Cuidado Personal	Medicamentos	101974	2025-01-02	2026-08-31	Le Roy|Protect|Medimart|Vitascom|Quality Day|Soriana	
+Cuchara Sopera	Enseres Menores	Especial	170	2025-10-27	2025-11-27	Tramontina	
+Cuchillo	Enseres Menores	Especial	132	2025-10-27	2025-11-28	Tramontina|Gamma	
+Cúrcuma	Condimentos	Básicos	7941	2025-01-02	2026-08-31	Mc Cormick	
+Curvina	Pescados y Mariscos	Pescados y Mariscos	1363	2025-01-02	2026-08-28		
+Cymbalta	Medicamentos	Medicamentos	14950	2025-01-02	2026-08-28		
+Cytotec	Medicamentos	Medicamentos	8303	2025-01-02	2026-08-28		
+Daflon	Medicamentos	Medicamentos	18400	2025-01-02	2026-08-28		
+Dagla	Medicamentos	Medicamentos	13039	2025-01-02	2026-08-28		
+Dalacin C	Medicamentos	Medicamentos	13126	2025-01-02	2026-08-28		
+Dátil	Productos de Temporada (navideños)	Navideños	167	2025-11-19	2025-12-24	Dátiles del Desierto	
+Daxon	Medicamentos	Medicamentos	12764	2025-01-02	2026-08-28		
+Desenfriol-d	Medicamentos	Medicamentos	39820	2025-01-02	2026-08-31		
+Desenfriol-ito	Medicamentos	Medicamentos	27949	2025-01-02	2026-08-31		
+Desengrapadora	Material Escolar	Útiles Escolares	2206	2025-01-20	2026-08-28	Maped|Barrilito|Office Depot|Delta|Pegaso|Office Max	
+Desloratadina	Medicamentos	Medicamentos	8493	2025-01-02	2026-08-28		
+Desodorante	Arts. para el Cuidado Personal	Básicos	273707	2025-01-02	2026-08-31	Rexona|Nivea|Dove|Obao|Old Spice|Speed Stick	
+Detergente P/ropa	Detergentes y Productos Similares	Básicos|Mercados	189461	2025-01-02	2026-08-31	Ace|Foca|Ariel|Blanca Nieves|Vel Rosita|Viva	
+Detergente P/ropa y Trastes	Detergentes y Productos Similares	Básicos|Mercados	37620	2025-01-02	2026-08-31	Roma	
+Detergente P/trastes	Detergentes y Productos Similares	Básicos|Mercados	70456	2025-01-02	2026-08-31	Salvo|Axion|Eficaz	
+Dexabion	Medicamentos	Medicamentos	2278	2025-01-02	2026-08-28		
+Dexametasona	Medicamentos	Medicamentos	12158	2025-01-02	2026-08-28		
+Dexivant	Medicamentos	Medicamentos	13265	2025-01-02	2026-08-28		
+Dextrometorfano Guaifenesina	Medicamentos	Medicamentos	6367	2025-01-02	2026-08-28		
+Diabion	Medicamentos	Medicamentos	4254	2025-01-02	2026-08-28		
+Diane	Medicamentos	Medicamentos	11482	2025-01-02	2026-08-28		
+Diccionario	Material Escolar	Útiles Escolares	18158	2025-01-20	2026-08-31	Larousse	
+Diclofenaco	Medicamentos	Medicamentos	10711	2025-01-02	2026-08-28		
+Diclofenaco. Vitaminas B1, B6 y B12	Medicamentos	Medicamentos	12610	2025-01-02	2026-08-28		
+Diclofenaco. Vitaminas B1, B6 y B13	Medicamentos	Medicamentos	5546	2025-01-02	2026-08-28		
+Dicloxacilina	Medicamentos	Medicamentos	6462	2025-01-02	2026-08-28		
+Difenidol	Medicamentos	Medicamentos	9364	2025-01-02	2026-08-28		
+Dimegan-d	Medicamentos	Medicamentos	13375	2025-01-02	2026-08-28		
+Dimenhidrinato	Medicamentos	Medicamentos	4283	2025-01-02	2026-08-28		
+Dimoflax	Medicamentos	Medicamentos	13366	2025-01-02	2026-08-28		
+Diovan	Medicamentos	Medicamentos	12847	2025-01-02	2026-08-28		
+Dip	Botanas y Bebidas	Especial	7209	2026-02-19	2026-07-24	Tostitos	
+Diprospan	Medicamentos	Medicamentos	14371	2025-01-02	2026-08-28		
+Disco Compacto	Material Escolar	Útiles Escolares	2578	2025-01-20	2026-08-28	Verbatim (52x)|Verbatim 4.7 G.b|Verbatim (12x)	
+Dolac	Medicamentos	Medicamentos	11601	2025-01-02	2026-08-28		
+Dolo-neurobión	Medicamentos	Medicamentos	19474	2025-01-02	2026-08-28		
+Dolo-neurobión Forte	Medicamentos	Medicamentos	29706	2025-01-02	2026-08-28		
+Dolocartigen	Medicamentos	Medicamentos	22095	2025-01-02	2026-08-28		
+Dorixina Forte	Medicamentos	Medicamentos	12267	2025-01-02	2026-08-28		
+Dorixina Relax	Medicamentos	Medicamentos	14520	2025-01-02	2026-08-28		
+Durazno	Frutas Frescas	Frutas y Legumbres	7799	2025-01-02	2026-08-31		
+Duraznos en Almíbar	Frutas y Legumbres Procesadas	Básicos|Mercados	23685	2025-01-02	2026-08-31	La Costeña|Clemente Jacques	
+Efexor Xr	Medicamentos	Medicamentos	9886	2025-01-02	2026-08-28		
+Ejote	Hortalizas Frescas	Frutas y Legumbres	16999	2025-01-02	2026-08-31		
+Elatec	Medicamentos	Medicamentos	12220	2025-01-02	2026-08-28		
+Electrolitos Orales	Medicamentos	Medicamentos	5193	2025-01-02	2026-08-28		
+Electrónicos de Video	Arts. de Esparcimiento (juguetes)	Electrodomésticos|Juguetes	62632	2025-01-02	2026-08-31	Nintendo|Sony|Microsoft	
+Elequine	Medicamentos	Medicamentos	20741	2025-01-02	2026-08-28		
+Elote	Hortalizas Frescas	Básicos|Frutas y Legumbres|Mercados	126398	2025-01-02	2026-08-31	Herdez|Del Monte|La Costeña|Clemente Jacques	
+Empanizadores	Pan	Básicos	53050	2025-01-02	2026-08-31	Bimbo|Kellogg´s	
+Enaladil	Medicamentos	Medicamentos	8328	2025-01-02	2026-08-28		
+Enalapril	Medicamentos	Medicamentos	12647	2025-01-02	2026-08-28		
+Enterogermina	Medicamentos	Medicamentos	14282	2025-01-02	2026-08-28		
+Espaven	Medicamentos	Medicamentos	13861	2025-01-02	2026-08-28		
+Espinacas	Hortalizas Frescas	Frutas y Legumbres|Pacic	22075	2025-01-02	2026-08-31		
+Espironolactona	Medicamentos	Medicamentos	8398	2025-01-02	2026-08-28		
+Espuma de Afeitar	Arts. para el Cuidado Personal	Básicos	20114	2025-01-02	2026-08-31	Gillette|Nivea Men	
+Estufas	Aparatos Eléctricos	Electrodomésticos	123636	2025-01-02	2026-08-31	Mabe|Koblenz|Whirlpool|Acros|Samsung|Lg	
+Eutirox 100	Medicamentos	Medicamentos	14687	2025-01-02	2026-08-28		
+Evista	Medicamentos	Medicamentos	10585	2025-01-02	2026-08-28		
+Evra	Medicamentos	Medicamentos	14000	2025-01-02	2026-08-28		
+Exforge	Medicamentos	Medicamentos	13742	2025-01-02	2026-08-28		
+Exforge Hct	Medicamentos	Medicamentos	13919	2025-01-02	2026-08-28		
+Extractores de Jugos y Exprimidores	Aparatos Eléctricos	Electrodomésticos	55728	2025-01-02	2026-08-31	T-fal|Oster|Turmix|Black+decker|Hamilton Beach	
+Fabroven	Medicamentos	Medicamentos	13562	2025-01-02	2026-08-28		
+Falda Escuela Oficial	Material Escolar	Útiles Escolares	6298	2025-06-30	2026-08-28		
+Febrax	Medicamentos	Medicamentos	14470	2025-01-02	2026-08-28		
+Ferranina Fol	Medicamentos	Medicamentos	14050	2025-01-02	2026-08-28		
+Fibra para Cocina	Utensilios Domésticos	Básicos	13617	2025-01-02	2026-08-31	Scotch Brite	
+Figuritas de Mazapán	Productos de Temporada (navideños)	Navideños	72	2025-11-19	2025-12-23	El Almendro|Doña Jimena	
+Finasterida	Medicamentos	Medicamentos	7818	2025-01-02	2026-08-28		
+Flan	Chocolates y Golosinas	Básicos|Mercados	53491	2025-01-02	2026-08-31	Pronto|D´gari|Jell-o	
+Flanax	Medicamentos	Medicamentos	15038	2025-01-02	2026-08-28		
+Floretes de Brócoli	Frutas y Legumbres Procesadas	Básicos	10771	2025-01-02	2026-08-31	La Huerta	
+Fluconazol	Medicamentos	Medicamentos	9815	2025-01-02	2026-08-28		
+Fluoxetina	Medicamentos	Medicamentos	10632	2025-01-02	2026-08-28		
+Folders	Material Escolar	Útiles Escolares	11705	2025-01-20	2026-08-31		
+Fórmula Láctea	Leche Procesada	Básicos	25323	2025-01-02	2026-08-31	Nan 1|Nan 2	
+Fosamax Plus	Medicamentos	Medicamentos	16796	2025-01-02	2026-08-28		
+Fosfocil	Medicamentos	Medicamentos	25592	2025-01-02	2026-08-28		
+Freidoras de Aire	Aparatos Eléctricos	Electrodomésticos	15650	2025-01-02	2026-08-31	T-fal|Oster|Black+decker|Jadecook	
+Fresa	Frutas Frescas	Frutas y Legumbres	16669	2025-01-02	2026-08-31		
+Frijol	Legumbres Secas	Básicos|Pacic|Mercados	200851	2025-01-02	2026-08-31	Verde Valle|La Merced|Schettino|Precíssimo|Great Value|Aurrera	
+Frijoles	Frutas y Legumbres Procesadas	Básicos	66615	2025-01-02	2026-08-31	La Sierra|Isadora|La Costeña	
+Fruta Seca	Productos de Temporada (navideños)	Navideños	365	2025-11-19	2025-12-24	Saladino|Fun Fruit	
+Frutas Cubiertas	Productos de Temporada (navideños)	Navideños	30	2025-11-20	2025-12-23		
+Furosemida	Medicamentos	Medicamentos	12550	2025-01-02	2026-08-28		
+Gabapentina	Medicamentos	Medicamentos	18629	2025-01-06	2026-08-31		
+Galletas Dulces	Galletas Pastas y Harinas de Trigo	Básicos|Mercados	136393	2025-01-02	2026-08-31	Marinela|Nabisco|Gamesa|Cuétara	Galletas:8226
+Galletas Populares	Galletas Pastas y Harinas de Trigo	Básicos	42391	2025-01-02	2026-08-31	Gamesa|Cuétara	
+Galletas Saladas	Galletas Pastas y Harinas de Trigo	Básicos|Especial	67425	2025-01-02	2026-08-31	Gamesa|Nabisco	Botanas y Bebidas:7115
+Galvus Met	Medicamentos	Medicamentos	13153	2025-01-02	2026-08-28		
+Garbanzo	Legumbres Secas	Básicos|Mercados	17157	2025-01-02	2026-08-31	Verde Valle|Cazerola	
+Gasa	Medicamentos	Medicamentos	47391	2025-01-02	2026-08-31	Le Roy|Medimart|Zuum	
+Gavindo	Medicamentos	Medicamentos	444	2025-01-02	2025-02-28		
+Gavindo N	Medicamentos	Medicamentos	10640	2025-03-10	2026-08-28		
+Gel Antibacterial	Arts. para el Cuidado Personal	Medicamentos	97413	2025-01-02	2026-08-31	Zuum|Medimart|Escudo|Quality Day|Vitascom|Soriana	
+Gel Fijador	Arts. para el Cuidado Personal	Básicos	25474	2025-01-02	2026-08-31	Ego Black|Xtreme	
+Gelatina en Polvo	Chocolates y Golosinas	Básicos|Mercados	89290	2025-01-02	2026-08-31	D´gari|Pronto|Jell-o|Sayes	
+Genoprazol	Medicamentos	Medicamentos	16892	2025-01-02	2026-08-28		
+Gentamicina	Medicamentos	Medicamentos	6993	2025-01-06	2026-08-31		
+Glanique	Medicamentos	Medicamentos	3158	2025-01-02	2026-08-28		
+Glibenclamida	Medicamentos	Medicamentos	9482	2025-01-02	2026-08-31		
+Glimepirida	Medicamentos	Medicamentos	14305	2025-01-02	2026-08-31		
+Glucómetro	Arts. para el Cuidado Personal	Medicamentos	31473	2025-03-03	2026-08-31	Accu-chek|Abbott|Contour Plus|Onetouch	
+Glyvenol	Medicamentos	Medicamentos	3274	2025-01-02	2026-08-28		
+Goma	Material Escolar	Útiles Escolares	159	2025-07-22	2025-09-19	Maped|Factis	
+Goma Borrador	Material Escolar	Útiles Escolares	21923	2025-01-20	2026-08-31	Maped|Pelikan|Factis|Dixon|Staedtler|Office Depot	
+Gorra	Artículos Deportivos	Especial	75	2026-02-16	2026-07-23	Adidas	
+Granada	Frutas Frescas	Frutas y Legumbres	3339	2025-01-02	2026-08-31		
+Granola	Arroz y Cereales Preparados	Básicos	12777	2025-01-02	2026-08-31	Quaker|3 Minutos	
+Granos de Elote	Frutas y Legumbres Procesadas	Básicos	9246	2025-01-02	2026-08-31	La Huerta	
+Grapas	Material Escolar	Útiles Escolares	3032	2025-01-20	2026-08-31	Pilot|Fifa|Bostitch|Swingline|Mae|Piloto	
+Grasa Comestible	Aceites y Grasas Veg. Comestibles	Básicos|Mercados	17817	2025-01-02	2026-08-31	Inca|Lirio|Primor	
+Guanábana	Frutas Frescas	Frutas y Legumbres	1999	2025-01-02	2026-08-31		
+Guantes de Látex	Arts. para el Cuidado Personal	Medicamentos	61506	2025-01-02	2026-08-31	Dalux|Vitascom|Medimart	
+Guarnición de Verduras	Frutas y Legumbres Procesadas	Básicos	13032	2025-01-02	2026-08-31	La Huerta	
+Guayaba	Frutas Frescas	Frutas y Legumbres	15927	2025-01-02	2026-08-31		
+Gurrubata	Pescados y Mariscos	Pescados y Mariscos	137	2025-01-27	2026-08-24		
+Haba	Legumbres Secas	Básicos|Mercados	17329	2025-01-02	2026-08-31	Verde Valle|La Merced|San Lázaro|Cazerola	
+Halcion	Medicamentos	Medicamentos	8149	2025-01-02	2026-08-28		
+Harina de Arroz	Arroz y Cereales Preparados	Básicos|Mercados	20261	2025-01-02	2026-08-31	Tres Estrellas	
+Harina de Maíz	Tortillas y Derivados del Maíz	Básicos|Mercados	42895	2025-01-02	2026-08-31	Maseca|Maizena|Minsa|Alimentación para el Bienestar	
+Harina de Trigo	Galletas Pastas y Harinas de Trigo	Básicos|Mercados	71763	2025-01-02	2026-08-31	Selecta|San Antonio|San Blas|Tres Estrellas|Great Value|La Moderna	
+Harina Hot Cakes	Galletas Pastas y Harinas de Trigo	Básicos|Mercados	51914	2025-01-02	2026-08-31	Pronto|Tres Estrellas|Pearl Milling Company|Gamesa|Pronto Ligeros	
+Helado	Derivados de Leche	Básicos	15432	2025-01-02	2026-08-31	Holanda|Nestlé	
+Her-klin Nf. Shampoo	Medicamentos	Medicamentos	11894	2025-01-02	2026-08-28		
+Hidroxocobalamina Tiamina Piridoxina	Medicamentos	Medicamentos	3354	2025-01-06	2026-08-31		
+Histiacil Nf	Medicamentos	Medicamentos	14488	2025-01-02	2026-08-28		
+Hojas de Laurel	Condimentos	Básicos	4057	2025-03-18	2026-08-31	Mc Cormick	
+Hojas de Papel	Material Escolar	Útiles Escolares	7363	2025-01-20	2026-08-28	Scribe|Facia Bond	
+Horno de Microondas	Aparatos Eléctricos	Electrodomésticos	69816	2025-01-02	2026-08-31	Whirlpool|Lg. Smart Diagnosis|Lg. Smart Inverter|Panasonic|Mabe|Samsung	
+Horno Eléctrico	Aparatos Eléctricos	Electrodomésticos	28520	2025-01-02	2026-08-31	Hamilton Beach|Oster|Black+decker|T-fal	
+Huachinango	Pescados y Mariscos	Pescados y Mariscos	6170	2025-01-02	2026-08-31		
+Huevo	Huevo	Básicos|Pacic|Mercados	201478	2025-01-02	2026-08-31	Bachoco|San Juan|El Calvario|Aurrera|Precíssimo|Tehuacán	
+Humalog Mix 25	Medicamentos	Medicamentos	8633	2025-01-02	2026-08-28		
+Humulin N. Insulina Humana	Medicamentos	Medicamentos	6202	2025-01-02	2026-08-28		
+Humylub Ofteno	Medicamentos	Medicamentos	14026	2025-01-02	2026-08-28		
+Ibuprofeno	Medicamentos	Medicamentos	28383	2025-01-02	2026-08-31		
+Imodium	Medicamentos	Medicamentos	13114	2025-01-02	2026-08-28		
+Insecticida Aerosol	Detergentes y Productos Similares	Básicos|Mercados	122897	2025-01-02	2026-08-31	H-24|Baygon|Raid	
+Isodine Bucofaringeo	Medicamentos	Medicamentos	14019	2025-01-02	2026-08-28		
+Itraconazol	Medicamentos	Medicamentos	8136	2025-01-06	2026-08-31		
+Jabón de Pasta	Detergentes y Productos Similares	Básicos|Mercados	98209	2025-01-02	2026-08-31	Zote|Carisma|Roma|Tepeyac|Lirio|Precíssimo	
+Jabón de Tocador	Arts. para el Cuidado Personal	Básicos|Pacic|Mercados	156883	2025-01-02	2026-08-31	Palmolive|Dove|Zest|Escudo|Grisi|Heno de Pravia	
+Jabón de Tocador para Bebé	Arts. para el Cuidado Personal	Básicos	60827	2025-01-02	2026-08-31	Grisi|Johnson´s Baby|Baby Magic|Huggies|Baby Dove	
+Jaiba	Pescados y Mariscos	Pescados y Mariscos	3050	2025-01-03	2026-08-28		
+Jaibón	Pescados y Mariscos	Pescados y Mariscos	403	2025-01-15	2026-08-28		
+Jamaica	Productos de Temporada (navideños)	Frutas y Legumbres|Mercados	13989	2025-01-02	2026-08-31		
+Jamón	Carnes Frías Secas y Embutidos	Básicos|Mercados|Pacic	314647	2025-01-02	2026-08-31	Fud|San Rafael|Zwan|Kir|Capistrano|Parma	
+Janumet	Medicamentos	Medicamentos	23907	2025-01-02	2026-08-28		
+Januvia	Medicamentos	Medicamentos	12443	2025-01-02	2026-08-28		
+Jarabe P/preparar Bebidas	Chocolates y Golosinas	Básicos	16726	2025-01-02	2026-08-31	Deliciosa|Tucan|Princesa|El Yuka	
+Jerez	Productos de Temporada (navideños)	Navideños	71	2025-12-01	2025-12-24	Provincia de Cádiz	
+Jícama	Productos de Temporada (navideños)	Frutas y Legumbres	20826	2025-01-02	2026-08-31		
+Jitomate	Hortalizas Frescas	Frutas y Legumbres|Pacic	69529	2025-01-02	2026-08-31	Mi Tienda del Ahorro	
+Juego de Cubiertos	Enseres Menores	Especial	67	2025-10-27	2025-11-28	Tramontina|Mainstays|Ecko	
+Juego de Geometría	Material Escolar	Útiles Escolares	18344	2025-01-20	2026-08-31	Maped|Vinci|Pelikan|Delta|Barrilito	
+Juegos de Mesa	Arts. de Esparcimiento (juguetes)	Juguetes	29650	2025-01-02	2026-01-05	F de M|Hasbro/gaming|Mattel/games|Novelty|Hasbro/games|Hasbro	
+Jugo de Fruta	Refrescos Envasados	Básicos	91923	2025-01-02	2026-08-31	Del Valle|Boing!|Jumex|Florida 7|Bida|Ades	
+Juguetes Armables	Arts. de Esparcimiento (juguetes)	Juguetes	5979	2025-01-02	2026-01-05	Lego|Mega Bloks|Mattel|Mega	
+Juguetes de Destreza	Arts. de Esparcimiento (juguetes)	Juguetes	14385	2025-01-02	2026-01-06	Fisher-price	
+Juguetes Educativos	Arts. de Esparcimiento (juguetes)	Juguetes	13178	2025-01-02	2026-01-06	Fisher-price|Ruz	
+Juguetes Montables	Arts. de Esparcimiento (juguetes)	Juguetes	687	2025-01-02	2026-01-02	Prinsel|Huffy|Hasbro|Benotto|Apache|Little Tikes	
+Juguetes Montables Eléctricos	Arts. de Esparcimiento (juguetes)	Juguetes	76	2025-01-02	2026-01-02	Prinsel|Power Wheels/fisher-price	
+Jurel	Pescados y Mariscos	Pescados y Mariscos	1826	2025-01-03	2026-08-28		
+Kank-a	Medicamentos	Medicamentos	12916	2025-01-02	2026-08-28		
+Keflex	Medicamentos	Medicamentos	20809	2025-01-02	2026-08-28		
+Keflex Pediátrico	Medicamentos	Medicamentos	7450	2025-01-02	2026-08-28		
+Keppra	Medicamentos	Medicamentos	9500	2025-01-02	2026-08-28		
+Ketoconazol	Medicamentos	Medicamentos	18473	2025-01-02	2026-08-31		
+Ketorolaco	Medicamentos	Medicamentos	22020	2025-01-02	2026-08-31		
+Kiwi	Frutas Frescas	Frutas y Legumbres	18128	2025-01-02	2026-08-31		
+Krytan Tek Ofteno	Medicamentos	Medicamentos	14264	2025-01-02	2026-08-28		
+Lactacyd	Medicamentos	Medicamentos	14527	2025-01-02	2026-08-31		
+Lagricel Ofteno	Medicamentos	Medicamentos	13492	2025-01-02	2026-08-31		
+Lamisil	Medicamentos	Medicamentos	6395	2025-01-06	2026-08-31		
+Lamotrigina	Medicamentos	Medicamentos	9555	2025-01-06	2026-08-31		
+Lámpara Ahorradora	Accesorios Domésticos	Básicos	6828	2025-01-02	2026-08-31	Osram|Great Value|Philips	
+Lancetas	Arts. para el Cuidado Personal	Medicamentos	19677	2025-03-03	2026-08-31	Accu-chek|Microlet|Onetouch|Benesta	
+Langosta	Pescados y Mariscos	Pescados y Mariscos	177	2025-01-27	2026-08-28		
+Langostino	Pescados y Mariscos	Pescados y Mariscos	272	2025-01-27	2026-08-28		
+Lantus. Insulina Glargina	Medicamentos	Medicamentos	6579	2025-01-06	2026-08-31		
+Lápiz	Material Escolar	Útiles Escolares	37105	2025-01-20	2026-08-31	Paper Mate|Bic|Dixon|Maped|Berol|Norma	
+Lápiz Adhesivo	Material Escolar	Útiles Escolares	30747	2025-01-13	2026-08-31	Pritt|Elmer´s|Dixon|Resistol la 101|Pritt.original (Rojo)|Uhu	
+Lavadoras	Aparatos Eléctricos	Electrodomésticos	140184	2025-01-02	2026-08-31	Mabe|Whirlpool|Lg|Samsung|Midea|Maytag	
+Leche Condensada	Leche Procesada	Básicos|Mercados	61875	2025-01-02	2026-08-31	La Lechera	
+Leche en Polvo	Leche Procesada	Básicos|Mercados	89433	2025-01-02	2026-08-31	Nido|Alpura	
+Leche Evaporada	Leche Procesada	Básicos|Mercados	40529	2025-01-02	2026-08-31	Carnation	
+Leche Pasteurizada	Leche Fresca	Básicos|Pacic|Mercados	28499	2025-01-02	2026-08-31	Lala|Alpura|Sello Rojo|Monarca|Star Milk|Chilchota	
+Leche Ultrapasteurizada	Leche Procesada	Básicos|Pacic|Mercados	280062	2025-01-02	2026-08-31	Alpura|Lala|Santa Clara|San Marcos|Valley Foods|Great Value	
+Lechuga	Hortalizas Frescas	Frutas y Legumbres|Pacic	37552	2025-01-02	2026-08-31		
+Lenguado	Pescados y Mariscos	Pescados y Mariscos	864	2025-01-03	2026-08-28		
+Lenteja	Legumbres Secas	Básicos|Mercados|Pacic	42620	2025-01-02	2026-08-31	Verde Valle|La Merced|Schettino|Precíssimo|San Lázaro|Cazerola	
+Levitra	Medicamentos	Medicamentos	22593	2025-01-06	2026-08-31		
+Levofloxacino	Medicamentos	Medicamentos	7910	2025-01-06	2026-08-31		
+Levonorgestrel	Medicamentos	Medicamentos	5509	2025-01-06	2026-08-31		
+Lexapro	Medicamentos	Medicamentos	29418	2025-01-02	2026-08-31		
+Libertrim Sii	Medicamentos	Medicamentos	13060	2025-01-02	2026-08-31		
+Licuadoras	Aparatos Eléctricos	Electrodomésticos	97663	2025-01-02	2026-08-31	Oster|Black+decker|T-fal|Hamilton Beach	
+Lima	Productos de Temporada (navideños)	Frutas y Legumbres	1710	2025-01-02	2026-08-31		
+Limón	Frutas Frescas	Frutas y Legumbres|Pacic	81526	2025-01-02	2026-08-31	Season´s Select	
+Limpiador Líquido P/piso	Detergentes y Productos Similares	Básicos|Mercados	74314	2025-01-02	2026-08-31	Pinol|Fabuloso|Ajax Amonia|Flash|Poett|Brasso	
+Linaza	Legumbres Secas	Básicos	8633	2025-01-02	2026-08-31	Verde Valle|Wand´s	
+Lincocin	Medicamentos	Medicamentos	9355	2025-01-06	2026-08-31		
+Lincomicina	Medicamentos	Medicamentos	6065	2025-01-06	2026-08-31		
+Lipitor	Medicamentos	Medicamentos	19252	2025-01-06	2026-08-31		
+Lisa	Pescados y Mariscos	Pescados y Mariscos	1820	2025-01-03	2026-08-31		
+Lisinopril	Medicamentos	Medicamentos	4536	2025-01-06	2026-08-31		
+Livial	Medicamentos	Medicamentos	11570	2025-01-06	2026-08-31		
+Lobina	Pescados y Mariscos	Pescados y Mariscos	748	2025-01-27	2026-08-28		
+Lopid	Medicamentos	Medicamentos	11031	2025-01-06	2026-08-31		
+Loratadina	Medicamentos	Medicamentos	11617	2025-01-06	2026-08-31		
+Loratadina Betametasona	Medicamentos	Medicamentos	10579	2025-01-02	2026-08-31		
+Losartán	Medicamentos	Medicamentos	16937	2025-01-02	2026-08-31		
+Losartan Hidroclorotiazida	Medicamentos	Medicamentos	4864	2025-01-06	2026-08-31		
+Losec A-20	Medicamentos	Medicamentos	12197	2025-01-02	2026-08-31		
+Lyrica	Medicamentos	Medicamentos	31308	2025-01-06	2026-08-31		
+Macrodantina	Medicamentos	Medicamentos	8894	2025-01-06	2026-08-31		
+Maíz Palomero	Legumbres Secas	Básicos	21446	2025-01-02	2026-08-31	Verde Valle|Schettino	
+Maíz Pozolero	Tortillas y Derivados del Maíz	Básicos|Mercados	14858	2025-01-02	2026-08-31	Ovarb|Ovarb-lolita	
+Mamey	Frutas Frescas	Frutas y Legumbres	9552	2025-01-02	2026-08-31		
+Mandarina	Frutas Frescas	Frutas y Legumbres	12093	2025-01-02	2026-08-31		
+Mango	Frutas Frescas	Frutas y Legumbres	31953	2025-01-02	2026-08-31		
+Manteca de Cerdo	Grasas Animales Comestibles	Básicos|Mercados	10027	2025-01-02	2026-08-31	Proan	
+Mantequilla	Derivados de Leche	Básicos|Mercados	96466	2025-01-02	2026-08-31	Gloria|Alpura|Lala|Chipilo|Precíssimo|Great Value	
+Manzana	Frutas Frescas	Frutas y Legumbres|Pacic	118247	2025-01-02	2026-08-31	Marketside|Valley Foods	
+Marcadores	Material Escolar	Útiles Escolares	7183	2025-01-20	2026-08-31	Sharpie|Azor|Bic|Crayola	
+Margarina	Aceites y Grasas Veg. Comestibles	Básicos|Mercados	117288	2025-01-02	2026-08-31	Primavera Chantilly|Iberia|La Villita|Primavera Light|I Cant Believe Its Not Butter!|Lala	
+Materna	Medicamentos	Medicamentos	10366	2025-01-06	2026-08-31		
+Mayonesa	Condimentos	Básicos|Mercados	111987	2025-01-02	2026-08-31	Mc Cormick|Hellmann´s|La Costeña	
+Medicasp Shampoo	Medicamentos	Medicamentos	14131	2025-01-02	2026-08-31		
+Melón	Frutas Frescas	Frutas y Legumbres	28779	2025-01-02	2026-08-31		
+Meloxicam	Medicamentos	Medicamentos	2913	2025-01-06	2026-08-31		
+Merluza	Pescados y Mariscos	Pescados y Mariscos	152	2025-01-27	2026-08-31		
+Mermelada	Frutas y Legumbres Procesadas	Básicos|Mercados	58084	2025-01-02	2026-08-31	Mc Cormick|La Costeña|Clemente Jacques	
+Mero	Pescados y Mariscos	Pescados y Mariscos	1125	2025-01-09	2026-08-31		
+Metamizol Sodico	Medicamentos	Medicamentos	11747	2025-01-02	2026-08-31		
+Metformina	Medicamentos	Medicamentos	13128	2025-01-02	2026-08-31		
+Metformina-glibenclamida	Medicamentos	Medicamentos	9359	2025-01-02	2026-08-31		
+Meticorten	Medicamentos	Medicamentos	12198	2025-01-06	2026-08-31		
+Metoprolol	Medicamentos	Medicamentos	12157	2025-01-02	2026-08-31		
+Mezcla California	Frutas y Legumbres Procesadas	Básicos	13662	2025-01-02	2026-08-31	La Huerta	
+Mezcla Campesina	Frutas y Legumbres Procesadas	Básicos	9709	2025-01-02	2026-08-31	La Huerta	
+Micardis	Medicamentos	Medicamentos	32627	2025-01-06	2026-08-31		
+Micardis Plus	Medicamentos	Medicamentos	21903	2025-01-06	2026-08-31		
+Miconazol	Medicamentos	Medicamentos	11812	2025-01-06	2026-08-31		
+Microbicida	Detergentes y Productos Similares	Básicos	7737	2025-01-02	2026-08-31	Microdyn	
+Mictasol	Medicamentos	Medicamentos	3937	2025-01-06	2026-08-31		
+Miel de Abeja	Chocolates y Golosinas	Básicos|Mercados	20748	2025-01-02	2026-08-31	Carlota|Vita Real	
+Minibocinas Portátiles Bluetooth	Aparatos Electrónicos	Electrodomésticos	12093	2025-01-02	2026-08-31	Lg|Jbl|Sony	
+Misoprostol	Medicamentos	Medicamentos	10059	2025-01-06	2026-08-31		
+Mochila	Artículos Deportivos	Especial	80	2026-02-17	2026-07-23	Adidas	
+Mojarra	Pescados y Mariscos	Pescados y Mariscos|Pacic	27175	2025-01-02	2026-08-31		Pescados y Mariscos en Conserva:43
+Mole Rojo en Pasta	Condimentos	Básicos|Mercados	42651	2025-01-02	2026-08-31	Doña María|La Costeña|Rogelio Bueno	
+Montelukast	Medicamentos	Medicamentos	11305	2025-01-02	2026-08-31		
+Mortadela	Carnes Frías Secas y Embutidos	Básicos|Mercados	9786	2025-01-02	2026-08-31	Kir|Fud|Bafar	
+Mostaza	Condimentos	Básicos|Mercados	39881	2025-01-02	2026-08-31	Mc Cormick|French S Classic Yellow|La Costeña	
+Motos y Carros Eléctricos	Arts. de Esparcimiento (juguetes)	Juguetes	3441	2025-01-02	2026-01-06	Spin Master|Mattel|Fisher-price|Hot Wheels/mattel|Jakks	
+Motos y Carros Mecánicos	Arts. de Esparcimiento (juguetes)	Juguetes	5345	2025-01-02	2026-01-06	Mattel|Hasbro|Spin Master|Fisher-price|Mge Entertainment|Famosa	
+Motrin	Medicamentos	Medicamentos	13970	2025-01-02	2026-08-31		
+Mucosolvan	Medicamentos	Medicamentos	5718	2025-01-06	2026-08-31		
+Muñecas	Arts. de Esparcimiento (juguetes)	Juguetes	18570	2025-01-02	2026-01-05	Mattel|Famosa|Hasbro|Fisher-price|Spin Master|Mga Entertainment	
+Muñecas Eléctricas	Arts. de Esparcimiento (juguetes)	Juguetes	3342	2025-01-02	2026-01-05	Famosa|Spin Master|Hasbro|F de M	
+Muñecos	Arts. de Esparcimiento (juguetes)	Juguetes	8964	2025-01-02	2026-01-05	Hasbro|Spin Master|Bandai|Mattel|Fisher-price|Playmates Toys	
+Muñecos Eléctricos	Arts. de Esparcimiento (juguetes)	Juguetes	2173	2025-01-02	2026-01-05	Mattel|Hasbro|Fisher-price|Spin Master|Jakks	
+Naproxeno	Medicamentos	Medicamentos	19762	2025-01-02	2026-08-31		
+Naproxeno Sodico, Paracetamol	Medicamentos	Medicamentos	9220	2025-01-06	2026-08-31		
+Naranja	Frutas Frescas	Frutas y Legumbres	22887	2025-01-02	2026-08-31		
+Nebulizador	Arts. para el Cuidado Personal	Medicamentos	75808	2025-01-02	2026-08-31	Nebucor|Omron|Choicemmed	
+Neo Melubrina	Medicamentos	Medicamentos	13166	2025-01-02	2026-08-31		
+Neuralin	Medicamentos	Medicamentos	13831	2025-01-02	2026-08-31		
+Nexium	Medicamentos	Medicamentos	11952	2025-01-06	2026-08-31		
+Nexium-mups	Medicamentos	Medicamentos	25237	2025-01-06	2026-08-31		
+Next. Tabs	Medicamentos	Medicamentos	14388	2025-01-02	2026-08-31		
+Nikzon	Medicamentos	Medicamentos	13919	2025-01-06	2026-08-31		
+Nimesulida	Medicamentos	Medicamentos	1086	2025-01-06	2026-08-31		
+Nitazoxanida	Medicamentos	Medicamentos	2855	2025-01-06	2026-08-31		
+Nitrofurantoina	Medicamentos	Medicamentos	7358	2025-01-06	2026-08-31		
+Nootropil	Medicamentos	Medicamentos	12679	2025-01-02	2026-08-31		
+Nopal	Hortalizas Frescas	Frutas y Legumbres	14523	2025-01-02	2026-08-31		
+Norvas	Medicamentos	Medicamentos	11520	2025-01-02	2026-08-31		
+Novotiral	Medicamentos	Medicamentos	13507	2025-01-02	2026-08-31		
+Novovartalon	Medicamentos	Medicamentos	13318	2025-01-06	2026-08-31		
+Núcleo C.m.p. Forte	Medicamentos	Medicamentos	14122	2025-01-06	2026-08-31		
+Nuez	Condimentos	Básicos|Mercados|Frutas y Legumbres	11875	2025-01-02	2026-08-31	Verde Valle|San Lázaro	
+Olanzapina	Medicamentos	Medicamentos	9718	2025-01-06	2026-08-31		
+Olla de Presión Express	Utensilios Domésticos	Electrodomésticos	19187	2025-01-02	2026-08-31	Presto|T-fal|Ekco|Tramontina	
+Omeprazol	Medicamentos	Medicamentos	21741	2025-01-02	2026-08-31		
+Orégano	Condimentos	Básicos	4163	2025-01-02	2026-08-31	Mc Cormick	
+Orlistat	Medicamentos	Medicamentos	10857	2025-01-02	2026-08-31		
+Oroxadin	Medicamentos	Medicamentos	11095	2025-01-06	2026-08-31		
+Oxímetro	Arts. para el Cuidado Personal	Medicamentos	20867	2025-01-02	2026-08-31	Creative Medical|Xignal|Inhala Care o Home Care|Home Care Diagnostic	
+Pámpano	Pescados y Mariscos	Pescados y Mariscos	1195	2025-01-27	2026-08-28		
+Pan Blanco Bolillo	Pan	Básicos|Mercados	22989	2025-01-02	2026-08-31		
+Pan de Caja	Pan	Básicos|Pacic|Mercados	165222	2025-01-02	2026-08-31	Bimbo|Oroweat|Aurrera|Selecto Brand|Precíssimo|Heb	
+Pan Dulce	Pan	Básicos	78941	2025-01-02	2026-08-31		
+Pañales Desechables	Arts. de Papel P/higiene Personal	Básicos|Mercados	142588	2025-01-02	2026-08-31	Huggies|Kleen Bebé|Chicolastic	
+Panoto-s	Medicamentos	Medicamentos	12444	2025-01-06	2026-08-31		
+Pantallas	Aparatos Electrónicos	Electrodomésticos	111824	2025-01-02	2026-08-31	Lg|Hisense|Samsung|Tcl|Sony	
+Pantalón Corto Shorts Escuela	Material Escolar	Útiles Escolares	806	2025-07-01	2026-07-24		
+Pantalón Escuela Oficial	Material Escolar	Útiles Escolares	10885	2025-06-30	2026-08-28		
+Pantiprotectores	Arts. para el Cuidado Personal	Básicos	49441	2025-01-02	2026-08-31	Saba|Always|Kotex	
+Pantoprazol	Medicamentos	Medicamentos	9908	2025-01-06	2026-08-31		
+Pantozol	Medicamentos	Medicamentos	11602	2025-01-06	2026-08-31		
+Papa	Hortalizas Frescas	Pacic|Frutas y Legumbres	54662	2025-01-02	2026-08-31	Heb	
+Papas Fritas y Similares	Chocolates y Golosinas	Básicos|Especial	197643	2025-01-02	2026-08-31	Sabritas|Barcel	Botanas y Bebidas:16966
+Papaya	Frutas Frescas	Frutas y Legumbres	23451	2025-01-02	2026-08-31		
+Papel Higiénico	Arts. de Papel P/higiene Personal	Básicos|Pacic|Mercados	122027	2025-01-02	2026-08-31	Suavel|Kleenex|Regio|Elite|Precíssimo|Pétalo	
+Paracetamol	Medicamentos	Medicamentos	16552	2025-01-02	2026-08-31		
+Paracetamol/cafeina	Medicamentos	Medicamentos	7405	2025-01-02	2026-08-31		
+Pargo	Pescados y Mariscos	Pescados y Mariscos	941	2025-01-02	2026-08-28		
+Paroxetina	Medicamentos	Medicamentos	8510	2025-01-06	2026-08-31		
+Pasa (uva Pasa)	Chocolates y Golosinas	Mercados|Básicos	4676	2025-01-02	2026-08-31	El Cuernito	
+Pasta para Sopa	Galletas Pastas y Harinas de Trigo	Básicos|Pacic|Mercados	218890	2025-01-02	2026-08-31	Precíssimo|Barilla|La Moderna|La Perla|Aurrera|Italpasta	
+Pastel Pimiento	Carnes Frías Secas y Embutidos	Básicos|Mercados	15687	2025-01-02	2026-08-31	Fud|Duby	
+Pastelillos y Pan Dulce Empaquetado	Pan	Básicos|Mercados	182248	2025-01-02	2026-08-31	Bimbo|Marinela	
+Patanol	Medicamentos	Medicamentos	12182	2025-01-06	2026-08-31		
+Pavo	Productos de Temporada (navideños)	Navideños	1097	2025-11-18	2025-12-24	Butterball|Valley Foods|Madison Farms|Virginians Turkey|Pilgrims|Marketside	
+Paxil	Medicamentos	Medicamentos	6172	2025-01-06	2026-08-31		
+Pechuga de Pavo	Carnes Frías Secas y Embutidos	Básicos	8460	2025-01-02	2026-08-31	Fud|Corona|Bafar	
+Pedyalite. Sr-45. Electrolitos Orales	Medicamentos	Medicamentos	9922	2025-01-06	2026-08-31		
+Pegamento	Material Escolar	Útiles Escolares	19786	2025-01-13	2026-08-31	Resistol 850|Bully|Dixon|Elmer´s	
+Pemix	Medicamentos	Medicamentos	10791	2025-01-06	2026-08-31		
+Pentrexyl	Medicamentos	Medicamentos	5720	2025-01-06	2026-08-31		
+Pepino	Hortalizas Frescas	Frutas y Legumbres	22944	2025-01-02	2026-08-31		
+Pera	Frutas Frescas	Frutas y Legumbres	23982	2025-01-02	2026-08-31		
+Perón	Frutas Frescas	Frutas y Legumbres	7597	2025-01-02	2026-08-31		
+Pescado Seco Salado	Productos de Temporada (navideños)	Navideños	1	2025-11-28	2025-11-28		
+Peto	Pescados y Mariscos	Pescados y Mariscos	128	2025-01-27	2026-08-26		
+Pharmaton. con Gingeng G115	Medicamentos	Medicamentos	8715	2025-01-06	2026-08-31		
+Piascledine 300	Medicamentos	Medicamentos	10573	2025-01-06	2026-08-31		
+Picot. Sal de Uvas	Medicamentos	Medicamentos	14477	2025-01-02	2026-08-31		
+Pilas Eléctricas	Accesorios Domésticos	Básicos	34296	2025-01-02	2026-08-31	Duracell|Energizer Max|Eveready	
+Piloncillo	Chocolates y Golosinas	Mercados|Básicos	3453	2025-01-02	2026-08-31		
+Pimienta	Condimentos	Básicos|Mercados	13410	2025-01-02	2026-08-31	Mc Cormick|Catarino´s|Escosa|El Cuernito|La Carreta	
+Pimiento	Hortalizas Frescas	Frutas y Legumbres	20120	2025-01-02	2026-08-31		
+Piña	Frutas Frescas	Frutas y Legumbres|Pacic	21887	2025-01-02	2026-08-31		
+Piña en Almíbar	Frutas y Legumbres Procesadas	Básicos	31675	2025-01-02	2026-08-31	La Costeña|Clemente Jacques	
+Planchas	Aparatos Eléctricos	Electrodomésticos	82270	2025-01-02	2026-08-31	T-fal|Oster|Black+decker|Hamilton Beach	
+Planchas de Vapor Vertical	Aparatos Eléctricos	Electrodomésticos	6291	2025-01-02	2026-08-31	T-fal|Oster	
+Plantaben	Medicamentos	Medicamentos	6839	2025-01-06	2026-08-31		
+Plantago Psyllium	Medicamentos	Medicamentos	6558	2025-01-02	2026-08-31		
+Plaquenil	Medicamentos	Medicamentos	12674	2025-01-06	2026-08-31		
+Plastilina	Material Escolar	Útiles Escolares	6066	2025-01-20	2026-08-31	Pelikan|Vinci Modelina|Baco|Colorcitos|Makyco|Popular	
+Plátano	Frutas Frescas	Frutas y Legumbres|Pacic	66397	2025-01-02	2026-08-31		
+Plato Sopero	Enseres Menores	Especial	58	2025-10-27	2025-11-27	Santa Anita|Opal Glass Corinthio Hs	
+Plato Trinche/extendido	Enseres Menores	Especial	53	2025-10-27	2025-11-27	Santa Anita|Mainstays	
+Plavix	Medicamentos	Medicamentos	11117	2025-01-06	2026-08-31		
+Playera Blanca	Material Escolar	Útiles Escolares	5780	2025-06-30	2026-08-28		
+Playera Oficial	Artículos Deportivos	Especial	2042	2026-02-16	2026-07-23	Adidas	
+Pliegos de Papel	Material Escolar	Útiles Escolares	24899	2025-01-20	2026-08-31		
+Plumines	Material Escolar	Útiles Escolares	3235	2025-01-20	2026-08-28	Maped	
+Plumones	Material Escolar	Útiles Escolares	45025	2025-01-13	2026-08-31	Crayola|Azor|Bic|Paper Mate|Maped|Norma	
+Pollo Rostizado. Tradicional	Alimentos Cocinados F/casa	Básicos	11989	2025-01-02	2026-08-31		
+Polvo P/hornear	Condimentos	Básicos	6415	2025-01-02	2026-08-31	Rexal|Royal	
+Polvo P/preparar Bebidas	Chocolates y Golosinas	Básicos|Mercados	54392	2025-01-02	2026-08-31	Zuko|Clight|Tang|Splenda|Livean	
+Polvo P/preparar Bebidas Sabor Chocolate	Chocolates y Golosinas	Básicos|Mercados	96624	2025-01-02	2026-08-31	Nesquik|Choco Milk|Morelia|Great Value|Choco Choco	
+Pomada de la Campana	Medicamentos	Medicamentos	13230	2025-01-02	2026-08-31		
+Portaminas	Material Escolar	Útiles Escolares	7006	2025-01-13	2026-08-31	Zebra|Bic|Pentel|Maped|Paper Mate|Pilot	
+Posipen	Medicamentos	Medicamentos	12268	2025-01-02	2026-08-31		
+Postday	Medicamentos	Medicamentos	12128	2025-01-02	2026-08-31		
+Pravastatina	Medicamentos	Medicamentos	8145	2025-01-02	2026-08-31		
+Prevefem Complex	Medicamentos	Medicamentos	3233	2025-01-06	2026-08-31		
+Pristiq	Medicamentos	Medicamentos	10784	2025-01-06	2026-08-31		
+Prodolina	Medicamentos	Medicamentos	3882	2025-01-06	2026-08-31		
+Producto Lácteo	Leche Procesada	Básicos	38519	2025-01-02	2026-08-31	Nutri|Forti Plus|Tamariz|Ganata	
+Producto para Depilación	Arts. para el Cuidado Personal	Básicos	25190	2025-01-02	2026-08-31	Nair|Veet	
+Protector Solar	Arts. para el Cuidado Personal	Básicos	75145	2025-06-09	2026-08-31	Nivea Sun|Banana Boat|Hawaiian Tropic|Eclipsol	
+Pulmicort	Medicamentos	Medicamentos	13231	2025-01-06	2026-08-31		
+Pulmonarom	Medicamentos	Medicamentos	13105	2025-01-02	2026-08-31		
+Pulpo	Pescados y Mariscos	Pescados y Mariscos	5593	2025-01-02	2026-08-31		Pescados y Mariscos en Conserva:159
+Puré de Tomate	Frutas y Legumbres Procesadas	Básicos|Mercados|Pacic	39225	2025-01-02	2026-08-31	Del Fuerte|La Costeña|Herdez	
+Qg5	Medicamentos	Medicamentos	12679	2025-01-06	2026-08-31		
+Quadriderm Nf	Medicamentos	Medicamentos	12385	2025-01-06	2026-08-31		
+Queso Americano	Derivados de Leche	Básicos	76356	2025-01-02	2026-08-31	Lala|La Villita|Kraft|Fud|Zwan|Nutri	
+Queso Canasto	Derivados de Leche	Mercados	520	2025-01-02	2026-08-31	Chilchota	
+Queso Chihuahua	Derivados de Leche	Básicos	8238	2025-01-02	2026-08-31	Lala	
+Queso Cotija	Derivados de Leche	Mercados|Básicos	3655	2025-01-02	2026-08-31	Esmeralda	
+Queso Crema	Botanas y Bebidas	Especial	7078	2026-03-10	2026-07-23	Philadelphia|Lala	
+Queso de Puerco	Carnes Frías Secas y Embutidos	Básicos|Mercados	32155	2025-01-02	2026-08-31	Fud|Parma|Alpino|Corona|Capistrano|Galicia	
+Queso Doble Crema	Derivados de Leche	Mercados	2422	2025-01-02	2026-08-31	Chilchota	
+Queso Fresco	Derivados de Leche	Básicos	14458	2025-01-02	2026-08-31	Zwan|La Villita	
+Queso Manchego	Derivados de Leche	Básicos|Mercados	129100	2025-01-02	2026-08-31	Noche Buena|Lala|La Villita|Caperucita|Zwan|Esmeralda	
+Queso Oaxaca	Derivados de Leche	Básicos|Mercados	93162	2025-01-02	2026-08-31	La Villita|Lala|Esmeralda|Zwan|Fud|Los Volcanes	
+Queso Panela	Derivados de Leche	Básicos|Mercados	99065	2025-01-02	2026-08-31	Fud|Esmeralda|La Villita|Caperucita|Zwan|Lala	
+Queso Sierra	Derivados de Leche	Básicos|Mercados	319	2025-01-06	2026-08-31	Norteño|Chilchota	
+Rábano	Hortalizas Frescas	Frutas y Legumbres	17459	2025-01-02	2026-08-31		
+Ranitidina	Medicamentos	Medicamentos	59	2025-01-07	2025-02-21		
+Rastrillos Desechables	Arts. para el Cuidado Personal	Básicos	77880	2025-01-02	2026-08-31	Gillette|Bic|Perma Sharp Ii	
+Redotex	Medicamentos	Medicamentos	7144	2025-01-06	2026-08-31		
+Redoxon	Medicamentos	Medicamentos	14139	2025-01-02	2026-08-31		
+Redoxon. Forte	Medicamentos	Medicamentos	13523	2025-01-02	2026-08-31		
+Redustat	Medicamentos	Medicamentos	7407	2025-01-02	2026-08-31		
+Refresco	Refrescos Envasados	Básicos|Especial|Mercados	492956	2025-01-02	2026-08-31	Coca Cola|Sprite|Fresca|Fanta|Pepsi|Squirt	Botanas y Bebidas:8937
+Refresh Tears	Medicamentos	Medicamentos	11623	2025-01-06	2026-08-31		
+Refrigeradores	Aparatos Eléctricos	Electrodomésticos|Especial	111461	2025-01-02	2026-08-31	Lg|Mabe|Samsung|Hisense|Midea|G.e.	Refrigeradores:844
+Reglas	Material Escolar	Útiles Escolares	4029	2025-01-20	2026-08-31	Maped|Dietrix|Barrilito	
+Réplica de Balón	Artículos Deportivos	Especial	272	2026-02-16	2026-07-23	Adidas	
+Reproductores Streaming	Aparatos Electrónicos	Electrodomésticos	19993	2025-01-02	2026-08-31	Roku|Amazon|Google	
+Repuestos de Navajas	Arts. para el Cuidado Personal	Básicos	16407	2025-01-02	2026-08-31	Gillette	
+Rinelon	Medicamentos	Medicamentos	11060	2025-01-06	2026-08-31		
+Riopan	Medicamentos	Medicamentos	28433	2025-01-02	2026-08-31		
+Rivotril	Medicamentos	Medicamentos	13697	2025-01-06	2026-08-31		
+Rivotril. Gotas	Medicamentos	Medicamentos	5110	2025-01-06	2026-08-31		
+Robalito	Pescados y Mariscos en Conserva	Pescados y Mariscos	327	2025-01-08	2026-08-28		
+Robalo	Pescados y Mariscos	Pescados y Mariscos	2262	2025-01-02	2026-08-31		
+Rocephin Im	Medicamentos	Medicamentos	4149	2025-01-06	2026-08-31		
+Romeritos	Productos de Temporada (navideños)	Frutas y Legumbres	1606	2025-01-02	2026-08-14		
+Rompope	Vinos y Licores	Navideños	1664	2025-01-10	2025-12-24	Coronado|Santa Clara|La Holandesa	
+Ron	Vinos y Licores	Básicos	26400	2025-01-02	2026-08-31	Bacardí	
+Ropa Interior Desechable y Similares	Arts. de Papel P/higiene Personal	Básicos	40621	2025-01-02	2026-08-31	Tena|Tena Lady Discret	
+Rosca de Reyes	Pan	Básicos	194	2025-01-02	2025-01-10	Extra Especial|Marketside|Valley Foods|La Comer|Soriana	
+Rubia	Pescados y Mariscos	Pescados y Mariscos	424	2025-01-27	2026-08-28		
+Sacapuntas	Material Escolar	Útiles Escolares	34518	2025-01-20	2026-08-31	Maped|Staedtler|Dietrix	
+Sal de Mar	Condimentos	Básicos	4247	2025-01-02	2026-08-31	Sal Sol	
+Sal Molida de Mesa	Condimentos	Básicos|Mercados	24558	2025-01-02	2026-08-31	La Fina|Great Value|Precíssimo|Elefante|Sol	
+Salbutamol	Medicamentos	Medicamentos	8753	2025-01-02	2026-08-31		
+Salchicha	Carnes Frías Secas y Embutidos	Básicos|Mercados	170812	2025-01-02	2026-08-31	Fud|Zwan|San Rafael|Kir|Alpino|Bafar	
+Salmón	Pescados y Mariscos	Pescados y Mariscos	8873	2025-01-02	2026-08-31		Pescados y Mariscos en Conserva:408
+Salsa Catsup	Condimentos	Básicos|Mercados	54694	2025-01-02	2026-08-31	Heinz|Clemente Jacques|La Costeña|Del Monte	
+Salsa de Soya	Condimentos	Básicos	13146	2025-01-02	2026-08-31	Pasa|Maggi	
+Salsa Inglesa	Condimentos	Básicos|Mercados	47837	2025-01-02	2026-08-31	Worcestershire Crosse & Blackwell|Maggi	
+Salsa Picante y Similares	Condimentos	Básicos|Mercados	128775	2025-01-02	2026-08-31	Clemente Jacques|Búfalo|Valentina|Tabasco|Tajín|Guacamaya	
+Sandía	Frutas Frescas	Frutas y Legumbres	20641	2025-01-02	2026-08-31		
+Sandwicheras	Aparatos Eléctricos	Electrodomésticos	26309	2025-01-02	2026-08-31	Black+decker|Oster|T-fal|Koblenz|Hamilton Beach	
+Sardina	Pescados y Mariscos en Conserva	Básicos|Pacic|Mercados	105901	2025-01-02	2026-08-31	Guaymex|Fresh Label|Dolores|Aurrera|Calmex|Portola	
+Secadoras	Aparatos Eléctricos	Electrodomésticos	18880	2025-01-02	2026-08-31	Mabe|Whirlpool|Samsung|Maytag	
+Secotex Ocas	Medicamentos	Medicamentos	5111	2025-01-06	2026-08-31		
+Sedalmerck	Medicamentos	Medicamentos	13817	2025-01-02	2026-08-31		
+Seloken Zok	Medicamentos	Medicamentos	11205	2025-01-06	2026-08-31		
+Selopres Zok	Medicamentos	Medicamentos	12635	2025-01-02	2026-08-31		
+Semilla de Girasol	Legumbres Secas	Básicos	2555	2025-01-02	2026-08-31	Wand´s	
+Senosidos A-b	Medicamentos	Medicamentos	10246	2025-01-06	2026-08-31		
+Sensibit	Medicamentos	Medicamentos	28263	2025-01-02	2026-08-31		
+Serc	Medicamentos	Medicamentos	12184	2025-01-02	2026-08-31		
+Seretide Diskus	Medicamentos	Medicamentos	10714	2025-01-06	2026-08-31		
+Sermion	Medicamentos	Medicamentos	9011	2025-01-06	2026-08-31		
+Sertralina	Medicamentos	Medicamentos	12123	2025-01-02	2026-08-31		
+Servilletas de Papel Blanco	Arts. de Papel P/higiene Personal	Básicos|Mercados|Pacic	77056	2025-01-02	2026-08-31	Pétalo|Fancy|Suavel|Kleenex|Great Value|Elite	
+Severin N.f.	Medicamentos	Medicamentos	4528	2025-01-06	2026-08-31		
+Shampoo	Arts. para el Cuidado Personal	Básicos|Mercados	250163	2025-01-02	2026-08-31	Folicuré|Pantene|Grisi|Palmolive Optims|Head & Shoulders|Sedal	
+Shampoo Íntimo	Medicamentos	Básicos	12110	2025-01-02	2026-08-31	Benzal	
+Shampoo para Bebés/niños	Arts. para el Cuidado Personal	Básicos	54125	2025-01-02	2026-08-31	Grisi|Mennen|L Oreal Kids|Johnson´s|Huggies	
+Sidra	Productos de Temporada (navideños)	Navideños	2182	2025-11-18	2025-12-24	Valle Redondo|Campanario|El Mayu|World Table|El Pomar|Poma Rosa	
+Sierra	Pescados y Mariscos	Pescados y Mariscos	5628	2025-01-02	2026-08-31		
+Sies	Medicamentos	Medicamentos	13215	2025-01-02	2026-08-31		
+Sildenafil	Medicamentos	Medicamentos	11888	2025-01-02	2026-08-31		
+Silka Medic	Medicamentos	Medicamentos	14080	2025-01-02	2026-08-31		
+Simvastatina	Medicamentos	Medicamentos	1125	2025-01-06	2026-08-31		
+Sinergix	Medicamentos	Medicamentos	1658	2025-01-06	2026-08-21		
+Singulair	Medicamentos	Medicamentos	6756	2025-01-06	2026-08-31		
+Sinuberase	Medicamentos	Medicamentos	13572	2025-01-06	2026-08-31		
+Sirdalud	Medicamentos	Medicamentos	6991	2025-01-06	2026-08-31		
+Sistema Gb. Solución Alopecia	Medicamentos	Medicamentos	11961	2025-01-02	2026-08-31		
+Somazina	Medicamentos	Medicamentos	11958	2025-01-02	2026-08-31		
+Soya	Legumbres Secas	Mercados|Básicos	3644	2025-01-02	2026-08-31		
+Spray Desinfectante	Detergentes y Productos Similares	Básicos	43263	2025-01-02	2026-08-31	Lysol|Family Guard|Cloralex|Escudo	
+Sterimar	Medicamentos	Medicamentos	14098	2025-01-02	2026-08-31		
+Stugeron Forte	Medicamentos	Medicamentos	11515	2025-01-06	2026-08-31		
+Suavizante P/ropa	Detergentes y Productos Similares	Básicos|Mercados	81634	2025-01-02	2026-08-31	Downy|Suavitel|Ensueño|Precíssimo|Chedraui	
+Subsalicilato de Bismuto	Medicamentos	Medicamentos	3106	2025-01-06	2026-08-31		
+Sueros Orales	Medicamentos	Básicos	27485	2025-01-02	2026-08-31	Electrolit|Pedialyte	
+Suerox	Medicamentos	Medicamentos	430	2025-01-06	2025-02-21		
+Suerox. 0 Azúcar	Medicamentos	Medicamentos	23357	2025-03-03	2026-08-31		
+Suéter Escuela Oficial	Material Escolar	Útiles Escolares	2257	2025-07-01	2026-08-28		
+Sufrexal Combi	Medicamentos	Medicamentos	12808	2025-01-06	2026-08-31		
+Suplemento Alimenticio	Medicamentos	Medicamentos	18383	2025-01-02	2026-08-31	Ensure|Glucerna	
+Supradol	Medicamentos	Medicamentos	13908	2025-01-02	2026-08-31		
+Sustituto de Azúcar	Azúcar	Básicos	25499	2025-01-02	2026-08-31	Splenda|Svetia	
+Systane	Medicamentos	Medicamentos	12155	2025-01-06	2026-08-31		
+Tabcin	Medicamentos	Medicamentos	83802	2025-01-02	2026-08-31		
+Tabcin 500	Medicamentos	Medicamentos	28098	2025-01-02	2026-08-31		
+Tablet	Aparatos Electrónicos	Electrodomésticos|Útiles Escolares	23617	2025-01-02	2026-08-31	Samsung|Lenovo|Hyundai|Ghia	
+Tacex Im	Medicamentos	Medicamentos	3939	2025-01-06	2026-08-31		
+Tafil	Medicamentos	Medicamentos	8734	2025-01-06	2026-08-31		
+Tafirol Flex	Medicamentos	Medicamentos	12320	2025-01-06	2026-08-31		
+Talco	Arts. para el Cuidado Personal	Básicos	19883	2025-01-02	2026-08-31	Rexona|Mexsana|Baby Magic	
+Talco para Bebé	Arts. para el Cuidado Personal	Básicos	29183	2025-01-02	2026-08-31	Baby Magic	
+Tamarindo	Productos de Temporada (navideños)	Frutas y Legumbres|Mercados	16350	2025-01-02	2026-08-31		
+Tampones	Arts. de Papel P/higiene Personal	Básicos	99132	2025-01-02	2026-08-31	Kotex|Saba|Tampax	
+Tamsulosina	Medicamentos	Medicamentos	10857	2025-01-02	2026-08-31		
+Tapete Sanitizante	Arts. para el Cuidado Personal	Medicamentos	203	2025-01-02	2025-02-28	Bumy Medical	
+Taza para Café	Enseres Menores	Especial	59	2025-10-27	2025-11-28	Santa Anita|Chefmarker	
+Té	Té	Básicos	7363	2025-01-02	2026-08-31	Mc Cormick	
+Té Preparado	Refrescos Envasados	Básicos	12588	2025-01-02	2026-08-31	Fuze Tea	
+Tecta	Medicamentos	Medicamentos	10527	2025-01-06	2026-08-31		
+Tejocote	Productos de Temporada (navideños)	Frutas y Legumbres	1712	2025-01-02	2026-08-19		
+Telmisartan	Medicamentos	Medicamentos	18089	2025-01-02	2026-08-31		
+Tempra	Medicamentos	Medicamentos	80747	2025-01-02	2026-08-31		
+Tenedor	Enseres Menores	Especial	145	2025-10-27	2025-11-28	Tramontina	
+Tenis	Material Escolar	Tenis	3218	2025-06-30	2026-08-28	Converse|George|Charly|Panam|Flexi|Adidas	
+Tenoretic	Medicamentos	Medicamentos	9502	2025-01-06	2026-08-31		
+Tenormin	Medicamentos	Medicamentos	9737	2025-01-06	2026-08-31		
+Tequila	Vinos y Licores	Básicos	52481	2025-01-02	2026-08-31	José Cuervo|El Jimador|Cazadores	
+Terbinafina	Medicamentos	Medicamentos	17534	2025-01-02	2026-08-31		
+Termómetro	Arts. para el Cuidado Personal	Medicamentos	55412	2025-01-02	2026-08-31	Omron|Microlife|Citizen|Supra Med|Benesta|Home Care	
+Terramicina	Medicamentos	Medicamentos	21309	2025-01-02	2026-08-31		
+Theraflu	Medicamentos	Medicamentos	23148	2025-01-02	2026-08-31		
+Tiaminal B12	Medicamentos	Medicamentos	12539	2025-01-02	2026-08-31		
+Tijera	Material Escolar	Útiles Escolares	161	2025-07-22	2025-09-19	Maped	
+Tijeras	Material Escolar	Útiles Escolares	14230	2025-01-20	2026-08-31	Maped|Barrilito|Delta|Mae	
+Tilapia	Pescados y Mariscos	Pescados y Mariscos	12768	2025-01-02	2026-08-31		
+Tinte para el Cabello	Arts. para el Cuidado Personal	Básicos	85700	2025-01-02	2026-08-31	Wella|Wella Koleston|Garnier|L´oréeal Paris|L´oréal Paris	
+Tiras Reactivas	Arts. para el Cuidado Personal	Medicamentos	44097	2025-03-03	2026-08-31	Accu-chek|Onetouch|Contour Plus|Free Style	
+Toalla de Papel	Arts. de Papel P/higiene Personal	Básicos	42650	2025-01-02	2026-08-31	Pétalo|Vogue|Elite|Precíssimo|Great Value|Regio	
+Toalla Femenina	Arts. de Papel P/higiene Personal	Básicos|Pacic	285666	2025-01-02	2026-08-31	Saba|Kotex|Naturella|Always|Íntima|Fiore	
+Toallita Húmeda Limpiadora	Arts. de Papel P/higiene Personal	Básicos	52692	2025-01-02	2026-08-31	Huggies|Kleen Bebé|Dody´s	
+Toallitas Desinfectantes	Detergentes y Productos Similares	Básicos	16242	2025-01-02	2026-08-31	Lysol|Clorox	
+Tocino Ahumado	Carnes Frías Secas y Embutidos	Básicos|Mercados	62398	2025-01-02	2026-08-31	Fud|Parma|San Rafael|Kir|Zwan|Peñaranda	
+Tomate	Hortalizas Frescas	Frutas y Legumbres	26508	2025-01-02	2026-08-31		
+Tomillo	Productos de Temporada (navideños)	Básicos	1239	2025-01-02	2026-08-31	Mc Cormick	
+Topiramato	Medicamentos	Medicamentos	6768	2025-01-02	2026-08-31		
+Toronja	Frutas Frescas	Frutas y Legumbres	20870	2025-01-02	2026-08-31		
+Tortilla de Harina de Trigo	Tortillas y Derivados del Maíz	Básicos	30554	2025-01-02	2026-08-31	Tortillinas Tía Rosa|Mission	
+Tortilla de Maíz	Tortillas y Derivados del Maíz	Básicos|Pacic|Mercados	114395	2025-01-02	2026-08-31	Heb|Max Select|Hill Country Fare	
+Tostadas de Maíz	Tortillas y Derivados del Maíz	Básicos	37544	2025-01-02	2026-08-31	Saníssimo|Milpa Real|Charras	
+Tostadores de Pan	Aparatos Eléctricos	Electrodomésticos	21580	2025-01-02	2026-08-31	Oster|Hamilton Beach|T-fal|Koblenz|Chefman|Black+decker	
+Tramacet	Medicamentos	Medicamentos	11883	2025-01-06	2026-08-31		
+Tramadol	Medicamentos	Medicamentos	20311	2025-01-06	2026-08-31		
+Travatan	Medicamentos	Medicamentos	11533	2025-01-06	2026-08-31		
+Trayenta	Medicamentos	Medicamentos	12140	2025-01-06	2026-08-31		
+Treda	Medicamentos	Medicamentos	13823	2025-01-06	2026-08-31		
+Trental	Medicamentos	Medicamentos	11531	2025-01-06	2026-08-31		
+Trexen Duo	Medicamentos	Medicamentos	12872	2025-01-02	2026-08-31		
+Trimetoprima Sulfametoxazol	Medicamentos	Medicamentos	3415	2025-01-06	2026-08-31		
+Trucha	Pescados y Mariscos	Pescados y Mariscos	367	2025-01-27	2026-08-28		
+Tuna	Frutas Frescas	Frutas y Legumbres	7007	2025-01-02	2026-08-31		
+Turrón	Productos de Temporada (navideños)	Navideños	284	2025-11-19	2025-12-23	El Almendro|Doña Jimena	
+Tylex 750	Medicamentos	Medicamentos	13413	2025-01-06	2026-08-31		
+Ulsen	Medicamentos	Medicamentos	12279	2025-01-06	2026-08-31		
+Ulsen Pcs	Medicamentos	Medicamentos	12807	2025-01-02	2026-08-31		
+Unesia	Medicamentos	Medicamentos	14144	2025-01-02	2026-08-31		
+Uniclar	Medicamentos	Medicamentos	4618	2025-01-06	2026-08-31		
+Unival	Medicamentos	Medicamentos	12978	2025-01-02	2026-08-31		
+Uva	Frutas Frescas	Frutas y Legumbres	32052	2025-01-02	2026-08-31		
+Vagitrol -v	Medicamentos	Medicamentos	12719	2025-01-06	2026-08-31		
+Vainilla	Condimentos	Básicos	4448	2025-01-02	2026-08-31	Molina|Pasa	
+Vajilla	Enseres Menores	Especial	103	2025-10-27	2025-11-28	Mainstays|Bormioli	
+Varios	Arts. de Esparcimiento (juguetes)	Juguetes	22914	2025-01-02	2026-01-06	Mattel|Hasbro|Fisher-price|Spin Master|Mi Alegría|Famosa	
+Variton	Medicamentos	Medicamentos	10413	2025-01-06	2026-08-31		
+Vartalon Compositum	Medicamentos	Medicamentos	12408	2025-01-06	2026-08-31		
+Vasculflow	Medicamentos	Medicamentos	12273	2025-01-02	2026-08-31		
+Vaselina	Arts. para el Cuidado Personal	Básicos	9305	2025-01-02	2026-08-31	Vaseline	
+Venalot Depot	Medicamentos	Medicamentos	13334	2025-01-06	2026-08-31		
+Venda Elástica	Medicamentos	Medicamentos	76957	2025-01-02	2026-08-31	Le Roy	
+Venditas Adhesivas	Medicamentos	Medicamentos	29377	2025-01-02	2026-08-31	Curitas|3m. Nexcare	
+Venlafaxina	Medicamentos	Medicamentos	9731	2025-01-02	2026-08-31		
+Ventiladores	Aparatos Eléctricos	Electrodomésticos	22277	2025-01-02	2026-08-31	Navia|Man|T-fal|Taurus|Hamilton Beach	
+Verdolaga	Hortalizas Frescas	Frutas y Legumbres	4908	2025-01-02	2026-08-31		
+Vermox Plus	Medicamentos	Medicamentos	10250	2025-01-02	2026-08-31		
+Viagra	Medicamentos	Medicamentos	23129	2025-01-02	2026-08-31		
+Vick Vaporub	Medicamentos	Medicamentos	28061	2025-01-02	2026-08-31		
+Videocámaras	Aparatos Electrónicos	Electrodomésticos	7431	2025-01-02	2026-08-31	Go Pro	
+Videojuegos	Arts. de Esparcimiento (juguetes)	Juguetes	5405	2025-01-02	2026-01-05	Nintendo|Sony|Microsoft	
+Villajaiba	Pescados y Mariscos	Pescados y Mariscos	124	2025-01-27	2026-08-28		
+Vinagre	Condimentos	Básicos	43971	2025-01-02	2026-08-31	Clemente Jacques|La Costeña|Barrilito|Ciervo|La Cocinera	
+Vino de Mesa	Vinos y Licores	Navideños	15088	2025-01-02	2025-12-30	Concha y Toro|L. a. Cetto|Finca las Moras|Tres Coronas|X-a. Domecq|Riunite	
+Vitacilina	Medicamentos	Medicamentos	13725	2025-01-02	2026-08-31		
+Vytorin 10/20	Medicamentos	Medicamentos	10784	2025-01-06	2026-08-31		
+Whisky	Vinos y Licores	Básicos	28287	2025-01-02	2026-08-31	Johnnie Walker|William Lawson´s	
+Xatral-od	Medicamentos	Medicamentos	10006	2025-01-06	2026-08-31		
+Xl-3	Medicamentos	Medicamentos	53181	2025-01-02	2026-08-31		
+Yasmin	Medicamentos	Medicamentos	13834	2025-01-02	2026-08-31		
+Yasmin 24/4	Medicamentos	Medicamentos	13605	2025-01-02	2026-08-31		
+Yoghurt	Derivados de Leche	Básicos|Mercados	329545	2025-01-02	2026-08-31	Yoplait|Lala|Danone|Alpura|Oikos|Nutri	
+Zactos	Medicamentos	Medicamentos	4935	2025-01-06	2026-08-31		
+Zanahoria	Hortalizas Frescas	Frutas y Legumbres|Pacic	54917	2025-01-02	2026-08-31		
+Zinnat	Medicamentos	Medicamentos	8998	2025-01-06	2026-08-31		
+Zintrepid	Medicamentos	Medicamentos	9290	2025-01-06	2026-08-31		
+Zofilip	Medicamentos	Medicamentos	7905	2025-01-06	2026-08-31		

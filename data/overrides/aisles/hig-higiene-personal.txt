@@ -1,0 +1,30 @@
+# Higiene personal (hig): personal-care words that PROFECO QQP and INEGI ENIGH 2024 miss or spell differently.
+# Drafted by Claude (AI) on 2026-10-22 from the sources' gaps; awaiting owner review.
+# Lines: "+ término [= emoji]  # why" adds a term here (an emoji is a human choice; "= -" means no emoji);
+# "- término  # why" drops a source term from this aisle; "término > aba  # why" moves a source term elsewhere.
+# Every line needs a "# why": what it is and, where one exists, the source term it is the everyday name for.
+
++ papel higiénico = 🧻  # human choice: 🧻 (CLDR "rollo de papel"); QQP "Papel Higiénico", ENIGH 13120L
++ papel de baño = 🧻  # the everyday name for toilet paper; QQP "Papel Higiénico", ENIGH 13120L "Papel higiénico" (store-dependent: some stores shelve it with cleaning)
++ pasta de dientes  # the everyday name for toothpaste; QQP "Crema Dental", ENIGH 13120A "Pasta dental"
++ cepillo de dientes  # toothbrush; QQP "Cepillo Dental", ENIGH 131201 "Cepillos dentales" (🪥 comes from CLDR's exact name)
++ jabón de baño  # bath soap; QQP "Jabón de Tocador", ENIGH 131208 "Jabón de tocador"
++ kleenex  # facial tissues, by the brand everyone uses for them; ENIGH 13120M "Pañuelos desechables"
++ pañuelos  # tissues; ENIGH 13120M "Pañuelos desechables"
++ rasuradora  # razor; QQP "Rastrillos Desechables", ENIGH 131203 "Rastrillos para afeitar"
++ bloqueador  # sunscreen; QQP "Protector Solar", ENIGH 13120B "Bronceadores y bloqueadores solares"
++ crema para manos  # hand cream; QQP "Crema Líquida", ENIGH 13120D "Crema para el cuerpo y para la cara"; without it it goes to lácteos through "crema"
++ crema corporal  # body lotion; QQP "Crema Líquida", ENIGH 13120D
++ crema facial  # face cream; QQP "Crema Sólida", ENIGH 13120D "Crema para el cuerpo y para la cara"
++ acetona  # nail-polish remover; ENIGH 13120F "Esmalte para uñas y quitaesmalte"
++ cortaúñas  # nail clippers; ENIGH 131204 "Otros artículos no eléctricos para el cuidado personal"
++ cotonetes  # cotton swabs; ENIGH 13120J "Otros productos de belleza" (no source names them)
+
+# Added by the auditor (Claude, AI) on 2026-10-22 after running 160 shopping-list lines through the app's matcher.
++ crema para peinar  # styling cream; ENIGH 13120G "Gel, spray, crema para el cabello"; without it the item goes to lácteos through "crema"
++ crema humectante  # moisturiser; ENIGH 13120D "Crema para el cuerpo y para la cara"; without it the item goes to lácteos through "crema"
++ crema nivea  # the cream written by brand; QQP brand Nivea ("Crema Sólida", "Crema Líquida"); without it the item goes to lácteos, because on a tie the matcher takes the first word ("crema")
++ crema pond's  # as above; QQP brand Pond´s ("Crema Sólida")
++ crema hinds  # as above; QQP brand Hinds ("Crema Líquida")
++ jabón líquido  # liquid hand soap; QQP "Jabón de Tocador", ENIGH 131208 "Jabón de tocador" (liquid laundry and dish soap are lines in lim.txt)
++ papel  # alone on a list "papel" means toilet paper ("papel Pétalo", "papel Regio"); QQP "Papel Higiénico", ENIGH 13120L; longer phrases keep their own aisle (papel aluminio, toalla de papel); store-dependent like papel de baño

@@ -1,0 +1,14 @@
+# Congelados (con): freezer words that PROFECO QQP and INEGI ENIGH 2024 miss or spell differently.
+# Drafted by Claude (AI) on 2026-10-22 from the sources' gaps; awaiting owner review.
+# Lines: "+ término [= emoji]  # why" adds a term here (an emoji is a human choice; "= -" means no emoji);
+# "- término  # why" drops a source term from this aisle; "término > aba  # why" moves a source term elsewhere.
+# Every line needs a "# why": what it is and, where one exists, the source term it is the everyday name for.
+# Anything written with "congelado/congelada" already goes here through forms.tsv.
+
++ croquetas de pollo  # frozen breaded chicken; ENIGH 011255 "Nuggets de otras carnes"; without it it goes to pets through "croquetas"
++ nuggets  # frozen breaded chicken pieces; ENIGH 011255 "Nuggets de otras carnes"
++ papas a la francesa  # frozen fries; ENIGH 011795 "Papas congeladas"
++ pescado empanizado  # frozen breaded fish; ENIGH 011331 "Filetes de pescado rebozados o empanizados"
++ mezcla de verduras  # frozen mixed vegetables; QQP "Mezcla California", "Mezcla Campesina" (La Huerta, "hortalizas congeladas")
++ paletas heladas  # ice lollies; ENIGH 011861 "Helados, nieves y paletas de hielo"
++ pizza  # frozen pizza, the supermarket kind (store-dependent); ENIGH 011911 "Alimentos preparados, enlatados, congelados o empacados"

@@ -68,10 +68,11 @@ const qqpProducts = new Set(readTsv(path.join(SOURCES, 'qqp-productos.tsv')).row
 const qqpVarieties = new Set(readTsv(path.join(SOURCES, 'qqp-variedades.tsv')).rows.filter((r) => r.keep === '1').map((r) => `${r.producto}/${r.variedad}`));
 const qqpBrands = new Set(readTsv(path.join(SOURCES, 'qqp-marcas.tsv')).rows.map((r) => r.marca));
 const enighCodes = new Set(lines(path.join(SOURCES, 'enigh2024-gastos.csv')).filter((l) => /^[0-9A-Z]{6},/.test(l)).map((l) => l.slice(0, 6)));
-const overrideFiles = fs.existsSync(OVERRIDES) ? fs.readdirSync(OVERRIDES).filter((f) => /^[a-z]{3}\.txt$/.test(f)).sort() : [];
+const overrideFiles = fs.existsSync(OVERRIDES) ? fs.readdirSync(OVERRIDES).filter((f) => /^[a-z]{3}-[a-z0-9-]+\.txt$/.test(f)).sort() : [];
 const overrideText = new Map(overrideFiles.map((f) => [f, lines(path.join(OVERRIDES, f))]));
 
-function refOk(ref) {
+/** Does this reference resolve? An override reference must also be a line about this very term (same matcher key). */
+function refOk(ref, term = null) {
   const i = ref.indexOf(':');
   const kind = ref.slice(0, i);
   const rest = ref.slice(i + 1);
@@ -83,7 +84,11 @@ function refOk(ref) {
     case 'override': {
       const [f, n] = rest.split(':');
       const l = (overrideText.get(f) || [])[+n - 1] || '';
-      return /^\s*(\+\s|\S.*\s>\s[a-z]{3}\b)/.test(l) && /#\s*\S/.test(l);
+      if (!(/^\s*(\+\s|\S.*\s>\s[a-z]{3}\b)/.test(l) && /#\s*\S/.test(l))) return false;
+      if (term === null) return true;
+      const body = l.slice(0, l.indexOf('#')).trim();
+      const m = body.match(/^\+\s+(.+?)(?:\s+=\s+\S+)?$/) || body.match(/^(.+?)\s+>\s+[a-z]{3}$/);
+      return !!m && keyOf(m[1]) === keyOf(term);
     }
     case 'derived': return rest.split(',').filter((r) => !/^\+\d+$/.test(r)).some(refOk);
     case 'synonym': { const m = rest.match(/^(.*?)\[(.*)\]$/); return !!m && m[2].split(',').some(refOk); }
@@ -100,8 +105,37 @@ for (const [term, val] of Object.entries(dict.terms || {})) {
   if (!row || !row.sources) { fail.push(`term "${term}" has no source reference in build/sources.tsv`); continue; }
   if (row.aisle !== aisle) fail.push(`term "${term}": build/sources.tsv says ${row.aisle}, the dictionary ${aisle}`);
   const refs = row.sources.split(' ; ').map((s) => s.replace(/\[[a-z]{3}\]$/, ''));
-  if (!refs.some(refOk)) fail.push(`term "${term}": no reference resolves to a source row or an override line (${row.sources})`);
+  if (!refs.some((r) => refOk(r, term))) fail.push(`term "${term}": no reference resolves to a source row or an override line (${row.sources})`);
 }
+
+// ------------------------------------------------------------------ an emoji is a human choice or an exact CLDR name
+const cldrName = new Map(readTsv(path.join(SOURCES, 'cldr49-emoji-es-MX.tsv')).rows.map((r) => [r.emoji, r.name_es_MX]));
+for (const [term, val] of Object.entries(dict.terms || {})) {
+  if (!Array.isArray(val)) continue;
+  const src = (trace.get(term) || {}).emoji_source || '';
+  if (src.startsWith('override:')) { if (!refOk(src.split(' ')[0], term)) fail.push(`term "${term}": its emoji cites ${src}, which is not a line about this term`); continue; }
+  if (!src.startsWith('cldr49:')) { fail.push(`term "${term}": emoji ${val[1]} has no recorded source`); continue; }
+  if (keyOf(cldrName.get(val[1]) || '') !== keyOf(term)) fail.push(`term "${term}": emoji ${val[1]} is CLDR "${cldrName.get(val[1])}", not an exact name match`);
+}
+
+// ------------------------------------------------------------------ blocked brands never ship as brands
+// (a QQP brand string with a trailing size, "Torres 10", once slipped past the block list as "torres")
+const blockedKeys = new Map(readList(path.join(VOCAB, 'brands-block.txt')).map((x) => [keyOf(x.text), x]));
+for (const [term, row] of trace) {
+  if (row.decided_by !== 'brand') continue;
+  const b = blockedKeys.get(keyOf(term));
+  if (b) fail.push(`term "${term}" ships as a brand but data/vocab/brands-block.txt:${b.line} blocks it`);
+}
+
+// ------------------------------------------------------------------ the credit lines say what the licences ask
+const creditOf = (re) => ((dict.sources || []).find((s) => re.test(s.name)) || {}).credit || '';
+const needs = [
+  [/PROFECO/, [/CC BY 4\.0/, /creativecommons\.org\/licenses\/by\/4\.0/, /agrupaci[oó]n es nuestra/, /no avala/]],
+  [/INEGI/, [/Fuente: INEGI/, /ENIGH/, /agrupaci[oó]n es nuestra/, /no avala/]],
+  [/CLDR/, [/Unicode, Inc\./, /licencia Unicode v3/]],
+];
+for (const [who, res] of needs) for (const re of res) if (!re.test(creditOf(who))) fail.push(`the credit line of ${who.source} does not say ${re.source}`);
+if (!fs.existsSync(path.join(VOCAB, '..', '..', 'LICENSES', 'Unicode-3.0.txt'))) fail.push('LICENSES/Unicode-3.0.txt is missing (the Unicode licence must travel with the CLDR data)');
 
 // ------------------------------------------------------------------ override lines and other human files
 for (const [f, ls] of overrideText) ls.forEach((rawLine, i) => {

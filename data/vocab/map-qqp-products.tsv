@@ -1,0 +1,77 @@
+# PROFECO QQP PRODUCTO → aisle exceptions: they win over the product's category (map-qqp.tsv). Human file (drafted by
+# the research on 2026-10-21, revised by Claude (AI) on 2026-10-22; awaiting owner review). Matched folded. "why" is required.
+# The aisle also decides where the product's brands and its kept varieties (sources/qqp-variedades.tsv) go.
+producto	aisle	why
+Helado	con	ice cream is in the freezer, not with dairy (QQP: Derivados de Leche)
+Floretes de Brócoli	con	La Huerta frozen vegetables ("hortalizas congeladas" in PRESENTACIÓN)
+Mezcla California	con	La Huerta frozen vegetables
+Mezcla Campesina	con	La Huerta frozen vegetables
+Combinado Primavera	con	La Huerta frozen vegetables
+Guarnición de Verduras	con	La Huerta frozen vegetables
+Granos de Elote	con	La Huerta frozen corn ("hortalizas congeladas" in PRESENTACIÓN)
+Harina de Maíz	aba	Maseca and Minsa bags are sold in abarrotes, not at the tortillería counter
+Maíz Pozolero	aba	canned or dry hominy, abarrotes
+Fórmula Láctea	bbe	infant formula (Nan)
+Alimento Preparado para Niños	bbe	baby food jars (Gerber)
+Pañales Desechables	bbe	diapers
+Toallita Húmeda Limpiadora	bbe	baby wipes (Huggies, Kleen Bebé)
+Shampoo para Bebés/niños	bbe	baby toiletries
+Talco para Bebé	bbe	baby toiletries
+Jabón de Tocador para Bebé	bbe	baby toiletries
+Crema para Rozaduras	bbe	diaper-rash cream
+Servilletas de Papel Blanco	lim	household paper, sold with paper towels
+Toalla de Papel	lim	kitchen paper towels are household paper
+Glucómetro	far	medical device
+Lancetas	far	medical device
+Nebulizador	far	medical device
+Oxímetro	far	medical device
+Termómetro	far	medical device
+Tiras Reactivas	far	medical device
+Cubrebocas	far	face masks are sold at the pharmacy (QQP surveys them in its Medicamentos catalogue)
+Guantes de Látex	far	medical gloves (QQP Medicamentos catalogue); household rubber gloves are ENIGH 05619B
+Gel Antibacterial	far	ENIGH 06111J lists gel antibacterial among antiseptics; QQP surveys it in its Medicamentos catalogue
+Tapete Sanitizante	lim	a disinfecting door mat is a household item
+Empanizadores	aba	breadcrumbs (pan molido) are sold with flour in abarrotes, not at the bakery (QQP: Pan)
+Cajeta	aba	sweet spreads sit with jam and honey in abarrotes (store-dependent: some stores put it with sweets)
+Miel de Abeja	aba	honey sits with jam in abarrotes (QQP: Chocolates y Golosinas)
+Piloncillo	aba	cane sugar cones sit with sugar
+Crema de Cacahuate	aba	spreads sit with jam
+Crema de Avellanas con Cacao	aba	spreads sit with jam (Nutella)
+Gelatina en Polvo	aba	dessert mixes are baking goods
+Flan	aba	dessert mix powder (Pronto, D'gari)
+Polvo P/preparar Bebidas	beb	drink powders (Tang, Zuko) sit with drinks
+Jarabe P/preparar Bebidas	beb	drink syrups (horchata) sit with drinks
+Polvo P/preparar Bebidas Sabor Chocolate	aba	chocolate milk powder (Choco Milk, Nesquik) sits with coffee and cocoa
+Queso Crema	lac	cream cheese is refrigerated dairy (QQP: Botanas y Bebidas)
+Dip	bot	snack dip, next to the tortilla chips
+Aceite de Oliva	aba	oil (QQP: seasonal category)
+Aceituna	aba	jarred olives (QQP: seasonal category)
+Alcaparra	aba	jarred capers (QQP: seasonal category)
+Almendras	bot	nuts sit with snacks (QQP: seasonal category)
+Bacalao	car	salt cod, fish counter (QQP: seasonal category)
+Caña	fru	sugar cane, fresh produce (QQP: seasonal category)
+Canela	aba	spice (QQP: seasonal category)
+Castañas	fru	fresh chestnuts, produce (QQP: seasonal category)
+Chiles Largos en Escabeche	aba	canned (QQP: seasonal category)
+Chiles Largos o Güeros Carricillos	aba	canned (La Costeña-type; QQP: seasonal category)
+Ciruela Pasa	bot	dried fruit sits with nuts and snacks (QQP: seasonal category)
+Colación	bot	Christmas sweets (QQP: seasonal category)
+Dátil	bot	dried fruit (QQP: seasonal category)
+Figuritas de Mazapán	bot	sweets (QQP: seasonal category)
+Fruta Seca	bot	dried fruit (QQP: seasonal category)
+Frutas Cubiertas	bot	candied fruit (QQP: seasonal category)
+Jamaica	aba	dried hibiscus flowers for agua fresca, sold dry (QQP: seasonal category)
+Jerez	beb	sherry (QQP: seasonal category)
+Jícama	fru	fresh produce (QQP: seasonal category)
+Lima	fru	fresh produce (QQP: seasonal category)
+Pavo	car	whole turkey, meat counter (QQP: seasonal category)
+Pescado Seco Salado	car	dried salted fish, fish counter (QQP: seasonal category)
+Romeritos	fru	fresh greens (QQP: seasonal category)
+Sidra	beb	cider (QQP: seasonal category)
+Tamarindo	fru	tamarind pods, produce (QQP: seasonal category)
+Tejocote	fru	fresh fruit (QQP: seasonal category)
+Tomillo	aba	dried herb, spices (QQP: seasonal category)
+Turrón	bot	sweets (QQP: seasonal category)
+Ajo	fru	garlic heads are produce (QQP: Condimentos); "ajo en polvo" still goes to abarrotes through the form word "polvo"
+Margarina	lac	margarine is refrigerated next to the butter (ENIGH 011530 groups it with butter; QQP files it with cooking oils); its brands (Primavera, Iberia) follow
+Elote	aba	86 % of QQP's Elote rows (108,212 of 126,398) are canned kernels by Herdez, Del Monte, La Costeña and Clemente Jacques (PRESENTACIÓN "grano"), so its brands go to abarrotes; the word "elote" stays in produce through fru.txt (fresh elotes, ENIGH 011745)

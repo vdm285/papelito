@@ -1,0 +1,12 @@
+# Salchichonería (sal): deli-counter words that PROFECO QQP and INEGI ENIGH 2024 miss or spell differently.
+# Drafted by Claude (AI) on 2026-10-22 from the sources' gaps; awaiting owner review.
+# Lines: "+ término [= emoji]  # why" adds a term here (an emoji is a human choice; "= -" means no emoji);
+# "- término  # why" drops a source term from this aisle; "término > aba  # why" moves a source term elsewhere.
+# Every line needs a "# why": what it is and, where one exists, the source term it is the everyday name for.
+# The sources already cover this counter well (jamón, salchicha, chorizo, tocino, salami...); only a few lines are needed.
+
++ carnes frías  # cold cuts in general; QQP category "Carnes Frías Secas y Embutidos"
++ embutidos  # cold cuts and sausages in general; QQP category "Carnes Frías Secas y Embutidos", ENIGH 011253
++ salchichón  # short form; ENIGH 011251 "Salchicha y salchichón de puerco"
++ pepperoni  # cured sausage sold at the salchichonería; ENIGH 011253 "Otros embutidos y carnes procesadas"
++ lomo canadiense  # smoked pork loin sold sliced at the salchichonería; ENIGH 011233 "Chuleta y carne ahumada"; without it it goes to the meat counter through "lomo"

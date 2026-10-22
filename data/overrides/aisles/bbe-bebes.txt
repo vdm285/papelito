@@ -1,0 +1,18 @@
+# Bebés (bbe): baby words that PROFECO QQP and INEGI ENIGH 2024 miss or spell differently.
+# Drafted by Claude (AI) on 2026-10-22 from the sources' gaps; awaiting owner review.
+# Lines: "+ término [= emoji]  # why" adds a term here (an emoji is a human choice; "= -" means no emoji);
+# "- término  # why" drops a source term from this aisle; "término > aba  # why" moves a source term elsewhere.
+# Every line needs a "# why": what it is and, where one exists, the source term it is the everyday name for.
+
++ toallitas húmedas  # baby wipes; QQP "Toallita Húmeda Limpiadora"
++ papillas  # baby food jars; QQP "Alimento Preparado para Niños" (Gerber), ENIGH 011922 "Papillas para bebé"
++ leche para bebé  # infant formula; QQP "Fórmula Láctea", ENIGH 011921 "Fórmula de leche maternizada"; without it it goes to lácteos through "leche"
++ biberón  # baby bottle; ENIGH 131205 "Artículos de tocador para bebé" (🍼 comes from CLDR's exact name)
++ mamila  # the everyday Mexican word for a baby bottle; ENIGH 131205 "Artículos de tocador para bebé"
++ chupón  # pacifier (the Mexican word); ENIGH 131205 "Artículos de tocador para bebé"
++ aceite para bebé  # baby oil; ENIGH 131205 "Artículos de tocador para bebé"; without it it goes to abarrotes through "aceite"
++ jabón para bebé  # baby soap; QQP "Jabón de Tocador para Bebé"
++ pomada para rozaduras  # diaper-rash ointment; QQP "Crema para Rozaduras"; without it it goes to the pharmacy through "pomada"
+
+# Added by the auditor (Claude, AI) on 2026-10-22 after running 160 shopping-list lines through the app's matcher.
++ toallas húmedas  # wet wipes, as many people write it; QQP "Toallita Húmeda Limpiadora" ("toallitas húmedas" is the line above)

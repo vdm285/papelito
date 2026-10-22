@@ -1,0 +1,93 @@
+{
+ "built": "2026-10-22",
+ "terms": 1717,
+ "emoji": 71,
+ "emojiFromOverrides": 17,
+ "perAisle": {
+  "fru": 108,
+  "pan": 35,
+  "tor": 16,
+  "car": 133,
+  "sal": 35,
+  "lac": 76,
+  "aba": 308,
+  "bot": 56,
+  "beb": 136,
+  "lim": 138,
+  "hig": 152,
+  "bbe": 34,
+  "mas": 16,
+  "far": 450,
+  "con": 24,
+  "otr": 0
+ },
+ "termsWithSource": {
+  "qqp": 701,
+  "enigh": 401,
+  "override": 225,
+  "qqp-var": 85,
+  "qqp-marca": 416,
+  "derived": 27,
+  "synonym": 5
+ },
+ "decidedBy": {
+  "qqp-category": 702,
+  "qqp-product": 74,
+  "override": 225,
+  "enigh": 272,
+  "brand": 416,
+  "synonym": 5,
+  "derived-head": 23
+ },
+ "brands": 421,
+ "varietyTerms": 85,
+ "overrides": {
+  "files": 15,
+  "lines": 227,
+  "add": 225,
+  "drop": 2,
+  "move": 0
+ },
+ "forms": 16,
+ "conflicts": 10,
+ "dropped": 426,
+ "review": 137,
+ "bytes": {
+  "raw": 38843,
+  "gzip": 11782,
+  "brotli": 10210
+ },
+ "tests": {
+  "test-60": {
+   "ok": 55,
+   "total": 55,
+   "storeDependent": 5,
+   "okAllRows": 58,
+   "allRows": 60,
+   "misses": [
+    "tostadas → tor (expected pan, store-dependent)",
+    "papel de baño → hig (expected lim, store-dependent)"
+   ]
+  },
+  "tricky-40": {
+   "ok": 35,
+   "total": 35,
+   "storeDependent": 5,
+   "okAllRows": 39,
+   "allRows": 40,
+   "misses": [
+    "papel de baño → hig (expected lim, store-dependent)"
+   ]
+  },
+  "audit-160": {
+   "ok": 145,
+   "total": 145,
+   "storeDependent": 15,
+   "okAllRows": 159,
+   "allRows": 160,
+   "misses": [
+    "chocolate abuelita → bot (expected aba, store-dependent)"
+   ]
+  }
+ }
+}

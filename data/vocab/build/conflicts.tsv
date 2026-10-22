@@ -1,0 +1,11 @@
+term	aisle	how	candidates
+aceituna	aba	won at qqp-product	aba<qqp:Aceituna ; fru<enigh:011741
+cajeta	aba	won at qqp-product	aba<qqp:Cajeta ; bot<enigh:011472
+camarón	car	won at qqp-category	car<qqp:Camarón ; con<enigh:011343
+chile	fru	won at override	aba<qqp:Chiles ; fru<override:fru-frutas-y-verduras.txt:12
+chocolate	bot	won at qqp-category	bot<qqp:Chocolate ; beb<enigh:012400
+chuleta	car	won at qqp-category	car<qqp-var:Carne Cerdo/chuleta ; car<enigh:011222 ; sal<enigh:011233
+chícharos	fru	tie at qqp-category	aba<qqp:Chícharo ; fru<qqp:Chícharos ; fru<enigh:011731
+elote	fru	won at override	aba<qqp:Elote ; fru<enigh:011745 ; fru<override:fru-frutas-y-verduras.txt:11
+nuez	aba	won at qqp-category	aba<qqp:Nuez ; bot<enigh:011680
+papa	fru	won at qqp-category	fru<qqp:Papa ; fru<enigh:011751 ; aba<enigh:011770

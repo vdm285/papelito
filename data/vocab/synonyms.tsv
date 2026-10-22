@@ -1,0 +1,10 @@
+# Spelling variants and exact short forms of a source term. The variant ships in whatever aisle the source term ends up
+# in, and is traced to it ("synonym:<of>" plus the source term's own references); if the source term is not shipped, the
+# variant is not either. Colloquial names that are different words (papel de baño, cloro, pasta de dientes) are override
+# lines in data/overrides/aisles/ instead. Human file, drafted by Claude (AI) on 2026-10-22, awaiting owner review.
+variant	of	why
+yogur	yogurt	the Royal Spanish Academy spelling of ENIGH's "Yogurt" (QQP writes "Yoghurt")
+ketchup	cátsup	the English spelling printed on Mexican bottles (Heinz); ENIGH 011931 says "cátsup", QQP "Salsa Catsup"
+espagueti	spaghetti	Spanish spelling of QQP's variety "spaghetti" (Pasta para Sopa); ENIGH 011150 writes "Spaghetti"
+tortillas de harina	tortilla de harina de trigo	short form of QQP's "Tortilla de Harina de Trigo" and ENIGH 011132
+pañales	pañales desechables	short form of QQP's "Pañales Desechables" and ENIGH 13120K; the head noun is split between babies and adults, so it is not derived

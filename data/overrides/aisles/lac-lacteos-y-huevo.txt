@@ -1,0 +1,17 @@
+# Lácteos y huevo (lac): dairy words that PROFECO QQP and INEGI ENIGH 2024 miss or spell differently.
+# Drafted by Claude (AI) on 2026-10-22 from the sources' gaps; awaiting owner review.
+# Lines: "+ término [= emoji]  # why" adds a term here (an emoji is a human choice; "= -" means no emoji);
+# "- término  # why" drops a source term from this aisle; "término > aba  # why" moves a source term elsewhere.
+# Every line needs a "# why": what it is and, where one exists, the source term it is the everyday name for.
+
++ leche = 🥛  # human choice: 🥛 (CLDR "vaso de leche"); head noun of QQP "Leche Pasteurizada", "Leche Ultrapasteurizada"...
++ blanquillos  # the polite everyday word for eggs; QQP "Huevo", ENIGH 011481 "Huevo de gallina"
++ manchego  # short form; QQP "Queso Manchego"
++ panela  # short form (in Mexico panela is the cheese); QQP "Queso Panela"
++ requesón  # fresh curd cheese; ENIGH 011456 "Otros quesos"
++ mozzarella  # ENIGH 011456 "Otros quesos" (no source names it)
++ parmesano  # ENIGH 011456 "Otros quesos" (no source names it)
++ yakult  # fermented milk drink, written by brand; ENIGH 011460 "Yogurt y bebidas fermentadas a base de leche"
++ media crema  # Nestlé's shelf-stable cream, sold by that name; QQP "Crema" (category Derivados de Leche)
++ danonino  # Danone's children's yoghurt, written by name; QQP brand Danone ("Yoghurt")
++ actimel  # Danone's drinkable yoghurt, written by name; QQP brand Danone ("Yoghurt"), ENIGH 011460

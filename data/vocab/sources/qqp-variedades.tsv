@@ -1,0 +1,1585 @@
+# qqp-variedades.tsv: variety phrases mined from PRESENTACIÓN, groceries and household goods only, 1575 rows (81 kept)
+# source: PROFECO (Procuraduría Federal del Consumidor), «Quién es Quién en los Precios» (QQP), open data of the Government of Mexico
+# url: https://datos.profeco.gob.mx/datos_abiertos/qqp.php (dataset record: https://www.datos.gob.mx/dataset/programa_quien_es_quien_precios_2026)
+# licence: Creative Commons Attribution 4.0 (CC BY 4.0), https://creativecommons.org/licenses/by/4.0/ (datos.gob.mx record, checked 2026-10-21); changes: aggregated and reshaped by Papelito
+# retrieved: archives downloaded by CompaPrecio; QQP_2026.rar 59971365 bytes sha256 903f67db03c0339a12b2f1aba66ec5ecc60ad74997ef6eed38f01de9172a5ffa retrieved 2026-10-21; QQP_2025.rar 85141166 bytes sha256 41ca4cd962e696f9f19cca598566d11ce60b200e37b5a5ef46c3b6a1ae58dc59 retrieved 2026-10-21
+# inputs: 40 CSV files, 22658981 rows covering 2025-01-02 to 2026-08-31; streamed read-only by tools/vocab/fetch-sources.mjs on 2026-10-21
+# columns: producto, variedad (words of PRESENTACIÓN between sizes, units and packaging words, lowercased, accents as written), rows,
+#   keep (HUMAN: 1 = an everyday shopping word that ships, in the product's aisle; 0 = not used), term (HUMAN, optional: the phrase to ship when it differs from variedad)
+# A refresh keeps keep/term for rows that still exist. Ticked by Claude (AI) on 2026-10-22, awaiting owner review.
+producto	variedad	rows	keep	term
+Aceite	vegetal	102699	0	
+Aceite	soya	42520	0	
+Aceite	canola	36242	0	
+Aceite	sabor mantequilla	20800	0	
+Aceite	cártamo	18655	0	
+Aceite	maíz	8240	0	
+Aceite de Oliva	extra virgen	19291	0	
+Aceite de Oliva	etiqueta verde	7373	0	
+Aceite de Oliva	ideal para cocinar salsas	2318	0	
+Aceite de Oliva	pastas	2318	0	
+Aceite de Oliva	etiqueta amarilla	1527	0	
+Aceite de Oliva	aromático	878	0	
+Aceite de Oliva	ideal para aderezar	789	0	
+Aceituna	hueso	6479	0	
+Aceituna	rellena de pimiento	5316	0	
+Aceituna	verde	1415	0	
+Aceituna	manzanilla	893	0	
+Aceituna	rellenas de anchoa	567	0	
+Aceituna	rellenas de jamón serrano	515	0	
+Aceituna	rellenas de queso azul	450	0	
+Aceituna	negra	208	0	
+Aceituna	azul	196	0	
+Aceituna	fina	191	0	
+Aceituna	relleno	163	0	
+Aceituna	salmón ahumado	163	0	
+Aceituna	rellenas de pimiento	155	0	
+Aceituna	rellenas de chorizo picante	121	0	
+Aceituna	relleno anchoa	45	0	
+Aceituna	gordal	1	0	
+Acelga	manojo	17312	0	
+Acondicionador y Enjuague	restauración	15508	0	
+Acondicionador y Enjuague	ceramidas	15316	0	
+Acondicionador y Enjuague	control caída	12374	0	
+Acondicionador y Enjuague	lavanda	9509	0	
+Acondicionador y Enjuague	aceite de almendras	9509	0	
+Acondicionador y Enjuague	especialidades	6346	0	
+Acondicionador y Enjuague	fuerza acti-ceramidas	6148	0	
+Acondicionador y Enjuague	granada	4507	0	
+Acondicionador y Enjuague	aceite de aguacate	4507	0	
+Acondicionador y Enjuague	palta	4507	0	
+Acondicionador y Enjuague	protección caída	3877	0	
+Acondicionador y Enjuague	stop caída	3711	0	
+Acondicionador y Enjuague	reparación	198	0	
+Acondicionador y Enjuague	néctar de miel	198	0	
+Acondicionador y Enjuague	hidradisíaco	13	0	
+Agua con Gas	naranj-ada fizz	11610	0	
+Agua con Gas	limon-ada	10292	0	
+Agua con Gas	fizz	10292	0	
+Agua con Gas	botellas	10189	0	
+Agua Sin Gas	garrafón	30536	1	
+Agua Sin Gas	sólo líquido	22991	0	
+Agua Sin Gas	limon	18003	0	
+Agua Sin Gas	infusionada	6789	0	
+Agua Sin Gas	fresa	6789	0	
+Agua Sin Gas	mineral natural	4620	0	
+Aguacate	hass	23689	0	
+Ajo	polvo	10798	0	
+Ajo	ajo morado	10196	0	
+Alcaparra	vinagre	483	0	
+Alimento Preparado para Niños	partir	34551	0	
+Alimento Preparado para Niños	meses	34551	0	
+Alimento Preparado para Niños	manzana	34551	0	
+Alimentos Preparados	pollo	33994	0	
+Alimentos Preparados	sopa instantánea sabor	17853	0	
+Alimentos Preparados	sopa instantánea con camarón	17781	0	
+Alimentos Preparados	chile piquín	17781	0	
+Alimentos Preparados	sopa instantánea	16141	1	
+Alimentos Preparados	sabor	16141	0	
+Almeja	chirla	1983	0	
+Almeja	negra	1233	0	
+Almeja	chirla congelada	678	0	
+Almeja	chocolata	74	0	
+Amaranto	natural	5633	0	
+Arroz	super extra	108955	0	
+Arroz	extra	23178	0	
+Arroz	grano largo	20260	0	
+Arroz	verde	13589	0	
+Arroz	integral	12478	1	arroz integral
+Arroz	grano grueso	5923	0	
+Arroz	entero	2767	0	
+Arroz	quebrado	1636	0	
+Arroz	grano	152	0	
+Arroz	grano extra largo	81	0	
+Atún	hojuelas en agua	28258	0	
+Atún	clásico	26838	0	
+Atún	hojuelas en agua con aceite	19490	0	
+Atún	aleta amarilla	18336	0	
+Atún	trozos en agua	17579	0	
+Atún	soya	17185	0	
+Atún	standard	17049	0	
+Atún	desmenuzado en agua	16527	0	
+Atún	ensalada	14689	0	
+Atún	soya en agua con aceite	8626	0	
+Atún	soya en agua	8586	0	
+Atún	agua	7761	0	
+Atún	desmenuzado en aceite	7339	0	
+Atún	desmenuzado en agua con aceite	6310	0	
+Atún	proteína de soya en agua	4071	0	
+Atún	ahumado	3565	0	
+Atún	tipo marlín	2399	0	
+Atún	tipo marlín al natural	2399	0	
+Atún	steak de atún aleta amarilla	1642	0	
+Atún	lomo	1591	0	
+Atún	centro de lomo	482	0	
+Atún	pacífico	425	0	
+Atún	aleta amarilla en agua	336	0	
+Atún	soya en aceite con agua	113	0	
+Atún	agua con aceite	65	0	
+Atún	libre de soya	21	0	
+Avellana	cáscara	1	0	
+Avena	hojuela integral	21704	0	
+Avena	integral	17211	0	
+Avena	sémola de trigo	15505	0	
+Avena	fortificada	15505	0	
+Avena	fresas con crema	10127	0	
+Avena	arándanos	7084	0	
+Azúcar	estándar	105049	0	
+Azúcar	morena	31014	1	azúcar morena
+Azúcar	mascabado	17167	1	azúcar mascabado
+Azúcar	refinada	13740	0	
+Azúcar	estándar morena	5153	0	
+Bacalao	noruego	478	0	
+Bacalao	desmenuzado	378	0	
+Bacalao	lomo sin piel	184	0	
+Bacalao	filete	103	0	
+Bacalao	piel	46	0	
+Bacalao	noruego salado	40	0	
+Bacalao	espinas	36	0	
+Bacalao	desmigado	29	0	
+Bacalao	langa noruego	17	0	
+Bacalao	lomo	17	0	
+Bacalao	legítimo sin piel	9	0	
+Bacalao	trozos	9	0	
+Bacalao	centros extra	8	0	
+Bacalao	extra langa noruego	3	0	
+Bacalao	canadiense	1	0	
+Bacalao	variable	1	0	
+Bacalao	mitades	1	0	
+Bagre	entero	2601	0	
+Bagre	fresco	2601	0	
+Bandera	entero	1758	0	
+Bandera	fresco	1758	0	
+Barras de Avena	rellenas con fresa	4977	0	
+Barras de Cereal	piña	2683	0	
+Barras de Cereal	fresa	2675	0	
+Barras de Cereal	nuez	2234	0	
+Barras de Cereal	linaza	125	0	
+Barrita de Surimi o Barrita de Surimi Cangre	alimento procesado	6633	0	
+Barrita de Surimi o Barrita de Surimi Cangre	congelado	6633	0	
+Barrita de Surimi o Barrita de Surimi Cangre	descongelado	6633	0	
+Basa	filete	25134	0	
+Basa	congelado	16046	0	
+Basa	blanco	16000	0	
+Basa	rojo	8907	0	
+Basa	descongelado	8861	0	
+Basa	fresco	227	0	
+Baterías de Cocina	utensilios	37	0	
+Baterías de Cocina	prime	18	0	
+Baterías de Cocina	basics	14	0	
+Baterías de Cocina	acero esmaltado	5	0	
+Bebida Varias	agua de coco	1345	0	
+Bebida Varias	acapulcoco	1327	0	
+Bebidas Hidratantes	naranja	32516	0	
+Bebidas Hidratantes	frutas	13410	0	
+Bebidas Hidratantes	sport bottle	4855	0	
+Besugo	entero	289	0	
+Besugo	fresco	289	0	
+Blanco del Nilo	filete	6883	0	
+Blanco del Nilo	filete de tilapia natural	6883	0	
+Blanqueador	rendidor	22660	0	
+Blanqueador	original	14128	0	
+Cacahuates	kacang	18825	0	
+Cacahuates	hot nuts	12815	0	
+Cacahuates	flamin hot	8579	0	
+Cacahuates	sal	7363	0	
+Cacahuates	limón	7363	0	
+Cacahuates	cáscara	2044	0	
+Cacahuates	japonés	2036	0	
+Cacahuates	enchilado	1791	0	
+Cacahuates	sabor limón	1791	0	
+Café Soluble	cafeína	31900	0	
+Café Soluble	descafeínado	31900	0	
+Café Soluble	mezclado con caramelo	30749	0	
+Café Soluble	tradicional	7498	0	
+Café Soluble	gr.gourmet colombiano	6474	0	
+Café Soluble	regular	1613	0	
+Café Soluble	mezclado con azucar	463	0	
+Café Soluble	puro	209	0	
+Café Soluble	roja	132	0	
+Café Soluble	mezclado	45	0	
+Café Tostado y Molido	mezclado con caramelo	29155	0	
+Café Tostado y Molido	descafeínado	9677	0	
+Café Tostado y Molido	mezclado con azúcar	306	0	
+Café Tostado y Molido	tostado	32	0	
+Café Tostado y Molido	molido	32	0	
+Cajeta	leche	35907	0	
+Cajeta	quemada	26186	0	
+Cajeta	envinada	9721	0	
+Calabaza	italiana	22097	0	
+Calabaza	japonesa	22097	0	
+Calabaza	larga	22097	0	
+Calamar	congelado	5594	0	
+Calamar	crudo	5121	0	
+Calamar	tentáculos	4769	0	
+Calamar	descongelado	2630	0	
+Calamar	filete	2243	0	
+Calamar	desocngelado	2243	0	
+Calamar	cocido	1891	0	
+Calamar	americano	951	0	
+Callo de Almeja	congelado	110	0	
+Callo de Hacha	congelado	893	0	
+Camarón	cabeza	20493	0	
+Camarón	congelado	8181	0	
+Camarón	descongelado	8069	0	
+Camarón	coctelero	5232	0	
+Camarón	pacotilla	3787	0	
+Camarón	royal pacotilla	3542	0	
+Camarón	cocido pacotilla	3542	0	
+Camarón	pacotilla chiapas	3542	0	
+Camarón	macuil	2568	0	
+Camarón	camarón para pelar macuil	2404	0	
+Camarón	seco	2117	0	
+Camarón	polvo	1759	0	
+Camarón	variable	775	0	
+Camarón	pulpa	731	0	
+Camarón	molido	677	0	
+Camarón	coctel	629	0	
+Camarón	selecto	270	0	
+Camarón	especial	37	0	
+Canela	rama	13239	0	
+Canela	molida	11864	0	
+Canela	entera	4940	0	
+Canela	trozo	3364	0	
+Carne Cerdo	chuleta natural	34378	0	
+Carne Cerdo	chuleta	31888	1	
+Carne Cerdo	fresca	31888	0	
+Carne Cerdo	chuleta de puerco entrecortada	31888	0	
+Carne Cerdo	lomo deshuesado de puerco	31888	0	
+Carne Cerdo	chuleta natural lomo de puerco	31888	0	
+Carne Cerdo	chuleta ahumada	22814	0	
+Carne Cerdo	entrecot ahumado	22814	0	
+Carne Cerdo	milanesa	21404	0	
+Carne Cerdo	milanesa de pierna	21404	0	
+Carne Cerdo	longaniza	18791	1	
+Carne Cerdo	manitas	18786	1	manitas de cerdo
+Carne Cerdo	molida	17988	0	
+Carne Cerdo	pulpa molida	17988	0	
+Carne Cerdo	pierna entera sin hueso	17603	0	
+Carne Cerdo	pernil sin hueso	17603	1	pernil
+Carne Cerdo	cabeza	17038	0	
+Carne Cerdo	lomo	16404	1	
+Carne Cerdo	caña de lomo	16404	0	
+Carne Cerdo	trozo	16404	0	
+Carne Cerdo	lomo sin hueso	16404	0	
+Carne Cerdo	espinazo	13581	1	
+Carne Cerdo	espinazo cargado	13581	0	
+Carne Cerdo	costilla	9114	0	
+Carne Cerdo	pierna entera con hueso	8940	0	
+Carne Cerdo	pernil con hueso	8940	0	
+Carne Cerdo	chuleta mixta	6882	0	
+Carne Cerdo	chuleta arriera	6547	0	
+Carne Cerdo	pulpa en trozo	6419	0	
+Carne Cerdo	pulpa en trocitos	4645	0	
+Carne Cerdo	chuleta ranchera	1998	0	
+Carne Cerdo	chuleta de paleta de puerco	592	0	
+Carne Cerdo	pierna con hueso rebanada	308	0	
+Carne Cerdo	chuleta de sirloin con hueso	274	0	
+Carne Cerdo	chuleta de sirloin	253	0	
+Carne Cerdo	chuleta mixta con hueso	174	0	
+Carne Cerdo	codillo	85	0	
+Carne Cerdo	pulpa	84	0	
+Carne Cerdo	bistec	69	0	
+Carne Cerdo	bistec norteño	37	0	
+Carne Cerdo	bistec taquero norteño	37	0	
+Carne Cerdo	marinar	37	0	
+Carne Cerdo	paleta de cerdo sin hueso	29	0	
+Carne Cerdo	costilla con falda	7	0	
+Carne Pavo	pierna ahumada rebanada	2530	0	
+Carne Pavo	chuletón	942	0	
+Carne Pavo	chuleta ahumada	942	0	
+Carne Pollo	entero	63931	0	
+Carne Pollo	piel	50965	0	
+Carne Pollo	vísceras	30880	0	
+Carne Pollo	entero supermercado	30836	0	
+Carne Pollo	tipo super	30679	0	
+Carne Pollo	canal entera	30679	0	
+Carne Pollo	corte americano	28236	0	
+Carne Pollo	muslo	23000	1	
+Carne Pollo	pierna con muslo	22080	0	
+Carne Pollo	pechuga	20718	1	
+Carne Pollo	pierna	17682	1	
+Carne Pollo	pierna bate	17682	0	
+Carne Pollo	pechuga con hueso	15019	0	
+Carne Pollo	anatómica	15019	0	
+Carne Pollo	rabadilla	15019	0	
+Carne Pollo	pechuga sin hueso	12946	0	
+Carne Pollo	light	9246	0	
+Carne Pollo	filete	7445	0	
+Carne Pollo	pigmentada	5439	0	
+Carne Pollo	amarillo	201	0	
+Carne Pollo	fresco	201	0	
+Carne Pollo	pierna entera	118	0	
+Carne Pollo	pierna corta	115	0	
+Carne Res	bistec	30945	1	
+Carne Res	carne para asar	25723	1	
+Carne Res	panza	22631	1	
+Carne Res	menudo	22631	1	
+Carne Res	milanesa	16577	1	
+Carne Res	corte delgado	16577	0	
+Carne Res	pulpa blanca	16577	0	
+Carne Res	crudos	16094	0	
+Carne Res	milanesa de bola	14826	0	
+Carne Res	auténtica de bola	14826	0	
+Carne Res	bola corte delgado	14826	0	
+Carne Res	pulpa bola	14826	0	
+Carne Res	falda	14491	1	
+Carne Res	deshebrar	14491	0	
+Carne Res	deshebrada	14491	0	
+Carne Res	molida especial	14150	0	
+Carne Res	chuleta	13582	0	
+Carne Res	molida top sirlion	13113	0	
+Carne Res	sirlion	13113	1	sirloin
+Carne Res	bistec diezmillo	11417	0	
+Carne Res	diezmillo sin hueso	11417	1	diezmillo
+Carne Res	retazo con hueso	10692	1	retazo
+Carne Res	cocido comercial	10692	0	
+Carne Res	hígado rebanado	9068	0	
+Carne Res	molida	8021	1	carne molida
+Carne Res	cocidos	6537	0	
+Carne Res	bistec corte delgado	6458	0	
+Carne Res	chambarete con hueso	6418	1	chambarete
+Carne Res	chuleta costilla	6299	0	
+Carne Res	chuletón	6299	0	
+Carne Res	filete limpio	5961	0	
+Carne Res	guisar	5590	0	
+Carne Res	hígado	4989	1	
+Carne Res	bistec flecha para asar	4944	0	
+Carne Res	asador	4854	0	
+Carne Res	bistec ranchero	3865	0	
+Carne Res	costilla para asar	3670	0	
+Carne Res	rdfs	3670	0	
+Carne Res	falda para cocer	2939	0	
+Carne Res	costilla para cocer	2748	0	
+Carne Res	bistec para el asador	2733	0	
+Carne Res	retazo con hueso para cocer	2651	0	
+Carne Res	bistec de espaldilla	2531	0	
+Carne Res	bistec pulpa blanca	1984	0	
+Carne Res	comercial	1801	0	
+Carne Res	popular	1470	0	
+Carne Res	pulpa larga	277	0	
+Carne Res	costilla simple	202	0	
+Carne Res	flecha	202	0	
+Carne Res	brisket	149	0	
+Carne Res	asar	149	0	
+Carne Res	bistec normal	148	0	
+Carne Res	corte	146	0	
+Carne Res	flecha con hueso para asar	141	0	
+Carne Res	costilla especial	124	0	
+Carne Res	costilla aguja	111	0	
+Carne Res	costilla punta aguja	111	0	
+Carne Res	bistec de res	106	0	
+Carne Res	bistec para asar rebanado	83	0	
+Carne Res	paleta	51	0	
+Carne Res	bistec taquero norteño	30	0	
+Carne Res	milanesa de nuez	2	0	
+Carne Res	bola	2	0	
+Carne Ternera	milanesa	755	0	
+Carne Ternera	pulpa	669	0	
+Carpa	entero	1053	0	
+Carpa	fresco	1053	0	
+Cazón	filete	2711	0	
+Cazón	lomo	2711	0	
+Cazón	milanesa	258	0	
+Cazón	congelado	163	0	
+Cazón	cabeza	159	0	
+Cazón	fresco	159	0	
+Cebolla	blanca sin rabo	56250	0	
+Cebolla	manojo	19002	0	
+Cebolla	cambray	19002	1	cebollitas|cebolla cambray
+Cebolla	morada	10650	0	
+Cebolla	malla	7793	0	
+Cebolla	amarilla	4976	0	
+Cebolla	blanca con cáscara	369	0	
+Cebolla	blanca	114	0	
+Cebolla	primera	114	0	
+Cepillo Dental	doble acción	8368	0	
+Cepillo Dental	clean	888	0	
+Cepillo Dental	medio	888	0	
+Cereales	original	43717	0	
+Cereales	flakes	15243	0	
+Cereales	más chocolatoso	11207	0	
+Cereales	choco crujiente	5984	0	
+Cerillos	cajas	24149	0	
+Cerveza	retornable	114226	0	
+Cerveza	botellas	108920	0	
+Cerveza	canasta	101413	0	
+Cerveza	latas	53791	0	
+Cerveza	clara	12478	0	
+Cerveza	alcohol	7549	0	
+Charal	seco	1307	0	
+Chayote	espinas	21368	0	
+Chía	semilla	18150	0	
+Chía	stick	650	0	
+Chícharo	mitades	1280	0	
+Chícharos	vaina	7284	0	
+Chile Fresco	jalapeño	45187	1	
+Chile Fresco	cuaresmeño	45071	0	
+Chile Fresco	serrano	30439	0	
+Chile Fresco	poblano	21763	0	
+Chile Fresco	rellenar	21763	0	
+Chile Fresco	habanero	18891	1	chile habanero
+Chile Fresco	árbol verde	9158	0	
+Chile Fresco	caribe	7014	0	
+Chile Fresco	guero-largo	6736	1	chile güero
+Chile Fresco	primera	116	0	
+Chile Seco	pasilla	9150	1	chile pasilla
+Chile Seco	guajillo	9143	1	chile guajillo
+Chile Seco	ancho	4938	1	chile ancho
+Chile Seco	cascabel	2839	1	chile cascabel
+Chiles	jalapeños rajas	97209	1	rajas
+Chiles	enteros	38719	0	
+Chiles	chipotles adobados	35799	1	chiles chipotles|chipotles
+Chiles	jalapeños en escabeche	21584	0	
+Chiles	jalapeño	20666	0	
+Chiles	serrano	18053	0	
+Chocolate	leche confitados	5379	0	
+Chocolate	leche confitados con cacahuate	5370	0	
+Chocolate	relleno cremoso	1976	0	
+Chocolate	chocolate con leche	1216	0	
+Chocolate	almendra entera	771	0	
+Chocolate	suave relleno cremoso	588	0	
+Chocolate	chocolates con leche	472	0	
+Chocolate	conejos	472	0	
+Chocolate	trufa	424	0	
+Chocolate	chocolates con relleno suave	401	0	
+Chocolate	suave relleno sabor café moka	329	0	
+Chocolate	chocolates semiamargos con relleno sabor	239	0	
+Chocolate	carajillo con alcohol	239	0	
+Chocolate	tipo trufa	164	0	
+Chocolate	almendras	163	0	
+Chocolate	suave relleno	136	0	
+Chocolate	sabor café moka	136	0	
+Chocolate	leche	121	0	
+Chocolate	sabor	107	0	
+Chocolate	cereza	107	0	
+Chocolate	chocolate amargo con relleno suave	87	0	
+Chocolate	cacao	87	0	
+Chocolate	especialidades	84	0	
+Chocolate	chocolates	84	0	
+Chocolate	metal	65	0	
+Chocolate	chocolate con sabor	53	0	
+Chocolate	caramel macchiato	53	0	
+Chocolate	chocolate amargo con relleno sabor	53	0	
+Chocolate	café	53	0	
+Chocolate	corazón	53	0	
+Chocolate	chocolates amargos sin azúcar	48	0	
+Chocolate	sabor avellana	22	0	
+Chorizo	cantimpalo	14985	0	
+Chorizo	ranchero	7829	0	
+Chorizo	espanol	7587	0	
+Chucumite	entero	320	0	
+Chucumite	fresco	320	0	
+Cilantro	manojo	21448	0	
+Cintilla	filete	43	0	
+Cintilla	fajillas	43	0	
+Cintilla	tiras	43	0	
+Cintilla	fajillas sin espinas	43	0	
+Cintilla	entero	18	0	
+Cintilla	fresco	18	0	
+Ciruela	roja moscatel	4406	0	
+Clavo	entero	2993	0	
+Col	blanca	20821	0	
+Col	repollo	20821	1	
+Col	morada	17118	0	
+Combinado Primavera	hortalizas congeladas	11683	0	
+Comino	entero	452	0	
+Concentrado de Pollo	caldo	48883	1	caldo de pollo
+Concentrado de Pollo	cubos	20228	0	
+Copa Menstrual	talla	3170	0	
+Copa Menstrual	flujo abundante	3170	0	
+Copa Menstrual	talla ch	2235	0	
+Copa Menstrual	flujo moderado	2235	0	
+Crema	reducida en grasa	28951	0	
+Crema	pasteurizada	535	0	
+Crema Batida	vegetal	14311	0	
+Crema de Cacahuate	cremosa	10299	0	
+Crema Dental	sabor original	23055	0	
+Crema Dental	smiles	21577	0	
+Crema Dental	niños	11262	0	
+Crema Dental	mi villano favorito	11262	0	
+Crema Dental	minions	11262	0	
+Crema Dental	liga de la justicia	10315	0	
+Crema Dental	menta original	8877	0	
+Crema Dental	encías	1637	0	
+Crema Líquida	piel normal	43434	0	
+Crema Líquida	piel seca	33548	0	
+Crema Líquida	soft milk	16456	0	
+Crema Líquida	express hidration	15271	0	
+Crema Líquida	humectación diaria	13955	0	
+Crema Líquida	seca	13955	0	
+Crema Líquida	recuperación esencial	10900	0	
+Crema Líquida	bebé	10103	0	
+Crema Líquida	hidratante	10103	0	
+Crema Líquida	glicerina	10103	0	
+Crema Líquida	pro-ceramidas	9910	0	
+Crema Líquida	clásica	7160	0	
+Crema Líquida	celulas madre	4391	0	
+Crema Líquida	humectante	4391	0	
+Crema Líquida	esencial	22	0	
+Crema Sólida	contra arrugas	13468	0	
+Crema Sólida	piel balanceada	13261	0	
+Crema Sólida	seca	13261	0	
+Cubrebocas	plisado	45586	0	
+Cubrebocas	azul	28677	0	
+Cubrebocas	kn95	25420	0	
+Cubrebocas	mascarilla	25420	0	
+Cubrebocas	negro	16064	0	
+Cubrebocas	tricapa	11642	0	
+Cubrebocas	triple capa	10570	0	
+Cubrebocas	blanco	10570	0	
+Cubrebocas	desechable	6741	0	
+Cubrebocas	liso	5930	0	
+Cubrebocas	camuflaje	5916	0	
+Cubrebocas	color kids	1297	0	
+Cubrebocas	urban	1116	0	
+Cubrebocas	kid´s	601	0	
+Cuchara Sopera	madera	135	0	
+Cuchara Sopera	metal	35	0	
+Cuchillo	dynamic	125	0	
+Cuchillo	madera	125	0	
+Cuchillo	metal	7	0	
+Curvina	entero	1363	0	
+Curvina	fresco	1335	0	
+Curvina	congelado	28	0	
+Dátil	medjool	124	0	
+Dátil	prensado	22	0	
+Dátil	deglet sin hueso	21	0	
+Desodorante	caballero	145508	0	
+Desodorante	dama	128199	0	
+Desodorante	roll on	111280	0	
+Desodorante	antitranspirante	53075	0	
+Desodorante	fresh	34306	0	
+Desodorante	invisible	30961	0	
+Desodorante	black and white	29458	0	
+Desodorante	original	29294	0	
+Desodorante	men	22901	0	
+Desodorante	powder	17341	0	
+Desodorante	dry	17341	0	
+Desodorante	powder dry	16669	0	
+Desodorante	clinical expert	16549	0	
+Desodorante	frescura suave	16298	0	
+Desodorante	invisible clear	14723	0	
+Desodorante	spazio	14620	0	
+Desodorante	azul	14559	0	
+Desodorante	neutro balance	14318	0	
+Desodorante	transparente	14318	0	
+Desodorante	specialized	13524	0	
+Desodorante	cool wave	13524	0	
+Desodorante	gel antitranspirante	13524	0	
+Desodorante	active dry	13009	0	
+Desodorante	clinical	12384	0	
+Desodorante	clasic	12384	0	
+Desodorante	fragancia intensa	12178	0	
+Desodorante	men+care	12055	0	
+Desodorante	cuidado total	12055	0	
+Desodorante	clinical men	11679	0	
+Desodorante	clean	11679	0	
+Desodorante	floral	8060	0	
+Desodorante	black	5853	0	
+Desodorante	verde	5382	0	
+Desodorante	aclarado natural	4677	0	
+Desodorante	original clean	4494	0	
+Desodorante	tono natural	4133	0	
+Desodorante	zero	543	0	
+Desodorante	rose petals	543	0	
+Desodorante	for men	1	0	
+Detergente P/ropa	polvo	143094	0	
+Detergente P/ropa	líquido	31042	0	
+Detergente P/ropa	delicada	16739	0	
+Detergente P/ropa	limpieza instantánea	16001	0	
+Detergente P/ropa	todo	9744	0	
+Detergente P/ropa	aromas de primavera	9250	0	
+Detergente P/ropa	oxigeno activo	9039	0	
+Detergente P/ropa	poder	8524	0	
+Detergente P/ropa	cuidado	8524	0	
+Detergente P/ropa	universal	8079	0	
+Detergente P/ropa	toque de downy	7092	0	
+Detergente P/ropa	multiusos	6795	0	
+Detergente P/ropa	concentrado	6257	0	
+Detergente P/ropa	color	3233	0	
+Detergente P/ropa	revitacolor	2348	0	
+Detergente P/ropa	poder activo	1494	0	
+Detergente P/ropa	acción instantanea	1474	0	
+Detergente P/ropa	flores para mis amores	210	0	
+Detergente P/ropa y Trastes	polvo	37620	0	
+Detergente P/trastes	limón	50734	0	
+Detergente P/trastes	líquido	45342	0	
+Detergente P/trastes	verde	34472	0	
+Detergente P/trastes	polvo	25114	0	
+Detergente P/trastes	roja	11112	0	
+Detergente P/trastes	pure	5720	0	
+Detergente P/trastes	lemon	5720	0	
+Dip	queso suave	2521	0	
+Dip	cebolla francesa	2371	0	
+Dip	queso	2317	0	
+Dip	jalapeño	2317	0	
+Durazno	amarillo	4114	0	
+Durazno	melocotón	3685	0	
+Duraznos en Almíbar	mitades	23685	0	
+Ejote	verde	16999	0	
+Elote	grano	108212	0	
+Empanizadores	pan molido	19969	1	
+Empanizadores	clásico	19969	0	
+Empanizadores	crujiente	19616	0	
+Empanizadores	galleta molida	19616	0	
+Empanizadores	granulado	13465	0	
+Empanizadores	crunchy	13465	0	
+Empanizadores	corn flakes	13465	0	
+Espinacas	manojo	22075	0	
+Espuma de Afeitar	sensitive	20114	0	
+Fibra para Cocina	verde	13617	0	
+Flan	sabor vainilla	53491	0	
+Flan	caramelo	46751	0	
+Flan	flan	14604	0	
+Floretes de Brócoli	hortalizas congeladas	10771	0	
+Fórmula Láctea	lactante	25323	0	
+Frijol	negro	102468	0	
+Frijol	pinto	53651	0	
+Frijol	querétaro	37102	0	
+Frijol	flor de mayo	21400	0	
+Frijol	jamapa	16552	0	
+Frijol	peruano	14315	0	
+Frijol	bayo	9017	0	
+Frijol	nacional	6355	0	
+Frijol	san luis	74	0	
+Frijol	saltillo	73	0	
+Frijol	mayo coba	26	0	
+Frijoles	refritos	52081	0	
+Frijoles	negros	19585	0	
+Frijoles	bayos	17464	0	
+Frijoles	negro	15032	0	
+Frijoles	entero	14534	0	
+Frijoles	bayo	14534	0	
+Fruta Seca	orejón mixto	140	0	
+Fruta Seca	mixta	81	0	
+Fruta Seca	orejón de manzana	66	0	
+Fruta Seca	orejón de chabacano	63	0	
+Fruta Seca	orejón de durazno	15	0	
+Galletas Dulces	polvorones	20417	1	
+Galletas Dulces	triki trakes	20377	1	
+Galletas Dulces	príncipe	19889	1	galletas príncipe
+Galletas Dulces	sandwich	18843	0	
+Galletas Dulces	oreo	15534	1	
+Galletas Dulces	chips ahoy	12876	1	
+Galletas Dulces	barritas con relleno con fresa	12367	0	
+Galletas Dulces	barritas con relleno con piña	12184	0	
+Galletas Dulces	barras de coco	9634	0	
+Galletas Dulces	chokis	5204	1	
+Galletas Dulces	clásica	5204	0	
+Galletas Dulces	emperador	3309	1	galletas emperador
+Galletas Dulces	chocolate cremoso	3309	0	
+Galletas Dulces	arcoiris	2982	0	
+Galletas Dulces	rico	1332	0	
+Galletas Dulces	original	706	0	
+Galletas Dulces	hojaldradas	288	0	
+Galletas Populares	marias	31905	1	galletas marías|marías
+Galletas Populares	animalitos	10486	1	galletas de animalitos|animalitos
+Galletas Saladas	saladitas	36074	1	
+Galletas Saladas	ritz	16683	1	
+Galletas Saladas	habaneras	10458	1	galletas habaneras
+Galletas Saladas	clásica	10458	0	
+Galletas Saladas	sabor mantequilla	4210	0	
+Galletas Saladas	crackets	4210	0	
+Galletas Saladas	relleno sabor	996	0	
+Galletas Saladas	queso	996	0	
+Galletas Saladas	sandwich	996	0	
+Gel Antibacterial	básico	29540	0	
+Gel Antibacterial	puro	29540	0	
+Gel Antibacterial	alcohol etílico	29540	0	
+Gel Fijador	caballero	16081	0	
+Gel Fijador	profesional	9393	0	
+Gel Fijador	transparente	9393	0	
+Gelatina en Polvo	limón	53845	0	
+Gelatina en Polvo	leche	35445	0	
+Gelatina en Polvo	agua	35203	0	
+Gelatina en Polvo	fresa	12920	0	
+Gelatina en Polvo	chocolate	11664	0	
+Gelatina en Polvo	pistache	10861	0	
+Glucómetro	free style	8581	0	
+Glucómetro	modelo ref	8121	0	
+Glucómetro	sensor	5065	0	
+Glucómetro	modelo active ref	5037	0	
+Glucómetro	c.b	5037	0	
+Glucómetro	modelo instant ref	4992	0	
+Glucómetro	modelo aw	4742	0	
+Glucómetro	optium neo	3516	0	
+Granada	china	1717	0	
+Granada	roja	1622	0	
+Granola	arándanos	6910	0	
+Granola	almendras	6910	0	
+Granola	avena	5867	0	
+Granola	amaranto	5867	0	
+Granola	pasas	5867	0	
+Granola	cacahuates	5867	0	
+Granos de Elote	hortalizas congeladas	9246	0	
+Guantes de Látex	multiusos	8142	0	
+Guarnición de Verduras	hortalizas congeladas	13032	0	
+Gurrubata	entero	137	0	
+Gurrubata	fresco	137	0	
+Haba	pelada	14313	0	
+Haba	cáscara	3016	0	
+Harina de Maíz	fécula	14637	1	fécula de maíz
+Harina de Maíz	natural	14637	0	
+Harina de Maíz	maíz blanco	7043	0	
+Harina de Maíz	nixtamalizado	7043	0	
+Harina de Trigo	integral	8342	0	
+Harina Hot Cakes	tradicionales	38344	0	
+Harina Hot Cakes	original	10084	0	
+Helado	sabor napolitano	15432	0	
+Huachinango	fresco	5403	0	
+Huachinango	golfo	5278	0	
+Huachinango	entero	3883	0	
+Huachinango	ración	1659	0	
+Huachinango	pacífico	892	0	
+Huachinango	filete	628	0	
+Huachinango	congelado	139	0	
+Huevo	blanco	188578	0	
+Huevo	rojo	12900	0	
+Huevo	jumbo	372	0	
+Huevo	cartera	73	0	
+Insecticida Aerosol	promoción	55434	0	
+Insecticida Aerosol	base de agua	19037	0	
+Insecticida Aerosol	base agua	15351	0	
+Insecticida Aerosol	cucarachas	14731	0	
+Insecticida Aerosol	escopriones	14731	0	
+Jabón de Pasta	envoltura	76836	0	
+Jabón de Pasta	rosa	29104	0	
+Jabón de Pasta	blanco	17670	0	
+Jabón de Pasta	frescura agradable	14706	0	
+Jabón de Pasta	amarillo	11838	0	
+Jabón de Pasta	lavanderia	11714	0	
+Jabón de Pasta	gr.con envoltura	3703	0	
+Jabón de Pasta	azul	2	0	
+Jabón de Tocador	neutro	32893	0	
+Jabón de Tocador	sensación humectante	21383	0	
+Jabón de Tocador	oliva	21383	0	
+Jabón de Tocador	aloe	21383	0	
+Jabón de Tocador	original	20822	0	
+Jabón de Tocador	aqua	20309	0	
+Jabón de Tocador	dermolimpiador	20029	0	
+Jabón de Tocador	rosa	19664	0	
+Jabón de Tocador	antibacterial	18774	0	
+Jabón de Tocador	aloe vera	3892	0	
+Jabón de Tocador	natural con aroma de almendras	1716	0	
+Jabón de Tocador	amarillo	1501	0	
+Jabón de Tocador	menta	646	0	
+Jabón de Tocador	hierbabuena	646	0	
+Jabón de Tocador	coco	449	0	
+Jabón de Tocador	siente la frescura	428	0	
+Jabón de Tocador	equilibrio neutro	378	0	
+Jabón de Tocador	brisa radiante	345	0	
+Jabón de Tocador	hidratación natural	292	0	
+Jabón de Tocador	avena	271	0	
+Jabón de Tocador	blanco	90	0	
+Jabón de Tocador	protección neutra	87	0	
+Jabón de Tocador	extracto de sábila	26	0	
+Jabón de Tocador	neutro hipoalergénico	14	0	
+Jabón de Tocador	bicarbonato de sodio	12	0	
+Jabón de Tocador	aceite de aguacate	12	0	
+Jabón de Tocador	verde	6	0	
+Jabón de Tocador	energia radiante	4	0	
+Jabón de Tocador	vitamina	4	0	
+Jabón de Tocador	bebé	4	0	
+Jabón de Tocador	ricitos de oro	2	0	
+Jabón de Tocador	manzanilla	2	0	
+Jabón de Tocador	clásico	1	0	
+Jabón de Tocador	aceites hidraflorales	1	0	
+Jabón de Tocador para Bebé	manzanilla	16488	0	
+Jabón de Tocador para Bebé	original	15411	0	
+Jabón de Tocador para Bebé	hipoalergénico	15411	0	
+Jabón de Tocador para Bebé	humectación enriquecida	6066	0	
+Jaiba	congelada	177	0	
+Jamón	pavo	210085	0	
+Jamón	virginia	158088	0	
+Jamón	pierna	78118	0	
+Jamón	cerdo	48727	0	
+Jamón	pierna real	14243	0	
+Jamón	clásico	12216	0	
+Jamón	york	11388	0	
+Jamón	horneado especial	8935	0	
+Jamón	tradicional	8669	0	
+Jamón	pavo real	8217	0	
+Jamón	barcelona	7328	0	
+Jamón	california	6423	0	
+Jamón	horneado	6145	0	
+Jamón	nápoles	6040	0	
+Jamón	tipo york	5698	0	
+Jamón	mandolina	5220	0	
+Jamón	americano	4769	0	
+Jamón	jamón de pavo	3984	0	
+Jamón	especial	3984	0	
+Jamón	proteínas	2959	0	
+Jamón	natural	2511	0	
+Jamón	fino	732	0	
+Jamón	extrafino	679	0	
+Jamón	pic-nic	24	0	
+Jamón	ovalado	17	0	
+Jamón	comercial	2	0	
+Jarabe P/preparar Bebidas	horchata	16726	1	
+Jarabe P/preparar Bebidas	azul	3419	0	
+Jerez	dulce	71	0	
+Jitomate	saladette	48483	0	
+Jitomate	huaje	48483	0	
+Jitomate	tomate saladette	48483	0	
+Jitomate	bola	21029	0	
+Jitomate	sinaloa	21029	0	
+Jitomate	tomate bola	21029	0	
+Jitomate	primera	378	0	
+Jitomate	segunda	360	0	
+Jitomate	malla	197	0	
+Jitomate	tercera	177	0	
+Jitomate	tomate	17	0	
+Jitomate	tomatito salsero	17	0	
+Jitomate	primera exportación	5	0	
+Jitomate	primera nacional	2	0	
+Juego de Cubiertos	lyf	29	0	
+Juego de Cubiertos	mncb-4713	20	0	
+Juego de Cubiertos	sku	18	0	
+Juego de Cubiertos	incluye base de acero inoxidable	18	0	
+Jugo de Fruta	mango	34880	0	
+Jugo de Fruta	naranja	25506	0	
+Jugo de Fruta	sabor cítricos	16872	0	
+Jugo de Fruta	pulpa	9486	0	
+Jugo de Fruta	naranja de concentrado	8623	0	
+Jugo de Fruta	soya con naranja	6025	0	
+Jugo de Fruta	soya	2841	0	
+Jurel	fresco	1826	0	
+Jurel	jurelito	705	0	
+Lámpara Ahorradora	luz de día	4924	0	
+Lámpara Ahorradora	horas	4924	0	
+Lámpara Ahorradora	led	1904	0	
+Lámpara Ahorradora	luz blanca	1584	0	
+Lámpara Ahorradora	luz fría	320	0	
+Lancetas	c.b	7829	0	
+Lancetas	colores	4902	0	
+Langosta	california	177	0	
+Langosta	cocida	177	0	
+Langostino	congelado	125	0	
+Leche en Polvo	alimento para niños	31903	0	
+Leche en Polvo	parcialmente descremada deslactosada	15163	0	
+Leche en Polvo	entera	14939	0	
+Leche Evaporada	evaporada parcialmente descremada	24786	0	
+Leche Evaporada	reducida en grasa	15743	0	
+Leche Pasteurizada	entera	19617	0	
+Leche Pasteurizada	parcialmente descremada	4788	0	
+Leche Pasteurizada	light	4587	0	
+Leche Pasteurizada	baja en grasa	4586	0	
+Leche Pasteurizada	deslactosada	4295	0	
+Leche Pasteurizada	semidescremada	4094	0	
+Leche Ultrapasteurizada	entera	109441	0	
+Leche Ultrapasteurizada	parcialmente descremada	106044	0	
+Leche Ultrapasteurizada	light	67697	0	
+Leche Ultrapasteurizada	semidescremada	41780	0	
+Leche Ultrapasteurizada	azul	24848	0	
+Leche Ultrapasteurizada	baja en grasa	22786	0	
+Leche Ultrapasteurizada	semi	21049	0	
+Leche Ultrapasteurizada	reducida en grasa	20848	0	
+Leche Ultrapasteurizada	chocopower	10321	0	
+Leche Ultrapasteurizada	sabor chocolate	10321	0	
+Leche Ultrapasteurizada	deslactosada	781	0	
+Lechuga	romana	23721	0	
+Lechuga	orejona	13831	0	
+Lechuga	larga	13831	0	
+Lenguado	fresco	864	0	
+Lenguado	entero	570	0	
+Lenguado	filete	294	0	
+Limón	agrio con semilla	40728	0	
+Limón	colima	40528	0	
+Limón	agrio sin semilla	40483	0	
+Limón	persa	39359	0	
+Limón	malla	2608	0	
+Limón	upc	994	0	
+Limón	primera	113	0	
+Limón	mexicano con semilla	110	0	
+Limón	real amarillo	92	0	
+Limón	supremo	12	0	
+Limpiador Líquido P/piso	multiusos	56645	0	
+Limpiador Líquido P/piso	multiusos pino	17669	0	
+Limpiador Líquido P/piso	fresca lavanda	16225	0	
+Limpiador Líquido P/piso	lavanda	8870	0	
+Limpiador Líquido P/piso	flores de primavera	8622	0	
+Limpiador Líquido P/piso	pino	5864	0	
+Limpiador Líquido P/piso	gold	4802	0	
+Limpiador Líquido P/piso	lavanda intensa	4802	0	
+Lisa	entero	1820	0	
+Lisa	golfo	1820	0	
+Lisa	fresco	1820	0	
+Lobina	entero	748	0	
+Lobina	fresco	748	0	
+Maíz Pozolero	roja	5580	0	
+Maíz Pozolero	cabeza	1620	0	
+Mango	ataulfo	14741	0	
+Mango	paraiso petacón	14107	0	
+Mango	manila	3105	0	
+Mantequilla	sal	94685	0	
+Manzana	red delicious	43569	0	
+Manzana	roja	41361	0	
+Manzana	roja americana	41031	0	
+Manzana	royal gala	21126	0	
+Manzana	granny smith	20992	0	
+Manzana	golden	16083	0	
+Manzana	gala	8291	0	
+Manzana	golden delicious	6787	0	
+Manzana	roja delicia	670	0	
+Manzana	primera	213	0	
+Manzana	escolar	189	0	
+Manzana	rome beauty	101	0	
+Manzana	golden nacional	94	0	
+Manzana	malla	92	0	
+Manzana	roja chihuahua	77	0	
+Manzana	roja de importación	60	0	
+Manzana	manzana roja de chihuahua	44	0	
+Manzana	roja nacional	6	0	
+Margarina	sal	115210	0	
+Mayonesa	jugo de limones	44090	0	
+Mayonesa	reducida en grasa	27978	0	
+Mayonesa	aderezo de mayonesa	23871	0	
+Mayonesa	aderezo con jugo de limones	16048	0	
+Melón	chino	21242	0	
+Melón	valenciano	7537	0	
+Melón	amarillo	7537	0	
+Merluza	filete congelado	152	0	
+Mermelada	fresa	58084	0	
+Mero	entero	872	0	
+Mero	fresco	841	0	
+Mero	filete fresco	156	0	
+Mero	filete congelado	97	0	
+Mero	congelado	31	0	
+Mezcla California	hortalizas congeladas	13662	0	
+Mezcla Campesina	hortalizas congeladas	9709	0	
+Microbicida	desinfecta agua	7737	0	
+Microbicida	alimentos	7737	0	
+Miel de Abeja	natural	10714	0	
+Miel de Abeja	dulce	1449	0	
+Mojarra	tilapia	19198	0	
+Mojarra	entero	12488	0	
+Mojarra	congelado	10807	0	
+Mojarra	fresco	8844	0	
+Mojarra	filete	7833	0	
+Mojarra	descongelado	5429	0	
+Mojarra	granja congelado	1133	0	
+Mojarra	granja	830	0	
+Mojarra	mexicana	488	0	
+Mojarra	mexicana sustentable	488	0	
+Mojarra	premium	43	0	
+Mojarra	pluma	9	0	
+Mole Rojo en Pasta	auténtico	529	0	
+Mostaza	preparada	12019	0	
+Mostaza	clásica	7521	0	
+Naranja	valencia	11599	0	
+Naranja	jugo	9740	0	
+Naranja	veracruz	180	0	
+Naranja	primera	124	0	
+Nebulizador	compresor	70046	0	
+Nebulizador	modelo p-103	19438	0	
+Nebulizador	p-102	15714	0	
+Nebulizador	mod	14777	0	
+Nebulizador	ne-c101	14777	0	
+Nebulizador	modelo ne-c801	13840	0	
+Nebulizador	modelo ne-c801kd	6174	0	
+Nebulizador	pistón	5762	0	
+Nebulizador	modelo nb-220c	5762	0	
+Nebulizador	modelo p-105	103	0	
+Nopal	espinas	14523	0	
+Nuez	mitades	11164	0	
+Nuez	castilla	711	0	
+Olla de Presión Express	capacidad	19187	0	
+Olla de Presión Express	c.b	16066	0	
+Olla de Presión Express	yl243la	2744	0	
+Olla de Presión Express	eyl243la	2744	0	
+Olla de Presión Express	p2614632	2129	0	
+Olla de Presión Express	p26146	684	0	
+Olla de Presión Express	p3530733	664	0	
+Olla de Presión Express	p3534447	343	0	
+Olla de Presión Express	vancouver	58	0	
+Oxímetro	mod	4631	0	
+Oxímetro	pc-60a	4631	0	
+Oxímetro	pulso md300c2	4027	0	
+Oxímetro	inh01	3801	0	
+Oxímetro	fpx-033	78	0	
+Pámpano	entero	1195	0	
+Pámpano	fresco	1195	0	
+Pan de Caja	rebanado blanco	69878	0	
+Pan de Caja	rebanado integral	62190	0	
+Pan de Caja	tostado	25172	0	
+Pan de Caja	clásico	25172	0	
+Pan de Caja	masa madre	17469	0	
+Pan de Caja	rebanado natural	5278	0	
+Pan de Caja	blanco	2557	0	
+Pan de Caja	rinde	2225	0	
+Pan de Caja	pan	390	0	
+Pan de Caja	sándwich	147	0	
+Pan Dulce	concha	21329	1	
+Pan Dulce	cuerno	20073	1	
+Pan Dulce	dona cubierta de chocolate	19355	1	dona
+Pan Dulce	bisquet	18184	1	
+Pañales Desechables	etapa	78947	0	
+Pañales Desechables	niña	40194	0	
+Pañales Desechables	niño	38753	0	
+Pañales Desechables	talla	19616	0	
+Pañales Desechables	antifugas	13044	0	
+Pañales Desechables	piezass	3847	0	
+Pantiprotectores	diarios	26053	0	
+Pantiprotectores	diarios multiestilos	13687	0	
+Pantiprotectores	ultradelgado	13687	0	
+Pantiprotectores	largo extra largos	13519	0	
+Pantiprotectores	delicate	12534	0	
+Pantiprotectores	regular	12534	0	
+Pantiprotectores	largos	9701	0	
+Papa	blanca	53990	0	
+Papa	alfa	53782	0	
+Papa	malla	7321	0	
+Papa	russet	461	0	
+Papa	russet en saco	141	0	
+Papa	primera	115	0	
+Papa	lavar	101	0	
+Papa	morena americana	70	0	
+Papa	mi tienda	33	0	
+Papas Fritas y Similares	chip´s	49763	0	
+Papas Fritas y Similares	papas fritas	46226	0	
+Papas Fritas y Similares	nachos	31678	1	
+Papas Fritas y Similares	sal	31660	0	
+Papas Fritas y Similares	original	30089	0	
+Papas Fritas y Similares	paketaxo	21515	0	
+Papas Fritas y Similares	quexo	18882	0	
+Papas Fritas y Similares	doritos	18510	1	
+Papas Fritas y Similares	jalapeño	16817	0	
+Papas Fritas y Similares	sabor sal	16629	0	
+Papas Fritas y Similares	fuego chile	16317	0	
+Papas Fritas y Similares	limón ardiente	16317	0	
+Papas Fritas y Similares	ruffles	14053	1	
+Papas Fritas y Similares	tostitos	13168	1	
+Papas Fritas y Similares	churrumais	12958	1	
+Papas Fritas y Similares	limoncito	12958	0	
+Papas Fritas y Similares	fritos	12814	0	
+Papas Fritas y Similares	limón	12814	0	
+Papas Fritas y Similares	azul	11243	0	
+Papas Fritas y Similares	cheetos torciditos	10860	1	cheetos
+Papas Fritas y Similares	rancheritos	10087	1	
+Papas Fritas y Similares	queso	4929	0	
+Papas Fritas y Similares	big mix	3942	0	
+Papas Fritas y Similares	sabritones	3546	1	
+Papas Fritas y Similares	chicharrón	3361	0	
+Papas Fritas y Similares	cerdo natural	3361	0	
+Papas Fritas y Similares	mezcladito	2633	0	
+Papas Fritas y Similares	adobadas	2592	0	
+Papas Fritas y Similares	fuego	1823	0	
+Papas Fritas y Similares	sabor brisket americano	400	0	
+Papas Fritas y Similares	sabor tacos al pastor	389	0	
+Papas Fritas y Similares	sabor miel de maple	381	0	
+Papas Fritas y Similares	tocino	381	0	
+Papas Fritas y Similares	valentones	258	0	
+Papas Fritas y Similares	papas	200	0	
+Papas Fritas y Similares	adobo mexicano	200	0	
+Papaya	maradol	23451	0	
+Papel Higiénico	dobles	116214	0	
+Papel Higiénico	xxl	17175	0	
+Papel Higiénico	triples	3274	0	
+Papel Higiénico	rendidor	2593	0	
+Papel Higiénico	doble	2247	0	
+Papel Higiénico	jumbo	750	0	
+Papel Higiénico	regular	314	0	
+Papel Higiénico	lavanda	233	0	
+Pargo	pargo-huachinango	941	0	
+Pargo	entero	734	0	
+Pargo	fresco	734	0	
+Pargo	filete	207	0	
+Pasta para Sopa	spaghetti	66914	1	
+Pasta para Sopa	fideo	55457	1	
+Pasta para Sopa	codo	21666	1	
+Pasta para Sopa	lengüita	11257	0	
+Pasta para Sopa	letra	10271	0	
+Pasta para Sopa	moñito	9191	0	
+Pasta para Sopa	fideo cortado	8618	0	
+Pasta para Sopa	letras	7078	1	
+Pasta para Sopa	pluma	6892	0	
+Pasta para Sopa	estrella	6803	1	estrellas
+Pasta para Sopa	munición	6747	1	
+Pasta para Sopa	lengua	6508	0	
+Pasta para Sopa	codo rayado	1069	0	
+Pasta para Sopa	espaguetti	226	0	
+Pasta para Sopa	fideo corto	131	0	
+Pasta para Sopa	incluye pasta larga	62	0	
+Pastelillos y Pan Dulce Empaquetado	panqué nuez	23028	1	panqué
+Pastelillos y Pan Dulce Empaquetado	panqué con pasas	22380	0	
+Pastelillos y Pan Dulce Empaquetado	pinguinos	20457	1	pingüinos
+Pastelillos y Pan Dulce Empaquetado	gansito	20137	1	
+Pastelillos y Pan Dulce Empaquetado	donitas	19773	1	
+Pastelillos y Pan Dulce Empaquetado	espolvoreadas	19773	0	
+Pastelillos y Pan Dulce Empaquetado	roles de canela	19741	1	
+Pastelillos y Pan Dulce Empaquetado	pasas	19741	0	
+Pastelillos y Pan Dulce Empaquetado	chocoroles	19533	1	
+Pastelillos y Pan Dulce Empaquetado	nito	18904	0	
+Pastelillos y Pan Dulce Empaquetado	mantecadas	18190	1	
+Pastelillos y Pan Dulce Empaquetado	vainilla	18190	0	
+Pastelillos y Pan Dulce Empaquetado	barritas	105	0	
+Pastelillos y Pan Dulce Empaquetado	piña	53	0	
+Pastelillos y Pan Dulce Empaquetado	fresa	52	0	
+Pavo	natural	596	0	
+Pavo	ahumado	256	0	
+Pavo	horneado	172	0	
+Pavo	marinado	77	0	
+Pavo	crudo	56	0	
+Pavo	tierno	14	0	
+Pavo	entero	3	0	
+Pavo	menudencias	3	0	
+Pechuga de Pavo	virginia	7675	0	
+Pera	d´anjou	20310	0	
+Pera	bartlett	3456	0	
+Pera	paraiso	216	0	
+Perón	golden	7597	0	
+Pescado Seco Salado	suelto	1	0	
+Peto	entero	128	0	
+Peto	fresco	128	0	
+Pilas Eléctricas	dura más	9018	0	
+Pilas Eléctricas	más duración	8505	0	
+Pilas Eléctricas	aaa	5412	0	
+Pimienta	negra	8373	0	
+Pimienta	molido grueso	8373	0	
+Pimienta	negra entera	4533	0	
+Pimienta	negra molida	504	0	
+Pimiento	morrón verde	20120	1	pimiento morrón
+Piña	miel	21885	0	
+Piña	esmeralda	2	0	
+Piña	cayena	2	0	
+Piña en Almíbar	trocitos	20488	0	
+Piña en Almíbar	rebanada	11187	0	
+Plátano	tabasco	47750	0	
+Plátano	chiapas	47634	0	
+Plátano	roatán	47634	0	
+Plátano	portalimón	47634	0	
+Plátano	macho	18647	0	
+Plátano	penca	155	0	
+Plátano	primera	116	0	
+Plato Sopero	capacidad	58	0	
+Plato Sopero	plgs	4	0	
+Plato Trinche/extendido	y102	39	0	
+Plato Trinche/extendido	trinche	39	0	
+Pollo Rostizado. Tradicional	incluye complementos	11989	0	
+Polvo P/preparar Bebidas	naranja	54392	0	
+Polvo P/preparar Bebidas	requiere azúcar	15279	0	
+Polvo P/preparar Bebidas	necesita azúcar	13946	0	
+Polvo P/preparar Bebidas Sabor Chocolate	cocoa	36284	0	
+Polvo P/preparar Bebidas Sabor Chocolate	extra cocoa	612	0	
+Producto Lácteo	ultrapasteurizada	38519	0	
+Producto Lácteo	grasa vegetal	22497	0	
+Producto Lácteo	adicionado con vitaminas	16022	0	
+Producto Lácteo	ácido fólico	16022	0	
+Producto Lácteo	niacina	16022	0	
+Producto Lácteo	hierro	16022	0	
+Producto Lácteo	clásica	7281	0	
+Producto para Depilación	crema	13254	0	
+Producto para Depilación	sensible	12508	0	
+Producto para Depilación	piel sensible	9688	0	
+Producto para Depilación	fresh	2500	0	
+Producto para Depilación	pieles sensibles	2500	0	
+Producto para Depilación	pure	1754	0	
+Producto para Depilación	silk	746	0	
+Producto para Depilación	pieles normales	494	0	
+Producto para Depilación	bandas de cera	494	0	
+Protector Solar	fps	75145	0	
+Protector Solar	protección	12254	0	
+Protector Solar	piel sensible	12254	0	
+Protector Solar	hidratante	8302	0	
+Protector Solar	ultra resistente al agua	8302	0	
+Protector Solar	especial para piel sensible	7962	0	
+Protector Solar	sport	7859	0	
+Protector Solar	rápida absorción	7859	0	
+Pulpo	congelado	5593	0	
+Pulpo	descongelado	5129	0	
+Pulpo	entero	4970	0	
+Pulpo	baby	464	0	
+Pulpo	especial	159	0	
+Puré de Tomate	tomates molidos condimentados	21331	0	
+Puré de Tomate	condimentado	17894	0	
+Queso Americano	rebanadas	54855	0	
+Queso Americano	imitación queso americano	23951	0	
+Queso Americano	queso procesado	8237	0	
+Queso Crema	untable	7078	0	
+Queso Fresco	imitación queso fresco	4944	0	
+Queso Manchego	rebanado	45459	0	
+Queso Manchego	triangular	6964	0	
+Queso Manchego	bloque	818	0	
+Queso Oaxaca	imitación queso oaxaca	10450	0	
+Queso Panela	imitación queso panela canasto	4203	0	
+Queso Panela	cremoso	2716	0	
+Rábano	cambray	17459	0	
+Rábano	manojo	7160	0	
+Rastrillos Desechables	presto barba	54450	0	
+Rastrillos Desechables	rosa	20204	0	
+Rastrillos Desechables	sensitive	14878	0	
+Rastrillos Desechables	venus	12524	0	
+Rastrillos Desechables	comfortgel	11904	0	
+Rastrillos Desechables	comfort gel	10453	0	
+Rastrillos Desechables	ultra grip	8314	0	
+Rastrillos Desechables	movil	8099	0	
+Rastrillos Desechables	comfort	6965	0	
+Rastrillos Desechables	advance	6965	0	
+Refresco	retornable	306215	0	
+Refresco	naranja	46053	0	
+Refresco	calorias	14219	0	
+Refresco	azúcar	14112	0	
+Refresco	manzanita	12883	1	
+Refresco	tamarindo	12869	0	
+Refresco	zero	1688	0	
+Refresco	zero azúcar	1297	0	
+Refresco	light	1136	0	
+Repuestos de Navajas	mach	11308	0	
+Repuestos de Navajas	sensitive	7389	0	
+Repuestos de Navajas	venus	5099	0	
+Repuestos de Navajas	skin protect sensitive	5099	0	
+Robalito	entero	327	0	
+Robalito	fresco	327	0	
+Robalito	ración	327	0	
+Robalo	fresco	2262	0	
+Robalo	entero	1598	0	
+Robalo	golfo	1598	0	
+Robalo	filete	664	0	
+Rompope	vainilla	446	0	
+Rompope	piñón	215	0	
+Rompope	capuchino	122	0	
+Ropa Interior Desechable y Similares	pañal para adulto	21165	0	
+Ropa Interior Desechable y Similares	pants	15512	0	
+Ropa Interior Desechable y Similares	extra nocturna	15034	0	
+Ropa Interior Desechable y Similares	toalla para incontinencia	15034	0	
+Ropa Interior Desechable y Similares	pants discret beige	8444	0	
+Ropa Interior Desechable y Similares	mujer	8325	0	
+Ropa Interior Desechable y Similares	protect	6765	0	
+Ropa Interior Desechable y Similares	protect ch	4422	0	
+Ropa Interior Desechable y Similares	predoblado	1631	0	
+Ropa Interior Desechable y Similares	unitalla	1631	0	
+Rosca de Reyes	artesanal	41	0	
+Rubia	entero	424	0	
+Rubia	fresco	424	0	
+Sal de Mar	grano grueso	4247	0	
+Sal Molida de Mesa	yodada fluorurada	6135	0	
+Sal Molida de Mesa	natural	5153	0	
+Salchicha	pavo	117389	0	
+Salchicha	hot dog	35767	0	
+Salchicha	cocktail	16722	0	
+Salchicha	frankfurt	15756	0	
+Salchicha	vienesa	9429	0	
+Salchicha	frankfort	9418	0	
+Salchicha	botanera	7134	0	
+Salchicha	estilo viena	1090	0	
+Salchicha	viena	841	0	
+Salmón	filete con piel	7718	0	
+Salmón	chileno	7557	0	
+Salmón	pacífico	7557	0	
+Salmón	congelado	2994	0	
+Salmón	descongelado	1538	0	
+Salmón	noruego	908	0	
+Salmón	filete sin piel	747	0	
+Salmón	entero	408	0	
+Salmón	fresco	408	0	
+Salsa de Soya	etiqueta roja	6795	0	
+Salsa de Soya	tradicional	6351	0	
+Salsa Picante y Similares	clásica	35228	0	
+Salsa Picante y Similares	etiqueta amarilla	18742	0	
+Salsa Picante y Similares	chipotles adobados molidos	14345	0	
+Salsa Picante y Similares	chipotles dulces	14188	0	
+Salsa Picante y Similares	adobados molidos	14188	0	
+Salsa Picante y Similares	habanero molido	12226	0	
+Salsa Picante y Similares	blanca	10005	0	
+Salsa Picante y Similares	chile	10005	0	
+Salsa Picante y Similares	polvo con limón	10005	0	
+Salsa Picante y Similares	jalapeños molidos	7456	0	
+Salsa Picante y Similares	tradicional	600	0	
+Sandía	charleston	20641	0	
+Sandía	rayada	20641	0	
+Sandía	roja	20641	0	
+Sardina	tomate	105901	0	
+Semilla de Girasol	pelada	2555	0	
+Shampoo	manzanilla	21475	0	
+Shampoo	acondicionamiento extra intensivo	16687	0	
+Shampoo	protección caída	16579	0	
+Shampoo	ceramidas	16328	0	
+Shampoo	aceite herbal	16068	0	
+Shampoo	restauración	15978	0	
+Shampoo	proteina	13890	0	
+Shampoo	acondicionador	13890	0	
+Shampoo	suave	13890	0	
+Shampoo	control caída	13258	0	
+Shampoo	aceite de oliva	12883	0	
+Shampoo	fructis	12585	0	
+Shampoo	fortificante	12585	0	
+Shampoo	stop caída	12585	0	
+Shampoo	clásico	12166	0	
+Shampoo	hierbas	12166	0	
+Shampoo	extra	11869	0	
+Shampoo	gold	10911	0	
+Shampoo	cúrcuma	10911	0	
+Shampoo	especialidades	10891	0	
+Shampoo	fuerza acti-ceramidas	10708	0	
+Shampoo	aceite de ricino	10564	0	
+Shampoo	lavanda	9286	0	
+Shampoo	aceite de almendras	9286	0	
+Shampoo	hidratante	8534	0	
+Shampoo	reparación total	8431	0	
+Shampoo	cabello dañado	8431	0	
+Shampoo	hidratación	8105	0	
+Shampoo	pulpa de sábila	8105	0	
+Shampoo	aguacate	8105	0	
+Shampoo	men	6325	0	
+Shampoo	control caspa	5765	0	
+Shampoo	original	5208	0	
+Shampoo	capullo de seda	4795	0	
+Shampoo	fortalecimiento	4795	0	
+Shampoo	reconstrucción completa	3397	0	
+Shampoo	reparación	3360	0	
+Shampoo	cabello seco	3177	0	
+Shampoo	caída resist x3	2778	0	
+Shampoo	aloe vera	2036	0	
+Shampoo	brillo	2036	0	
+Shampoo	suavidad	2036	0	
+Shampoo	néctar de miel	183	0	
+Shampoo	cabello débil	182	0	
+Shampoo	hidradisíaco	30	0	
+Shampoo para Bebés/niños	ricitos de oro con manzanilla	15619	0	
+Shampoo para Bebés/niños	mango naranja	11725	0	
+Shampoo para Bebés/niños	baby shampoo	7407	0	
+Shampoo para Bebés/niños	sueños de lavanda	3316	0	
+Sidra	rosada	1103	0	
+Sidra	ámbar	1079	0	
+Sierra	entero	5628	0	
+Sierra	golfo	5628	0	
+Sierra	fresco	5628	0	
+Soya	sabor	3644	0	
+Soya	texturizada	3644	0	
+Spray Desinfectante	antibacterial	23261	0	
+Spray Desinfectante	superficies fragancia frescura campestre	10658	0	
+Spray Desinfectante	lemon breeze	8111	0	
+Spray Desinfectante	fragancia floral	7713	0	
+Spray Desinfectante	plus	1631	0	
+Spray Desinfectante	aroma cítrico	1631	0	
+Suavizante P/ropa	acondicionador de telas	34230	0	
+Suavizante P/ropa	intense floral	34230	0	
+Suavizante P/ropa	cuidado superior	32456	0	
+Suavizante P/ropa	fresca primavera	32456	0	
+Suavizante P/ropa	ahorrapack	14098	0	
+Suavizante P/ropa	max x2	12119	0	
+Suavizante P/ropa	enjuague	12119	0	
+Suavizante P/ropa	frescura primaveral	12119	0	
+Suavizante P/ropa	libre enjuague	2383	0	
+Suavizante P/ropa	aroma amanecer	2383	0	
+Suavizante P/ropa	aires de primavera	446	0	
+Sustituto de Azúcar	edulcorante de mesa en polvo	20968	0	
+Sustituto de Azúcar	endulzante	8618	1	
+Sustituto de Azúcar	edulcorante	4531	0	
+Sustituto de Azúcar	mascabada	4521	0	
+Sustituto de Azúcar	mascabada con stevia	10	0	
+Talco	desodorante	19879	0	
+Talco	original	12802	0	
+Talco	bebé	4	0	
+Talco	azul	2	0	
+Talco	rosa	2	0	
+Talco para Bebé	azul	15539	0	
+Talco para Bebé	rosa	13644	0	
+Tampones	unika	45998	0	
+Tampones	súper plus	30803	0	
+Tampones	flujo súper abundante	16496	0	
+Tampones	súper	16252	0	
+Tampones	flujo abundante	16252	0	
+Tampones	super flujo abundante v-compact	15459	0	
+Tampones	regular	13250	0	
+Tampones	flujo moderado	13250	0	
+Tampones	regular flujo moderado v-compact	12520	0	
+Tampones	pearl	10848	0	
+Tampones	súper absorción	10848	0	
+Taza para Café	zury filo	5	0	
+Té	limón	7363	0	
+Té Preparado	verde	12588	0	
+Té Preparado	sabor limón	12588	0	
+Tenedor	dynami	124	0	
+Tenedor	madera	124	0	
+Tenedor	capri	21	0	
+Tequila	reposado	52481	0	
+Tequila	agave	22790	0	
+Tequila	agave azul	13772	0	
+Termómetro	digital	44355	0	
+Termómetro	mod	29328	0	
+Termómetro	frente	14507	0	
+Termómetro	cta	11908	0	
+Termómetro	tipo pluma	11523	0	
+Termómetro	mc-246	7726	0	
+Termómetro	mc-343f	5952	0	
+Termómetro	mc-720	3732	0	
+Termómetro	clínico	242	0	
+Termómetro	oral	242	0	
+Termómetro	mercurio	242	0	
+Termómetro	infrarrojo para oido	50	0	
+Termómetro	et-101d	40	0	
+Termómetro	ambiente	10	0	
+Termómetro	ts8	10	0	
+Termómetro	mt-101 estandar	1	0	
+Tilapia	filete	12768	0	
+Tilapia	congelado	7245	0	
+Tilapia	descongelado	3220	0	
+Tilapia	fresco	2303	0	
+Tiras Reactivas	c.b	10732	0	
+Toalla de Papel	dobles	42630	0	
+Toalla Femenina	flujo abundante	140059	0	
+Toalla Femenina	flujo súper abundante	105874	0	
+Toalla Femenina	nocturna	74183	0	
+Toalla Femenina	ultra invisible	48644	0	
+Toalla Femenina	extra largas con alas	38349	0	
+Toalla Femenina	extra larga con alas	38202	0	
+Toalla Femenina	invisible	36209	0	
+Toalla Femenina	delgada con alas	36209	0	
+Toalla Femenina	regular con alas	33998	0	
+Toalla Femenina	suave	21241	0	
+Toalla Femenina	buenas noches	19303	0	
+Toalla Femenina	regulares con alas	19040	0	
+Toalla Femenina	alas	18648	0	
+Toalla Femenina	ultradelgada	18184	0	
+Toalla Femenina	extra largas	17473	0	
+Toalla Femenina	larga con alas	16645	0	
+Toalla Femenina	ultradelgada con alas	15563	0	
+Toalla Femenina	flujo	14513	0	
+Toalla Femenina	abundante	14513	0	
+Toalla Femenina	slim con alas	14384	0	
+Toalla Femenina	v-sport	14199	0	
+Toalla Femenina	ultra delgada larga	14199	0	
+Toalla Femenina	alas flujo abundante	14199	0	
+Toalla Femenina	unika	13506	0	
+Toalla Femenina	intima clip	12448	0	
+Toalla Femenina	nocturna con alas	11718	0	
+Toalla Femenina	flujo moderado	10854	0	
+Toalla Femenina	regulares sin alas	10383	0	
+Toalla Femenina	seda-sec	9156	0	
+Toalla Femenina	regular sin alas	6801	0	
+Toalla Femenina	extra larga	6781	0	
+Toalla Femenina	invisible nocturna	2493	0	
+Toalla Femenina	ultra-gel	1667	0	
+Toalla Femenina	active	1539	0	
+Toalla Femenina	naturals	1359	0	
+Toalla Femenina	nocturna extra larga con alas	1307	0	
+Toalla Femenina	noches seguras	1271	0	
+Toalla Femenina	anatómica con alas	189	0	
+Toalla Femenina	día con alas flujo abundante	44	0	
+Toalla Femenina	día con alas flujo moderado	34	0	
+Toalla Femenina	plus	34	0	
+Toalla Femenina	confort	20	0	
+Toalla Femenina	manzanilla	20	0	
+Toalla Femenina	límites	20	0	
+Toallita Húmeda Limpiadora	cuidado hidratante	17094	0	
+Toallita Húmeda Limpiadora	supreme	13802	0	
+Toallita Húmeda Limpiadora	absorsec	12925	0	
+Toallita Húmeda Limpiadora	dermo active	5930	0	
+Toallita Húmeda Limpiadora	suavelastic	2941	0	
+Toallita Húmeda Limpiadora	fresco aroma	2941	0	
+Toallita Húmeda Limpiadora	flor de toronja	2941	0	
+Toallitas Desinfectantes	toallitas húmedas	16242	0	
+Toallitas Desinfectantes	lemon	11884	0	
+Toallitas Desinfectantes	lime blossom	11884	0	
+Tocino Ahumado	cerdo	11106	0	
+Tocino Ahumado	rebanado	9603	0	
+Tomate	verde sin cáscara	20417	0	
+Tomate	tomate verde	6091	0	
+Tomillo	polvo	1239	0	
+Toronja	toronja sangría	20870	0	
+Tortilla de Harina de Trigo	integral	405	0	
+Tortilla de Maíz	amarilla	14846	0	
+Tortilla de Maíz	blanca	5304	0	
+Tostadas de Maíz	horneadas sin grasa	17716	0	
+Tostadas de Maíz	maíz blanco	17716	0	
+Tostadas de Maíz	onduladas	15207	0	
+Tostadas de Maíz	clásicas	11007	0	
+Trucha	fresco	367	0	
+Trucha	país	244	0	
+Trucha	mar	244	0	
+Trucha	entera	244	0	
+Trucha	entero	123	0	
+Trucha	salmonada	123	0	
+Tuna	tuna blanca	7007	0	
+Turrón	duro	152	0	
+Turrón	blando	77	0	
+Turrón	chocolate con almendras	21	0	
+Turrón	chocolate crujiente con almendras	19	0	
+Turrón	azúcar	18	0	
+Turrón	yema tostada	15	0	
+Turrón	torta	13	0	
+Uva	thompson	13189	0	
+Uva	blanca sin semilla	13189	0	
+Uva	globo	9583	0	
+Uva	red globo	9583	0	
+Uva	roja sin semilla	9280	0	
+Vainilla	original	3967	0	
+Vajilla	ds88	55	0	
+Vajilla	rocco	48	0	
+Vajilla	opal glass	48	0	
+Verdolaga	manojo	3189	0	
+Villajaiba	entero	124	0	
+Villajaiba	fresco	124	0	
+Vinagre	blanco alcohol caña	19092	0	
+Vinagre	blanco	13728	0	
+Vinagre	alcohol cana	13728	0	
+Vinagre	manzana	11067	0	
+Vino de Mesa	tinto	9000	0	
+Vino de Mesa	blanco	4011	0	
+Vino de Mesa	cabernet sauvignon	2323	0	
+Vino de Mesa	reserva	2069	0	
+Vino de Mesa	rioja	1635	0	
+Vino de Mesa	generoso tradicional	1092	0	
+Vino de Mesa	crianza	1083	0	
+Vino de Mesa	merlot	790	0	
+Vino de Mesa	sauvignon blanc	649	0	
+Vino de Mesa	chardonnay	592	0	
+Vino de Mesa	blanco chardonnay	538	0	
+Vino de Mesa	blanc de zinfandel	525	0	
+Vino de Mesa	original	448	0	
+Vino de Mesa	rosado	447	0	
+Vino de Mesa	malbec	437	0	
+Vino de Mesa	nebbiolo	359	0	
+Vino de Mesa	reserva privada	359	0	
+Vino de Mesa	petite sirah	355	0	
+Vino de Mesa	reservado	346	0	
+Vino de Mesa	red	339	0	
+Vino de Mesa	espumante	304	0	
+Vino de Mesa	fruity red	228	0	
+Vino de Mesa	pinot grigio	166	0	
+Vino de Mesa	syrah	161	0	
+Vino de Mesa	red blend	154	0	
+Vino de Mesa	afrutado	144	0	
+Vino de Mesa	carmenere	140	0	
+Vino de Mesa	chenin colombard	133	0	
+Vino de Mesa	botella750	129	0	
+Vino de Mesa	varietal	118	0	
+Vino de Mesa	valle ojos negros	106	0	
+Vino de Mesa	viña kristel	102	0	
+Vino de Mesa	white	83	0	
+Vino de Mesa	chenin blanc	71	0	
+Vino de Mesa	qualitatswein rheinhessen	51	0	
+Vino de Mesa	rueda	25	0	
+Vino de Mesa	banda dorada	16	0	
+Vino de Mesa	riesling	16	0	
+Vino de Mesa	semi-espumoso	5	0	
+Vino de Mesa	racimo de oro dulce	4	0	
+Vino de Mesa	reserva chardonnay	1	0	
+Vino de Mesa	grenache	1	0	
+Vino de Mesa	cabernet	1	0	
+Vino de Mesa	sauvignon	1	0	
+Yoghurt	fresa	177398	0	
+Yoghurt	griego	96379	0	
+Yoghurt	natural	73161	0	
+Yoghurt	bebible	71762	0	
+Yoghurt	azúcar añadida	47417	0	
+Yoghurt	bajo en grasa	39610	0	
+Yoghurt	deslactosado	34860	0	
+Yoghurt	natural con endulzantes	25352	0	
+Yoghurt	natural endulzado	14390	0	
+Yoghurt	ciruela pasa	12445	0	
+Yoghurt	sabor fresa	10066	0	
+Yoghurt	trozos	10066	0	
+Yoghurt	frutas selectas	9886	0	
+Yoghurt	trozos de fresa	9886	0	
+Yoghurt	azúcar	5553	0	
+Yoghurt	griego zero	4903	0	
+Yoghurt	endulzado	3693	0	
+Yoghurt	sabor natural	3293	0	
+Yoghurt	sabor natural con endulzantes	3069	0	
+Yoghurt	triple cero	2159	0	
+Yoghurt	sabor endulzado	485	0	
+Zanahoria	primera	114	0	
+Zanahoria	malla	80	0	

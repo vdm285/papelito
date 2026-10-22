@@ -7,7 +7,7 @@
 //                         enigh2024-gastos.csv (INEGI ENIGH 2024, Términos de Libre Uso), cldr49-emoji-es-MX.tsv (Unicode-3.0)
 //   data/vocab/           aisles.tsv, map-qqp.tsv, map-qqp-products.tsv, map-enigh.tsv, synonyms.tsv, forms.tsv,
 //                         drop.txt, brands-block.txt, brands-allow.txt (human)
-//   data/overrides/aisles/<id>.txt   "+ término [= emoji]  # why" · "- término  # why" · "término > aba  # why"
+//   data/overrides/aisles/<id>-<name>.txt   "+ término [= emoji]  # why" · "- término  # why" · "término > aba  # why"
 // Priority when sources disagree: override > QQP product exception > QQP category > ENIGH > derived head noun > brand.
 // Emoji: an override's choice, else an exact Unicode CLDR 49 es-MX name match (food, drink, household, medical, light;
 // emoji version ≤ 13.0), else none. Never from CLDR keywords.
@@ -80,8 +80,11 @@ for (const x of dropList) {
   if (dropKeys.has(k)) errors.push(`drop.txt:${x.line}: "${x.text}" is the same word to the matcher as line ${dropKeys.get(k).line}`);
   else dropKeys.set(k, x);
 }
-const blocked = new Set(blockList.map((x) => fold(x.text)));
+// Matched folded against both the QQP brand string ("torres 10") and the name the build would ship ("torres"): a
+// trailing size or edition must not let a blocked brand through.
+const blocked = new Map(blockList.map((x) => [fold(x.text), x]));
 const allowed = new Set(allowList.map((x) => fold(x.text)));
+for (const x of blockList) x.used = false;
 
 // ------------------------------------------------------------------ sources: header helpers
 const header = (file) => readTsv(path.join(SOURCES, file)).comments;
@@ -273,10 +276,11 @@ let brandTerms = 0;
     const detail = `${[...b.byAisle.entries()].map(([a, m]) => `${a} ${Math.round((m / b.rows) * 100)}%`).join(' / ')} of ${b.rows} rows; ${[...b.products].slice(0, 4).join(', ')}`;
     const ref = `qqp-marca:${name}`;
     if (!key || !/[a-z]/.test(key)) continue;
-    if (blocked.has(bk)) { dropped.push([display, aisle, 'brands-block.txt (store or house brand)', ref]); continue; }
+    const block = blocked.get(bk) || blocked.get(fold(display));
+    if (block) { block.used = true; dropped.push([display, aisle, `brands-block.txt:${block.line}: ${block.why}`, ref]); continue; }
     if (b.rows < BRAND_MIN_ROWS) { dropped.push([display, aisle, `brand seen in fewer than ${BRAND_MIN_ROWS} QQP rows (${b.rows})`, ref]); continue; }
     if (share < BRAND_PURITY) { review.push(['brand-multi-aisle', display, aisle, detail]); continue; }
-    if (key.split(' ').length === 1 && commonWords.has(key) && !allowed.has(bk)) { review.push(['brand-common-word', display, aisle, detail]); continue; }
+    if (key.split(' ').length === 1 && commonWords.has(key) && !(allowed.has(bk) || allowed.has(fold(display)))) { review.push(['brand-common-word', display, aisle, detail]); continue; }
     if (dropKeys.has(key)) { dropKeys.get(key).used = true; dropped.push([display, aisle, `drop.txt:${dropKeys.get(key).line}: ${dropKeys.get(key).why}`, ref]); continue; }
     add(display, aisle, PRIO.brand, ref);
     brandTerms++;
@@ -284,12 +288,14 @@ let brandTerms = 0;
 }
 applyDrops(); // brands and head nouns that hit the drop list
 
-// ------------------------------------------------------------------ overrides (data/overrides/aisles/<id>.txt)
+// ------------------------------------------------------------------ overrides (data/overrides/aisles/<id>-<name>.txt)
 const emojiChoice = new Map(); // key → { emoji, ref }
 const overrideStats = { files: 0, lines: 0, add: 0, drop: 0, move: 0 };
 const overrideLines = [];
 for (const f of fs.existsSync(OVERRIDES) ? fs.readdirSync(OVERRIDES).sort() : []) {
-  const m = f.match(/^([a-z]{3})\.txt$/);
+  // con.txt is a reserved device name on Windows (git cannot even index it): the name always follows the id
+  if (/^[a-z]{3}\.txt$/.test(f)) { errors.push(`overrides/${f}: name it <id>-<aisle name>.txt, e.g. con-congelados.txt`); continue; }
+  const m = f.match(/^([a-z]{3})-[a-z0-9-]+\.txt$/);
   if (!m) continue;
   const fileAisle = m[1];
   if (!isAisle(fileAisle)) { errors.push(`overrides/${f}: not an aisle id`); continue; }
@@ -333,6 +339,7 @@ for (const o of overrideLines) {
   }
 }
 for (const x of dropList) if (!x.used) review.push(['drop-unused', x.text, '', `drop.txt:${x.line}: no source has this phrase`]);
+for (const x of blockList) if (!x.used) review.push(['brand-block-unused', x.text, '', `brands-block.txt:${x.line}: no QQP brand (in a mapped aisle) has this name`]);
 
 // ------------------------------------------------------------------ resolve: one aisle per term
 function resolve(t) {
@@ -346,6 +353,7 @@ function resolve(t) {
   t.prio = top;
   const pool = best.filter((c) => c.aisle === t.aisle);
   const ovr = pool.find((c) => c.prio === PRIO.override && c.ref.startsWith('override:'));
+  t.decidedBy = top === PRIO.override ? (pool.some((c) => c.ref.startsWith('override:')) ? 'override' : 'synonym') : PRIO_NAME[top];
   t.display = ovr ? ovr.display : pool.map((c) => c.display).sort((a, b) => accents(b) - accents(a) || a.length - b.length || (a < b ? -1 : 1))[0];
   const all = new Set(t.cands.map((c) => c.aisle));
   if (all.size > 1) conflicts.push([t.display, t.aisle, ranked.length > 1 ? `tie at ${PRIO_NAME[top]}` : `won at ${PRIO_NAME[top]}`,
@@ -400,7 +408,7 @@ const sources = [
     url: 'https://datos.profeco.gob.mx/datos_abiertos/qqp.php',
     license: 'CC BY 4.0',
     retrieved: qqpDate,
-    credit: `Vocabulario de productos: «Quién es Quién en los Precios», PROFECO (Procuraduría Federal del Consumidor), datos abiertos del Gobierno de México, https://datos.profeco.gob.mx/datos_abiertos/qqp.php, consultado el ${qqpDate}, licencia Creative Commons Atribución 4.0 (CC BY 4.0). ${GROUPING}, no de PROFECO, y PROFECO no avala esta aplicación.`,
+    credit: `Vocabulario de productos: «Quién es Quién en los Precios», PROFECO (Procuraduría Federal del Consumidor), datos abiertos del Gobierno de México, https://datos.profeco.gob.mx/datos_abiertos/qqp.php, consultado el ${qqpDate}, licencia Creative Commons Atribución 4.0 (CC BY 4.0, https://creativecommons.org/licenses/by/4.0/). ${GROUPING}, no de PROFECO, y PROFECO no avala esta aplicación.`,
   },
   {
     name: 'INEGI, ENIGH 2024',
@@ -414,7 +422,7 @@ const sources = [
     url: 'https://github.com/unicode-org/cldr/tree/release-49/common/annotations',
     license: 'Unicode License v3',
     retrieved: cldrDate,
-    credit: 'Nombres de emoji: Unicode CLDR 49, © 1991-2026 Unicode, Inc., licencia Unicode v3 (texto completo en LICENSES/Unicode-3.0.txt).',
+    credit: 'Nombres de emoji: Unicode CLDR 49, © 1991-2026 Unicode, Inc., licencia Unicode v3, https://www.unicode.org/license.txt (copia en LICENSES/Unicode-3.0.txt).',
   },
 ];
 const order = (a, b) => aisleRank(a.aisle) - aisleRank(b.aisle) || (fold(a.display) < fold(b.display) ? -1 : fold(a.display) > fold(b.display) ? 1 : a.display < b.display ? -1 : 1);
@@ -436,7 +444,7 @@ writeText(DICT, json);
 // ------------------------------------------------------------------ evidence files
 const tsvOut = (file, head, rows) => writeText(path.join(BUILD, file), [head.join('\t'), ...rows.map((r) => r.map((x) => String(x ?? '').replace(/[\t\n]/g, ' ')).join('\t'))].join('\n') + '\n');
 tsvOut('sources.tsv', ['term', 'aisle', 'emoji', 'emoji_source', 'decided_by', 'sources'],
-  shipped.map((t) => [t.display, t.aisle, t.emoji || '', t.emojiRef || '', PRIO_NAME[t.prio], t.cands.map((c) => `${c.ref}[${c.aisle}]`).join(' ; ')]));
+  shipped.map((t) => [t.display, t.aisle, t.emoji || '', t.emojiRef || '', t.decidedBy, t.cands.map((c) => `${c.ref}[${c.aisle}]`).join(' ; ')]));
 tsvOut('conflicts.tsv', ['term', 'aisle', 'how', 'candidates'], conflicts.sort((a, b) => (a[0] < b[0] ? -1 : 1)));
 tsvOut('review.tsv', ['kind', 'term', 'aisle', 'detail'], review.sort((a, b) => (a[0] + a[1] < b[0] + b[1] ? -1 : 1)));
 tsvOut('dropped.tsv', ['term', 'aisle', 'reason', 'sources'], dropped);
@@ -448,7 +456,7 @@ const perAisle = Object.fromEntries(AISLES.map((a) => [a, shipped.filter((t) => 
 const bySource = {};
 for (const t of shipped) for (const kind of new Set(t.cands.map((c) => c.ref.split(':')[0]))) bySource[kind] = (bySource[kind] || 0) + 1;
 const decidedBy = {};
-for (const t of shipped) decidedBy[PRIO_NAME[t.prio]] = (decidedBy[PRIO_NAME[t.prio]] || 0) + 1;
+for (const t of shipped) decidedBy[t.decidedBy] = (decidedBy[t.decidedBy] || 0) + 1;
 const scores = scoreAll(dict);
 const report = {
   built: dict.built,
@@ -473,7 +481,7 @@ writeText(path.join(BUILD, 'report.json'), JSON.stringify(report, null, 1) + '\n
 const ms = performance.now() - t0;
 console.log(`[dict] ${shipped.length} terms (${report.emoji} with emoji) → ${rel(DICT)}: ${raw} B raw, ${gzip} B gzip, ${brotli} B brotli; ${ms.toFixed(0)} ms`);
 console.log(`[dict] per aisle: ${AISLES.map((a) => `${a} ${perAisle[a]}`).join(' · ')}`);
-console.log(`[dict] test-60 ${scores['test-60'].ok}/${scores['test-60'].total} · tricky-40 ${scores['tricky-40'].ok}/${scores['tricky-40'].total}; conflicts ${conflicts.length}, dropped ${dropped.length}, review ${review.length} (data/vocab/build/)`);
+console.log(`[dict] ${Object.entries(scores).map(([k, s]) => `${k} ${s.ok}/${s.total}`).join(' · ')}; conflicts ${conflicts.length}, dropped ${dropped.length}, review ${review.length} (data/vocab/build/)`);
 if (errors.length) {
   for (const e of errors) console.error(`[dict] ERROR ${e}`);
   process.exit(1);

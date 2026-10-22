@@ -1,0 +1,409 @@
+# cldr49-emoji-es-MX.tsv: 402 fully-qualified emoji (food & drink, household, medical, light & video, animals, plants, some objects) with their Mexican Spanish names
+# source: Unicode CLDR 49 (release-49) common/annotations/es.xml, es_419.xml, es_MX.xml (type="tts" names resolved es_MX → es_419 → es); emoji versions from emoji-test.txt Version 18.0 (2026-04-30, 22:40:18 GMT)
+# url: https://github.com/unicode-org/cldr/tree/release-49/common/annotations ; https://www.unicode.org/Public/emoji/latest/emoji-test.txt
+# retrieved: 2026-10-21
+# licence: Unicode License v3 (SPDX Unicode-3.0), © 1991-2026 Unicode, Inc.; full text in LICENSES/Unicode-3.0.txt. Only names (not keywords) are used.
+# inputs: annotations-es.xml sha256 af090fb0b18517b5692a710e74ff52dcbffe1c18ff5de54e35d8e5f3ba97edd7; annotations-es_419.xml sha256 02ebf92b9ce337c686ee3071f7b08899acca0b05402157d5ad044613f8315899; annotations-es_MX.xml sha256 ec42026b9ed5fe468bcf143991fd8aafc51e19830b41e966c417d7781491ee4a; emoji-test.txt sha256 8f3735cda1f92a779d78af67cf86066bb1f07143dc22f2ac29394d9bc57ab21a
+emoji	version	subgroup	name_es_MX	name_from	name_en
+🐵	0.6	animal-mammal	cara de mono	es	monkey face
+🐒	0.6	animal-mammal	mono	es	monkey
+🦍	3.0	animal-mammal	gorila	es	gorilla
+🦧	12.0	animal-mammal	orangután	es	orangutan
+🐶	0.6	animal-mammal	cara de perro	es	dog face
+🐕	0.7	animal-mammal	perro	es	dog
+🦮	12.0	animal-mammal	perro guía	es	guide dog
+🐕‍🦺	12.0	animal-mammal	perro de servicio	es	service dog
+🐩	0.6	animal-mammal	caniche	es	poodle
+🐺	0.6	animal-mammal	lobo	es	wolf
+🦊	3.0	animal-mammal	zorro	es	fox
+🦝	11.0	animal-mammal	mapache	es	raccoon
+🐱	0.6	animal-mammal	cara de gato	es	cat face
+🐈	0.7	animal-mammal	gato	es	cat
+🐈‍⬛	13.0	animal-mammal	gato negro	es	black cat
+🦁	1.0	animal-mammal	león	es	lion
+🐯	0.6	animal-mammal	cara de tigre	es	tiger face
+🐅	1.0	animal-mammal	tigre	es	tiger
+🐆	1.0	animal-mammal	leopardo	es	leopard
+🐴	0.6	animal-mammal	cara de caballo	es	horse face
+🫎	15.0	animal-mammal	alce	es	moose
+🫏	15.0	animal-mammal	burro	es	donkey
+🐎	0.6	animal-mammal	caballo	es	horse
+🦄	1.0	animal-mammal	unicornio	es	unicorn
+🦓	5.0	animal-mammal	cebra	es	zebra
+🦌	3.0	animal-mammal	ciervo	es	deer
+🦬	13.0	animal-mammal	bisonte	es	bison
+🐮	0.6	animal-mammal	cara de vaca	es	cow face
+🐂	1.0	animal-mammal	buey	es	ox
+🐃	1.0	animal-mammal	búfalo de agua	es	water buffalo
+🐄	1.0	animal-mammal	vaca	es	cow
+🐷	0.6	animal-mammal	cara de cerdo	es	pig face
+🐖	1.0	animal-mammal	cerdo	es	pig
+🐗	0.6	animal-mammal	jabalí	es	boar
+🐽	0.6	animal-mammal	hocico de cerdo	es_419	pig nose
+🐏	1.0	animal-mammal	carnero	es	ram
+🐑	0.6	animal-mammal	oveja	es	ewe
+🐐	1.0	animal-mammal	cabra	es	goat
+🐪	1.0	animal-mammal	dromedario	es	camel
+🐫	0.6	animal-mammal	camello	es	two-hump camel
+🦙	11.0	animal-mammal	llama	es	llama
+🦒	5.0	animal-mammal	jirafa	es	giraffe
+🐘	0.6	animal-mammal	elefante	es	elephant
+🦣	13.0	animal-mammal	mamut	es	mammoth
+🦏	3.0	animal-mammal	rinoceronte	es	rhinoceros
+🦛	11.0	animal-mammal	hipopótamo	es	hippopotamus
+🐭	0.6	animal-mammal	cara de ratón	es	mouse face
+🐁	1.0	animal-mammal	ratón	es	mouse
+🐀	1.0	animal-mammal	rata	es	rat
+🐹	0.6	animal-mammal	hámster	es	hamster
+🐰	0.6	animal-mammal	cara de conejo	es	rabbit face
+🐇	1.0	animal-mammal	conejo	es	rabbit
+🐿️	0.7	animal-mammal	ardilla	es	chipmunk
+🦫	13.0	animal-mammal	castor	es	beaver
+🦔	5.0	animal-mammal	erizo	es	hedgehog
+🦇	3.0	animal-mammal	murciélago	es	bat
+🐻	0.6	animal-mammal	oso	es	bear
+🐻‍❄️	13.0	animal-mammal	oso polar	es	polar bear
+🐨	0.6	animal-mammal	koala	es	koala
+🐼	0.6	animal-mammal	panda	es	panda
+🦥	12.0	animal-mammal	perezoso	es	sloth
+🦦	12.0	animal-mammal	nutria	es	otter
+🦨	12.0	animal-mammal	zorrillo	es_MX	skunk
+🦘	11.0	animal-mammal	canguro	es	kangaroo
+🦡	11.0	animal-mammal	tejón	es	badger
+🐾	0.6	animal-mammal	huellas de pezuñas	es	paw prints
+🦃	1.0	animal-bird	pavo	es	turkey
+🐔	0.6	animal-bird	gallina	es	chicken
+🐓	1.0	animal-bird	gallo	es	rooster
+🐣	0.6	animal-bird	pollito rompiendo el cascarón	es	hatching chick
+🐤	0.6	animal-bird	pollito	es	baby chick
+🐥	0.6	animal-bird	pollito de frente	es	front-facing baby chick
+🐦	0.6	animal-bird	pájaro	es	bird
+🐧	0.6	animal-bird	pingüino	es	penguin
+🕊️	0.7	animal-bird	paloma	es	dove
+🦅	3.0	animal-bird	águila	es	eagle
+🦆	3.0	animal-bird	pato	es	duck
+🦢	11.0	animal-bird	cisne	es	swan
+🦉	3.0	animal-bird	búho	es	owl
+🦤	13.0	animal-bird	dodo	es	dodo
+🪶	13.0	animal-bird	pluma	es	feather
+🦩	12.0	animal-bird	flamenco	es	flamingo
+🦚	11.0	animal-bird	pavo real	es	peacock
+🦜	11.0	animal-bird	loro	es	parrot
+🪽	15.0	animal-bird	ala	es	wing
+🐦‍⬛	15.0	animal-bird	ave negra	es_MX	black bird
+🪿	15.0	animal-bird	ganso	es_419	goose
+🐦‍🔥	15.1	animal-bird	fénix	es	phoenix
+🐳	0.6	animal-marine	ballena soplando un chorro de agua	es_419	spouting whale
+🐋	1.0	animal-marine	ballena	es	whale
+🐬	0.6	animal-marine	delfín	es	dolphin
+🫍	17.0	animal-marine	orca	es	orca
+🦭	13.0	animal-marine	foca	es	seal
+🐟	0.6	animal-marine	pez	es	fish
+🐠	0.6	animal-marine	pez tropical	es	tropical fish
+🐡	0.6	animal-marine	pez globo	es	blowfish
+🦈	3.0	animal-marine	tiburón	es	shark
+🐙	0.6	animal-marine	pulpo	es	octopus
+🐚	0.6	animal-marine	caracol marino	es_MX	spiral shell
+🪸	14.0	animal-marine	coral	es	coral
+🪼	15.0	animal-marine	medusa	es	jellyfish
+🦀	1.0	animal-marine	cangrejo	es	crab
+🦞	11.0	animal-marine	langosta	es_419	lobster
+🦐	3.0	animal-marine	camarón	es_419	shrimp
+🦑	3.0	animal-marine	calamar	es	squid
+🦪	12.0	animal-marine	ostión	es_MX	oyster
+🐌	0.6	animal-bug	caracol	es	snail
+🦋	3.0	animal-bug	mariposa	es	butterfly
+🫌	18.0	animal-bug	mariposa monarca	es	monarch butterfly
+🐛	0.6	animal-bug	oruga	es_419	bug
+🐜	0.6	animal-bug	hormiga	es	ant
+🐝	0.6	animal-bug	abeja	es	honeybee
+🪲	13.0	animal-bug	escarabajo	es	beetle
+🐞	0.6	animal-bug	mariquita	es	lady beetle
+🦗	5.0	animal-bug	grillo	es	cricket
+🪳	13.0	animal-bug	cucaracha	es	cockroach
+🕷️	0.7	animal-bug	araña	es	spider
+🕸️	0.7	animal-bug	telaraña	es_419	spider web
+🦂	1.0	animal-bug	escorpión	es	scorpion
+🦟	11.0	animal-bug	mosquito	es	mosquito
+🪰	13.0	animal-bug	mosca	es	fly
+🪱	13.0	animal-bug	gusano	es	worm
+🦠	11.0	animal-bug	microbio	es	microbe
+💐	0.6	plant-flower	ramo de flores	es	bouquet
+🌸	0.6	plant-flower	flor de cerezo	es	cherry blossom
+💮	0.6	plant-flower	flor blanca	es	white flower
+🪷	14.0	plant-flower	loto	es	lotus
+🏵️	0.7	plant-flower	roseta	es	rosette
+🌹	0.6	plant-flower	rosa	es	rose
+🥀	3.0	plant-flower	flor marchita	es	wilted flower
+🌺	0.6	plant-flower	flor de hibisco	es	hibiscus
+🌻	0.6	plant-flower	girasol	es	sunflower
+🌼	0.6	plant-flower	flor	es	blossom
+🌷	0.6	plant-flower	tulipán	es	tulip
+🪻	15.0	plant-flower	jacinto	es_419	hyacinth
+🌱	0.6	plant-other	plántula	es_419	seedling
+🪴	13.0	plant-other	planta en una maceta	es_MX	potted plant
+🌲	1.0	plant-other	árbol de hoja perenne	es	evergreen tree
+🌳	1.0	plant-other	árbol caducifolio	es_419	deciduous tree
+🌴	0.6	plant-other	palmera	es	palm tree
+🌵	0.6	plant-other	cactus	es	cactus
+🌾	0.6	plant-other	espiga de arroz	es	sheaf of rice
+🌿	0.6	plant-other	hierba	es	herb
+☘️	1.0	plant-other	trébol	es	shamrock
+🍀	0.6	plant-other	trébol de cuatro hojas	es	four leaf clover
+🍁	0.6	plant-other	hoja de arce	es	maple leaf
+🍂	0.6	plant-other	hojas caídas	es	fallen leaf
+🍃	0.6	plant-other	hoja al viento	es_419	leaf fluttering in wind
+🪹	14.0	plant-other	nido vacío	es	empty nest
+🪺	14.0	plant-other	nido con huevos	es	nest with eggs
+🍄	0.6	plant-other	champiñón	es	mushroom
+🪾	16.0	plant-other	árbol sin hojas	es	leafless tree
+🍇	0.6	food-fruit	uvas	es	grapes
+🍈	0.6	food-fruit	melón	es	melon
+🍉	0.6	food-fruit	sandía	es	watermelon
+🍊	0.6	food-fruit	mandarina	es	tangerine
+🍋	1.0	food-fruit	limón	es	lemon
+🍋‍🟩	15.1	food-fruit	lima	es	lime
+🍌	0.6	food-fruit	plátano	es_MX	banana
+🍍	0.6	food-fruit	piña	es	pineapple
+🥭	11.0	food-fruit	mango	es	mango
+🍎	0.6	food-fruit	manzana roja	es	red apple
+🍏	0.6	food-fruit	manzana verde	es	green apple
+🍐	1.0	food-fruit	pera	es	pear
+🍑	0.6	food-fruit	durazno	es_419	peach
+🍒	0.6	food-fruit	cerezas	es	cherries
+🍓	0.6	food-fruit	fresa	es	strawberry
+🫐	13.0	food-fruit	arándanos	es	blueberries
+🥝	3.0	food-fruit	kiwi	es	kiwi fruit
+🍅	0.6	food-fruit	tomate	es	tomato
+🫒	13.0	food-fruit	aceituna	es	olive
+🥥	5.0	food-fruit	coco	es	coconut
+🥑	3.0	food-vegetable	aguacate	es	avocado
+🍆	0.6	food-vegetable	berenjena	es	eggplant
+🥔	3.0	food-vegetable	papa	es_419	potato
+🥕	3.0	food-vegetable	zanahoria	es	carrot
+🌽	0.6	food-vegetable	mazorca de maíz	es_419	ear of corn
+🌶️	0.7	food-vegetable	chile picante	es_MX	hot pepper
+🫑	13.0	food-vegetable	pimiento morrón	es_MX	bell pepper
+🥒	3.0	food-vegetable	pepino	es	cucumber
+🫝	18.0	food-vegetable	pepinillo	es	pickle
+🥬	11.0	food-vegetable	verdura de hoja	es_MX	leafy green
+🥦	5.0	food-vegetable	brócoli	es	broccoli
+🧄	12.0	food-vegetable	ajo	es	garlic
+🧅	12.0	food-vegetable	cebolla	es	onion
+🥜	3.0	food-vegetable	cacahuate	es_MX	peanuts
+🫘	14.0	food-vegetable	frijoles	es_419	beans
+🌰	0.6	food-vegetable	castaña	es	chestnut
+🫚	15.0	food-vegetable	raíz de jengibre	es	ginger root
+🫛	15.0	food-vegetable	vaina	es	pea pod
+🍄‍🟫	15.1	food-vegetable	hongo marrón	es_MX	brown mushroom
+🫜	16.0	food-vegetable	vegetal de raíz	es_MX	root vegetable
+🍞	0.6	food-prepared	pan	es_419	bread
+🥐	3.0	food-prepared	croissant	es_419	croissant
+🥖	3.0	food-prepared	baguette	es_419	baguette bread
+🫓	13.0	food-prepared	pan plano	es_MX	flatbread
+🥨	5.0	food-prepared	bretzel	es	pretzel
+🥯	11.0	food-prepared	bagel	es	bagel
+🥞	3.0	food-prepared	hotcakes	es_419	pancakes
+🧇	12.0	food-prepared	waffle	es_MX	waffle
+🧀	1.0	food-prepared	queso	es_419	cheese wedge
+🍖	0.6	food-prepared	carne con hueso	es	meat on bone
+🍗	0.6	food-prepared	pata de pollo	es_419	poultry leg
+🥩	5.0	food-prepared	corte de carne	es	cut of meat
+🥓	3.0	food-prepared	tocino	es_419	bacon
+🍔	0.6	food-prepared	hamburguesa	es	hamburger
+🍟	0.6	food-prepared	papas fritas	es_419	french fries
+🍕	0.6	food-prepared	pizza	es	pizza
+🌭	1.0	food-prepared	perro caliente	es_MX	hot dog
+🥪	5.0	food-prepared	sándwich	es	sandwich
+🌮	1.0	food-prepared	taco	es	taco
+🌯	1.0	food-prepared	burrito	es	burrito
+🫔	13.0	food-prepared	tamal	es	tamale
+🥙	3.0	food-prepared	pan relleno	es	stuffed flatbread
+🧆	12.0	food-prepared	falafel	es	falafel
+🥚	3.0	food-prepared	huevo	es	egg
+🍳	0.6	food-prepared	sartén	es_419	cooking
+🥘	3.0	food-prepared	paella	es	shallow pan of food
+🍲	0.6	food-prepared	olla de comida	es	pot of food
+🫕	13.0	food-prepared	fondue	es	fondue
+🥣	5.0	food-prepared	tazón con cuchara	es_MX	bowl with spoon
+🥗	3.0	food-prepared	ensalada	es	green salad
+🍿	1.0	food-prepared	palomitas de maíz	es_419	popcorn
+🧈	12.0	food-prepared	mantequilla	es	butter
+🧂	11.0	food-prepared	sal	es	salt
+🥫	5.0	food-prepared	comida enlatada	es	canned food
+🍱	0.6	food-asian	caja de bento	es	bento box
+🍘	0.6	food-asian	galleta de arroz	es	rice cracker
+🍙	0.6	food-asian	bola de arroz	es	rice ball
+🍚	0.6	food-asian	arroz cocido	es	cooked rice
+🍛	0.6	food-asian	arroz con curry	es	curry rice
+🍜	0.6	food-asian	tazón de fideos	es	steaming bowl
+🍝	0.6	food-asian	espagueti	es	spaghetti
+🍠	0.6	food-asian	batata asada	es_419	roasted sweet potato
+🍢	0.6	food-asian	brocheta de mariscos	es_419	oden
+🍣	0.6	food-asian	sushi	es	sushi
+🍤	0.6	food-asian	camarones fritos	es_419	fried shrimp
+🍥	0.6	food-asian	pastel de pescado	es_419	fish cake with swirl
+🥮	11.0	food-asian	pastel de luna	es	moon cake
+🍡	0.6	food-asian	brocheta dulce japonesa	es_419	dango
+🥟	5.0	food-asian	empanada	es_MX	dumpling
+🥠	5.0	food-asian	galleta de la fortuna	es	fortune cookie
+🥡	5.0	food-asian	caja para llevar	es	takeout box
+🍦	0.6	food-sweet	helado en barquillo	es_MX	soft ice cream
+🍧	0.6	food-sweet	hielo molido	es_419	shaved ice
+🍨	0.6	food-sweet	helado	es	ice cream
+🍩	0.6	food-sweet	dona	es_419	doughnut
+🍪	0.6	food-sweet	galleta	es	cookie
+🎂	0.6	food-sweet	pastel de cumpleaños	es_419	birthday cake
+🍰	0.6	food-sweet	rebanada de pastel	es_419	shortcake
+🧁	11.0	food-sweet	pastelito	es_MX	cupcake
+🥧	5.0	food-sweet	pay	es_MX	pie
+🍫	0.6	food-sweet	tableta de chocolate	es	chocolate bar
+🍬	0.6	food-sweet	caramelo	es	candy
+🍭	0.6	food-sweet	paleta dulce	es_419	lollipop
+🍮	0.6	food-sweet	flan	es	custard
+🍯	0.6	food-sweet	tarro de miel	es	honey pot
+🍼	1.0	drink	biberón	es	baby bottle
+🥛	3.0	drink	vaso de leche	es	glass of milk
+☕	0.6	drink	bebida caliente	es	hot beverage
+🫖	13.0	drink	tetera	es	teapot
+🍵	0.6	drink	tazón de té	es	teacup without handle
+🍶	0.6	drink	sake	es	sake
+🍾	1.0	drink	botella descorchada	es	bottle with popping cork
+🍷	0.6	drink	copa de vino	es	wine glass
+🍸	0.6	drink	copa de cóctel	es	cocktail glass
+🍹	0.6	drink	bebida tropical	es	tropical drink
+🍺	0.6	drink	tarro de cerveza	es_419	beer mug
+🍻	0.6	drink	brindis con cerveza	es_419	clinking beer mugs
+🥂	3.0	drink	copas brindando	es	clinking glasses
+🥃	3.0	drink	vaso de whisky	es	tumbler glass
+🫗	14.0	drink	líquido derramándose	es_MX	pouring liquid
+🥤	5.0	drink	vaso con pajita	es	cup with straw
+🧋	13.0	drink	té de burbujas	es	bubble tea
+🧃	12.0	drink	tetrabrik	es	beverage box
+🧉	12.0	drink	mate	es	mate
+🧊	12.0	drink	hielo	es_MX	ice
+🥢	5.0	dishware	palillos	es	chopsticks
+🍽️	0.7	dishware	plato y cubiertos	es_419	fork and knife with plate
+🍴	0.6	dishware	cuchillo y tenedor	es_419	fork and knife
+🥄	3.0	dishware	cuchara	es	spoon
+🔪	0.6	dishware	cuchillo de cocina	es	kitchen knife
+🫙	14.0	dishware	jarra	es_419	jar
+🏺	1.0	dishware	vasija	es_419	amphora
+👓	0.6	clothing	lentes	es_419	glasses
+🕶️	0.7	clothing	lentes de sol	es_419	sunglasses
+🥽	11.0	clothing	goggles	es_MX	goggles
+🥼	11.0	clothing	bata de laboratorio	es	lab coat
+🦺	12.0	clothing	chaleco de seguridad	es	safety vest
+👔	0.6	clothing	corbata	es	necktie
+👕	0.6	clothing	camiseta	es	t-shirt
+👖	0.6	clothing	pantalones de mezclilla	es_MX	jeans
+🧣	5.0	clothing	bufanda	es	scarf
+🧤	5.0	clothing	guantes	es	gloves
+🧥	5.0	clothing	abrigo	es	coat
+🧦	5.0	clothing	calcetines	es	socks
+👗	0.6	clothing	vestido	es	dress
+👘	0.6	clothing	kimono	es	kimono
+🥻	12.0	clothing	sari	es	sari
+🩱	12.0	clothing	traje de baño de una pieza	es	one-piece swimsuit
+🩲	12.0	clothing	ropa interior	es	briefs
+🩳	12.0	clothing	shorts	es_MX	shorts
+👙	0.6	clothing	bikini	es	bikini
+👚	0.6	clothing	ropa de mujer	es	woman’s clothes
+🪭	15.0	clothing	abanico abierto	es	folding hand fan
+👛	0.6	clothing	monedero	es	purse
+👜	0.6	clothing	bolso	es	handbag
+👝	0.6	clothing	bolso de mano	es	clutch bag
+🛍️	0.7	clothing	bolsas de compras	es	shopping bags
+🎒	0.6	clothing	mochila escolar	es_MX	backpack
+🩴	13.0	clothing	chancla	es	thong sandal
+👞	0.6	clothing	zapato de hombre	es	man’s shoe
+👟	0.6	clothing	tenis	es_MX	running shoe
+🥾	11.0	clothing	botas de excursión	es_MX	hiking boot
+🥿	11.0	clothing	zapato de piso	es_MX	flat shoe
+👠	0.6	clothing	zapatilla	es_MX	high-heeled shoe
+👡	0.6	clothing	sandalia de mujer	es	woman’s sandal
+🩰	12.0	clothing	zapatillas de ballet	es	ballet shoes
+👢	0.6	clothing	bota de mujer	es	woman’s boot
+🪮	15.0	clothing	peineta	es	hair pick
+👑	0.6	clothing	corona	es	crown
+👒	0.6	clothing	sombrero de mujer	es	woman’s hat
+🎩	0.6	clothing	sombrero de copa	es_MX	top hat
+🎓	0.6	clothing	birrete	es_MX	graduation cap
+🧢	5.0	clothing	gorra con visera	es	billed cap
+🪖	13.0	clothing	casco militar	es	military helmet
+⛑️	0.7	clothing	casco con una cruz blanca	es_MX	rescue worker’s helmet
+📿	1.0	clothing	rosario	es	prayer beads
+💄	0.6	clothing	lápiz labial	es_419	lipstick
+💍	0.6	clothing	anillo	es	ring
+💎	0.6	clothing	piedra preciosa	es	gem stone
+🔋	0.6	computer	pila	es	battery
+🪫	14.0	computer	batería baja	es	low battery
+🔌	0.6	computer	enchufe eléctrico	es	electric plug
+💻	0.6	computer	laptop	es_419	laptop
+🖥️	0.7	computer	computadora de escritorio	es_419	desktop computer
+🖨️	0.7	computer	impresora	es	printer
+⌨️	1.0	computer	teclado	es	keyboard
+🖱️	0.7	computer	mouse	es_419	computer mouse
+🖲️	0.7	computer	rueda de desplazamiento	es_419	trackball
+💽	0.6	computer	disco duro	es_MX	computer disk
+💾	0.6	computer	disquete	es	floppy disk
+💿	0.6	computer	disco óptico	es	optical disk
+📀	0.6	computer	DVD	es_419	dvd
+🧮	11.0	computer	ábaco	es	abacus
+🎥	0.6	light & video	cámara de video	es_MX	movie camera
+🎞️	0.7	light & video	cuadros de película	es_419	film frames
+📽️	0.7	light & video	proyector de cine	es	film projector
+🎬	0.6	light & video	claqueta	es	clapper board
+📺	0.6	light & video	televisión	es_MX	television
+📷	0.6	light & video	cámara fotográfica	es_419	camera
+📸	1.0	light & video	cámara con flash	es	camera with flash
+📹	0.6	light & video	videocámara	es	video camera
+📼	0.6	light & video	videocasete	es_MX	videocassette
+🔍	0.6	light & video	lupa hacia la izquierda	es_419	magnifying glass tilted left
+🔎	0.6	light & video	lupa hacia la derecha	es_419	magnifying glass tilted right
+🕯️	0.7	light & video	vela	es	candle
+💡	0.6	light & video	foco	es_419	light bulb
+🔦	0.6	light & video	linterna	es	flashlight
+🏮	0.6	light & video	farol de papel japonés	es_419	red paper lantern
+🪔	12.0	light & video	lámpara de aceite	es	diya lamp
+💉	0.6	medical	jeringa	es_419	syringe
+🩸	12.0	medical	gota de sangre	es	drop of blood
+💊	0.6	medical	píldora	es	pill
+🩹	12.0	medical	curita	es_MX	adhesive bandage
+🩼	14.0	medical	muleta	es	crutch
+🩺	12.0	medical	estetoscopio	es	stethoscope
+🩻	14.0	medical	radiografía	es	x-ray
+🚪	0.6	household	puerta	es	door
+🛗	13.0	household	ascensor	es	elevator
+🪞	13.0	household	espejo	es	mirror
+🪟	13.0	household	ventana	es	window
+🛏️	0.7	household	cama	es	bed
+🛋️	0.7	household	sofá y lámpara	es	couch and lamp
+🪑	12.0	household	silla	es	chair
+🚽	0.6	household	inodoro	es	toilet
+🪠	13.0	household	destapacaños	es_MX	plunger
+🚿	1.0	household	regadera	es_MX	shower
+🛁	1.0	household	tina	es_MX	bathtub
+🪤	13.0	household	trampa para ratones	es_MX	mouse trap
+🪒	12.0	household	navaja de afeitar	es_MX	razor
+🧴	11.0	household	botella de loción	es_MX	lotion bottle
+🧷	11.0	household	broche de seguridad	es_MX	safety pin
+🧹	11.0	household	escoba	es	broom
+🧺	11.0	household	canasta	es_MX	basket
+🧻	11.0	household	rollo de papel	es	roll of paper
+🪣	13.0	household	balde	es_MX	bucket
+🧼	11.0	household	jabón	es	soap
+🫧	14.0	household	burbujas	es	bubbles
+🪥	13.0	household	cepillo de dientes	es	toothbrush
+🧽	11.0	household	esponja	es	sponge
+🧯	11.0	household	extintor	es	fire extinguisher
+🛒	3.0	household	carrito de compras	es_419	shopping cart
+🚬	0.6	other-object	cigarrillo	es	cigarette
+⚰️	1.0	other-object	ataúd	es	coffin
+🪦	13.0	other-object	lápida	es	headstone
+⚱️	1.0	other-object	urna funeraria	es	funeral urn
+🧿	11.0	other-object	nazar	es_MX	nazar amulet
+🪬	14.0	other-object	hamsa	es	hamsa
+🗿	0.6	other-object	estatua de Isla de Pascua	es_MX	moai
+🪧	13.0	other-object	cartel	es_MX	placard
+🪪	14.0	other-object	identificación	es_419	identification card

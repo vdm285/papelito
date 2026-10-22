@@ -1,0 +1,48 @@
+# 40 tricky shopping-list items with the aisle each is expected in, from the old checkpoint-1 tests
+# (data/cache/old/checkpoint1/tests/aisles-es-MX.tsv, September 2026), remapped to the 16 aisles by Claude (AI) on 2026-10-22.
+# WHO CHOSE THE AISLES: an AI (the checkpoint-1 agent), before the sourced vocabulary existed. They are judgments, not facts.
+# Remap: DES (despensa) → aba; tortillas PAN → tor and jamón CAR → sal, because the 16-aisle scheme has a tortillería and a
+# salchichonería (the "note" column says which rows changed). store = 1 marks a store-dependent row (from the old file):
+# reported, but left out of the score's denominator.
+# Columns: item, aisle (expected), store, note
+item	aisle	store	note
+pantuflas	otr	0	
+sal de uvas	far	0	
+pastel tres leches	pan	0	
+tres leches	pan	0	
+3 leches	lac	0	
+carnitas	car	1	
+2 kg de tortillas	tor	0	was PAN (no tortillería in 14 aisles)
+1/2 docena de huevos	lac	0	
+medio kilo de jamón de pavo	sal	0	was CAR (no salchichonería in 14 aisles)
+Coca Cola 3 litros	beb	0	
+tenis	otr	0	
+tapete de baño	lim	0	
+sartén	lim	0	
+cocada	bot	0	
+flores	otr	1	
+ajonjolí	aba	0	was DES (despensa)
+tapioca	aba	0	was DES (despensa)
+leche de almendra	lac	1	
+mantequilla de maní	aba	0	was DES (despensa)
+tortillas de harina	tor	0	was PAN (no tortillería in 14 aisles)
+chiles en vinagre	aba	0	was DES (despensa)
+chiles poblanos	fru	0	
+champiñones	fru	0	
+papel de baño	lim	1	
+pañales etapa 3	bbe	0	
+helado de vainilla	con	0	
+bolsa de hielo	con	0	
+verduras congeladas	con	0	
+croquetas de pollo	con	0	
+croquetas para perro	mas	0	
+pan molido	aba	1	was DES (despensa)
+crema para manos	hig	0	
+vinagre de manzana	aba	0	was DES (despensa)
+jugo de manzana	beb	0	
+cerveza Modelo	beb	0	
+aguacte	fru	0	
+detergnte	lim	0	
+yogurth	lac	0	
+jitomates	fru	0	
+atún en lata	aba	0	was DES (despensa)

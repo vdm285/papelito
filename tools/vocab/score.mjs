@@ -7,6 +7,7 @@ import { VOCAB, readTsv } from './lib.mjs';
 export const TESTS = {
   'test-60': path.join(VOCAB, 'test', 'test-60.tsv'),
   'tricky-40': path.join(VOCAB, 'test', 'tricky-40.tsv'),
+  'audit-160': path.join(VOCAB, 'test', 'audit-160.tsv'),
 };
 
 /** [{ item, expected, store }] from a test file (test-60 has "term", tricky-40 has "item"). */

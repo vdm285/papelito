@@ -1,0 +1,47 @@
+# Abarrotes (aba): pantry words that PROFECO QQP and INEGI ENIGH 2024 miss or spell differently.
+# Drafted by Claude (AI) on 2026-10-22 from the sources' gaps; awaiting owner review.
+# Lines: "+ término [= emoji]  # why" adds a term here (an emoji is a human choice; "= -" means no emoji);
+# "- término  # why" drops a source term from this aisle; "término > aba  # why" moves a source term elsewhere.
+# Every line needs a "# why": what it is and, where one exists, the source term it is the everyday name for.
+
+# soups and pasta, as people write them
++ sopa  # "sopa" alone on a list is dry pasta for sopa aguada; QQP "Pasta para Sopa", ENIGH 011912 "Sopas instantáneas"
++ sopa de fideo  # vermicelli for sopa aguada; QQP "Pasta para Sopa" (PRESENTACIÓN "Fideo")
++ sopa de codo  # elbow pasta for sopa; QQP "Pasta para Sopa" (PRESENTACIÓN "Codo")
++ sopa de letras  # alphabet pasta; QQP "Pasta para Sopa" (PRESENTACIÓN "Letras")
++ pasta  # dry pasta in general; QQP "Pasta para Sopa", ENIGH 011150 "pastas italianas" (the head noun is held back because "pasta dental" shares it)
++ coditos  # the everyday diminutive of codo; QQP "Pasta para Sopa" (PRESENTACIÓN "Codo")
++ lasaña  # lasagne sheets; ENIGH 011150 "Spaghetti, pastas italianas y pastas para sopa"
++ macarrones  # macaroni; ENIGH 011150 "pastas italianas"
++ consomé  # bouillon powder (Knorr Suiza); QQP "Concentrado de Pollo", ENIGH 011993 "Concentrados para caldo"
++ consomé de pollo  # as above; without it the item goes to the meat counter through "pollo"
++ cubitos  # bouillon cubes; QQP "Concentrado de Pollo" (PRESENTACIÓN "Cubos")
+
+# baking and spreads
++ maicena  # cornflour, by the brand everyone uses for it (Maizena); QQP "Harina de Maíz" (brand Maizena)
++ grenetina  # unflavoured gelatine; ENIGH 011991 "Levaduras y preparaciones para postres"
++ bicarbonato  # baking soda; ENIGH 011991 "Levaduras y preparaciones para postres"
++ gelatina  # gelatine dessert mix; QQP "Gelatina en Polvo" (the head noun is split between powder and ready cups)
++ hot cakes = 🥞  # pancake mix; QQP "Harina Hot Cakes"; emoji 🥞 (CLDR es-419 "hotcakes")
++ mantequilla de cacahuate  # peanut butter; QQP "Crema de Cacahuate", ENIGH 011842 "Otras mantequillas y cremas"; without it it goes to lácteos through "mantequilla"
++ mantequilla de maní  # peanut butter, as above ("maní" is printed on some jars)
++ miel = 🍯  # honey; QQP "Miel de Abeja", ENIGH 011831 "Miel de abeja"; emoji 🍯 (CLDR "tarro de miel")
++ miel de maple  # pancake syrup; ENIGH 011832 "Otras mieles"
++ stevia  # sweetener; QQP "Sustituto de Azúcar" (brands Svetia, Splenda Stevia)
+
+# spices and sauces
++ especias  # spices in general; QQP category "Condimentos"
++ condimentos  # QQP category "Condimentos"
++ laurel  # bay leaves; QQP "Hojas de Laurel"
++ achiote  # annatto paste for cochinita; QQP category "Condimentos" (no source names it)
++ aderezo  # salad dressing; ENIGH 011938 "Otros aderezos y salsas"
++ jugo maggi  # seasoning sauce (Maggi); QQP brand Maggi ("Salsa de Soya", "Salsa Inglesa"); without it the item goes to drinks through "jugo"
++ manzanilla  # chamomile, sold as tea bags; QQP "Té", ENIGH 012302 "Flor y hojas para infusiones"
+
+# snacks QQP files as pantry
++ palomitas = 🍿  # popcorn (kernels or microwave bags); QQP "Maíz Palomero" (Legumbres Secas); emoji 🍿 (CLDR es-419 "palomitas de maíz")
+
+# Added by the auditor (Claude, AI) on 2026-10-22 after running 160 shopping-list lines through the app's matcher.
++ caldo  # bouillon (powder, cubes or broth) as people write it: "caldo de res", "caldo de camarón"; QQP "Concentrado de Pollo" (PRESENTACIÓN "Caldo"), ENIGH 011993 "Concentrados para caldo"; without it "caldo de res" goes to the meat counter through "res"
++ hojas para tamal  # dried corn husks for tamales, sold by the bag (store-dependent: some stores keep them with produce); no source names them
++ tapioca  # cassava pearls for desserts, sold with flours and dessert mixes; ENIGH 011792 "Harina de otras hortalizas, tubérculos o legumbres" is the nearest (no source names it)

@@ -1,0 +1,34 @@
+# Limpieza y hogar (lim): cleaning and household words that PROFECO QQP and INEGI ENIGH 2024 miss or spell differently.
+# Drafted by Claude (AI) on 2026-10-22 from the sources' gaps; awaiting owner review.
+# Lines: "+ término [= emoji]  # why" adds a term here (an emoji is a human choice; "= -" means no emoji);
+# "- término  # why" drops a source term from this aisle; "término > aba  # why" moves a source term elsewhere.
+# Every line needs a "# why": what it is and, where one exists, the source term it is the everyday name for.
+
++ tinas = -  # no emoji: CLDR's es-MX name of 🛁 is "tina" (a bathtub), but ENIGH 056114's "tinas" are wash tubs
+
+# everyday names the sources spell another way
++ cloro  # the everyday word for bleach; QQP "Blanqueador" (Cloralex, Clorox), ENIGH 056112 "Blanqueadores"
++ jabón para trastes  # dish soap; QQP "Detergente P/trastes"
++ lavatrastes  # dish soap (the word also names the sink); QQP "Detergente P/trastes"
++ jabón para ropa  # laundry soap or detergent; QQP "Detergente P/ropa", "Jabón de Pasta"
++ jabón en polvo  # powder laundry detergent; QQP "Detergente P/ropa" (PRESENTACIÓN "Polvo")
++ aromatizante  # air freshener; ENIGH 056115 "Desodorantes ambientales"
++ desengrasante  # degreaser; ENIGH 05611B "Limpiadores multiusos"
++ limpiavidrios  # glass cleaner; ENIGH 05611B "Limpiadores multiusos"
++ veladoras  # devotional glass candles, sold in every supermarket; ENIGH 05619A "Velas"
++ popotes  # drinking straws; ENIGH 056196 "Platos, vasos y cubiertos desechables"
++ ajax  # scouring cleaner, written by brand; QQP brand "Ajax Amonia" (Limpiador Líquido P/piso)
+
+# no source names it
++ papel aluminio  # aluminium foil, sold with household paper; no source names it (ENIGH 05619B "Otros artículos desechables" is the nearest)
+
+# Added by the auditor (Claude, AI) on 2026-10-22 after running 160 shopping-list lines through the app's matcher.
++ jabón líquido para ropa  # liquid laundry detergent; QQP "Detergente P/ropa", ENIGH 056116 "Detergente para ropa y trastes"; without it the item goes to personal care through "jabón líquido"
++ jabón líquido para trastes  # liquid dish soap; QQP "Detergente P/trastes", ENIGH 056116
++ ziploc  # resealable plastic bags, written by brand; ENIGH 05619B "Otros artículos desechables" (no source names the brand)
++ carbón  # charcoal for the grill, sold with household goods (store-dependent: some stores keep it by the meat); ENIGH 045410 "Carbón, briquetas de carbón y turba"
++ encendedor  # lighters, sold next to the matches (store-dependent: often at the checkout); ENIGH 132919 "Encendedores, cigarreras, pipas y ceniceros"
++ sartén  # frying pan, sold with the household goods; QQP "Baterías de Cocina" (Ekco, Vasconia), ENIGH 054031 "Baterías de cocina"
++ tapete  # bath or door mat, sold with the household goods; ENIGH 052191 "Tapetes de entrada y baño"
++ papel para hornear  # baking paper, sold next to the foil; no source names it (ENIGH 05619B "Otros artículos desechables" is the nearest); without it the item goes to personal care through "papel"
++ papel encerado  # wax paper, as above

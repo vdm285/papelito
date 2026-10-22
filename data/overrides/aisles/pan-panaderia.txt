@@ -1,0 +1,21 @@
+# Panadería (pan): bread words that PROFECO QQP and INEGI ENIGH 2024 miss or spell differently.
+# Drafted by Claude (AI) on 2026-10-22 from the sources' gaps; awaiting owner review.
+# Lines: "+ término [= emoji]  # why" adds a term here (an emoji is a human choice; "= -" means no emoji);
+# "- término  # why" drops a source term from this aisle; "término > aba  # why" moves a source term elsewhere.
+# Every line needs a "# why": what it is and, where one exists, the source term it is the everyday name for.
+
++ bolillo = 🥖  # the everyday name for the white roll; QQP "Pan Blanco Bolillo"; emoji 🥖 (CLDR es-419 "baguette") is the closest drawing
++ birote  # Guadalajara's name for the bolillo; QQP "Pan Blanco Bolillo"
++ telera  # the flat white roll for tortas, sold next to the bolillo; QQP "Pan" (category), ENIGH 011133 "Pan"
++ cuernito  # the everyday diminutive of the cuerno; QQP "Pan Dulce" (PRESENTACIÓN "Cuerno")
++ medias noches  # small soft rolls for sandwiches; QQP "Pan" (category), ENIGH 011133 "Pan"
++ empanadas  # bakery turnovers; ENIGH 011195 "Otros productos de panadería"
++ tres leches  # the cake (pastel de tres leches), bought at the bakery; ENIGH 011139 "Pasteles y pastelillos"; without it the item goes to lácteos through "leche"
++ bimbo  # Bimbo sliced bread, written by brand; QQP puts 85 % of Bimbo's 306,396 rows in its Pan category (the rest is breadcrumbs and cereal bars), under the 90 % brand rule
++ rosca  # short for QQP "Rosca de Reyes" (January)
++ pay  # pie (pay de queso, pay de limón), sold at the bakery; ENIGH 011139 "Pasteles y pastelillos" (🥧 comes from CLDR's es-MX name "pay")
++ baguette  # French-style loaf; ENIGH 011133 "Pan" (🥖 comes from CLDR's es-419 name "baguette")
++ orejas  # puff-pastry pan dulce; QQP "Pan Dulce" (no source names the piece)
++ chilindrinas  # pan dulce with sugar crust; QQP "Pan Dulce" (no source names the piece)
++ marranitos  # pig-shaped piloncillo pan dulce; QQP "Pan Dulce" (no source names the piece)
++ garibaldis  # small cakes with sprinkles; QQP "Pan Dulce" (no source names the piece)

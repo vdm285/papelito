@@ -1,0 +1,25 @@
+# Farmacia (far): pharmacy words that PROFECO QQP and INEGI ENIGH 2024 miss or spell differently.
+# Drafted by Claude (AI) on 2026-10-22 from the sources' gaps; awaiting owner review.
+# Lines: "+ término [= emoji]  # why" adds a term here (an emoji is a human choice; "= -" means no emoji);
+# "- término  # why" drops a source term from this aisle; "término > aba  # why" moves a source term elsewhere.
+# Every line needs a "# why": what it is and, where one exists, the source term it is the everyday name for.
+
++ sal de uvas  # the antacid (Picot); QQP "Picot. Sal de Uvas" (Medicamentos); without it it goes to abarrotes through "sal"
++ curitas  # adhesive bandages, the everyday Mexican word; QQP "Venditas Adhesivas" (🩹 comes from CLDR's es-MX name "curita")
++ vendas  # bandages; QQP "Venda Elástica", "Venditas Adhesivas"
++ pastillas  # pills in general ("pastillas para la tos"); ENIGH 061113 lists "píldoras"
++ medicina  # medicine in general; ENIGH 0611 "Medicamentos"
++ jarabe  # cough syrup, as people write it; ENIGH 061116 "Expectorantes: jarabe para la tos" (the head noun is split with drink syrups)
++ pomada  # ointment; QQP "Pomada de la Campana" (Medicamentos)
++ vaporub  # chest rub, by its short name; QQP "Vick Vaporub"
++ antiácido  # antacid; ENIGH 061118 "Medicamentos antidiarreicos y para el malestar estomacal"
++ gotas para los ojos  # eye drops; ENIGH 06111E "Medicamentos oftalmológicos"
++ electrolit  # oral rehydration drink, written by brand; QQP "Electrolitos Orales", "Sueros Orales" (Medicamentos)
++ condones  # ENIGH 061221 "Preservativos"
++ pepto bismol  # stomach remedy, written by brand; QQP "Subsalicilato de Bismuto" (its active ingredient)
+
+# source terms that should not ship
+- next  # QQP medicine "Next. Tabs": an English word; nobody means the medicine by writing "next" on a list
+
+# Added by the auditor (Claude, AI) on 2026-10-22 after running 160 shopping-list lines through the app's matcher.
++ leche de magnesia  # milk of magnesia (laxative and antacid); ENIGH 061118 "Medicamentos antidiarreicos y para el malestar estomacal"; without it the item goes to lácteos through "leche"

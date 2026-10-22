@@ -1,0 +1,68 @@
+# 60 everyday Mexican shopping-list words with the aisle each is expected in. Copied from the vocabulary research
+# (data/cache/vocab/test-60.tsv, 2026-10-21) with the aisle ids lowercased and a "store" column added.
+# WHO CHOSE THE AISLES: an AI (the vocabulary research agent of 2026-10-21), writing the list down before opening any source;
+# it had already read the old checkpoint-1 dictionary. The expected aisles are judgments, not facts.
+# store = 1 marks a store-dependent row (the research wrote "varia"; tostadas added from the research's own §9 and §11):
+# reported, but left out of the score's denominator.
+# Columns: n, term (as typed), head (what a source must contain), aisle (expected), store, note
+n	term	head	aisle	store	note
+1	jitomate	jitomate	fru	0	Mexican word; Spain/OFF says tomate
+2	tomate verde	tomate verde	fru	0	tomatillo; "tomate" alone is ambiguous
+3	aguacate	aguacate	fru	0	
+4	cebolla	cebolla	fru	0	
+5	limones	limon	fru	0	plural on lists
+6	plátanos	platano	fru	0	
+7	chile serrano	chile serrano	fru	0	
+8	cilantro	cilantro	fru	0	
+9	nopales	nopal	fru	0	
+10	papas	papa	fru	1	varia: potatoes vs Sabritas
+11	tortillas	tortilla	tor	0	tortillería (or PAN)
+12	bolillo	bolillo	pan	0	
+13	pan de caja	pan de caja	pan	0	Bimbo-style sliced bread
+14	conchas	concha	pan	0	pan dulce
+15	tostadas	tostada	pan	1	store-dependent per vocab.md §9 and §11 (PROFECO and INEGI group tostadas with tortillas)
+16	pollo	pollo	car	0	
+17	carne molida	carne molida	car	0	
+18	bistec	bistec	car	0	
+19	jamón	jamon	sal	0	salchichonería
+20	salchichas	salchicha	sal	0	
+21	chorizo	chorizo	sal	1	varia: carnes
+22	huevo	huevo	lac	0	
+23	leche	leche	lac	0	
+24	queso oaxaca	queso oaxaca	lac	0	
+25	queso panela	queso panela	lac	0	
+26	crema	crema	lac	0	ambiguous: crema para manos
+27	yogurt	yogurt	lac	0	spelling varies: yogur, yoghurt
+28	mantequilla	mantequilla	lac	0	
+29	frijoles	frijol	aba	0	
+30	arroz	arroz	aba	0	
+31	aceite	aceite	aba	0	
+32	azúcar	azucar	aba	0	
+33	sal	sal	aba	0	short word: "sal de uvas"
+34	café	cafe	aba	0	or BEB
+35	Maseca	maseca	aba	0	brand (harina de maíz)
+36	atún	atun	aba	0	canned
+37	chiles en vinagre	chiles en vinagre	aba	0	canned, not fresh
+38	sopa de fideo	fideo	aba	0	pasta para sopa
+39	mayonesa	mayonesa	aba	0	
+40	consomé	consome	aba	0	Knorr Suiza
+41	salsa Valentina	valentina	aba	0	brand
+42	galletas Marías	galletas marias	aba	0	or BOT
+43	Coca-Cola	coca cola	beb	0	brand; "coca"
+44	cerveza	cerveza	beb	0	
+45	garrafón	garrafon	beb	0	20 L water jug
+46	Sabritas	sabritas	bot	0	brand
+47	helado	helado	con	0	
+48	Fabuloso	fabuloso	lim	0	brand
+49	cloro	cloro	lim	0	
+50	detergente	detergente	lim	0	
+51	Suavitel	suavitel	lim	0	brand
+52	jabón Zote	zote	lim	0	brand, laundry soap
+53	papel de baño	papel de bano	lim	1	varia: HIG; PROFECO says papel higienico
+54	bolsas de basura	bolsas de basura	lim	0	
+55	pasta de dientes	pasta de dientes	hig	0	PROFECO: pasta dental
+56	desodorante	desodorante	hig	0	
+57	toallas femeninas	toallas femeninas	hig	0	
+58	pañales	panal	bbe	0	
+59	croquetas	croquetas	mas	1	varia: croquetas de pollo = congelados
+60	paracetamol	paracetamol	far	0	

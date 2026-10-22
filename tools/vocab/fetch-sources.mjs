@@ -38,7 +38,6 @@ const QQP_MANIFEST = path.resolve(QQP_DIR, '..', 'raw', 'manifest.json'); // Com
 const STREAM = path.join(CACHE_DIR, 'qqp-stream');
 const DL = path.join(CACHE_DIR, 'dl');
 const UA = 'Papelito-vocab/1.0 (https://github.com/vdm285/listolista; build-time, a few requests a year)';
-const TODAY = mxDate();
 const sha256 = (buf) => crypto.createHash('sha256').update(buf).digest('hex');
 const log = (...a) => console.log('[sources]', ...a);
 
@@ -147,7 +146,7 @@ const bump = (m, k, n) => m.set(k, (m.get(k) || 0) + n);
 // "Nescafé. Clásico" → "Nescafé" (QQP writes brand ". " sub-line); "Dr. Pepper", "L. a. Cetto", "X-a. Domecq" stay whole
 const baseBrand = (marca) => {
   const m = marca.match(/^(.*?)\.\s/);
-  return (m && m[1].replace(/[^\p{L}]/gu, '').length >= 3 ? m[1] : marca).trim();
+  return (m && m[1].replace(/[^\p{L}\p{N}]/gu, '').length >= 3 ? m[1] : marca).trim();
 };
 
 function qqpHeader(manifest, what) {
@@ -160,7 +159,7 @@ function qqpHeader(manifest, what) {
     '# url: https://datos.profeco.gob.mx/datos_abiertos/qqp.php (dataset record: https://www.datos.gob.mx/dataset/programa_quien_es_quien_precios_2026)',
     '# licence: Creative Commons Attribution 4.0 (CC BY 4.0), https://creativecommons.org/licenses/by/4.0/ (datos.gob.mx record, checked 2026-10-21); changes: aggregated and reshaped by Papelito',
     `# retrieved: archives ${arch.length ? 'downloaded by CompaPrecio' : '(manifest not found)'}; ${arch.join('; ') || 'see CompaPrecio/data/cache/qqp/raw/manifest.json'}`,
-    `# inputs: ${manifest.files.length} CSV files, ${manifest.rows} rows${dates}; streamed read-only by tools/vocab/fetch-sources.mjs; derived ${TODAY}`,
+    `# inputs: ${manifest.files.length} CSV files, ${manifest.rows} rows${dates}; streamed read-only by tools/vocab/fetch-sources.mjs on ${mxDate(new Date(manifest.finished))}`,
   ];
 }
 
@@ -235,7 +234,7 @@ function deriveQqp() {
     return { bk, line: [bestSpelling(brandSpell.get(bk)), bestSpelling(prods.get(pk).spell), catName(top(e.cat)[0][0]), e.rows].join('\t'), rows: e.rows };
   }).sort((a, b) => (a.bk < b.bk ? -1 : a.bk > b.bk ? 1 : b.rows - a.rows));
   writeText(path.join(SOURCES, 'qqp-marcas.tsv'), [...qqpHeader(manifest, `qqp-marcas.tsv: brand × product × rows, groceries and household goods only (no medicines or durables), ${brandRows.length} rows, ${brandSpell.size} brands`),
-    '# columns: marca (base brand: MARCA before the first ". " when that part has 3+ letters, e.g. "Nescafé. Clásico" → Nescafé, "Dr. Pepper" stays; "S/M" and "Cualquier Marca" left out), producto, categoria, rows',
+    '# columns: marca (base brand: MARCA before the first ". " when that part has 3+ letters or digits, e.g. "Nescafé. Clásico" → Nescafé, "H-24. Doméstico" → H-24, "Dr. Pepper" stays; "S/M" and "Cualquier Marca" left out), producto, categoria, rows',
     'marca\tproducto\tcategoria\trows', ...brandRows.map((r) => r.line)].join('\n') + '\n');
 
   // varieties mined from PRESENTACIÓN

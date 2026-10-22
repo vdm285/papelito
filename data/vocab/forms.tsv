@@ -1,0 +1,28 @@
+# Form words: a word anywhere in the item moves it from one aisle to another, whatever the head word is
+# ("chiles en lata" → abarrotes, "verduras congeladas" → congelados). Human file, drafted by Claude (AI) on 2026-10-22,
+# awaiting owner review. "from" is an aisle id or "*" (any aisle). The matcher (src/model/aisles.js) drops filler words
+# ("en", "de") and stems singular and plural alike, so "en lata" is the word "lata" and "congelados" is "congelado";
+# masculine and feminine stem differently, so both are listed where both occur. The first form word in the item whose
+# rule fits the item's aisle applies.
+word	from	to	why
+congelado	*	con	frozen anything is in the freezer: "camarón congelado", "pollo congelado", "brócoli congelado"
+congelada	*	con	feminine of the above: "verduras congeladas", "pizza congelada"
+lata	fru	aba	canned vegetables: "chiles en lata", "elote en lata", "champiñones en lata"
+lata	car	aba	canned fish and meat: "pescado en lata"
+lata	sal	aba	canned sausages: "salchichas en lata"
+enlatado	fru	aba	"elote enlatado", "chiles enlatados" (ENIGH 011794)
+enlatado	car	aba	"pescado enlatado"
+enlatada	fru	aba	"verdura enlatada"
+enlatada	sal	aba	"salchichas enlatadas"
+vinagre	fru	aba	pickled: "chiles en vinagre", "cebollitas en vinagre"
+escabeche	fru	aba	pickled: "jalapeños en escabeche" (QQP Chiles)
+encurtido	fru	aba	pickled: "chiles encurtidos" (ENIGH 011794)
+almíbar	fru	aba	fruit in syrup: "duraznos en almíbar", "piña en almíbar" (QQP)
+conserva	fru	aba	"fruta en conserva" (ENIGH 011691)
+conserva	car	aba	"pescado en conserva" (ENIGH 011324)
+deshidratado	fru	aba	dried: "chile deshidratado" (ENIGH 011770)
+deshidratada	fru	aba	feminine: "verdura deshidratada"
+polvo	fru	aba	powdered: "ajo en polvo", "chile en polvo" (ENIGH 011793); milk and detergent are not moved
+molido	fru	aba	ground spices: "chile molido", "ajo molido"; "carne molida" is meat, not fru, and stays
+seco	fru	aba	dried chiles and mushrooms: "chiles secos", "hongos secos" (QQP Chile Seco, Legumbres Secas)
+seca	fru	aba	feminine: "hierbas de olor secas"

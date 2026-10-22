@@ -1,0 +1,50 @@
+# PROFECO QQP CATEGORÍA → aisle. Human file (drafted by the research on 2026-10-21, reasons added by Claude (AI) on
+# 2026-10-22; awaiting owner review). Categories are matched folded (no accents, any case). "-" = not groceries: skip.
+# QQP's categories are statistical groups, not aisles: product-level exceptions are in map-qqp-products.tsv, which wins.
+categoria	aisle	why
+Hortalizas Frescas	fru	fresh vegetables (QQP's Elote, mostly canned, is an exception: map-qqp-products.tsv)
+Frutas Frescas	fru	fresh fruit
+Pan	pan	bakery: bolillo, pan de caja, pan dulce, pastelillos
+Tortillas y Derivados del Maíz	tor	the tortillería counter: tortillas, tostadas; Harina de Maíz and Maíz Pozolero are exceptions (abarrotes)
+Carne de Ave	car	chicken and turkey at the meat counter
+Carne y Vísceras de Res	car	beef at the meat counter
+Carne y Vísceras de Cerdo	car	pork at the meat counter
+Pescados y Mariscos	car	fresh fish and seafood are at the meat and fish counter (aisle "Carnes, pollo y pescado")
+Alimentos Cocinados F/casa	car	only "Pollo Rostizado": the rosticería sits by the meat counter (store-dependent)
+Carnes Frías Secas y Embutidos	sal	cold cuts and sausages: the salchichonería counter
+Huevo	lac	the aisle is "Lácteos y huevo"
+Leche Fresca	lac	milk
+Leche Procesada	lac	UHT, powdered, condensed and evaporated milk; Fórmula Láctea is an exception (bebés)
+Derivados de Leche	lac	cheese, cream, butter, yoghurt; Helado is an exception (congelados)
+Aceites y Grasas Veg. Comestibles	aba	cooking oil, margarine and shortening are pantry goods
+Grasas Animales Comestibles	aba	packaged lard (Manteca de Cerdo) sits with the oils
+Arroz y Cereales Preparados	aba	rice, oats, breakfast cereal
+Azúcar	aba	sugar and sweeteners
+Café	aba	ground and instant coffee are pantry goods (store-dependent: some stores shelve coffee with drinks)
+Té	aba	tea bags sit with coffee
+Condimentos	aba	spices, sauces, mayonnaise, bouillon
+Legumbres Secas	aba	dry beans, lentils, seeds, dried chiles
+Frutas y Legumbres Procesadas	aba	canned and jarred fruit and vegetables; frozen La Huerta mixes and baby food are exceptions
+Galletas Pastas y Harinas de Trigo	aba	cookies, pasta and flour (store-dependent: cookies are sometimes with snacks)
+Galletas	aba	cookies (a secondary category in QQP)
+Pescados y Mariscos en Conserva	aba	canned tuna and sardines
+Chocolates y Golosinas	bot	sweets, chocolate, crisps; spreads, flan, gelatin and drink powders are exceptions
+Botanas y Bebidas	bot	snacks and dips; Queso Crema is an exception (lácteos)
+Refrescos Envasados	beb	soft drinks, water, juice
+Cerveza	beb	beer
+Vinos y Licores	beb	wine and spirits
+Detergentes y Productos Similares	lim	laundry and dish detergent, bleach, floor cleaner, insecticide
+Cigarrillos	lim	QQP files only "Cerillos" (matches) here; matches are a household item
+Arts. de Papel P/higiene Personal	hig	toilet paper, sanitary towels; diapers and wipes (bebés), napkins and paper towels (limpieza) are exceptions
+Arts. para el Cuidado Personal	hig	toiletries; baby items (bebés) and medical devices (farmacia) are exceptions
+Medicamentos	far	medicines and first-aid
+Productos de Temporada (navideños)	-	mixed seasonal goods (romeritos, bacalao, sidra, tejocote): every product is mapped one by one in map-qqp-products.tsv
+Enseres Menores	lim	plates, cups and cutlery: supermarkets sell them with household goods
+Utensilios Domésticos	lim	kitchen scrubbers and pressure cookers: household goods
+Accesorios Domésticos	lim	batteries and light bulbs: household goods
+Aparatos Eléctricos	-	appliances, not a shopping-list item
+Aparatos Electrónicos	-	electronics
+Material Escolar	-	school supplies
+Arts. de Esparcimiento (juguetes)	-	toys
+Artículos Deportivos	-	sports goods
+Refrigeradores	-	appliances

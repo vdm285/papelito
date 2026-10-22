@@ -1,0 +1,22 @@
+# Botanas y dulces (bot): snack and sweet words that PROFECO QQP and INEGI ENIGH 2024 miss or spell differently.
+# Drafted by Claude (AI) on 2026-10-22 from the sources' gaps; awaiting owner review.
+# Lines: "+ término [= emoji]  # why" adds a term here (an emoji is a human choice; "= -" means no emoji);
+# "- término  # why" drops a source term from this aisle; "término > aba  # why" moves a source term elsewhere.
+# Every line needs a "# why": what it is and, where one exists, the source term it is the everyday name for.
+
++ papas fritas = -  # no emoji: CLDR names 🍟 "papas fritas" (French fries), but QQP's "Papas Fritas y Similares" are bagged crisps
++ papitas  # bagged crisps, the everyday diminutive; QQP "Papas Fritas y Similares" ("papas" alone stays with produce)
++ botanas  # snacks in general; QQP category "Botanas y Bebidas", ENIGH 011191 "Botanas elaboradas con cereales"
++ frituras  # fried snacks in general; QQP "Papas Fritas y Similares"
++ takis  # Barcel's rolled tortilla chips, written by name; QQP brand Barcel ("Papas Fritas y Similares")
++ chicles  # chewing gum; ENIGH 011891 "Dulces y golosinas"
++ gomitas  # gummy sweets; ENIGH 011891 "Dulces y golosinas"
++ palanquetas  # peanut brittle bars; ENIGH 011891 "Dulces y golosinas"
++ mazapán  # peanut marzipan (De la Rosa); QQP "Figuritas de Mazapán", ENIGH 011891 "Dulces y golosinas"
++ cocada  # coconut candy; ENIGH 011834 "Ate y dulces a base de frutas"
++ pepitas  # roasted pumpkin seeds, eaten as a snack; ENIGH 011680 "Nueces y otros frutos secos"
++ pistaches  # pistachios; ENIGH 011680 "Nueces y otros frutos secos"
+
+# Added by the auditor (Claude, AI) on 2026-10-22 after running 160 shopping-list lines through the app's matcher.
++ chicharrones de harina  # the wheat-flour snack (duros); ENIGH 011191 "Botanas elaboradas con cereales"; without it the item goes to the meat counter through "chicharrón"
++ duritos  # the same wheat-flour snack by its everyday name; ENIGH 011191 "Botanas elaboradas con cereales"

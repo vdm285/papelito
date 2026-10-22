@@ -1,0 +1,138 @@
+kind	term	aisle	detail
+brand-block-unused	Cualquier Marca		brands-block.txt:25: no QQP brand (in a mapped aisle) has this name
+brand-block-unused	Equate		brands-block.txt:8: no QQP brand (in a mapped aisle) has this name
+brand-block-unused	Marca Propia		brands-block.txt:26: no QQP brand (in a mapped aisle) has this name
+brand-block-unused	Member's Mark		brands-block.txt:9: no QQP brand (in a mapped aisle) has this name
+brand-common-word	ave	aba	aba 100% of 6238 rows; Aceite
+brand-common-word	avena	aba	aba 100% of 5959 rows; Avena
+brand-common-word	ciervo	aba	aba 100% of 595 rows; Vinagre
+brand-common-word	el ciervo	lac	lac 100% of 11951 rows; Queso Manchego, Queso Oaxaca, Queso Panela, Queso Americano
+brand-common-word	elefante	aba	aba 100% of 1494 rows; Sal Molida de Mesa
+brand-common-word	la morena	aba	aba 100% of 6673 rows; Chiles
+brand-common-word	la sanitaria	car	car 100% of 514 rows; Camarón
+brand-common-word	la sierra	aba	aba 100% of 32004 rows; Frijoles, Frijol
+brand-common-word	león	lac	lac 100% of 487 rows; Leche Ultrapasteurizada
+brand-common-word	pasa	aba	aba 100% of 7276 rows; Salsa de Soya, Vainilla
+brand-common-word	protect	far	far 100% of 10443 rows; Cubrebocas
+brand-common-word	sol	aba	aba 100% of 600 rows; Sal Molida de Mesa
+brand-common-word	tostitos	bot	bot 100% of 7209 rows; Dip
+brand-multi-aisle	bachoco	lac	lac 76% / car 24% of 81583 rows; Huevo, Carne Pollo, Carne Cerdo
+brand-multi-aisle	barrilito	beb	beb 74% / aba 26% of 23404 rows; Cerveza, Vinagre
+brand-multi-aisle	bimbo	pan	pan 85% / aba 15% of 306396 rows; Pan de Caja, Pastelillos y Pan Dulce Empaquetado, Empanizadores, Barras de Cereal
+brand-multi-aisle	corona	beb	beb 77% / sal 23% / lim 0% of 12618 rows; Cerveza, Jamón, Queso de Puerco, Pechuga de Pavo
+brand-multi-aisle	crío	lac	lac 64% / car 36% of 2935 rows; Huevo, Carne Pollo
+brand-multi-aisle	diamante	beb	beb 76% / aba 24% of 341 rows; Vino de Mesa, Arroz
+brand-multi-aisle	elite	hig	hig 58% / lim 42% of 29128 rows; Papel Higiénico, Toalla de Papel, Servilletas de Papel Blanco
+brand-multi-aisle	escudo	hig	hig 68% / far 32% / lim 0% of 27445 rows; Jabón de Tocador, Gel Antibacterial, Spray Desinfectante
+brand-multi-aisle	fud	sal	sal 83% / lac 17% of 238994 rows; Jamón, Salchicha, Queso Panela, Tocino Ahumado
+brand-multi-aisle	grand brand	lac	lac 89% / aba 11% of 676 rows; Leche Ultrapasteurizada, Atún
+brand-multi-aisle	grisi	hig	hig 55% / bbe 45% of 71230 rows; Shampoo, Jabón de Tocador, Jabón de Tocador para Bebé, Shampoo para Bebés/niños
+brand-multi-aisle	ibarra	bot	bot 89% / hig 11% of 13129 rows; Chocolate en Tablillas, Jabón de Tocador
+brand-multi-aisle	johnson's baby	bbe	bbe 60% / hig 40% of 25514 rows; Jabón de Tocador para Bebé, Crema Líquida
+brand-multi-aisle	kleenex	hig	hig 64% / lim 36% of 31805 rows; Papel Higiénico, Servilletas de Papel Blanco
+brand-multi-aisle	lirio	lim	lim 71% / hig 25% / aba 4% of 16522 rows; Jabón de Pasta, Jabón de Tocador, Grasa Comestible
+brand-multi-aisle	marinela	aba	aba 59% / pan 41% of 145466 rows; Galletas Dulces, Pastelillos y Pan Dulce Empaquetado
+brand-multi-aisle	mennen	hig	hig 50% / bbe 50% of 27572 rows; Shampoo, Shampoo para Bebés/niños
+brand-multi-aisle	mimarca	aba	aba 87% / pan 13% of 508 rows; Azúcar, Aceite, Pan de Caja
+brand-multi-aisle	more value	hig	hig 53% / aba 47% of 1194 rows; Papel Higiénico, Aceite
+brand-multi-aisle	nestlé	con	con 76% / beb 24% of 8929 rows; Helado, Agua Sin Gas
+brand-multi-aisle	parma	sal	sal 84% / lac 16% of 54660 rows; Jamón, Tocino Ahumado, Queso de Puerco, Chorizo
+brand-multi-aisle	pétalo	lim	lim 83% / hig 17% of 53130 rows; Servilletas de Papel Blanco, Toalla de Papel, Papel Higiénico
+brand-multi-aisle	regio	hig	hig 85% / lim 15% of 20348 rows; Papel Higiénico, Servilletas de Papel Blanco, Toalla de Papel
+brand-multi-aisle	san lázaro	aba	aba 83% / bot 17% of 7095 rows; Chile Seco, Haba, Almendras, Lenteja
+brand-multi-aisle	san marcos	aba	aba 55% / lac 45% of 60397 rows; Chiles, Leche Ultrapasteurizada
+brand-multi-aisle	smart	aba	aba 61% / lac 20% / pan 19% of 1008 rows; Azúcar, Pasta para Sopa, Huevo, Pan de Caja
+brand-multi-aisle	splenda	aba	aba 55% / beb 45% of 23742 rows; Sustituto de Azúcar, Polvo P/preparar Bebidas
+brand-multi-aisle	suavel	hig	hig 71% / lim 29% of 40611 rows; Papel Higiénico, Servilletas de Papel Blanco
+brand-multi-aisle	tepeyac	lim	lim 89% / hig 11% of 13687 rows; Jabón de Pasta, Jabón de Tocador
+brand-multi-aisle	zwan	sal	sal 67% / lac 33% of 157262 rows; Jamón, Salchicha, Queso Manchego, Queso Panela
+emoji-auto	aceituna	aba	🫒 = CLDR "aceituna"
+emoji-auto	aguacate	fru	🥑 = CLDR "aguacate"
+emoji-auto	ajo	fru	🧄 = CLDR "ajo"
+emoji-auto	arándanos	fru	🫐 = CLDR "arándanos"
+emoji-auto	baguette	pan	🥖 = CLDR "baguette"
+emoji-auto	berenjena	fru	🍆 = CLDR "berenjena"
+emoji-auto	biberón	bbe	🍼 = CLDR "biberón"
+emoji-auto	brócoli	fru	🥦 = CLDR "brócoli"
+emoji-auto	cacahuates	bot	🥜 = CLDR "cacahuate"
+emoji-auto	castañas	fru	🌰 = CLDR "castaña"
+emoji-auto	cebolla	fru	🧅 = CLDR "cebolla"
+emoji-auto	cepillo de dientes	hig	🪥 = CLDR "cepillo de dientes"
+emoji-auto	cerezas	fru	🍒 = CLDR "cerezas"
+emoji-auto	coco	fru	🥥 = CLDR "coco"
+emoji-auto	curitas	far	🩹 = CLDR "curita"
+emoji-auto	dona	pan	🍩 = CLDR "dona"
+emoji-auto	durazno	fru	🍑 = CLDR "durazno"
+emoji-auto	empanadas	pan	🥟 = CLDR "empanada"
+emoji-auto	escobas	lim	🧹 = CLDR "escoba"
+emoji-auto	espagueti	aba	🍝 = CLDR "espagueti"
+emoji-auto	esponjas	lim	🧽 = CLDR "esponja"
+emoji-auto	flan	aba	🍮 = CLDR "flan"
+emoji-auto	focos	lim	💡 = CLDR "foco"
+emoji-auto	fresa	fru	🍓 = CLDR "fresa"
+emoji-auto	galletas	aba	🍪 = CLDR "galleta"
+emoji-auto	hamburguesas	car	🍔 = CLDR "hamburguesa"
+emoji-auto	helado	con	🍨 = CLDR "helado"
+emoji-auto	hielo	con	🧊 = CLDR "hielo"
+emoji-auto	huevo	lac	🥚 = CLDR "huevo"
+emoji-auto	jeringas	far	💉 = CLDR "jeringa"
+emoji-auto	kiwi	fru	🥝 = CLDR "kiwi"
+emoji-auto	limón	fru	🍋 = CLDR "limón"
+emoji-auto	mandarina	fru	🍊 = CLDR "mandarina"
+emoji-auto	mango	fru	🥭 = CLDR "mango"
+emoji-auto	mantequilla	lac	🧈 = CLDR "mantequilla"
+emoji-auto	melón	fru	🍈 = CLDR "melón"
+emoji-auto	pan	pan	🍞 = CLDR "pan"
+emoji-auto	papa	fru	🥔 = CLDR "papa"
+emoji-auto	pay	pan	🥧 = CLDR "pay"
+emoji-auto	pepino	fru	🥒 = CLDR "pepino"
+emoji-auto	pera	fru	🍐 = CLDR "pera"
+emoji-auto	pimiento morrón	fru	🫑 = CLDR "pimiento morrón"
+emoji-auto	pizza	con	🍕 = CLDR "pizza"
+emoji-auto	piña	fru	🍍 = CLDR "piña"
+emoji-auto	plátano	fru	🍌 = CLDR "plátano"
+emoji-auto	píldoras	far	💊 = CLDR "píldora"
+emoji-auto	queso	lac	🧀 = CLDR "queso"
+emoji-auto	sal	aba	🧂 = CLDR "sal"
+emoji-auto	sandía	fru	🍉 = CLDR "sandía"
+emoji-auto	sartén	lim	🍳 = CLDR "sartén"
+emoji-auto	tocino	sal	🥓 = CLDR "tocino"
+emoji-auto	uva	fru	🍇 = CLDR "uvas"
+emoji-auto	velas	lim	🕯️ = CLDR "vela"
+emoji-auto	zanahoria	fru	🥕 = CLDR "zanahoria"
+head-noun-derived	agua	beb	80% of 5 phrases: agua gas, agua mineral sabor, agua natural embotellada, agua oxigenada, agua sin gas
+head-noun-derived	bebidas	beb	78% of 9 phrases: bebida base cacao, bebida base leche, bebida base vino, bebida energetica, bebida fermentada base leche, bebida fermentada maiz, bebida hidratante, bebida hidratante e isotonica, bebida preparada alcohol
+head-noun-derived	café	aba	100% of 3 phrases: cafe grano, cafe solubl, cafe tostado
+head-noun-derived	carne	car	82% of 11 phrases: carn adobada, carn ahumada, carn asar, carn cerdo, carn cordero, carn molida, carn pavo, carn pollo, carn res, carn seca, carn ternera
+head-noun-derived	detergente	lim	100% of 2 phrases: detergente ropa, detergente traste
+head-noun-derived	dorixina	far	100% of 2 phrases: dorixina forte, dorixina relax
+head-noun-derived	fórmula	bbe	100% of 2 phrases: formula lactea, formula leche maternizada
+head-noun-derived	galletas	aba	100% of 7 phrases: galleta animalito, galleta dulz, galleta emperador, galleta habanera, galleta maria, galleta principe, galleta salada
+head-noun-derived	harina	aba	100% of 6 phrases: harina arroz, harina hot cake, harina maiz, harina pur papa, harina trigo, harina waffl
+head-noun-derived	jugo	beb	100% of 2 phrases: jugo fruta, jugo gas
+head-noun-derived	leche	lac	100% of 8 phrases: leche baja grasa, leche bronca, leche condensada, leche evaporada, leche pasteurizada, leche polvo, leche soya, leche ultrapasteurizada
+head-noun-derived	limpiador	lim	100% of 2 phrases: limpiador liquido piso, limpiador multiuso
+head-noun-derived	manteca	aba	100% of 3 phrases: manteca cerdo, manteca puerco, manteca vegetal
+head-noun-derived	maíz	aba	100% of 3 phrases: maiz grano, maiz palomero, maiz pozolero
+head-noun-derived	medicamentos	far	100% of 5 phrases: medicamento antidiarreico, medicamento antihistaminico, medicamento dermatologico, medicamento descongestivo, medicamento oftalmologico
+head-noun-derived	mole	aba	100% of 2 phrases: mol pasta, mol rojo pasta
+head-noun-derived	molida	car	100% of 2 phrases: molida puerco, molida res
+head-noun-derived	pescado	car	100% of 2 phrases: pescado ahumado, pescado fresco
+head-noun-derived	queso	lac	93% of 14 phrases: queso amarillo, queso americano, queso anejo, queso canasto, queso chihuahua, queso cotija, queso crema, queso dobl crema, queso fresco, queso manchego, queso oaxaca, queso panela, queso puerco, queso sierra
+head-noun-derived	rastrillos	hig	100% of 2 phrases: rastrillo afeitar, rastrillo desechabl
+head-noun-derived	semilla	aba	100% of 2 phrases: semilla comestibl, semilla girasol
+head-noun-derived	servilletas	lim	100% of 2 phrases: servilleta papel, servilleta papel blanco
+head-noun-derived	suplemento	far	100% of 2 phrases: suplemento alimenticio, suplemento energetico
+head-noun-derived	tocino	sal	100% of 2 phrases: tocino ahumado, tocino puerco
+head-noun-derived	tortilla	tor	100% of 2 phrases: tortilla harina trigo, tortilla maiz
+head-noun-derived	vino	beb	100% of 2 phrases: vino mesa, vino uva
+head-noun-derived	vísceras	car	100% of 3 phrases: viscera ave, viscera puerco, viscera res
+head-noun-held-back	filete	car	67% of 3 phrases: filete pescado, filete pescado rebozado, filete res
+head-noun-held-back	fruta	bot	67% of 3 phrases: fruta congelada, fruta cubierta, fruta seca
+head-noun-held-back	gelatina	lac	50% of 2 phrases: gelatina polvo, gelatina preparada
+head-noun-held-back	jabon	lim	40% of 5 phrases: jabon barra, jabon medicinal, jabon pasta, jabon tocador, jabon tocador bebe
+head-noun-held-back	jarabe	beb	50% of 2 phrases: jarabe preparar bebida, jarabe tos
+head-noun-held-back	panal	hig	50% of 2 phrases: panal adulto, panal desechabl
+head-noun-held-back	pasta	aba	50% of 2 phrases: pasta dental, pasta sopa
+head-noun-held-back	toalla	hig	67% of 3 phrases: toalla femenina, toalla papel, toalla sanitaria
+head-noun-held-back	toallita	lim	50% of 2 phrases: toallita desinfectante, toallita humeda limpiadora

@@ -1,0 +1,70 @@
+# Brands that never become terms: store brands and house brands (a chain's own label spans unrelated products, so the
+# name says nothing about the aisle), and labels that are not brands. One per line, "# why" required; matched folded.
+# Evidence: data/vocab/sources/qqp-marcas.tsv (brand × product × rows). Human file, drafted by Claude (AI) on 2026-10-22,
+# awaiting owner review.
+Great Value  # Walmart de México's store brand: 17 QQP products from sugar to paper towels
+Aurrera  # Bodega Aurrerá's store brand (Walmart): 10 QQP products
+Marketside  # Walmart's store brand (fresh and prepared food)
+Equate  # Walmart's pharmacy and toiletries brand
+Member's Mark  # Sam's Club's store brand
+Kirkland  # Costco's store brand
+Chedraui  # the Chedraui chain's own label: 14 QQP products
+Soriana  # the Soriana chain's own label
+La Comer  # the La Comer chain's own label
+Heb  # the H-E-B chain's own label
+Heb Supreme  # H-E-B's meat label
+Hill Country Fare  # H-E-B's store brand: 12 QQP products
+Mi Tienda del Ahorro  # H-E-B's discount-store label: 9 QQP products
+Precíssimo  # a store brand spanning 20 QQP products (sugar, rice, pasta, detergent, toilet paper...)
+Selecto Brand  # a store brand spanning several QQP products (bread, eggs, sugar...)
+Valley Foods  # a store brand spanning 10 QQP products
+Ke Precio  # a store brand spanning several QQP products
+Aprecio  # a store brand spanning several QQP products
+Max Select  # a store brand spanning several QQP products
+Extra Especial  # a store label (QQP lists it for Rosca de Reyes)
+Cualquier Marca  # not a brand: QQP's "any brand"
+Marca Propia  # not a brand: QQP's "own brand"
+Ley  # Casa Ley's store brand (Sinaloa chain): sugar, beans, rice, pasta, sardines in QQP
+Alimentación para el Bienestar  # the government stores' own label (QQP: Harina de Maíz); it names no product
+Season's Select  # a produce label on QQP limes; it names no product
+Tehuacán  # QQP lists it as an egg brand, but in Mexico "Tehuacán" on a list means the mineral water
+Manila  # a soap brand in QQP, but "manila" is a mango variety (mango manila)
+Pro  # a toothbrush line in QQP; too short and common to mean the brand
+Bueno  # an ordinary word ("bueno"); QQP's bean brand would catch unrelated items
+Cristal  # an ordinary word (glass); QQP's oil brand
+Delicia  # an ordinary word; QQP's margarine brand
+Progreso  # an ordinary word; QQP's sugar and rice brand
+Maravilla  # an ordinary word; QQP's oil brand
+Franja  # an ordinary word (stripe); QQP's cheese brand
+Guadalupe  # a person's name (QQP: a cheese brand); "flores para Guadalupe" must not go to lácteos
+Eugenia  # a person's name (QQP: a butter brand)
+Dolores  # a person's name (QQP: a tuna brand); "atún Dolores" still goes to abarrotes through "atún"
+San Juan  # a person's and place name (QQP: an egg brand)
+Torres  # a surname (QQP: a brandy brand, "Torres 10")
+Aguascalientes  # a state (QQP: a dairy brand)
+Florida  # a place name (QQP: a juice brand, "Florida 7")
+Morelia  # a city (QQP: the chocolate powder "Morelia Presidencial")
+Iris  # a person's name and a flower (QQP: a toilet-paper brand)
+Princesa  # an ordinary word (QQP: a drink-syrup brand)
+Citizen  # an English word (QQP: a thermometer brand)
+Imperial  # an ordinary word (QQP: an oil brand)
+Internacional  # an ordinary word (QQP: a coffee brand); "café internacional" still goes to abarrotes through "café"
+# Added by the auditor (Claude, AI) on 2026-10-22 after reading every shipped brand: names that collide on a list.
+Barajas  # QQP's shrimp brand, but "barajas" on a list means playing cards, which supermarkets sell
+Legal  # QQP's coffee brand, but "legal" is an ordinary word ("hojas tamaño legal", "folders tamaño legal"); "café Legal" still goes to abarrotes through "café"
+Soberano  # QQP's rice brand (777 rows), but in Mexico "Soberano" on a list is Domecq's brandy
+Noche Buena  # QQP's cheese brand, but "noche buena" is Christmas Eve, the poinsettia sold in December and a seasonal beer
+Gloria  # a person's name (QQP: a butter brand); "glorias" are also the Linares milk sweets; "mantequilla Gloria" still goes to lácteos
+Norteño  # an ordinary adjective ("chorizo norteño", "queso norteño"); QQP's cheese brand (559 rows)
+Azucaradas  # an ordinary adjective ("bebidas azucaradas"); QQP's cereal brand (380 rows)
+Eficaz  # an ordinary adjective; QQP's dish-soap brand
+Deliciosa  # an ordinary adjective (as "Delicia" above); QQP's drink-syrup brand
+Esmeralda  # a person's name and a gem (QQP: a cheese brand); "queso Esmeralda" still goes to lácteos through "queso"
+Carlota  # a person's name and a dessert (carlota de limón) (QQP: a honey brand); "miel Carlota" still goes to abarrotes through "miel"
+Andre  # a person's name (QQP: a sparkling-wine brand, 304 rows)
+Molina  # a surname (as "Torres" above) (QQP: a vanilla brand); "vainilla Molina" still goes to abarrotes through "vainilla"
+San Antonio  # a saint's, person's and place name (as "San Juan" above) (QQP: a flour brand); "harina San Antonio" still goes to abarrotes
+San Jose  # a saint's and person's name (as "San Juan" above) (QQP: a rice brand, 535 rows)
+San Blas  # a saint's and place name (as "San Juan" above) (QQP: a flour brand)
+Santa Maria  # a saint's and person's name (as "San Juan" above) (QQP: a bottled-water brand); "agua Santa María" still goes to drinks through "agua"
+Fresca  # an ordinary adjective ("agua fresca", "crema fresca", "fruta fresca"); QQP's grapefruit soda (held back by the common-word rule until the survey phrases with "fresca" were dropped)

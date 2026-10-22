@@ -1,0 +1,128 @@
+# INEGI ENIGH 2024 gastos (COICOP 2018 / CCIF 2018) code prefix → aisle. Human file (drafted by the research on 2026-10-21,
+# revised by Claude (AI) on 2026-10-22; awaiting owner review). The longest matching prefix wins; "-" = skip; codes that
+# match no prefix are skipped (services, clothing, transport...).
+prefix	aisle	why
+01	aba	food and non-alcoholic drinks not listed below: pantry
+01113	pan	bread and cakes
+011131	tor	corn tortillas
+011132	tor	flour tortillas
+011135	aba	cookies sit in abarrotes (QQP: Galletas Pastas y Harinas de Trigo)
+011136	aba	crackers, as above
+011191	bot	cereal snacks
+011192	tor	tostadas are sold at the tortillería
+011193	tor	masa
+011194	tor	other corn products for cooking
+011210	-	live animals
+0112	car	meat
+01122H	-	game meats (horse, iguana, frog, turtle, venison): not supermarket items
+01122I	-	insects
+01123	sal	ham, bacon, smoked and dried meat, cold cuts
+011254	car	carne adobada o enchilada is raw marinated meat at the meat counter
+01125	sal	sausages and chorizo
+011255	con	nuggets are frozen
+0113	car	fresh fish and seafood
+011322	aba	canned tuna
+011323	aba	canned sardines
+011324	aba	other canned fish
+011331	con	breaded fish fillets are frozen
+011343	con	frozen shrimp and seafood
+011352	aba	canned seafood
+0114	lac	milk, cheese, yoghurt, eggs ("Lácteos y huevo")
+011472	bot	dulces de leche and jamoncillos are sweets (QQP's Cajeta is mapped to abarrotes, which wins)
+011520	lac	butter
+011530	lac	margarine sits with butter in the refrigerated case
+011592	car	chicharrón (pork rind) is sold at the meat counter (store-dependent: bagged chicharrones are snacks)
+0116	fru	fresh fruit
+011660	con	frozen fruit
+011670	bot	dried fruit sits with nuts and snacks
+011680	bot	nuts
+011691	aba	canned fruit
+011692	bot	candied and dried fruit
+0117	fru	fresh vegetables
+01176	aba	dry beans, lentils, chickpeas
+011770	aba	dried vegetables
+011781	con	frozen vegetables
+011782	con	frozen legumes
+011791	aba	instant mashed-potato flakes
+011792	aba	vegetable flours
+011793	aba	dried or powdered chiles
+011794	aba	canned or pickled chiles
+011795	con	frozen fries
+011796	bot	bagged crisps
+011797	aba	processed beans
+011798	aba	canned vegetables
+011799	aba	canned or dry legumes
+01179A	aba	other vegetable preparations
+0118	aba	sugar, honey, jam
+01185	bot	chocolate
+011861	con	ice cream
+011862	con	ice
+011891	bot	sweets
+011892	lac	ready-made gelatin cups are in the refrigerated dairy case (store-dependent)
+0119	aba	sauces, salt, spices, soups, baking
+01192	bbe	baby food and formula
+011942	fru	fresh herbs
+011943	fru	fresh herbs
+011944	fru	fresh herbs (epazote)
+011945	fru	fresh herbs
+011994	far	protein powder and supplements sit with pharmacy goods (QQP lists Suplemento Alimenticio under Medicamentos)
+012	beb	non-alcoholic drinks
+0122	aba	coffee (as QQP's Café)
+0123	aba	tea and infusions (as QQP's Té)
+013	-	services
+021	beb	alcoholic drinks
+0561	lim	non-durable household goods
+056191	-	sewing notions
+056199	-	hardware (screws, nails)
+055221	lim	light bulbs (ENIGH household accessories), sold with household goods
+055222	lim	batteries (ENIGH household accessories), sold with household goods
+0611	far	medicines
+0612	far	medical products
+061338	hig	adult incontinence products sit with personal care (as QQP's Ropa Interior Desechable)
+0932	mas	pets
+093210	-	live pets
+1312	hig	personal care
+131205	bbe	baby toiletries
+13120K	bbe	diapers
+# ENIGH's "18" block (181113-181171) names extra household food items one code at a time (no COICOP tree under it),
+# so each useful code is mapped by itself; codes left out are generic ("Otras especias"), services, gifts, or labels whose
+# pieces would read wrong ("Plátano verde y Tabasco" would make "tabasco" a fruit; "Anís (licor)" would make anís a drink).
+# Added by the auditor (Claude, AI) on 2026-10-22.
+181114	car	arrachera, a beef cut at the meat counter
+181115	car	milanesa de res
+181116	car	chamorro de res
+181117	car	cocido de res (beef for stew)
+181120	car	codillo de puerco
+181121	car	espaldilla de puerco
+181122	car	molida de puerco
+181123	car	chivo y cabrito
+181124	car	chicken pieces on the bone
+181125	car	chicken pieces off the bone
+181127	car	filete de pescado (fresh fish counter; breaded or frozen fillets are 011331)
+181128	car	fish and roe: anguilas, mantarraya, pejelagarto, hueva de pescado
+181129	lac	leche condensada (as QQP's Leche Condensada)
+181130	lac	leche evaporada (as QQP's Leche Evaporada)
+181131	lac	queso manchego
+181132	lac	queso chihuahua
+181133	aba	manteca vegetal (shortening), with the oils
+181135	fru	lima (the citrus fruit)
+181136	fru	anona, chirimoya, guanábana
+181137	fru	chicozapote y mamey
+181138	fru	ciruela y jobo
+181139	fru	pitahaya y tuna
+181141	fru	brócoli
+181142	fru	germinados (sprouts), sold fresh with produce
+181143	aba	pimienta (spice)
+181144	aba	canela (spice)
+181145	aba	clavo (spice)
+181148	beb	aguamiel, pulque, tepache and other fermented drinks
+181149	beb	rompope
+181150	beb	vodka
+181151	beb	jerez
+181153	car	filete de res
+181154	beb	aguardiente, charanda, mezcal, sotol
+181160	aba	aceite de coco, aceite de soya (cooking oils)
+181162	beb	agua mineral con sabor
+181163	fru	camote, sold fresh with produce
+181165	fru	pápalo, flor de calabaza, chaya (fresh greens)
+181171	aba	harina para waffles o hot cakes (as QQP's Harina Hot Cakes)

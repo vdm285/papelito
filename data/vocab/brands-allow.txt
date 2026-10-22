@@ -1,0 +1,7 @@
+# Single-word brands that are kept although the word also occurs in a source term or a CLDR emoji name (the build holds
+# such brands back for review otherwise). The brand still has to put at least 90 % of its QQP rows in one aisle.
+# One per line, "# why" required; matched folded. Human file, drafted by Claude (AI) on 2026-10-22, awaiting owner review.
+Foca  # laundry detergent (QQP Detergente P/ropa); "foca" is also the CLDR name of 🦭, but nobody shops for seals
+Nido  # Nestlé powdered milk (QQP Leche en Polvo); "nido" is in CLDR names (🪹 "nido vacío"); on a list it is the milk
+Búfalo  # hot sauce and olives (QQP Salsa Picante, Aceituna); "búfalo" is also a CLDR animal name, but on a list it is the sauce
+Flash  # floor cleaner (QQP Limpiador Líquido P/piso); "flash" is in a CLDR name (📸), not a grocery word

@@ -1,0 +1,23 @@
+# The 16 aisles: id (used by the app, src/model/aisles.js and src/app/i18n.js), Spanish and English names,
+# the aisle's default emoji (Unicode emoji version ≤ 13.0, present in sources/cldr49-emoji-es-MX.tsv) and the
+# default walking order (produce first, frozen last; a starting point, not a fact about any store: every list keeps its own).
+# Tortillería and salchichonería are separate because PROFECO's categories and INEGI's codes keep them apart and
+# Mexican supermarkets have both counters (data/cache/understand/vocab.md §0). Human file; emoji chosen by Claude (AI)
+# on 2026-10-22, awaiting owner review.
+id	es	en	emoji	order
+fru	Frutas y verduras	Fruit and vegetables	🥦	1
+pan	Panadería	Bakery	🍞	2
+tor	Tortillería	Tortillas	🫓	3
+car	Carnes, pollo y pescado	Meat, poultry and fish	🥩	4
+sal	Salchichonería	Deli	🥓	5
+lac	Lácteos y huevo	Dairy and eggs	🥛	6
+aba	Abarrotes	Pantry	🥫	7
+bot	Botanas y dulces	Snacks and sweets	🍬	8
+beb	Bebidas	Drinks	🥤	9
+lim	Limpieza y hogar	Cleaning and home	🧹	10
+hig	Higiene personal	Personal care	🧴	11
+bbe	Bebés	Baby	🍼	12
+mas	Mascotas	Pets	🐾	13
+far	Farmacia	Pharmacy	💊	14
+con	Congelados	Frozen	🧊	15
+otr	Otros	Other	🛒	16
