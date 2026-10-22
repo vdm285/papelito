@@ -8,7 +8,7 @@ export const ME = 'demome00';
 export const OTHER = 'demotro0';
 
 /** localStorage entries for one list, as the app writes them. */
-export function seedList({ title = 'Súper del sábado', aisles = false, hand = 'mano', theme = 'auto', now = Date.now(), fresh = true } = {}) {
+export function seedList({ title = 'Súper del sábado', aisles = false, hand = 'mano', theme = 'auto', now = Date.now(), fresh = true, short = false } = {}) {
   let t = now - 3 * 3600e3;
   const me = createClock(ME, () => t);
   const other = createClock(OTHER, () => t);
@@ -16,7 +16,9 @@ export function seedList({ title = 'Súper del sábado', aisles = false, hand = 
   setTitle(doc, me, title);
   setDevice(doc, me, 'ink', 'azul');
   setDevice(doc, other, 'ink', 'verde');
-  const mine = ['1 kg de tortillas', 'jitomate', 'cebolla', '2 aguacates', 'cilantro', 'leche Lala', 'huevos', 'papel de baño', 'Fabuloso', 'pan Bimbo', 'frijoles'];
+  const mine = short
+    ? ['1 kg de tortillas', 'jitomate', 'cebolla', '2 aguacates', 'leche Lala', 'pan Bimbo', 'frijoles']
+    : ['1 kg de tortillas', 'jitomate', 'cebolla', '2 aguacates', 'cilantro', 'leche Lala', 'huevos', 'papel de baño', 'Fabuloso', 'pan Bimbo', 'frijoles'];
   const ids = {};
   mine.forEach((text, i) => { t += 40_000; ids[text] = `m${String(i).padStart(7, '0')}`; addItem(doc, me, ids[text], text); });
   t += 3600e3;

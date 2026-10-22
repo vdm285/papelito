@@ -144,7 +144,11 @@ function readTuples() {
 }
 
 const bump = (m, k, n) => m.set(k, (m.get(k) || 0) + n);
-const baseBrand = (marca) => marca.split(/\.\s/)[0].trim(); // "Nescafé. Clásico" → "Nescafé"
+// "Nescafé. Clásico" → "Nescafé" (QQP writes brand ". " sub-line); "Dr. Pepper", "L. a. Cetto", "X-a. Domecq" stay whole
+const baseBrand = (marca) => {
+  const m = marca.match(/^(.*?)\.\s/);
+  return (m && m[1].replace(/[^\p{L}]/gu, '').length >= 3 ? m[1] : marca).trim();
+};
 
 function qqpHeader(manifest, what) {
   const a = manifest.archives || {};
@@ -231,7 +235,7 @@ function deriveQqp() {
     return { bk, line: [bestSpelling(brandSpell.get(bk)), bestSpelling(prods.get(pk).spell), catName(top(e.cat)[0][0]), e.rows].join('\t'), rows: e.rows };
   }).sort((a, b) => (a.bk < b.bk ? -1 : a.bk > b.bk ? 1 : b.rows - a.rows));
   writeText(path.join(SOURCES, 'qqp-marcas.tsv'), [...qqpHeader(manifest, `qqp-marcas.tsv: brand × product × rows, groceries and household goods only (no medicines or durables), ${brandRows.length} rows, ${brandSpell.size} brands`),
-    '# columns: marca (base brand: MARCA before the first ". ", e.g. "Nescafé. Clásico" → Nescafé; "S/M" and "Cualquier Marca" left out), producto, categoria, rows',
+    '# columns: marca (base brand: MARCA before the first ". " when that part has 3+ letters, e.g. "Nescafé. Clásico" → Nescafé, "Dr. Pepper" stays; "S/M" and "Cualquier Marca" left out), producto, categoria, rows',
     'marca\tproducto\tcategoria\trows', ...brandRows.map((r) => r.line)].join('\n') + '\n');
 
   // varieties mined from PRESENTACIÓN

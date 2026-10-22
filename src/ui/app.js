@@ -310,7 +310,7 @@ export class PapelApp extends LitElement {
   // ---------- after each render: ink and motion ----------
   willUpdate() {
     this.rects.clear();
-    for (const row of this.querySelectorAll('.row[data-id]')) this.rects.set(row.dataset.id, row.getBoundingClientRect().top);
+    for (const el of this.querySelectorAll('.body [data-id], .body [data-flip]')) this.rects.set(flipKey(el), el.getBoundingClientRect().top);
   }
 
   updated() {
@@ -341,10 +341,15 @@ export class PapelApp extends LitElement {
       else if (!done && this.drawn.has(row)) { drawStrike(row, 'none'); this.drawn.delete(row); }
       if (this.remoteAdded.has(id)) { this.remoteAdded.delete(id); revealWriting(row, reduce); }
       if (this.remoteTouched.has(id)) { this.remoteTouched.delete(id); touchPulse(row, reduce); }
-      const before = this.rects.get(id);
-      if (before !== undefined && !reduce) {
-        const dy = before - row.getBoundingClientRect().top;
-        if (Math.abs(dy) > 2) row.animate([{ transform: `translateY(${dy}px)` }, { transform: 'none' }], { duration: 340, easing: 'cubic-bezier(.2,.8,.2,1)' });
+    }
+    // everything in the sheet's flow glides to its new place together (rows, the writing line,
+    // suggestions, the fold, aisle headings), so nothing overlaps while rows settle
+    if (!reduce) {
+      for (const el of this.querySelectorAll('.body [data-id], .body [data-flip]')) {
+        const before = this.rects.get(flipKey(el));
+        if (before === undefined) continue;
+        const dy = before - el.getBoundingClientRect().top;
+        if (Math.abs(dy) > 2) el.animate([{ transform: `translateY(${dy}px)` }, { transform: 'none' }], { duration: 340, easing: 'cubic-bezier(.2,.8,.2,1)' });
       }
     }
   }
@@ -390,7 +395,7 @@ export class PapelApp extends LitElement {
             ${this.renderHint()}
             ${this.renderSuggestions(pending.length)}
             ${struck.length ? html`
-              <div class="fold" aria-expanded=${showStruck}>
+              <div class="fold" data-flip="fold" aria-expanded=${showStruck}>
                 <button @click=${() => store.savePrefs({ showStruck: !showStruck })}>${icons.chevron} ${t.struck(struck.length)}</button>
                 <button class="link" @click=${() => store.clearStruck()}>${t.clearStruck}</button>
               </div>
@@ -448,7 +453,7 @@ export class PapelApp extends LitElement {
     const groups = new Map(order.map((a) => [a, []]));
     for (const it of pending) groups.get(aisleOf(it.t[0], idx, fixes).aisle)?.push(it);
     return html`${order.filter((a) => groups.get(a).length).map((a) => html`
-      <div class="aisle-head" aria-hidden="true"><span class="margin">${store.prefs.doodles && idx.aisleEmoji && idx.aisleEmoji[a] ? html`<span class="doodle-glyph">${idx.aisleEmoji[a].replace(/\uFE0F/g, '')}\uFE0E</span>` : nothing}</span>${t.aisles[a]}<span class="n">${groups.get(a).length}</span></div>
+      <div class="aisle-head" data-flip=${`aisle-${a}`} aria-hidden="true"><span class="margin">${store.prefs.doodles && idx.aisleEmoji && idx.aisleEmoji[a] ? html`<span class="doodle-glyph">${idx.aisleEmoji[a].replace(/\uFE0F/g, '')}\uFE0E</span>` : nothing}</span>${t.aisles[a]}<span class="n">${groups.get(a).length}</span></div>
       <ol class="rows pending" role="list" aria-label=${t.aisles[a]}>${repeat(groups.get(a), (i) => i.id, (i) => this.renderRow(i, idx, fixes, false))}</ol>`)}`;
   }
 
@@ -475,7 +480,7 @@ export class PapelApp extends LitElement {
   }
 
   renderGhost(o) {
-    return html`<div class="row ghost" style="--ink: var(--ink-${o.ink || 'azul'})" aria-live="polite">
+    return html`<div class="row ghost" data-flip=${`ghost-${o.dev}`} style="--ink: var(--ink-${o.ink || 'azul'})" aria-live="polite">
       <span class="margin" aria-hidden="true">${icons.pen}</span>
       <span class="words"><span class="txt">${o.typing}</span><span class="ghost-nib"></span></span>
     </div>`;
@@ -483,7 +488,7 @@ export class PapelApp extends LitElement {
 
   renderComposer(myInk, n) {
     return html`
-      <div class="composer ${this.isLong ? 'sticky' : ''}">
+      <div class="composer ${this.isLong ? 'sticky' : ''}" data-flip="composer">
         <span class="margin" aria-hidden="true"></span>
         <textarea rows="1" aria-label=${t.writeAria} placeholder=${n ? t.writeMore : t.write} enterkeyhint="enter" autocomplete="off" autocapitalize="sentences" spellcheck="false"
           .value=${live(this.draft)}
@@ -495,7 +500,7 @@ export class PapelApp extends LitElement {
   renderHint() {
     const h = this.hint;
     if (!h || !store.doc.items[h.id]) return nothing;
-    return html`<div class="hint-chip">
+    return html`<div class="hint-chip" data-flip="hint">
       <button class="chip" @click=${() => { store.split(h.id, h.pieces); this.hint = null; }}>${t.splitAsk(h.pieces.length)}</button>
       <span>${h.pieces.join(' · ')}</span>
       <button class="icon-btn" style="width:34px;height:34px" aria-label=${t.close} @click=${() => { this.hint = null; }}>${icons.close}</button>
@@ -510,12 +515,12 @@ export class PapelApp extends LitElement {
       const fromHistory = Object.values(store.history).filter((h) => fold(h.text).startsWith(f)).sort((a, b) => b.n - a.n).map((h) => h.text);
       const list = [...fromHistory, ...completions(typed, 4)].filter((x) => { const k = keyOf(x); if (seen.has(k) || fold(x) === f) return false; seen.add(k); return true; }).slice(0, 3);
       if (!list.length) return nothing;
-      return html`<div class="usual" role="group" aria-label=${t.usual}><span class="margin" aria-hidden="true">+</span><span class="usual-words">${list.map((s, i) => html`${i ? html`<span class="sep" aria-hidden="true">·</span>` : nothing}<button class="pencil" @pointerdown=${(e) => e.preventDefault()} @click=${() => { const ta = this.querySelector('.composer textarea'); ta.value = s; this.commit(ta); }}>${s}</button>`)}</span></div>`;
+      return html`<div class="usual" data-flip="usual" role="group" aria-label=${t.usual}><span class="margin" aria-hidden="true">+</span><span class="usual-words">${list.map((s, i) => html`${i ? html`<span class="sep" aria-hidden="true">·</span>` : nothing}<button class="pencil" @pointerdown=${(e) => e.preventDefault()} @click=${() => { const ta = this.querySelector('.composer textarea'); ta.value = s; this.commit(ta); }}>${s}</button>`)}</span></div>`;
     }
     if (!(this.composerFocus || pendingCount === 0)) return nothing;
     const usual = store.usual(8);
     if (!usual.length) return nothing;
-    return html`<div class="usual" role="group" aria-label=${t.usual}><span class="margin" aria-hidden="true">+</span><span class="usual-words"><span class="usual-label">${t.usual}:</span>${usual.map((u, i) => html`${i ? html`<span class="sep" aria-hidden="true">·</span>` : nothing}<button class="pencil" @pointerdown=${(e) => e.preventDefault()} @click=${() => this.addChip(u.text)}>${u.text}</button>`)}</span></div>`;
+    return html`<div class="usual" data-flip="usual" role="group" aria-label=${t.usual}><span class="margin" aria-hidden="true">+</span><span class="usual-words"><span class="usual-label">${t.usual}:</span>${usual.map((u, i) => html`${i ? html`<span class="sep" aria-hidden="true">·</span>` : nothing}<button class="pencil" @pointerdown=${(e) => e.preventDefault()} @click=${() => this.addChip(u.text)}>${u.text}</button>`)}</span></div>`;
   }
 
   renderStack() {
@@ -544,6 +549,8 @@ export class PapelApp extends LitElement {
 
   get isLong() { return store.items().length > 9; }
 }
+
+const flipKey = (el) => (el.dataset.id ? `row-${el.dataset.id}` : el.dataset.flip);
 
 const statusWord = (st) => (st === 'synced' ? t.synced : st === 'offline' ? t.offline : st === 'trouble' ? t.syncTrouble : t.syncing);
 
