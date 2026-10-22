@@ -13,6 +13,10 @@ let qrCache = { key: '', svg: '' };
 
 export const sync = {
   state: { status: 'local', open: 0, total: 0, others: [] },
+  holdUrlUntil: 0, // closing a card goes back in history; that must not reopen an older link
+
+  /** The next hash change within half a second comes from closing a card: keep the current sheet. */
+  holdUrl() { this.holdUrlUntil = Date.now() + 600; },
 
   on(fn) { listeners.add(fn); return () => listeners.delete(fn); },
   emit() { for (const fn of listeners) fn(); },

@@ -38,6 +38,8 @@ requestIdleCallback(() => loadDict().then(() => app.requestUpdate()), { timeout:
 // another tab of this site changed this list, or opened a link to a list
 addEventListener('storage', (e) => store.fromOtherTab(e.key, e.newValue));
 addEventListener('hashchange', async () => {
+  // going back to close a card lands on an older history entry: put the open sheet's link back
+  if (Date.now() < sync.holdUrlUntil) { sync.holdUrlUntil = 0; sync.setUrl(store.rec && store.rec.secret ? `#k=${store.rec.secret}` : ''); return; }
   const m = location.hash.match(/^#k=([A-Za-z0-9_-]{43})$/);
   if (m && (!store.rec || store.rec.secret !== m[1])) await sync.openLink(location.href);
 });

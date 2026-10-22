@@ -99,17 +99,19 @@ export class Store {
     this.ls.set(K.imported, '1');
   }
 
-  openLast() {
-    const last = this.ls.get(K.last);
+  openLast(newest = false) {
+    const last = newest ? null : this.ls.get(K.last);
     const pick = this.index.find((l) => l.id === last) || [...this.index].sort((a, b) => b.updated - a.updated)[0];
     if (pick) this.open(pick.id); else this.newList();
   }
 
   open(id) {
-    this.flush();
+    if (this.rec && this.rec.id !== id) { this.flush(); this.dropIfBlank(); }
     const raw = this.ls.json(K.list(id), null);
     if (!raw) { this.newList(); return; }
-    const rec = { id, secret: raw.secret, doc: compact(sanitize(raw.doc)), aisles: !!raw.aisles, seen: raw.seen || '', wasShared: !!raw.wasShared, oldId: raw.oldId, syncedAt: Number(raw.syncedAt) || 0 };
+    // this phone's own copy is trusted with its stamps (no future horizon): if the clock was set
+    // back after writing, nothing written before may disappear
+    const rec = { id, secret: raw.secret, doc: compact(sanitize(raw.doc, Infinity)), aisles: !!raw.aisles, seen: raw.seen || '', wasShared: !!raw.wasShared, oldId: raw.oldId, syncedAt: Number(raw.syncedAt) || 0 };
     this.clock.observe(maxStamp(rec.doc));
     this.rec = rec;
     this.undoStack = [];
@@ -136,6 +138,7 @@ export class Store {
 
   newList() {
     this.flush();
+    this.dropIfBlank();
     const id = randomId(10);
     const rec = { id, doc: emptyDoc(), aisles: false, seen: '' };
     this.writeRec(rec);
@@ -148,22 +151,37 @@ export class Store {
     return rec;
   }
 
+  /** Remove a sheet from this phone. Returns a function that brings it back (and reopens it). */
   forgetList(id) {
     const i = this.index.findIndex((l) => l.id === id);
-    if (i < 0) return;
+    if (i < 0) return () => {};
+    if (this.rec && this.rec.id === id) this.flush();
     const entry = this.index[i];
     const raw = this.ls.get(K.list(id));
+    const wasOpen = this.rec && this.rec.id === id;
     this.index.splice(i, 1);
     this.saveIndex();
     this.ls.remove(K.list(id));
-    this.pushUndo(this.t('removed')(entry.title || this.t('untitled')), () => {
-      if (raw) this.ls.set(K.list(id), raw);
-      this.index.push(entry);
-      this.saveIndex();
-      this.emit('index');
-    });
-    if (this.rec && this.rec.id === id) this.openLast();
+    if (wasOpen) this.openLast(true);
     this.emit('index');
+    return () => {
+      if (raw) this.ls.set(K.list(id), raw);
+      if (!this.index.some((l) => l.id === id)) this.index.push(entry);
+      this.saveIndex();
+      if (wasOpen) this.open(id);
+      this.emit('index');
+    };
+  }
+
+  /** A sheet nobody wrote on (no items, no title, not shared) is not worth keeping when you leave it. */
+  dropIfBlank() {
+    const r = this.rec;
+    if (!r || r.secret || r.doc.title[0] || Object.keys(r.doc.items).length) return;
+    if (this.index.length <= 1) return;
+    this.index = this.index.filter((l) => l.id !== r.id);
+    this.saveIndex();
+    this.ls.remove(K.list(r.id));
+    this.rec = null;
   }
 
   // ---------- reading ----------

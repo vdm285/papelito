@@ -59,7 +59,7 @@ export class PapelApp extends LitElement {
     this.wideMq.addEventListener('change', (e) => { this.wide = e.matches; });
     this.ro = new ResizeObserver(() => this.redrawStrikes());
     addEventListener('keydown', (e) => this.onKey(e));
-    addEventListener('popstate', () => { if (this.card) { this.card = null; } });
+    addEventListener('popstate', () => { if (this.card) { sync.holdUrl(); this.card = null; } });
     document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') this.seenSoon(5000); });
     this.loadDraft();
     this.seenSoon(6000);
@@ -166,7 +166,7 @@ export class PapelApp extends LitElement {
   closeCard() {
     if (!this.card) return;
     this.card = null;
-    if (history.state && history.state.card) history.back();
+    if (history.state && history.state.card) { sync.holdUrl(); history.back(); }
   }
 
   // ---------- the writing line ----------
