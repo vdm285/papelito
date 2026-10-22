@@ -17,23 +17,7 @@
     <link rel="preload" href="./fonts/atkinson.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="./apple-touch-icon.png" />
-    <script>
-      // iPhone keeps the page's own address (with the list's #k=) when the manifest has no
-      // start_url; Android needs one to install. Docs: docs/research/2026-10-21-pwa.md §3.
-      (function () {
-        var ios = /iPhone|iPad|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
-        var l = document.createElement('link');
-        l.rel = 'manifest';
-        l.href = ios ? './manifest-ios.webmanifest' : './manifest.webmanifest';
-        document.head.appendChild(l);
-        // paint the paper colour before any script or font arrives
-        try {
-          var p = JSON.parse(localStorage.getItem('ll.prefs') || '{}');
-          var dark = p.theme === 'pizarron' || (p.theme !== 'papel' && matchMedia('(prefers-color-scheme: dark)').matches);
-          document.documentElement.dataset.theme = dark ? 'pizarron' : 'papel';
-        } catch (e) {}
-      })();
-    </script>
+    <script src="./pre.js"></script>
     <style>
       html { background: #fdfbf5; }
       html[data-theme='pizarron'] { background: #263630; }
