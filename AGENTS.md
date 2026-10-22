@@ -31,7 +31,7 @@ A shared shopping list that behaves like **one piece of paper on two phones**: a
 - `src/ui/` — `app.js` (the sheet, gestures, ink and motion after each render), `cards.js` (menu, share, item, sheets, open link, aisle order, settings, about), `ink.js` (hand-drawn strike paths, the travelling pen, handwriting reveal, paper grain), `icons.js`, `theme.js`, `credits.js`.
 - `src/data/dict.js` — loads `public/dict/es-MX.json` after the first frame.
 - `public/` — `sw.js` (offline; stamped by `vite.config.js`), two manifests, icons (from `tools/build-icons.mjs`), the dictionary.
-- `tools/` — `smoke.mjs` (flows, PASS/FAIL), `shots.mjs` (screenshots), `sync-live.mjs` (two phones through the real relays, no browser), `build-icons.mjs`, `lf.mjs` (line endings), `lib/seed.mjs` (demo lists), `vocab/` (the dictionary pipeline).
+- `tools/` — checks: `smoke.mjs` (flows in a browser, PASS/FAIL), `sync-live.mjs` (phones through the real relays, no browser: latency, inks, come-back, link rotation), `perf.mjs` (first load on a throttled phone, medians), `contrast.mjs` (WCAG ratios of every text colour, both themes), `check-text.mjs` (control characters), `lf.mjs` (line endings). Captures: `shots.mjs` (screenshots at exact sizes), `demo-anim.mjs` (animated two-phone capture), `og.mjs` (the link preview `public/og.png`). Assets: `build-icons.mjs` (app icons), `build-fonts.py` (subset fonts), `build-doodles.py` (the margin doodles font). Data: `vocab/` (the dictionary pipeline, `docs/PIPELINES.md`). `lib/seed.mjs` (demo lists for all of the above).
 - `docs/history/` — versions that never reached git.
 
 ## Checks before a commit
