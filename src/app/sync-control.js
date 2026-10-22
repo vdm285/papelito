@@ -69,7 +69,10 @@ export const sync = {
       store.ensureInk();
       store.setSecret(secret, room);
       persistStorage();
-      await this.follow();
+      const started = this.follow(); // the card shows "Conectando…" until the relays answer
+      app.openCard('share');
+      await started;
+      return;
     }
     app.openCard('share');
   },

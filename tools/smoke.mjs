@@ -161,7 +161,77 @@ try {
     await ctx.close();
   }
 
-  // 5. two phones through the real relays (opt-in)
+  // 5. what the first self-audit fixed (each was a real bug)
+  {
+    const { ctx, page, errors } = await fresh(PHONE, seedList({ fresh: false }));
+    await open(page);
+    // strikes in a row: nothing moves under the finger until a pause, then they settle together
+    const three = await page.$$eval('.pending .row[data-id]', (els) => els.slice(0, 3).map((e) => e.dataset.id));
+    for (const id of three) { await page.tap(`.row[data-id="${id}"] .txt`); await sleep(350); }
+    const mid = await page.$$eval('.pending .row[data-id]', (els) => els.map((e) => e.dataset.id));
+    check('strikes in a row stay in place while you keep striking', three.every((id) => mid.includes(id)));
+    await sleep(1700);
+    const after = await page.$$eval('.struck .row[data-id]', (els) => els.map((e) => e.dataset.id));
+    check('then they settle under Tachados together', three.every((id) => after.includes(id)), after.length);
+    // the split hint is on its own rule, and its button is not covered by the writing line
+    await page.tap('.composer textarea');
+    await page.keyboard.type('huevos leche tortillas');
+    await page.keyboard.press('Enter');
+    await page.waitForSelector('.hint-chip .chip', { timeout: 5000 });
+    await sleep(500); // the writing block glides into place first
+    const covered = await page.$eval('.hint-chip .chip', (b) => { const r = b.getBoundingClientRect(); const hit = document.elementFromPoint(r.left + r.width / 2, r.top + r.height / 2); return !(hit === b || b.contains(hit)); });
+    check('the "¿Separar en 3?" button is not covered', !covered);
+    await page.tap('.hint-chip .chip');
+    await sleep(300);
+    const texts = await rows(page);
+    check('tapping it makes three items', ['huevos', 'leche', 'tortillas'].every((w) => texts.includes(w)) && !texts.includes('huevos leche tortillas'));
+    // typing a title while the other phone's changes arrive: what you type stays
+    await page.tap('.title');
+    await page.$eval('.title', (e) => e.select()); // the seeded sheet has a title already
+    await page.keyboard.type('Súper');
+    await page.evaluate(async () => {
+      const { store } = window.__papelito;
+      const D = await import(new URL('./src/model/doc.js', location.href).href).catch(() => null);
+      if (!D) { store.emit('remote', { added: [], removed: [], struck: [], unstruck: [], edited: [], joined: [] }); return; } // production build: a re-render is enough
+      const H = await import(new URL('./src/model/hlc.js', location.href).href);
+      const doc = D.sanitize(JSON.parse(D.canonical(store.doc)));
+      D.addItem(doc, H.createClock('zz9otro0'), 'otroitem01', 'cilantro');
+      store.applyRemote(JSON.parse(D.canonical(doc)));
+    });
+    await sleep(700); // past the title's save pause
+    await page.keyboard.type(' del sábado');
+    check('a title being typed is never overwritten by a render', (await page.$eval('.title', (e) => e.value)) === 'Súper del sábado', await page.$eval('.title', (e) => e.value));
+    await page.keyboard.press('Enter');
+    // deleting the open sheet from Mis hojas, then Deshacer: the same sheet comes back, open
+    const openId = await page.evaluate(() => window.__papelito.store.rec.id);
+    const n = (await rows(page)).length;
+    await page.tap('.head .icon-btn');
+    await page.waitForSelector('.card');
+    await page.evaluate(() => [...document.querySelectorAll('.card .menu-item')].find((b) => /Mis hojas/.test(b.textContent)).click());
+    await sleep(300);
+    await page.evaluate(() => document.querySelector('.card .icon-btn[aria-label^="Borrar"]').click());
+    await sleep(300);
+    check('deleting the open sheet opens another one', (await page.evaluate(() => window.__papelito.store.rec.id)) !== openId);
+    await page.evaluate(() => [...document.querySelectorAll('.toast button')].find((b) => /Deshacer/.test(b.textContent)).click());
+    await sleep(400);
+    check('Deshacer brings the sheet back, open, with its items', (await page.evaluate(() => window.__papelito.store.rec.id)) === openId && (await rows(page)).length === n);
+    // a card closed with Back after making a new link keeps the new link (it reopened the old one)
+    if (await page.$('.card')) { await page.keyboard.press('Escape'); await sleep(300); }
+    await page.tap('.head .pill');
+    await page.waitForFunction(() => location.hash.startsWith('#k='), { timeout: 15000 });
+    await page.waitForSelector('.card .qr svg', { timeout: 15000 });
+    const oldHash = await page.evaluate(() => location.hash);
+    await page.evaluate(() => [...document.querySelectorAll('.card .btn')].find((b) => /enlace nuevo/i.test(b.textContent)).click());
+    await page.waitForFunction((h) => location.hash !== h && location.hash.startsWith('#k='), { timeout: 20000 }, oldHash);
+    await page.goBack();
+    await sleep(800);
+    const now = await page.evaluate(() => ({ hash: location.hash, secret: window.__papelito.store.rec.secret, card: !!document.querySelector('.card') }));
+    check('Back closes the card and keeps the new link', !now.card && now.hash !== oldHash && now.hash === `#k=${now.secret}`, now.hash.slice(0, 8));
+    check('no errors in the console', errors.filter((e) => !/WebSocket/.test(e)).length === 0, errors.slice(0, 3));
+    await ctx.close();
+  }
+
+  // 6. two phones through the real relays (opt-in)
   if (SYNC) {
     const a = await fresh(PHONE, seedList({ fresh: false }));
     await open(a.page);
