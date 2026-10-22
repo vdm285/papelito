@@ -388,10 +388,29 @@ export class Store {
       if (!rival) return;
       if (mine.ink[1] < rival[1].ink[1] || (mine.ink[1] === rival[1].ink[1] && this.device < rival[0])) return;
     }
-    const wanted = this.prefs.ink || INKS[0];
-    const free = !used.has(wanted) ? wanted : INKS.find((i) => !used.has(i)) || INKS[0];
+    const free = this.pickInk(others);
+    if (mine && mine.ink[0] === free) return; // every ink is taken and this is already the best one
     setDevice(this.doc, this.clock, 'ink', free);
     this.changed('ink');
+  }
+
+  /**
+   * The ink to claim: mine if free, else the first free one. With six phones already writing
+   * (one ink each), borrow the ink of the phone that has been quiet the longest, so the inks
+   * of the people actually shopping stay distinct and two phones never trade claims forever.
+   */
+  pickInk(others) {
+    const used = new Set(others.map(([, d]) => d.ink[0]).filter(Boolean));
+    const wanted = this.prefs.ink || INKS[0];
+    if (!used.has(wanted)) return wanted;
+    const free = INKS.find((i) => !used.has(i));
+    if (free) return free;
+    const last = new Map(); // device → its newest stamp anywhere in the sheet
+    const note = (s) => { if (s) { const d = s.slice(13); if (!(last.get(d) >= s)) last.set(d, s); } };
+    for (const it of Object.values(this.doc.items)) { note(it.c); note(it.t[1]); note(it.d[1]); note(it.x[1]); }
+    for (const d of Object.values(this.doc.dev)) { note(d.ink[1]); note(d.name[1]); }
+    const quiet = others.filter(([, d]) => INKS.includes(d.ink[0])).sort(([a], [b]) => ((last.get(a) || '') < (last.get(b) || '') ? -1 : 1))[0];
+    return quiet ? quiet[1].ink[0] : INKS[0];
   }
 
   /** A device id that has not written yet still needs an ink: claim a free one on first share. */
@@ -399,10 +418,7 @@ export class Store {
     if (!this.rec) return;
     const mine = this.doc.dev[this.device];
     if (mine && mine.ink[0]) return;
-    const used = new Set(Object.entries(this.doc.dev).filter(([k]) => k !== this.device).map(([, d]) => d.ink[0]).filter(Boolean));
-    const wanted = this.prefs.ink || INKS[0];
-    const free = !used.has(wanted) ? wanted : INKS.find((i) => !used.has(i)) || INKS[0];
-    setDevice(this.doc, this.clock, 'ink', free);
+    setDevice(this.doc, this.clock, 'ink', this.pickInk(Object.entries(this.doc.dev).filter(([k]) => k !== this.device)));
     this.save();
   }
 

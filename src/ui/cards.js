@@ -55,6 +55,14 @@ const CARDS = {
     const mine = store.inkOf(store.device);
     const used = new Set(Object.keys(store.doc.dev).filter((d) => d !== store.device).map((d) => store.inkOf(d)));
     const name = (store.doc.dev[store.device] && store.doc.dev[store.device].name[0]) || '';
+    // the old link no longer carries the sheet: showing its QR would hand someone a dead link
+    if (st.status === 'moved') return html`
+      ${head(app, t.movedShort)}
+      <p>${t.linkMoved}</p>
+      <p>${t.movedHow}</p>
+      <div class="actions" style="justify-content:flex-start">
+        <button class="btn solid" @click=${() => app.openCard('open')}>${icons.paste} ${t.openLink}</button>
+      </div>`;
     return html`
       ${head(app, t.shareTitle)}
       <p>${t.shareHow}</p>
@@ -65,7 +73,7 @@ const CARDS = {
       <h3>${t.shareQr}</h3>
       <div class="qr">${sync.qr(rec)}</div>
       <p style="text-align:center;margin-top:10px">
-        <span class="status-dot ${st.status === 'synced' ? 'ok' : st.status === 'offline' || st.status === 'trouble' ? 'off' : 'busy'}" style="display:inline-block;margin-right:6px"></span>
+        <span class="status-dot ${st.status === 'synced' ? 'ok' : ['offline', 'trouble', 'clock'].includes(st.status) ? 'off' : 'busy'}" style="display:inline-block;margin-right:6px"></span>
         ${statusText(st)}${others.length ? html` · ${t.othersHere(others.length)}` : nothing}
       </p>
       <h3>${t.inkLabel}</h3>
@@ -194,5 +202,6 @@ function statusText(st) {
   if (st.status === 'synced') return t.synced;
   if (st.status === 'offline') return t.offline;
   if (st.status === 'trouble') return t.syncTrouble;
+  if (st.status === 'clock') return t.clockOff;
   return t.syncing;
 }

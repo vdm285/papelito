@@ -28,6 +28,31 @@ export const RELAYS = [
   'wss://nostr.oxtr.dev',
 ];
 const MIN_GAP_MS = 1200; // be gentle: a burst of taps goes out as one record
+const DEV_RE = /^[0-9a-z]{8}$/;
+const INK_RE = /^[a-z]{3,12}$/; // goes into a CSS variable name: letters only
+
+let offsetP = null;
+/**
+ * Seconds to add to this phone's clock to get the web server's (the Date header of a HEAD request
+ * to our own page). Relays refuse records dated more than a few minutes ahead, and a presence
+ * query "since 30 seconds ago" asks for the future on a phone whose clock runs fast. Only an
+ * offset beyond 90 s is used: the header has one-second resolution, plus the round trip.
+ */
+export function serverOffset() {
+  if (offsetP) return offsetP;
+  offsetP = (async () => {
+    if (typeof location === 'undefined' || !/^https?:$/.test(location.protocol) || typeof fetch !== 'function') return 0;
+    try {
+      const t0 = Date.now();
+      const res = await fetch(location.href.split('#')[0], { method: 'HEAD', cache: 'no-store' });
+      const server = Date.parse(res.headers.get('date') || '');
+      if (!Number.isFinite(server)) return 0;
+      const off = Math.round((server + 500 - (t0 + Date.now()) / 2) / 1000);
+      return Math.abs(off) > 90 ? off : 0;
+    } catch { return 0; }
+  })();
+  return offsetP;
+}
 
 export async function listKeys(secret) {
   const k = await deriveKeys(secret);
@@ -65,7 +90,12 @@ export class Session {
     this.peers = new Map(); // device → { ink, name, at, typing }
     this.listId = '';
     this.status = 'connecting';
+    this.offset = 0; // seconds, see serverOffset
+    this.junk = new Set(); // ids of events that did not decrypt (never trusted, never retried)
   }
+
+  /** Relay time in seconds: this phone's clock, corrected if it is far off. */
+  now() { return Math.floor(Date.now() / 1000) + this.offset; }
 
   async start(rec) {
     this.listId = rec.id;
@@ -79,7 +109,10 @@ export class Session {
       onOk: (id, ok, reason, url) => { if (ok && this.lastEvent && id === this.lastEvent.id) { this.confirmed = true; this.slotsAt.set(url, this.lastEvent.created_at); } },
       onStatus: () => this.reportStatus(),
     });
-    const now = Math.floor(Date.now() / 1000);
+    // a short wait for the clock check (same origin, usually ~100 ms); never more than 0.8 s
+    this.offset = await Promise.race([serverOffset(), new Promise((r) => setTimeout(() => r(0), 800))]);
+    serverOffset().then((o) => { this.offset = o; });
+    const now = this.now();
     // every record is a whole merged copy, so only the newest per slot matters. Some relays keep
     // every version (relay.ditto.pub): after the first visit, ask only for what is new since the
     // last sync (with a margin for clocks); the first time, the newest 60 records are plenty.
@@ -119,7 +152,7 @@ export class Session {
     const doc = this.store.doc;
     const hash = canonical(doc);
     if (!force && hash === this.lastHash && this.lastEvent) return;
-    const now = Math.floor(Date.now() / 1000);
+    const now = this.now();
     const created = Math.max(now, this.lastCreated + 1); // relays keep the newest created_at per slot
     this.lastCreated = created;
     const content = await seal(this.keys.encKey, { v: 2, doc: JSON.parse(hash) }, this.aad(this.mySlot));
@@ -140,39 +173,47 @@ export class Session {
   aad(slot) { return `ll2|${this.keys.pk}|${slot}`; }
 
   async receive(ev, url) {
-    if (!ev || ev.pubkey !== this.keys.pk || typeof ev.content !== 'string') return;
+    if (!ev || ev.pubkey !== this.keys.pk || typeof ev.content !== 'string' || typeof ev.id !== 'string') return;
+    if (this.junk.has(ev.id)) return;
     if (ev.kind === KIND) {
       const slot = dTag(ev);
+      // an event we published or already opened is genuine (the id covers created_at); anything
+      // else is trusted only once it decrypts with the link's key. A relay can neither forge a
+      // signature check we skip nor a sealed record, so a bogus created_at from the year 3000
+      // never reaches lastCreated (it would make every later record of ours unpublishable)
+      const known = this.seenIds.has(ev.id);
+      const value = known ? null : await open(this.keys.encKey, ev.content, this.aad(slot));
+      if (!known && (!value || value.v !== 2)) { this.junk.add(ev.id); if (this.junk.size > 2000) this.junk.clear(); return; }
+      const at = Number.isFinite(ev.created_at) && ev.created_at <= this.now() + 86400 ? ev.created_at : 0;
       if (/^[0-9a-f]{32}$/.test(slot)) this.slots.add(slot);
-      if (Number.isFinite(ev.created_at) && ev.created_at > this.maxSeen) this.maxSeen = ev.created_at;
-      if (slot === this.mySlot) {
-        this.slotsAt.set(url, Math.max(this.slotsAt.get(url) || 0, ev.created_at));
-        if (ev.created_at > this.lastCreated) this.lastCreated = ev.created_at; // our copy from another tab or an old install
+      if (at > this.maxSeen) this.maxSeen = at;
+      if (slot === this.mySlot && at) {
+        this.slotsAt.set(url, Math.max(this.slotsAt.get(url) || 0, at));
+        if (at > this.lastCreated) this.lastCreated = at; // our copy from another tab or an old install
       }
-      if (this.seenIds.has(ev.id)) return;
+      if (known) return;
       this.seenIds.add(ev.id);
       if (this.seenIds.size > 3000) this.seenIds = new Set([...this.seenIds].slice(-1000));
-      const value = await open(this.keys.encKey, ev.content, this.aad(slot));
-      if (value && value.v === 2 && value.moved) {
+      if (value.moved) {
         // the sheet got a new link: stop publishing here (it would only put the list back on the old link)
-        if (!this.moved) { this.moved = true; clearTimeout(this.timer); clearTimeout(this.repairTimer); this.onMoved(); }
+        if (!this.moved) { this.moved = true; clearTimeout(this.timer); clearTimeout(this.repairTimer); this.onMoved(); this.reportStatus(); }
         return;
       }
-      if (!value || value.v !== 2 || !value.doc) return; // not ours, tampered, or a newer format
+      if (!value.doc) return; // a newer format
       const changes = this.store.applyRemote(value.doc);
-      this.store.noteSynced(ev.created_at);
+      if (at) this.store.noteSynced(at);
       // keep a second full copy on the relays: republish ours after absorbing someone else's
       if (changes && slot !== this.mySlot) this.schedule(2500);
       this.status = 'synced';
       this.reportStatus();
     } else if (ev.kind === LIVE) {
-      if (this.seenIds.has(ev.id)) return;
+      if (this.seenIds.has(ev.id) || this.moved) return;
       this.seenIds.add(ev.id);
       const msg = await open(this.keys.encKey, ev.content, this.aad('live'));
-      if (!msg || typeof msg.dev !== 'string' || msg.dev === this.store.device) return;
+      if (!msg || typeof msg.dev !== 'string' || !DEV_RE.test(msg.dev) || msg.dev === this.store.device) return;
       const p = this.peers.get(msg.dev) || {};
       const at = Date.now();
-      this.peers.set(msg.dev, { ...p, ink: typeof msg.ink === 'string' ? msg.ink : p.ink, at, typing: typeof msg.typing === 'string' ? msg.typing.slice(0, 160) : p.typing, typingAt: typeof msg.typing === 'string' ? at : p.typingAt, gone: !!msg.gone });
+      this.peers.set(msg.dev, { ...p, ink: typeof msg.ink === 'string' && INK_RE.test(msg.ink) ? msg.ink : p.ink, at, typing: typeof msg.typing === 'string' ? msg.typing.slice(0, 160) : p.typing, typingAt: typeof msg.typing === 'string' ? at : p.typingAt, gone: !!msg.gone });
       this.onLive(msg);
       this.reportStatus();
     }
@@ -197,7 +238,7 @@ export class Session {
    */
   async scrubForMove() {
     if (!this.pool || !this.keys) return 0;
-    const now = Math.floor(Date.now() / 1000);
+    const now = this.now();
     // first, a NIP-09 deletion of every old version of every slot (relay.ditto.pub keeps them
     // all), dated before the markers so the markers themselves survive
     const upTo = Math.max(now, this.lastCreated + 1, this.maxSeen + 1);
@@ -232,13 +273,14 @@ export class Session {
   async live(msg) {
     if (!this.pool || !this.keys) return;
     const content = await seal(this.keys.encKey, msg, this.aad('live'));
-    const ev = await signEvent(this.keys.sk, { kind: LIVE, created_at: Math.floor(Date.now() / 1000), tags: [], content });
+    const ev = await signEvent(this.keys.sk, { kind: LIVE, created_at: this.now(), tags: [], content });
     this.seenIds.add(ev.id);
     this.pool.publish(ev);
   }
 
   /** Phones seen in the last minute (not this one), for the presence dots. */
   others() {
+    if (this.moved) return []; // nobody is on this link any more
     const now = Date.now();
     return [...this.peers.entries()].filter(([, p]) => !p.gone && now - p.at < 65_000).map(([dev, p]) => ({ dev, ...p, typing: p.typingAt && now - p.typingAt < 8000 ? p.typing : '' }));
   }
@@ -247,8 +289,10 @@ export class Session {
     if (!this.pool) return;
     const h = this.pool.health();
     let status;
-    if (typeof navigator !== 'undefined' && navigator.onLine === false) status = 'offline';
+    if (this.moved) status = 'moved';
+    else if (typeof navigator !== 'undefined' && navigator.onLine === false) status = 'offline';
     else if (h.open === 0) status = h.total === 0 ? 'trouble' : 'connecting';
+    else if (h.clock && !h.confirmed) status = 'clock'; // refused for its date: the phone's clock is far off
     else if (this.lastEvent && !this.confirmed && this.lastHash !== canonical(this.store.doc)) status = 'sending';
     else status = this.status === 'synced' || this.confirmed ? 'synced' : 'connecting';
     this.onStatus({ status, ...h, others: this.others() });

@@ -430,8 +430,8 @@ export class PapelApp extends LitElement {
         <div class="head-tools">
           ${shared ? html`
             <button class="pill sync-${st}" @click=${() => this.openCard('share')} aria-label=${`${t.shared}: ${statusWord(st)}. ${others.length ? t.othersHere(others.length) : ''}`} title=${statusWord(st)}>
-              <span class="sync-icon">${st === 'offline' || st === 'trouble' ? icons.linkOff : icons.link}</span>
-              ${others.length ? html`<span class="presence">${others.slice(0, 4).map((o) => html`<span class="dot here" style="--c: var(--ink-${o.ink || 'azul'})"></span>`)}</span>` : t.shared}
+              <span class="sync-icon">${OFF.has(st) ? icons.linkOff : icons.link}</span>
+              ${st === 'moved' ? t.movedShort : others.length ? html`<span class="presence">${others.slice(0, 4).map((o) => html`<span class="dot here" style="--c: var(--ink-${o.ink || 'azul'})"></span>`)}</span>` : t.shared}
             </button>` : html`
             <button class="pill" @click=${() => sync.share(this)}>${icons.share} ${t.share}</button>`}
           <button class="icon-btn" aria-label=${t.menu} @click=${() => this.openCard('menu')}>${icons.dots}</button>
@@ -445,11 +445,12 @@ export class PapelApp extends LitElement {
     const st = sync.state.status;
     if (rec.secret && st === 'offline') notes.push(t.offline);
     else if (rec.secret && st === 'trouble') notes.push(t.syncTrouble);
+    else if (rec.secret && st === 'clock') notes.push(t.clockOff);
     for (const n of store.notices) {
-      if (n.kind === 'firstShared') notes.push(t.firstShared);
+      if (n.kind === 'firstShared' && st !== 'moved') notes.push(t.firstShared);
       if (n.kind === 'legacy') notes.push(t.legacyImported(n.n));
       if (n.kind === 'legacyMissing') notes.push(t.legacyLinkMissing);
-      if (n.kind === 'moved') notes.push(t.linkMoved);
+      if (n.kind === 'moved') notes.push(`${t.linkMoved} ${t.movedHow}`);
     }
     return notes.length ? html`<p class="status-line">${notes.join(' ')}</p>` : nothing;
   }
@@ -540,7 +541,12 @@ export class PapelApp extends LitElement {
   }
 
   renderNote(rec) {
-    return html`<aside class="side">${rec.secret ? html`
+    return html`<aside class="side">${rec.secret && sync.state.status === 'moved' ? html`
+      <div class="note">
+        <h4>${t.movedShort}</h4>
+        <p>${t.linkMoved}</p>
+        <p style="margin-top:8px">${t.movedHow}</p>
+      </div>` : rec.secret ? html`
       <div class="note">
         <h4>${t.noteTitle}</h4>
         <div class="qr">${sync.qr(rec)}</div>
@@ -559,7 +565,8 @@ export class PapelApp extends LitElement {
 
 const flipKey = (el) => (el.dataset.id ? `row-${el.dataset.id}` : el.dataset.flip);
 
-const statusWord = (st) => (st === 'synced' ? t.synced : st === 'offline' ? t.offline : st === 'trouble' ? t.syncTrouble : t.syncing);
+const statusWord = (st) => (st === 'synced' ? t.synced : st === 'offline' ? t.offline : st === 'trouble' ? t.syncTrouble : st === 'clock' ? t.clockOff : st === 'moved' ? t.movedShort : t.syncing);
+const OFF = new Set(['offline', 'trouble', 'clock', 'moved']);
 
 const isTyping = (el) => el && (el.tagName === 'TEXTAREA' || el.tagName === 'INPUT' || el.isContentEditable);
 

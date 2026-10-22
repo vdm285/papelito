@@ -136,3 +136,65 @@ test('hostile copies from a relay cannot break the sheet', () => {
   for (const bad of [null, 42, 'x', { v: 2, items: { '<img>': 1 } }, { v: 2, title: [{}, 'z'], items: [] }, { v: 3 }]) s.applyRemote(bad);
   assert.deepEqual(texts(s), ['leche']);
 });
+
+test('a seventh phone borrows the quietest phone\'s ink, and does not keep re-claiming it', async () => {
+  const phones = [];
+  const secret = 'C'.repeat(43);
+  const first = new Store(new Mem());
+  first.boot('https://x.test/');
+  first.setSecret(secret, 'p'.repeat(32));
+  first.ensureInk();
+  phones.push(first);
+  let doc = JSON.parse(canonical(first.doc));
+  for (let i = 1; i < 6; i++) {
+    await new Promise((r) => setTimeout(r, 3));
+    const p = new Store(new Mem());
+    p.openShared(secret, 'p'.repeat(32));
+    p.applyRemote(doc);
+    p.ensureInk();
+    p.resolveInk();
+    p.add(`cosa ${i}`); // everyone but the first phone wrote something lately
+    doc = JSON.parse(canonical(p.doc));
+    phones.push(p);
+  }
+  const inks = new Set(phones.map((p) => p.inkOf(p.device)));
+  assert.equal(inks.size, 6, 'six phones, six inks');
+  const late = new Store(new Mem());
+  late.openShared(secret, 'p'.repeat(32));
+  late.applyRemote(doc);
+  late.ensureInk();
+  late.resolveInk();
+  assert.equal(late.inkOf(late.device), first.inkOf(first.device), 'the quietest phone (the first) lends its ink');
+  const before = canonical(late.doc);
+  late.resolveInk();
+  late.applyRemote(doc);
+  assert.equal(canonical(late.doc), before, 'no claim loop');
+});
+
+test('deleting a sheet from the list card can be undone, and reopens it if it was open', () => {
+  const s = new Store(new Mem());
+  s.boot('https://x.test/');
+  s.add('cilantro');
+  const id = s.rec.id;
+  s.newList();
+  s.add('pan');
+  s.open(id);
+  const back = s.forgetList(id);
+  assert.ok(!s.index.some((l) => l.id === id));
+  assert.notEqual(s.rec.id, id);
+  back();
+  assert.equal(s.rec.id, id);
+  assert.deepEqual(texts(s), ['cilantro']);
+});
+
+test('a blank, untitled, unshared sheet is dropped when you leave it', () => {
+  const s = new Store(new Mem());
+  s.boot('https://x.test/');
+  s.add('leche');
+  const kept = s.rec.id;
+  s.newList();
+  const blank = s.rec.id;
+  s.open(kept);
+  assert.ok(!s.index.some((l) => l.id === blank));
+  assert.equal(s.index.length, 1);
+});

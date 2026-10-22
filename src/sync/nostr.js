@@ -141,6 +141,9 @@ export class RelayPool {
 
   rejected(r, reason, kind) {
     r.error = reason;
+    // refused for its date ("invalid: created_at too late", "blocked: event creation date is too far
+    // off"): the phone's clock, not the relay's policy. Never a reason to stop using the relay
+    if (/created[_ ]?at|creation date|too (far|late|early|old)|in the future/i.test(reason)) { r.clockOff = Date.now(); this.onStatus(); return; }
     // a relay that refuses one kind (relay.coinos.io: "blocked: kind 21078 not allowed") still
     // carries the others: stop sending only that kind there
     if (kind !== undefined && /\bkind\b/i.test(reason)) { r.noKinds.add(kind); this.onStatus(); return; }
@@ -156,7 +159,12 @@ export class RelayPool {
   health() {
     const live = this.relays.filter((r) => !r.banned);
     const open = live.filter((r) => r.state === 'open').length;
-    return { open, total: live.length, confirmed: live.filter((r) => Date.now() - r.lastOk < 120_000).length };
+    return {
+      open,
+      total: live.length,
+      confirmed: live.filter((r) => Date.now() - r.lastOk < 120_000).length,
+      clock: live.filter((r) => Date.now() - (r.clockOff || 0) < 120_000).length,
+    };
   }
 }
 
