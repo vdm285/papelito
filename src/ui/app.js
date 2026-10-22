@@ -14,6 +14,7 @@ import { drawStrike, strikeProgress, revealWriting, touchPulse } from './ink.js'
 import { icons } from './icons.js';
 import { renderCard } from './cards.js';
 import { sync } from '../app/sync-control.js';
+import { install } from '../app/install.js';
 
 const LINGER_MS = 1400; // a struck item stays where it was long enough to see the ink, then settles
 const LONG_PRESS_MS = 520;
@@ -74,6 +75,7 @@ export class PapelApp extends LitElement {
     document.fonts.addEventListener('loadingdone', () => this.redrawStrikes());
     // desktop: a real keyboard is there, so the first frame is ready to write
     if (matchMedia('(pointer: fine)').matches && !this.card) this.focusComposer();
+    if (install.pendingHint()) setTimeout(() => install.showHint(this), 600);
   }
 
   // ---------- store events ----------
@@ -137,6 +139,11 @@ export class PapelApp extends LitElement {
   // ---------- keyboard ----------
   onKey(e) {
     if (e.key === 'Escape' && this.card) { e.preventDefault(); this.closeCard(); return; }
+    // on a desk, typing anywhere writes on the paper (as in Notepad)
+    if (!this.card && !isTyping(e.target) && !e.ctrlKey && !e.metaKey && !e.altKey && e.key.length === 1 && !(e.key === ' ' && e.target.closest && e.target.closest('.row'))) {
+      const ta = this.querySelector('.composer textarea');
+      if (ta) { ta.focus(); }
+    }
     if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'z' && !this.card && !isTyping(e.target)) { e.preventDefault(); store.undo(); }
   }
 

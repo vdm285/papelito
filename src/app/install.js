@@ -4,6 +4,7 @@ import { t } from './i18n.js';
 
 let deferred = null;
 let lock = null;
+const loadedAt = location.href; // what Safari will remember as the icon's address
 addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); deferred = e; });
 
 const standalone = () => matchMedia('(display-mode: standalone)').matches || navigator.standalone === true;
@@ -15,12 +16,26 @@ export const install = {
   canInstall: () => !standalone() && (!!deferred || ios()),
   async prompt(app) {
     if (deferred) { deferred.prompt(); deferred = null; app.closeCard(); return; }
-    // iPhone: no install prompt exists; Safari remembers the page's URL when the manifest is read,
-    // so make sure the page was loaded with the list's own #k= before the person adds it
+    // iPhone: no install prompt exists, and Safari remembers the address the page was LOADED with
+    // when it reads the manifest (docs/research/2026-10-21-pwa.md §3.1). If the list became shared
+    // during this visit, reload first so the icon opens this list, then show the steps.
+    if (location.href !== loadedAt) {
+      try { sessionStorage.setItem('ll.installHint', '1'); } catch { /* ignore */ }
+      location.reload();
+      return;
+    }
+    this.showHint(app);
+  },
+  showHint(app) {
     app.showToast(t.installIos, false);
-    app.toastTimer && clearTimeout(app.toastTimer);
+    clearTimeout(app.toastTimer);
     app.toastTimer = setTimeout(() => { app.toast = null; }, 14000);
     app.closeCard();
+  },
+  /** After the reload above: show the steps once. */
+  pendingHint() {
+    try { if (sessionStorage.getItem('ll.installHint')) { sessionStorage.removeItem('ll.installHint'); return true; } } catch { /* ignore */ }
+    return false;
   },
   async keepAwake(on) {
     try {
