@@ -17,7 +17,7 @@ import { install } from '../app/install.js';
 export function renderCard(app, card) {
   const body = CARDS[card.kind] ? CARDS[card.kind](app, card) : nothing;
   return html`
-    <div class="scrim ${app.wide ? 'desk-hide' : ''}" @click=${() => app.closeCard()}></div>
+    <div class="scrim" @click=${() => app.closeCard()}></div>
     <section class="card" role="dialog" aria-modal="true" aria-labelledby="card-title" tabindex="-1">${body}</section>`;
 }
 
@@ -73,7 +73,7 @@ const CARDS = {
       <h3>${t.shareQr}</h3>
       <div class="qr">${sync.qr(rec)}</div>
       <p style="text-align:center;margin-top:10px">
-        <span class="status-dot ${st.status === 'synced' ? 'ok' : ['offline', 'trouble', 'clock'].includes(st.status) ? 'off' : 'busy'}" style="display:inline-block;margin-right:6px"></span>
+        <span class="status-icon ${st.status}" aria-hidden="true">${['offline', 'trouble', 'clock'].includes(st.status) ? icons.linkOff : icons.link}</span>
         ${statusText(st)}${others.length ? html` · ${t.othersHere(others.length)}` : nothing}
       </p>
       <h3>${t.inkLabel}</h3>
@@ -103,7 +103,7 @@ const CARDS = {
       <p>${by} · ${t.ago(Date.now() - stampTime(it.c))}${struckBy ? html` · ✓ ${struckBy}` : nothing}</p>
       <h3 id="aisle-label">${a.guess ? t.aisleGuess : t.aisle}</h3>
       <div class="chips" role="group" aria-labelledby="aisle-label">
-        ${AISLES.map((id) => html`<button class="chip ${a.aisle === id ? 'on' : ''}" aria-pressed=${a.aisle === id ? 'true' : 'false'} @click=${() => { store.setFix(it.t[0], id); app.showToast(t.movedTo(t.aisles[id]), false); }}>${t.aisles[id]}</button>`)}
+        ${AISLES.map((id) => html`<button class="chip ${a.aisle === id ? 'on' : ''}" aria-pressed=${a.aisle === id ? 'true' : 'false'} @click=${() => { store.setFix(it.t[0], id); app.showToast(t.movedTo(t.aisles[id]), false); }}>${doodleOf(id)}${t.aisles[id]}</button>`)}
       </div>
       <div class="actions">
         <button class="btn danger" @click=${() => { app.closeCard(); store.remove(card.id); }}>${icons.trash} ${t.delete}</button>
@@ -154,7 +154,7 @@ const CARDS = {
       ${head(app, t.aisleOrder)}
       <p>${t.aisleOrderHint}</p>
       <ol class="order-list">
-        ${order.map((a, i) => html`<li class=${i < placed ? 'placed' : ''}><span class="n">${i + 1}</span><button class="grow order-name" ?disabled=${i < placed} @click=${() => place(i)}>${t.aisles[a]}</button>
+        ${order.map((a, i) => html`<li class=${i < placed ? 'placed' : ''}><span class="n">${i + 1}</span><button class="grow order-name" ?disabled=${i < placed} @click=${() => place(i)}>${doodleOf(a)}${t.aisles[a]}</button>
           <button class="icon-btn" aria-label="↑ ${t.aisles[a]}" ?disabled=${i === 0} @click=${() => move(i, -1)}>${icons.up}</button>
           <button class="icon-btn" aria-label="↓ ${t.aisles[a]}" ?disabled=${i === order.length - 1} @click=${() => move(i, 1)}>${icons.down}</button></li>`)}
       </ol>
@@ -198,6 +198,13 @@ const CARDS = {
       <p class="credits"><a href="https://github.com/vdm285/listolista" target="_blank" rel="noopener">github.com/vdm285/listolista</a></p>`;
   },
 };
+
+/** The aisle's pencil doodle (from the dictionary), or nothing before it has loaded. */
+function doodleOf(id) {
+  const idx = dictIndex();
+  const e = idx && idx.aisleEmoji && idx.aisleEmoji[id];
+  return e && store.prefs.doodles ? html`<span class="doodle-glyph" aria-hidden="true">${e.replace(/\uFE0F/g, '')}\uFE0E</span>` : nothing;
+}
 
 function statusText(st) {
   if (st.status === 'synced') return t.synced;

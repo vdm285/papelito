@@ -110,15 +110,17 @@ function match(ws, original, index) {
   const exact = ` ${fold(original)} `;
   let best = null;
   let bestPos = 0;
+  let pic = null; // the longest term found that has a drawing ("pan" in "pan bimbo")
   for (let i = 0; i < ws.length; i++) {
     const cands = index.byFirst.get(ws[i]);
     if (!cands) continue;
     for (const c of cands) {
-      if (best && c.words.length < best.words.length) break; // sorted longest first
       if (c.words.length > ws.length - i) continue;
       let ok = true;
       for (let j = 1; j < c.words.length; j++) if (ws[i + j] !== c.words[j]) { ok = false; break; }
       if (!ok) continue;
+      if (c.emoji && (!pic || c.words.length > pic.words.length)) pic = c;
+      if (best && c.words.length < best.words.length) continue; // sorted longest first
       if (!best || c.words.length > best.words.length) { best = c; bestPos = i; continue; }
       // same length: earliest position, then the exact spelling, then dictionary order
       if (i > bestPos) continue;
@@ -127,7 +129,10 @@ function match(ws, original, index) {
       if (cExact && !bExact) { best = c; bestPos = i; }
     }
   }
-  if (best) return { aisle: applyForms(best.aisle, ws, index), emoji: best.emoji, term: best.raw, n: best.words.length, guess: false };
+  // a phrase without its own drawing borrows one from a word inside it, if that word is in the
+  // same aisle ("chiles en vinagre" is canned: no fresh chile drawn)
+  const emoji = best && (best.emoji || (pic && pic.aisle === best.aisle ? pic.emoji : ''));
+  if (best) return { aisle: applyForms(best.aisle, ws, index), emoji, term: best.raw, n: best.words.length, guess: false };
   const guess = typoGuess(ws, index);
   if (guess) return { aisle: applyForms(guess.aisle, ws, index), emoji: '', term: guess.term, guess: true };
   return { aisle: 'otr', emoji: '', term: '', guess: false };

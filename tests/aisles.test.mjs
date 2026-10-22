@@ -113,3 +113,9 @@ test('speed: 40 items in well under 5 ms after warm-up', () => {
   const ms = performance.now() - t0;
   assert.ok(ms < 20, `${ms.toFixed(1)} ms cold`);
 });
+
+test('a phrase without a drawing borrows one from a word in the same aisle, never from another aisle', () => {
+  assert.equal(aisleOf('tortillas de harina', buildIndex({ terms: { ...DICT.terms, 'tortillas de harina': 'pan' } })).emoji, '🫓');
+  assert.equal(aisleOf('chiles en lata', idx).emoji, '');
+  assert.equal(aisleOf('leche', idx).emoji, '🥛');
+});

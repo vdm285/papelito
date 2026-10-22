@@ -10,7 +10,7 @@ import { t } from '../app/i18n.js';
 import { isDone } from '../model/doc.js';
 import { aisleOf, splitHint, AISLES, keyOf, fold } from '../model/aisles.js';
 import { dictIndex, completions } from '../data/dict.js';
-import { drawStrike, strikeProgress, revealWriting, touchPulse } from './ink.js';
+import { drawStrike, drawMarker, strikeProgress, revealWriting, touchPulse } from './ink.js';
 import { icons } from './icons.js';
 import { renderCard } from './cards.js';
 import { sync } from '../app/sync-control.js';
@@ -351,6 +351,8 @@ export class PapelApp extends LitElement {
 
   // ---------- after each render: ink and motion ----------
   willUpdate() {
+    const sh = this.querySelector('.sheet');
+    this.sheetX = sh ? sh.getBoundingClientRect().left : null;
     const a = document.activeElement;
     const row = a && a.closest ? a.closest('.row[data-id]') : null;
     this.focusRow = row ? { id: row.dataset.id, index: [...this.querySelectorAll('.row[data-id]')].indexOf(row) } : null;
@@ -365,6 +367,7 @@ export class PapelApp extends LitElement {
     if (this.typingOnly) { this.typingOnly = false; return; }
     this.welcome();
     this.markStuck();
+    if (changed.has('card') && !!changed.get('card') !== !!this.card) this.slideSheet();
     if (this.swapSheet) {
       this.swapSheet = false;
       const sheet = this.querySelector('.sheet');
@@ -389,6 +392,7 @@ export class PapelApp extends LitElement {
         this.drawn.add(row);
       } else if (done && !this.drawn.has(row)) { drawStrike(row, 'still'); this.drawn.add(row); }
       else if (!done && this.drawn.has(row)) { drawStrike(row, 'none'); this.drawn.delete(row); }
+      if (row.classList.contains('new') && row.dataset.marked !== row.querySelector('.txt').textContent) { drawMarker(row); row.dataset.marked = row.querySelector('.txt').textContent; }
       if (this.remoteAdded.has(id)) { this.remoteAdded.delete(id); revealWriting(row, reduce); }
       if (this.remoteTouched.has(id)) { this.remoteTouched.delete(id); touchPulse(row, reduce); }
     }
@@ -402,6 +406,17 @@ export class PapelApp extends LitElement {
         if (Math.abs(dy) > 2) el.animate([{ transform: `translateY(${dy}px)` }, { transform: 'none' }], { duration: 340, easing: 'cubic-bezier(.2,.8,.2,1)' });
       }
     }
+  }
+
+  /** On a desk without room beside the paper, the paper moves aside for a card: glide, not jump. */
+  slideSheet() {
+    const sheet = this.querySelector('.sheet');
+    if (!sheet || this.sheetX === null) return;
+    const dx = this.sheetX - sheet.getBoundingClientRect().left;
+    if (Math.abs(dx) < 2 || !store.prefs.motion || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const tilt = getComputedStyle(sheet).transform;
+    const base = tilt && tilt !== 'none' ? tilt : '';
+    sheet.animate([{ transform: `translateX(${dx}px) ${base}` }, { transform: base || 'none' }], { duration: 260, easing: 'cubic-bezier(.2,.8,.2,1)' });
   }
 
   keepFocus(changed) {
@@ -449,6 +464,7 @@ export class PapelApp extends LitElement {
 
   redrawStrikes() {
     for (const row of this.querySelectorAll('.row.done[data-id]')) drawStrike(row, 'still');
+    for (const row of this.querySelectorAll('.row.new[data-id]')) drawMarker(row);
   }
 
   // ---------- render ----------
@@ -465,7 +481,7 @@ export class PapelApp extends LitElement {
     const showStruck = store.prefs.showStruck !== false;
     const others = sync.others();
     return html`
-      <div class="desk ${store.prefs.hand === 'molde' ? 'hand-molde' : ''}" ?inert=${!!this.card}>
+      <div class="desk ${store.prefs.hand === 'molde' ? 'hand-molde' : ''} ${this.card ? 'card-open' : ''}" ?inert=${!!this.card}>
         ${this.wide ? this.renderStack() : nothing}
         <main class="sheet" style="--my-ink: var(--ink-${myInk})" aria-label=${store.title() || t.untitled}>
           ${this.renderHead(rec, others)}
@@ -568,6 +584,7 @@ export class PapelApp extends LitElement {
         @click=${(e) => this.onRowClick(e, item.id)}
         @contextmenu=${(e) => { e.preventDefault(); this.onRowCancel(); this.quietClick(); this.openCard('item', { id: item.id }); }}
         @keydown=${(e) => this.onRowKey(e, item.id)}>
+        <svg class="marker" aria-hidden="true"><path></path></svg>
         <span class="margin" aria-hidden="true">${doodle ? html`<span class="doodle-glyph">${doodle}</span>` : nothing}</span>
         <span class="words"><span class="txt">${text}</span>${this.rowDetails(item, done, fresh)}</span>
         ${store.rec.aisles && a && a.guess && !inStruck ? html`<span class="aisle-tag" title=${t.aisleGuess}>?</span>` : nothing}

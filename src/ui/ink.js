@@ -32,6 +32,38 @@ export function strikePath(seed, lines) {
   return d;
 }
 
+/**
+ * The highlighter on a new item: one flat chisel-tip stroke per line of text, a little crooked
+ * and wavy at the edges, covering the lower two thirds of the letters (where a marker lands).
+ */
+export function markerPath(seed, lines) {
+  const r = seeded(`${seed}~`);
+  let d = '';
+  for (const ln of lines) {
+    const x0 = ln.left - 5 - r() * 3;
+    const x1 = ln.right + 3 + r() * 6;
+    const top = ln.top + ln.height * (0.3 + r() * 0.06);
+    const bot = ln.top + ln.height * (0.86 + r() * 0.05);
+    const tilt = (r() - 0.5) * 3.4; // the marker is never held quite level
+    const n = Math.max(2, Math.round((x1 - x0) / 46));
+    const y = (edge, i) => edge + tilt * (1 - (2 * i) / n) + (r() - 0.5) * 1.8;
+    let p = `M${(x0 + 5).toFixed(1)} ${y(top, 0).toFixed(1)}`;
+    for (let i = 1; i <= n; i++) p += `L${(x0 + 5 + ((x1 - x0 - 5) * i) / n).toFixed(1)} ${y(top, i).toFixed(1)}`;
+    for (let i = n; i >= 0; i--) p += `L${(x0 + ((x1 - x0 - 5) * i) / n).toFixed(1)} ${y(bot, i).toFixed(1)}`;
+    d += `${p}Z`;
+  }
+  return d;
+}
+
+/** Lay the highlighter under a new item's text. */
+export function drawMarker(row) {
+  const txt = row.querySelector('.txt');
+  const svg = row.querySelector('.marker');
+  if (!txt || !svg) return;
+  const boxes = lineBoxes(row, txt);
+  if (boxes.length) svg.firstElementChild.setAttribute('d', markerPath(row.dataset.id || 'x', boxes));
+}
+
 /** The line boxes of the text, relative to the row element. */
 export function lineBoxes(row, txt) {
   const base = row.getBoundingClientRect();

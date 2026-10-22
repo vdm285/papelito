@@ -87,8 +87,8 @@
   --pencil: #8fa199;
   --pencil-soft: #7f9189;
   --struck-fade: .58;
-  --marker: rgba(255, 236, 110, .22);
-  --marker-blend: screen;
+  --marker: rgba(255, 226, 92, .3);
+  --marker-blend: normal;
   --chrome: #eef3ef;
   --chrome-soft: #a9b8b0;
   --card: #1f2b26;
@@ -118,6 +118,8 @@
 
 * { box-sizing: border-box; }
 html, body { margin: 0; height: 100%; }
+html { background: var(--paper); }
+@media (min-width: 760px) { html { background: var(--desk); } } /* overscroll shows the desk, not white */
 body {
   font-synthesis: none;
   background: var(--desk);
@@ -313,7 +315,8 @@ ol.rows, ul.rows { list-style: none; margin: 0; padding: 0; }
 }
 .row:focus-visible { background: color-mix(in srgb, var(--focus) 8%, transparent); outline: 2.5px solid var(--focus); outline-offset: -3px; border-radius: 4px; }
 /* the writing line shows it has the pen: an underline in the writer's ink */
-.composer:focus-within { box-shadow: inset 0 -2px 0 color-mix(in srgb, var(--my-ink, var(--ink-azul)) 60%, transparent); }
+/* (from the margin line on: the margin is not part of the line you write on) */
+.composer:focus-within::after { content: ''; position: absolute; left: var(--margin-x); right: 0; bottom: 0; height: 2px; background: color-mix(in srgb, var(--my-ink, var(--ink-azul)) 60%, transparent); pointer-events: none; }
 .composer textarea:focus-visible { outline: none; }
 .margin {
   flex: 0 0 var(--margin-x);
@@ -324,6 +327,10 @@ ol.rows, ul.rows { list-style: none; margin: 0; padding: 0; }
   padding-right: 4px;
 }
 .margin .doodle-glyph { font: 400 22px/1 'Noto Emoji', sans-serif; color: var(--pencil); }
+.row .margin .doodle-glyph { transform: translateY(var(--hand-shift)); }
+.hand-molde .row .margin .doodle-glyph { transform: translateY(var(--print-shift)); }
+.doodle-glyph { font-family: 'Noto Emoji', sans-serif; font-weight: 400; }
+.chip .doodle-glyph, .order-name .doodle-glyph { font-size: 17px; line-height: 1; color: inherit; opacity: .8; margin-right: 7px; }
 .row.done .margin .doodle-glyph { opacity: .45; }
 .margin .qty { font: 600 15px/1 var(--font-ui); color: var(--pencil); }
 .row .words {
@@ -338,12 +345,14 @@ ol.rows, ul.rows { list-style: none; margin: 0; padding: 0; }
 }
 .hand-molde .row .words { font-family: var(--font-print); font-size: var(--print-size); font-weight: 500; transform: translateY(var(--print-shift)); }
 .row .txt { position: relative; border-radius: 3px; transition: opacity .5s ease, background-color .9s ease; }
-.row.new .txt {
-  background-color: var(--marker);
+.row .marker {
+  position: absolute; left: 0; top: 0; width: 100%; height: 100%;
+  overflow: visible; pointer-events: none;
+  opacity: 0; transition: opacity .9s ease;
   mix-blend-mode: var(--marker-blend);
-  box-decoration-break: clone; -webkit-box-decoration-break: clone;
-  padding: 0 3px; margin: 0 -3px;
 }
+.row .marker path { fill: var(--marker); }
+.row.new .marker { opacity: 1; }
 .row.done .txt { opacity: var(--struck-fade); }
 .row .strike {
   position: absolute; left: 0; top: 0;
@@ -512,10 +521,13 @@ html { scroll-padding-bottom: calc(var(--line) * 2 + var(--kb, 0px)); }
   animation: rise .26s var(--ease-out);
 }
 .card::before { content: ''; display: block; width: 40px; height: 4px; border-radius: 4px; background: var(--card-line); margin: 2px auto 10px; }
-@media (min-width: 760px) {
-  .scrim.desk-hide { background: transparent; }
+@media (min-width: 760px) and (max-width: 999.98px) { /* a tablet: a bottom sheet of a sensible width */
+  .card { left: 0; right: 0; margin-inline: auto; max-width: 560px; }
+}
+@media (min-width: 1000px) {
+  .scrim, :root[data-theme='pizarron'] .scrim { background: transparent; } /* the paper is never dimmed on a desk */
   .card {
-    left: auto; right: max(24px, calc((100vw - 620px) / 2 - 392px));
+    left: auto; right: 24px;
     top: 44px; bottom: auto;
     width: 360px;
     max-height: calc(100dvh - 88px);
@@ -524,13 +536,23 @@ html { scroll-padding-bottom: calc(var(--line) * 2 + var(--kb, 0px)); }
     animation: slide .24s var(--ease-out);
   }
   .card::before { display: none; }
+  /* no room beside the paper: the paper moves left to make it (app.js glides it there) */
+  .desk.card-open { padding-right: 408px; }
+  .desk.card-open .side, .desk.card-open .side-left { visibility: hidden; }
+}
+@media (min-width: 1412px) {
+  /* room beside the paper: the card takes the note's place and the paper stays put */
+  .desk.card-open { padding-right: 24px; }
+  .card { right: auto; left: calc(50% + 342px); }
 }
 @keyframes rise { from { transform: translateY(24px); opacity: 0; } }
 @keyframes slide { from { transform: translateX(18px); opacity: 0; } }
 @keyframes fade { from { opacity: 0; } }
 .card:focus { outline: none; }
 .card-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin: 6px 0 12px; }
-.card h2 { font: 700 19px/1.25 var(--font-ui); margin: 0; min-width: 0; }
+.card-head { padding-bottom: 4px; border-bottom: 1.5px solid var(--rule-strong); }
+.card h2 { font: 600 30px/1.15 var(--font-hand); color: var(--my-ink, var(--chrome)); margin: 0; min-width: 0; overflow-wrap: anywhere; }
+.hand-molde .card h2 { font: 650 21px/1.2 var(--font-print); }
 .card hr { border: 0; border-top: 1px solid var(--card-line); margin: 18px 0 6px; }
 .card h3 { font: 700 12.5px/1 var(--font-ui); letter-spacing: .08em; text-transform: uppercase; color: var(--chrome-soft); margin: 18px 0 8px; }
 .card p { margin: 6px 0 12px; color: var(--chrome-soft); font-size: 15px; }
@@ -551,7 +573,12 @@ html { scroll-padding-bottom: calc(var(--line) * 2 + var(--kb, 0px)); }
 .card hr { border: 0; border-top: 1px solid var(--card-line); margin: 8px 0; }
 .switch { width: 44px; height: 26px; border-radius: 999px; background: var(--card-line); position: relative; flex: 0 0 auto; transition: background .2s; }
 .switch::after { content: ''; position: absolute; top: 3px; left: 3px; width: 20px; height: 20px; border-radius: 50%; background: #fff; transition: transform .2s var(--ease-out); box-shadow: 0 1px 2px rgba(0,0,0,.2); }
-[aria-checked='true'] > .switch { background: #2f9e5b; }
+[aria-checked='true'] > .switch { background: var(--chrome); }
+[aria-checked='true'] > .switch::after { background: var(--card); }
+.status-icon { display: inline-block; vertical-align: -5px; margin-right: 6px; color: var(--chrome); }
+.status-icon svg { width: 20px; height: 20px; }
+.status-icon.connecting, .status-icon.sending { animation: breathe 1.4s ease-in-out infinite; }
+.status-icon.offline, .status-icon.trouble, .status-icon.clock { color: var(--chrome-soft); }
 [aria-checked='true'] > .switch::after { transform: translateX(18px); }
 
 .field {
@@ -634,6 +661,9 @@ html { scroll-padding-bottom: calc(var(--line) * 2 + var(--kb, 0px)); }
 :root[data-theme='pizarron'] .note { background: #e9e2c8; }
 .note::before { content: ''; position: absolute; top: -10px; left: 50%; width: 90px; height: 22px; transform: translateX(-50%) rotate(-2deg); background: rgba(255,255,255,.55); box-shadow: 0 1px 2px rgba(0,0,0,.08); }
 .note h4 { margin: 0 0 8px; font: 700 26px/1 var(--font-hand); color: #3d3520; }
+.note .btn { color: #3d3520; border-color: #3d3520; }
+.note p { color: #3d3520; }
+.hand-molde .note h4 { font: 700 19px/1.1 var(--font-print); }
 .note .qr { width: 196px; height: 196px; margin: 8px auto 6px; background: #fffef3; box-shadow: none; }
 .note .qr svg { width: 172px; height: 172px; }
 .note p { margin: 4px 0 0; color: #5b5235; }
@@ -648,6 +678,7 @@ html { scroll-padding-bottom: calc(var(--line) * 2 + var(--kb, 0px)); }
   font: 600 22px/1.15 var(--font-hand);
   position: relative;
 }
+.hand-molde .stack button { font: 650 16px/1.25 var(--font-print); }
 .stack button::after { content: ''; position: absolute; left: 10px; top: 0; bottom: 0; width: 1px; background: var(--margin); }
 .stack button.on { box-shadow: 0 0 0 2px var(--chrome), 0 1px 2px rgba(60,44,20,.12); }
 .stack .meta { display: block; font: 500 12.5px/1.2 var(--font-ui); color: var(--chrome-soft); margin-top: 3px; }
@@ -667,5 +698,5 @@ html { scroll-padding-bottom: calc(var(--line) * 2 + var(--kb, 0px)); }
   .strike path { stroke: CanvasText; }
   .row.done .txt { opacity: 1; }
   .presence .dot, .swatch { forced-color-adjust: none; }
-  .composer:focus-within { box-shadow: inset 0 -2px 0 Highlight; }
+  .composer:focus-within::after { background: Highlight; }
 }
