@@ -59,7 +59,7 @@ export class PapelApp extends LitElement {
     this.wideMq.addEventListener('change', (e) => { this.wide = e.matches; });
     this.ro = new ResizeObserver(() => this.redrawStrikes());
     addEventListener('keydown', (e) => this.onKey(e));
-    addEventListener('popstate', () => { if (this.card) { sync.holdUrl(); this.card = null; } });
+    addEventListener('popstate', () => { if (this.card) { sync.holdUrl(); this.card = null; this.focusBack = true; } });
     addEventListener('scroll', () => { if (!this.stuckFrame) this.stuckFrame = requestAnimationFrame(() => { this.stuckFrame = 0; this.markStuck(); }); }, { passive: true });
     document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') this.seenSoon(5000); });
     this.loadDraft();
@@ -118,9 +118,18 @@ export class PapelApp extends LitElement {
       const any = ch.added[0] || ch.struck[0] || ch.unstruck[0];
       const it = store.doc.items[any];
       const dev = ch.added.length ? it && it.by : it && (it.d[0] || it.d[1].slice(13));
-      this.announce = t.remoteSummary(this.whoName(dev || ''), ch.added.length, ch.struck.length, ch.unstruck.length);
+      const names = (ids) => ids.map((id) => store.doc.items[id] && store.doc.items[id].t[0]).filter(Boolean);
+      this.say(t.remoteSummary(this.whoName(dev || ''), names(ch.added), names(ch.struck), names(ch.unstruck)));
     }
     if (document.visibilityState === 'visible') this.seenSoon(7000);
+  }
+
+  /** Polite announcement; cleared first so the same sentence twice is read twice. */
+  say(text) {
+    this.announce = '';
+    this.rev++;
+    clearTimeout(this.sayTimer);
+    this.sayTimer = setTimeout(() => { this.announce = text; this.rev++; }, 80);
   }
 
   whoName(device) {
@@ -171,12 +180,13 @@ export class PapelApp extends LitElement {
 
   // ---------- cards ----------
   openCard(kind, args = {}) {
-    if (!this.card) history.pushState({ card: kind }, '');
+    if (!this.card) { this.cardOpener = document.activeElement; history.pushState({ card: kind }, ''); }
     this.card = { kind, ...args };
   }
   closeCard() {
     if (!this.card) return;
     this.card = null;
+    this.focusBack = true;
     if (history.state && history.state.card) { sync.holdUrl(); history.back(); }
   }
 
@@ -261,6 +271,7 @@ export class PapelApp extends LitElement {
     this.pressTimer = setTimeout(() => {
       if (!this.press || this.press.swipe) return;
       this.press.long = true;
+      this.quietClick();
       if (navigator.vibrate) navigator.vibrate(12);
       this.openCard('item', { id });
     }, LONG_PRESS_MS);
@@ -290,11 +301,23 @@ export class PapelApp extends LitElement {
     this.press = null;
     if (!p || p.long) return;
     if (p.swipe) {
+      this.quietClick();
       if (p.k > 0.55) { this.pendingAnim.set(p.id, 'finish'); this.toggle(p.id); }
       else strikeProgress(p.row, 0);
-      return;
     }
-    if (Math.abs(e.clientX - p.x) < 10 && Math.abs(e.clientY - p.y) < 10) this.toggle(p.id);
+    // a plain tap strikes through the click that follows (also what a screen reader sends)
+  }
+
+  /** The click after a swipe or a long press is not a tap. */
+  quietClick() {
+    this.noClick = true;
+    clearTimeout(this.noClickTimer);
+    this.noClickTimer = setTimeout(() => { this.noClick = false; }, 450);
+  }
+
+  onRowClick(e, id) {
+    if (this.noClick) { this.noClick = false; return; }
+    this.toggle(id);
   }
 
   onRowCancel() {
@@ -328,13 +351,17 @@ export class PapelApp extends LitElement {
 
   // ---------- after each render: ink and motion ----------
   willUpdate() {
+    const a = document.activeElement;
+    const row = a && a.closest ? a.closest('.row[data-id]') : null;
+    this.focusRow = row ? { id: row.dataset.id, index: [...this.querySelectorAll('.row[data-id]')].indexOf(row) } : null;
     this.rects.clear();
     // a render caused only by typing moves nothing: skip measuring every row (a layout per key)
     if (this.typingOnly) return;
     for (const el of this.querySelectorAll('.body [data-id], .body [data-flip]')) this.rects.set(flipKey(el), el.getBoundingClientRect().top);
   }
 
-  updated() {
+  updated(changed) {
+    this.keepFocus(changed);
     if (this.typingOnly) { this.typingOnly = false; return; }
     this.welcome();
     this.markStuck();
@@ -377,6 +404,29 @@ export class PapelApp extends LitElement {
     }
   }
 
+  keepFocus(changed) {
+    const lost = !document.activeElement || document.activeElement === document.body;
+    const fine = matchMedia('(pointer: fine)').matches;
+    if (changed.has('card') && this.card && (!changed.get('card') || changed.get('card').kind !== this.card.kind)) {
+      // a card opened: focus the dialog itself (a text field would pop the phone's keyboard)
+      this.querySelector('.card')?.focus({ preventScroll: true });
+      return;
+    }
+    if (this.focusBack && !this.card) {
+      this.focusBack = false;
+      const o = this.cardOpener;
+      this.cardOpener = null;
+      if (o && o.isConnected && o !== document.body) { o.focus({ preventScroll: true }); return; }
+      if (fine) this.focusComposer();
+      return;
+    }
+    if (this.focusRow && lost && !this.card) {
+      const rows = [...this.querySelectorAll('.row[data-id]')];
+      const el = rows.find((r) => r.dataset.id === this.focusRow.id) || rows[Math.min(this.focusRow.index, rows.length - 1)];
+      if (el) el.focus({ preventScroll: true }); else if (fine) this.focusComposer();
+    }
+  }
+
   /** The writing line is stuck to the bottom when its natural place is below the screen: only then do rows fade under it. */
   markStuck() {
     const w = this.querySelector('.writing.sticky');
@@ -415,7 +465,7 @@ export class PapelApp extends LitElement {
     const showStruck = store.prefs.showStruck !== false;
     const others = sync.others();
     return html`
-      <div class="desk ${store.prefs.hand === 'molde' ? 'hand-molde' : ''}">
+      <div class="desk ${store.prefs.hand === 'molde' ? 'hand-molde' : ''}" ?inert=${!!this.card}>
         ${this.wide ? this.renderStack() : nothing}
         <main class="sheet" style="--my-ink: var(--ink-${myInk})" aria-label=${store.title() || t.untitled}>
           ${this.renderHead(rec, others)}
@@ -515,17 +565,27 @@ export class PapelApp extends LitElement {
       <li class="row ${done ? 'done' : ''} ${fresh ? 'new' : ''}" data-id=${item.id} role="checkbox" aria-checked=${done ? 'true' : 'false'} tabindex="0"
         style="--ink: var(--ink-${ink}); --strike-ink: var(--ink-${strikeInk})"
         @pointerdown=${(e) => this.onRowDown(e, item.id)} @pointermove=${(e) => this.onRowMove(e)} @pointerup=${(e) => this.onRowUp(e)} @pointercancel=${() => this.onRowCancel()}
-        @contextmenu=${(e) => { e.preventDefault(); this.onRowCancel(); this.openCard('item', { id: item.id }); }}
+        @click=${(e) => this.onRowClick(e, item.id)}
+        @contextmenu=${(e) => { e.preventDefault(); this.onRowCancel(); this.quietClick(); this.openCard('item', { id: item.id }); }}
         @keydown=${(e) => this.onRowKey(e, item.id)}>
         <span class="margin" aria-hidden="true">${doodle ? html`<span class="doodle-glyph">${doodle}</span>` : nothing}</span>
-        <span class="words"><span class="txt">${text}</span></span>
+        <span class="words"><span class="txt">${text}</span>${this.rowDetails(item, done, fresh)}</span>
         ${store.rec.aisles && a && a.guess && !inStruck ? html`<span class="aisle-tag" title=${t.aisleGuess}>?</span>` : nothing}
         <svg class="strike" aria-hidden="true"><path></path></svg>
       </li>`;
   }
 
+  /** What the ink colour tells a sighted person, in words for a screen reader. */
+  rowDetails(item, done, fresh) {
+    const bits = [];
+    if (item.by !== store.device) bits.push(t.byWho(this.whoName(item.by)));
+    if (fresh) bits.push(t.isNew);
+    if (done && item.d[0] && item.d[0] !== store.device) bits.push(t.struckByWho(this.whoName(item.d[0])));
+    return bits.length ? html`<span class="sr">, ${bits.join(', ')}</span>` : nothing;
+  }
+
   renderGhost(o) {
-    return html`<div class="row ghost" data-flip=${`ghost-${o.dev}`} style="--ink: var(--ink-${o.ink || 'azul'})" aria-live="polite">
+    return html`<div class="row ghost" data-flip=${`ghost-${o.dev}`} style="--ink: var(--ink-${o.ink || 'azul'})" aria-hidden="true">
       <span class="margin" aria-hidden="true">${icons.pen}</span>
       <span class="words"><span class="txt">${o.typing}</span><span class="ghost-nib"></span></span>
     </div>`;

@@ -18,10 +18,10 @@ export function renderCard(app, card) {
   const body = CARDS[card.kind] ? CARDS[card.kind](app, card) : nothing;
   return html`
     <div class="scrim ${app.wide ? 'desk-hide' : ''}" @click=${() => app.closeCard()}></div>
-    <section class="card" role="dialog" aria-modal="true" aria-label=${card.kind}>${body}</section>`;
+    <section class="card" role="dialog" aria-modal="true" aria-labelledby="card-title" tabindex="-1">${body}</section>`;
 }
 
-const head = (app, title) => html`<h2><span>${title}</span><button class="icon-btn" aria-label=${t.close} @click=${() => app.closeCard()}>${icons.close}</button></h2>`;
+const head = (app, title) => html`<div class="card-head"><h2 id="card-title">${title}</h2><button class="icon-btn" aria-label=${t.close} @click=${() => app.closeCard()}>${icons.close}</button></div>`;
 
 const toggleItem = (label, on, fn, icon, sub) => html`
   <button class="menu-item" role="switch" aria-checked=${on ? 'true' : 'false'} @click=${fn}>
@@ -80,8 +80,8 @@ const CARDS = {
       <div class="ink-swatches" role="radiogroup" aria-label=${t.inkLabel}>
         ${INKS.map((ink) => html`<button class="swatch" role="radio" aria-checked=${ink === mine ? 'true' : 'false'} aria-label=${t.inks[ink]} title=${t.inks[ink]} style="--c: var(--ink-${ink})" ?disabled=${used.has(ink) && ink !== mine} @click=${() => store.setInk(ink)}></button>`)}
       </div>
-      <h3>${t.nameLabel}</h3>
-      <input class="field" maxlength="24" .value=${name} placeholder=${t.inks[mine]} @change=${(e) => store.setName(e.target.value.trim())} />
+      <h3 id="name-label">${t.nameLabel}</h3>
+      <input class="field" aria-labelledby="name-label" maxlength="24" .value=${name} placeholder=${t.inks[mine]} @change=${(e) => store.setName(e.target.value.trim())} />
       <h3>${t.shareRotate}</h3>
       <p>${t.shareRotateHint}</p>
       <button class="btn" @click=${async () => { await sync.rotate(); app.showToast(t.shareRotated, false); app.requestUpdate(); }}>${icons.refresh} ${t.shareRotate}</button>`;
@@ -97,13 +97,13 @@ const CARDS = {
     const save = (ta) => { store.edit(card.id, ta.value); };
     return html`
       ${head(app, t.edit)}
-      <textarea class="field hand" rows="2" style="--ink: var(--ink-${store.inkOf(it.by)})" .value=${it.t[0]} maxlength="160"
+      <textarea class="field hand" rows="2" aria-label=${t.edit} style="--ink: var(--ink-${store.inkOf(it.by)})" .value=${it.t[0]} maxlength="160"
         @keydown=${(e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); save(e.target); app.closeCard(); } }}
         @change=${(e) => save(e.target)}></textarea>
       <p>${by} · ${t.ago(Date.now() - stampTime(it.c))}${struckBy ? html` · ✓ ${struckBy}` : nothing}</p>
-      <h3>${a.guess ? t.aisleGuess : t.aisle}</h3>
-      <div class="chips">
-        ${AISLES.map((id) => html`<button class="chip ${a.aisle === id ? 'on' : ''}" @click=${() => { store.setFix(it.t[0], id); app.showToast(t.movedTo(t.aisles[id]), false); }}>${t.aisles[id]}</button>`)}
+      <h3 id="aisle-label">${a.guess ? t.aisleGuess : t.aisle}</h3>
+      <div class="chips" role="group" aria-labelledby="aisle-label">
+        ${AISLES.map((id) => html`<button class="chip ${a.aisle === id ? 'on' : ''}" aria-pressed=${a.aisle === id ? 'true' : 'false'} @click=${() => { store.setFix(it.t[0], id); app.showToast(t.movedTo(t.aisles[id]), false); }}>${t.aisles[id]}</button>`)}
       </div>
       <div class="actions">
         <button class="btn danger" @click=${() => { app.closeCard(); store.remove(card.id); }}>${icons.trash} ${t.delete}</button>
@@ -134,7 +134,7 @@ const CARDS = {
     return html`
       ${head(app, t.openLink)}
       <p>${t.openLinkHint}</p>
-      <input class="field" inputmode="url" autocomplete="off" placeholder="https://…#k=…" @keydown=${(e) => { if (e.key === 'Enter') go(e.target); }} />
+      <input class="field" inputmode="url" autocomplete="off" aria-label=${t.openLink} placeholder="https://…#k=…" @keydown=${(e) => { if (e.key === 'Enter') go(e.target); }} />
       ${card.bad ? html`<p style="color:var(--danger)">${t.openLinkBad}</p>` : nothing}
       <div class="actions"><button class="btn solid" @click=${(e) => go(e.target.closest('.card').querySelector('input'))}>${t.done}</button></div>`;
     async function go(input) {
@@ -167,16 +167,14 @@ const CARDS = {
   settings(app) {
     const p = store.prefs;
     const choose = (k, v) => { store.savePrefs({ [k]: v }); if (k === 'theme') applyTheme(); if (k === 'lang') { setLang(v); app.requestUpdate(); } };
-    const seg = (k, options) => html`<div class="chips">${options.map(([v, label]) => html`<button class="chip ${(p[k] || options[0][0]) === v ? 'on' : ''}" @click=${() => choose(k, v)}>${label}</button>`)}</div>`;
+    // one choice of several: buttons that say whether they are pressed; a language name is spoken in its language
+    const seg = (k, label, options) => html`<h3 id=${`seg-${k}`}>${label}</h3><div class="chips" role="group" aria-labelledby=${`seg-${k}`}>${options.map(([v, name]) => html`<button class="chip ${(p[k] || options[0][0]) === v ? 'on' : ''}" aria-pressed=${(p[k] || options[0][0]) === v ? 'true' : 'false'} lang=${k === 'lang' ? v : nothing} @click=${() => choose(k, v)}>${name}</button>`)}</div>`;
     return html`
       ${head(app, t.settings)}
-      <h3>${t.lang}</h3>
-      ${seg('lang', [['es', 'Español'], ['en', 'English']])}
-      <h3>${t.theme}</h3>
-      ${seg('theme', [['auto', t.themes.auto], ['papel', t.themes.papel], ['pizarron', t.themes.pizarron]])}
-      <h3>${t.hand}</h3>
-      ${seg('hand', [['mano', t.hands.mano], ['molde', t.hands.molde]])}
-      <h3>&nbsp;</h3>
+      ${seg('lang', t.lang, [['es', 'Español'], ['en', 'English']])}
+      ${seg('theme', t.theme, [['auto', t.themes.auto], ['papel', t.themes.papel], ['pizarron', t.themes.pizarron]])}
+      ${seg('hand', t.hand, [['mano', t.hands.mano], ['molde', t.hands.molde]])}
+      <hr />
       ${toggleItem(t.doodles, p.doodles, () => choose('doodles', !p.doodles), icons.pen)}
       ${toggleItem(t.motion, p.motion, () => { choose('motion', !p.motion); document.documentElement.classList.toggle('no-motion', !store.prefs.motion); }, icons.refresh)}`;
   },
@@ -194,7 +192,7 @@ const CARDS = {
       ${m ? html`
         <h3>${lang === 'es' ? 'Diccionario de pasillos' : 'Aisle dictionary'}</h3>
         <p class="credits">${m.terms} ${lang === 'es' ? 'palabras, armado el' : 'words, built'} ${m.built}.</p>
-        <ul class="credits">${m.sources.map((s) => html`<li>${s.url ? html`<a href=${s.url} target="_blank" rel="noopener">${s.name}</a>` : s.name}${s.credit ? html`. ${s.credit}` : nothing}${s.license ? html` (${s.license})` : nothing}</li>`)}</ul>` : nothing}
+        <ul class="credits" lang="es">${m.sources.map((s) => html`<li>${s.url ? html`<a href=${s.url} target="_blank" rel="noopener">${s.name}</a>` : s.name}${s.credit ? html`. ${s.credit}` : nothing}${s.license ? html` (${s.license})` : nothing}</li>`)}</ul>` : nothing}
       <h3>${lang === 'es' ? 'Licencias completas' : 'Full licences'}</h3>
       <p class="credits">${[['OFL-Caveat.txt', 'Caveat'], ['OFL-AtkinsonHyperlegibleNext.txt', 'Atkinson Hyperlegible Next'], ['OFL-NotoEmoji.txt', 'Noto Emoji'], ['Unicode-3.0.txt', 'Unicode CLDR'], ['LICENSE-code.txt', lang === 'es' ? 'el código (dominio público)' : 'the code (public domain)']].map(([f, n], i) => html`${i ? ' · ' : ''}<a href=${`${import.meta.env.BASE_URL}licenses/${f}`} target="_blank" rel="noopener">${n}</a>`)}</p>
       <p class="credits"><a href="https://github.com/vdm285/listolista" target="_blank" rel="noopener">github.com/vdm285/listolista</a></p>`;

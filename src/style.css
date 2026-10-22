@@ -39,7 +39,7 @@
 
   color-scheme: light;
   --desk: #e7e1d5;
-  --desk-ink: #6f6658;
+  --desk-ink: #645b4e;
   --paper: #fdfbf5;
   --paper-edge: #efe9dc;
   --paper-shadow: 0 1px 2px rgba(60, 44, 20, .10), 0 12px 40px -8px rgba(60, 44, 20, .28);
@@ -48,7 +48,7 @@
   --margin: rgba(212, 66, 88, .55);
   --pencil: #6b6f77;
   --pencil-soft: #8a8e95;
-  --struck-fade: .46;
+  --struck-fade: .68; /* struck words stay readable: 3:1 or more for every ink (tools/contrast.mjs) */
   --marker: rgba(255, 226, 48, .62);
   --marker-blend: multiply;
   --chrome: #2a2722;
@@ -86,7 +86,7 @@
   --margin: rgba(255, 150, 160, .30);
   --pencil: #8fa199;
   --pencil-soft: #7f9189;
-  --struck-fade: .42;
+  --struck-fade: .58;
   --marker: rgba(255, 236, 110, .22);
   --marker-blend: screen;
   --chrome: #eef3ef;
@@ -297,7 +297,7 @@ ol.rows, ul.rows { list-style: none; margin: 0; padding: 0; }
   color: var(--pencil);
 }
 .aisle-head .margin { height: auto; align-self: flex-end; margin-right: 12px; margin-bottom: -4px; }
-.aisle-head .n { margin-left: 8px; font-weight: 500; letter-spacing: 0; color: var(--pencil-soft); }
+.aisle-head .n { margin-left: 8px; font-weight: 500; letter-spacing: 0; color: var(--pencil); }
 
 .row {
   position: relative;
@@ -311,7 +311,10 @@ ol.rows, ul.rows { list-style: none; margin: 0; padding: 0; }
   -webkit-user-select: none;
   outline: none;
 }
-.row:focus-visible { background: color-mix(in srgb, var(--focus) 8%, transparent); }
+.row:focus-visible { background: color-mix(in srgb, var(--focus) 8%, transparent); outline: 2.5px solid var(--focus); outline-offset: -3px; border-radius: 4px; }
+/* the writing line shows it has the pen: an underline in the writer's ink */
+.composer:focus-within { box-shadow: inset 0 -2px 0 color-mix(in srgb, var(--my-ink, var(--ink-azul)) 60%, transparent); }
+.composer textarea:focus-visible { outline: none; }
 .margin {
   flex: 0 0 var(--margin-x);
   height: var(--line);
@@ -442,6 +445,8 @@ html { scroll-padding-bottom: calc(var(--line) * 2 + var(--kb, 0px)); }
   cursor: pointer;
 }
 .chip.on { background: var(--chip-on); color: var(--chip-on-ink); }
+.chip, .pill, .swatch { position: relative; }
+.chip::after, .pill::after, .swatch::after { content: ''; position: absolute; inset: -5px -2px; } /* a 44 px finger target */
 .chip.ghost { background: transparent; border: 1.5px dashed var(--pencil-soft); color: var(--chrome-soft); }
 
 .usual { /* suggestions are written in pencil on the next rules; a tap writes them in ink */
@@ -474,7 +479,7 @@ html { scroll-padding-bottom: calc(var(--line) * 2 + var(--kb, 0px)); }
   padding: 0 var(--sheet-pad-right) 0 calc(var(--margin-x) + 12px);
   font: 650 15px/1 var(--font-ui); color: var(--chrome-soft);
 }
-.fold button { border: 0; background: none; cursor: pointer; padding: 10px 0; font-weight: 650; }
+.fold button { border: 0; background: none; cursor: pointer; min-height: 44px; padding: 0; font-weight: 650; }
 .fold .link { color: var(--chrome); text-decoration: underline; text-underline-offset: 3px; }
 .fold svg { width: 16px; height: 16px; vertical-align: -3px; transition: transform .2s; }
 .fold[aria-expanded='true'] svg { transform: rotate(90deg); }
@@ -523,7 +528,10 @@ html { scroll-padding-bottom: calc(var(--line) * 2 + var(--kb, 0px)); }
 @keyframes rise { from { transform: translateY(24px); opacity: 0; } }
 @keyframes slide { from { transform: translateX(18px); opacity: 0; } }
 @keyframes fade { from { opacity: 0; } }
-.card h2 { font: 700 19px/1.25 var(--font-ui); margin: 6px 0 12px; display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.card:focus { outline: none; }
+.card-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin: 6px 0 12px; }
+.card h2 { font: 700 19px/1.25 var(--font-ui); margin: 0; min-width: 0; }
+.card hr { border: 0; border-top: 1px solid var(--card-line); margin: 18px 0 6px; }
 .card h3 { font: 700 12.5px/1 var(--font-ui); letter-spacing: .08em; text-transform: uppercase; color: var(--chrome-soft); margin: 18px 0 8px; }
 .card p { margin: 6px 0 12px; color: var(--chrome-soft); font-size: 15px; }
 .card .menu-item {
@@ -589,7 +597,7 @@ html { scroll-padding-bottom: calc(var(--line) * 2 + var(--kb, 0px)); }
 .order-list .order-name:disabled { opacity: 1; cursor: default; }
 .order-list li.placed .order-name { font-weight: 700; }
 .order-list li.placed .n { color: var(--chrome); font-weight: 700; }
-.order-list .icon-btn { width: 40px; height: 40px; }
+.order-list .icon-btn { width: 44px; height: 44px; }
 
 .credits { font-size: 14px; color: var(--chrome-soft); }
 .credits li { margin-bottom: 8px; }
@@ -651,3 +659,13 @@ html { scroll-padding-bottom: calc(var(--line) * 2 + var(--kb, 0px)); }
   *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
 }
 .no-motion *, .no-motion *::before, .no-motion *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+
+/* ---------- Windows high contrast and other forced colours ---------- */
+@media (forced-colors: active) {
+  .row:focus-visible { outline-color: Highlight; }
+  .chip.on, .chip[aria-pressed='true'], .swatch[aria-checked='true'] { outline: 2px solid Highlight; outline-offset: 2px; }
+  .strike path { stroke: CanvasText; }
+  .row.done .txt { opacity: 1; }
+  .presence .dot, .swatch { forced-color-adjust: none; }
+  .composer:focus-within { box-shadow: inset 0 -2px 0 Highlight; }
+}

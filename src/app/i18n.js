@@ -2,6 +2,12 @@
 // Rules for these words: docs/EDITORIAL.md ("Words"). Short, plain, no exclamation marks, no
 // "¡Ups!", and never a promise the app cannot keep.
 
+/** "leche, pan y huevo"; past four, "leche, pan, huevo y 3 más". */
+const enumera = (xs, and, more) => {
+  if (xs.length > 4) return `${xs.slice(0, 3).join(', ')} ${and} ${xs.length - 3} ${more}`;
+  return xs.length < 2 ? xs.join('') : `${xs.slice(0, -1).join(', ')} ${and} ${xs[xs.length - 1]}`;
+};
+
 const es = {
   appName: 'Papelito',
   tagline: 'La lista del súper en una hoja que dos teléfonos comparten.',
@@ -32,7 +38,10 @@ const es = {
   removed: (t) => `Se borró «${t}»`,
   removedBy: (who, t) => `${who} borró «${t}»`,
   removedByN: (who, n) => `${who} borró ${n} cosas`,
-  remoteSummary: (who, added, struck, unstruck) => `${who} ${[added && `agregó ${added === 1 ? '1 cosa' : `${added} cosas`}`, struck && `tachó ${struck}`, unstruck && `destachó ${unstruck}`].filter(Boolean).join(' y ')}.`,
+  remoteSummary: (who, added, struck, unstruck) => `${who} ${[added.length && `agregó ${enumera(added, 'y', 'más')}`, struck.length && `tachó ${enumera(struck, 'y', 'más')}`, unstruck.length && `destachó ${enumera(unstruck, 'y', 'más')}`].filter(Boolean).join('; ')}.`,
+  byWho: (w) => `de ${w}`,
+  isNew: 'nuevo',
+  struckByWho: (w) => `tachado por ${w}`,
   cleared: (n) => (n === 1 ? 'Se limpió 1 tachado' : `Se limpiaron ${n} tachados`),
   edited: (t) => `Corregido: ${t}`,
   splitAsk: (n) => `¿Separar en ${n}?`,
@@ -144,7 +153,10 @@ const en = {
   removed: (t) => `Deleted “${t}”`,
   removedBy: (who, t) => `${who} deleted “${t}”`,
   removedByN: (who, n) => `${who} deleted ${n} things`,
-  remoteSummary: (who, added, struck, unstruck) => `${who} ${[added && `added ${added === 1 ? '1 item' : `${added} items`}`, struck && `crossed off ${struck}`, unstruck && `restored ${unstruck}`].filter(Boolean).join(' and ')}.`,
+  remoteSummary: (who, added, struck, unstruck) => `${who} ${[added.length && `added ${enumera(added, 'and', 'more')}`, struck.length && `crossed off ${enumera(struck, 'and', 'more')}`, unstruck.length && `restored ${enumera(unstruck, 'and', 'more')}`].filter(Boolean).join('; ')}.`,
+  byWho: (w) => `by ${w}`,
+  isNew: 'new',
+  struckByWho: (w) => `crossed off by ${w}`,
   cleared: (n) => (n === 1 ? 'Cleared 1 item' : `Cleared ${n} items`),
   edited: (t) => `Changed: ${t}`,
   splitAsk: (n) => `Split into ${n}?`,
