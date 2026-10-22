@@ -44,6 +44,10 @@ Round 1b (performance critic), re-measured with its own scripts after the fixes 
 8. The other phone's edits and renames get a Deshacer toast [`onRemote` in `app.js`].
 9. Atkinson's slashed zero stays: the font has no plain zero, and the slash is its legibility feature; a critic found it reads like a terminal (question 10 in `docs/CHECKPOINT.md`).
 10. Two commit messages had wrong numbers before pushing ("16 checks" for 14; "0.2–0.9 s" for 0.2–1.4 s); both were corrected in local history before any push.
+11. Records are spaced at least 0.6 s per phone (it was 1.2 s): at most two copies a second to each relay [`MIN_GAP_MS` in `src/sync/session.js`].
+12. A record from a relay is believed only after its id and Schnorr signature check out (a few milliseconds each) [`verifyEvent` in `src/sync/nostr.js`].
+13. Cards sit beside the paper from 1180 px; below that they are a bottom sheet (the paper used to shrink and cut its title) [the `1180px` rules in `style.css`, `over-card` in `app.js`].
+14. Ctrl+Z undoes adds and strikes too, without a toast for each; an edit made in the item card is quiet the same way [`pushUndo(…, quiet)` in `src/app/store.js`].
 
 **Not fixed, flagged**: sizes are in px, so a phone's larger-text setting does not enlarge the sheet (question 9); Noto Emoji mixes solid and outline drawings in the margin (a design limit of the font); `npm audit` lists sharp (libvips CVEs) beside puppeteer-core's download chain: both are build-time tools run on our own files, never shipped.
 
