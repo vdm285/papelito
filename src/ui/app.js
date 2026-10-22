@@ -68,9 +68,10 @@ export class PapelApp extends LitElement {
   disconnectedCallback() { super.disconnectedCallback(); this.off(); this.offSync(); this.ro.disconnect(); }
 
   firstUpdated() {
-    // notices fade; "the link moved" stays, because the sheet no longer syncs here
-    setTimeout(() => { store.notices = store.notices.filter((n) => n.kind === 'legacy' || n.kind === 'moved'); this.rev++; }, 14000);
-    setTimeout(() => { store.notices = store.notices.filter((n) => n.kind === 'moved'); this.rev++; }, 40000);
+    // notices fade; the ones about something still true stay (the link moved, nothing can be saved)
+    const lasting = (n) => n.kind === 'moved' || n.kind === 'noStorage' || n.kind === 'storageFull';
+    setTimeout(() => { store.notices = store.notices.filter((n) => n.kind === 'legacy' || lasting(n)); this.rev++; }, 14000);
+    setTimeout(() => { store.notices = store.notices.filter(lasting); this.rev++; }, 40000);
     // strikes are measured on the text: measure again once the handwriting font has arrived
     document.fonts.ready.then(() => this.redrawStrikes());
     document.fonts.addEventListener('loadingdone', () => this.redrawStrikes());
@@ -88,7 +89,7 @@ export class PapelApp extends LitElement {
     }
     if (kind === 'remote' && d) this.onRemote(d);
     if (kind === 'undoable') this.showToast(d.label, true);
-    if (kind === 'storageFull') this.showToast('No se pudo guardar en este teléfono: el almacenamiento está lleno.', false);
+    if (kind === 'storageFull' && !store.notices.some((n) => n.kind === 'storageFull')) { store.notices.push({ kind: 'storageFull' }); this.showToast(t.storageFull, false); }
     this.rev++;
   }
 
@@ -450,6 +451,9 @@ export class PapelApp extends LitElement {
       if (n.kind === 'firstShared' && st !== 'moved') notes.push(t.firstShared);
       if (n.kind === 'legacy') notes.push(t.legacyImported(n.n));
       if (n.kind === 'legacyMissing') notes.push(t.legacyLinkMissing);
+      if (n.kind === 'badLink') notes.push(t.badLink);
+      if (n.kind === 'noStorage') notes.push(t.noStorage);
+      if (n.kind === 'storageFull') notes.push(t.storageFull);
       if (n.kind === 'moved') notes.push(`${t.linkMoved} ${t.movedHow}`);
     }
     return notes.length ? html`<p class="status-line">${notes.join(' ')}</p>` : nothing;
@@ -459,7 +463,8 @@ export class PapelApp extends LitElement {
     const order = (store.doc.order[0] && store.doc.order[0].length ? store.doc.order[0] : AISLES).filter((a) => AISLES.includes(a));
     for (const a of AISLES) if (!order.includes(a)) order.push(a);
     const groups = new Map(order.map((a) => [a, []]));
-    for (const it of pending) groups.get(aisleOf(it.t[0], idx, fixes).aisle)?.push(it);
+    // an aisle id this version does not know (a newer phone's fix) files under Otros, never nowhere
+    for (const it of pending) (groups.get(aisleOf(it.t[0], idx, fixes).aisle) || groups.get('otr')).push(it);
     return html`${order.filter((a) => groups.get(a).length).map((a) => html`
       <div class="aisle-head" data-flip=${`aisle-${a}`} aria-hidden="true"><span class="margin">${store.prefs.doodles && idx.aisleEmoji && idx.aisleEmoji[a] ? html`<span class="doodle-glyph">${idx.aisleEmoji[a].replace(/\uFE0F/g, '')}\uFE0E</span>` : nothing}</span>${t.aisles[a]}<span class="n">${groups.get(a).length}</span></div>
       <ol class="rows pending" role="list" aria-label=${t.aisles[a]}>${repeat(groups.get(a), (i) => i.id, (i) => this.renderRow(i, idx, fixes, false))}</ol>`)}`;

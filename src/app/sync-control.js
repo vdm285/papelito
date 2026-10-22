@@ -132,7 +132,7 @@ export const sync = {
 
   /** A pasted link (the iPhone home-screen app never receives links by itself). */
   async openLink(text) {
-    const m = String(text).match(/#k=([A-Za-z0-9_-]{43})/);
+    const m = String(text).match(/#k=([A-Za-z0-9_-]{43})(?![A-Za-z0-9_-])/);
     if (!m) return false;
     const { listKeys } = await import('../sync/session.js');
     const { room } = await listKeys(m[1]);

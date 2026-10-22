@@ -198,3 +198,37 @@ test('a blank, untitled, unshared sheet is dropped when you leave it', () => {
   assert.ok(!s.index.some((l) => l.id === blank));
   assert.equal(s.index.length, 1);
 });
+
+test('two tabs never clobber each other\'s list of sheets', () => {
+  const mem = new Mem();
+  const a = new Store(mem);
+  a.boot('https://x.test/');
+  a.add('pan');
+  a.flush();
+  const b = new Store(mem); // a second tab, opened now
+  b.boot('https://x.test/');
+  a.newList();
+  a.add('jabón');
+  a.flush();
+  const made = a.rec.id;
+  b.setTitle('Súper');
+  b.flush();
+  b.saveIndex(); // B still holds the index it read before A's new sheet
+  assert.ok(new Store(mem).index.some((l) => l.id === made), 'A\'s new sheet survives B saving');
+  a.forgetList(made);
+  b.saveIndex();
+  assert.ok(!new Store(mem).index.some((l) => l.id === made), 'and a sheet A deleted is not brought back by B');
+});
+
+test('a link with a trailing period opens; a cut one says so', () => {
+  const s = new Store(new Mem());
+  assert.equal(s.boot(`https://x.test/#k=${'D'.repeat(43)}.`).secret, 'D'.repeat(43));
+  assert.equal(new Store(new Mem()).boot(`https://x.test/#k=${'D'.repeat(44)}`).badLink, true, 'one character too many is not silently cut');
+  assert.equal(new Store(new Mem()).boot(`https://x.test/#k=${'D'.repeat(20)}`).badLink, true);
+});
+
+test('a browser that refuses storage is noticed', () => {
+  const refusing = { get length() { return 0; }, key: () => null, getItem: () => null, setItem() { throw new Error('QuotaExceededError'); }, removeItem() {} };
+  const s = new Store(refusing);
+  assert.ok(s.notices.some((n) => n.kind === 'noStorage'));
+});

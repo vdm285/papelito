@@ -9,6 +9,7 @@
 //   ll.prefs           { lang, theme, hand, doodles, motion, awake }
 //   ll.history         { [key]: { text, n, last, gaps } }  what this household buys (never synced)
 //   ll.imported        1 once the old versions' lists have been imported
+//   ll.gone            ids of sheets deleted on this phone (so another tab's index cannot bring them back)
 
 import { createClock, randomId } from '../model/hlc.js';
 import {
@@ -22,7 +23,7 @@ import { importLegacy, legacyLinkId } from '../model/legacy.js';
 export const INKS = ['azul', 'roja', 'verde', 'negra', 'morada', 'cafe'];
 
 const K = {
-  device: 'll.device', lists: 'll.lists', last: 'll.last', prefs: 'll.prefs', history: 'll.history', imported: 'll.imported',
+  device: 'll.device', lists: 'll.lists', last: 'll.last', prefs: 'll.prefs', history: 'll.history', imported: 'll.imported', gone: 'll.gone',
   list: (id) => `ll.list.${id}`,
 };
 
@@ -34,6 +35,8 @@ function safeStorage(backend) {
     set(k, v) { try { get().setItem(k, v); return true; } catch { return false; } },
     remove(k) { try { get().removeItem(k); } catch { /* ignore */ } },
     json(k, d) { try { const v = JSON.parse(get().getItem(k)); return v ?? d; } catch { return d; } },
+    /** False in a browser that refuses to store anything (some private modes, blocked site data). */
+    works() { try { const st = get(); st.setItem('ll.probe', '1'); st.removeItem('ll.probe'); return true; } catch { return false; } },
     snapshot() { const o = {}; try { const st = get(); for (let i = 0; i < st.length; i++) { const k = st.key(i); o[k] = st.getItem(k); } } catch { /* blocked */ } return o; },
   };
 }
@@ -57,6 +60,7 @@ export class Store {
     this.rec = null;
     this.saveTimer = 0;
     this.notices = [];
+    if (!ls.works()) this.notices.push({ kind: 'noStorage' });
   }
 
   // ---------- events ----------
@@ -68,8 +72,11 @@ export class Store {
   boot(href) {
     this.importOldVersionsOnce();
     const url = new URL(href);
-    const m = url.hash.match(/^#k=([A-Za-z0-9_-]{43})$/);
+    // a link pasted at the end of a sentence often brings the period along: what follows the 43
+    // characters is ignored, as long as it cannot be part of the secret
+    const m = url.hash.match(/^#k=([A-Za-z0-9_-]{43})(?![A-Za-z0-9_-])/);
     if (m) return { secret: m[1] }; // the session resolves the room, then calls openShared()
+    if (url.hash.startsWith('#k=')) { this.openLast(); return { rec: this.rec, badLink: true }; }
     const old = legacyLinkId(href);
     if (old) {
       const hit = this.index.find((l) => l.oldId === old);
@@ -160,12 +167,14 @@ export class Store {
     const raw = this.ls.get(K.list(id));
     const wasOpen = this.rec && this.rec.id === id;
     this.index.splice(i, 1);
+    this.setGone(id, true);
     this.saveIndex();
     this.ls.remove(K.list(id));
     if (wasOpen) this.openLast(true);
     this.emit('index');
     return () => {
       if (raw) this.ls.set(K.list(id), raw);
+      this.setGone(id, false);
       if (!this.index.some((l) => l.id === id)) this.index.push(entry);
       this.saveIndex();
       if (wasOpen) this.open(id);
@@ -179,6 +188,7 @@ export class Store {
     if (!r || r.secret || r.doc.title[0] || Object.keys(r.doc.items).length) return;
     if (this.index.length <= 1) return;
     this.index = this.index.filter((l) => l.id !== r.id);
+    this.setGone(r.id, true);
     this.saveIndex();
     this.ls.remove(K.list(r.id));
     this.rec = null;
@@ -490,7 +500,35 @@ export class Store {
     if (!this.ls.set(K.list(rec.id), JSON.stringify(out))) this.emit('storageFull');
   }
 
-  saveIndex() { this.ls.set(K.lists, JSON.stringify(this.index)); }
+  /**
+   * The list of sheets is shared by every tab of the site, and each tab keeps its own copy in
+   * memory: merge with what is stored instead of overwriting it, or a sheet created in one tab
+   * vanishes from "Mis hojas" when another tab saves (robustness audit).
+   */
+  saveIndex() {
+    this.index = this.mergedIndex();
+    this.ls.set(K.lists, JSON.stringify(this.index));
+  }
+
+  mergedIndex() {
+    const gone = new Set(this.ls.json(K.gone, []));
+    const open = this.rec && this.rec.id;
+    const byId = new Map();
+    const stored = this.ls.json(K.lists, []);
+    for (const e of Array.isArray(stored) ? stored : []) if (e && typeof e.id === 'string' && !gone.has(e.id)) byId.set(e.id, e);
+    for (const e of this.index) {
+      if (gone.has(e.id) && e.id !== open) continue; // deleted in another tab (unless it is open here)
+      const s = byId.get(e.id);
+      byId.set(e.id, s && (s.updated || 0) > (e.updated || 0) ? { ...e, ...s } : e);
+    }
+    return [...byId.values()];
+  }
+
+  setGone(id, on) {
+    const g = new Set(this.ls.json(K.gone, []));
+    if (on) g.add(id); else g.delete(id);
+    this.ls.set(K.gone, JSON.stringify([...g].slice(-300)));
+  }
 
   savePrefs(patch) {
     this.prefs = { ...this.prefs, ...patch };
@@ -498,8 +536,9 @@ export class Store {
     this.emit('prefs', this.prefs);
   }
 
-  /** Another tab wrote this list: merge it in. */
+  /** Another tab wrote this list (merge it in) or the list of sheets (merge that). */
   fromOtherTab(key, value) {
+    if (key === K.lists || key === K.gone) { this.index = this.mergedIndex(); this.emit('index'); return; }
     if (!this.rec || key !== K.list(this.rec.id) || !value) return;
     try { const raw = JSON.parse(value); if (raw && raw.doc) this.applyRemote(raw.doc); } catch { /* ignore */ }
   }

@@ -20,6 +20,7 @@ applyTheme();
 
 const booted = store.boot(location.href);
 if (booted.legacyMissing) store.notices.push({ kind: 'legacyMissing' });
+if (booted.badLink) store.notices.push({ kind: 'badLink' });
 
 const app = document.createElement('papel-app');
 document.body.prepend(app);
@@ -40,8 +41,9 @@ addEventListener('storage', (e) => store.fromOtherTab(e.key, e.newValue));
 addEventListener('hashchange', async () => {
   // going back to close a card lands on an older history entry: put the open sheet's link back
   if (Date.now() < sync.holdUrlUntil) { sync.holdUrlUntil = 0; sync.setUrl(store.rec && store.rec.secret ? `#k=${store.rec.secret}` : ''); return; }
-  const m = location.hash.match(/^#k=([A-Za-z0-9_-]{43})$/);
+  const m = location.hash.match(/^#k=([A-Za-z0-9_-]{43})(?![A-Za-z0-9_-])/);
   if (m && (!store.rec || store.rec.secret !== m[1])) await sync.openLink(location.href);
+  else if (!m && location.hash.startsWith('#k=')) { store.notices.push({ kind: 'badLink' }); app.requestUpdate(); sync.follow(); }
 });
 
 // The keyboard: Android shrinks the page (interactive-widget=resizes-content); iPhone covers its
