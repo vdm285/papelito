@@ -1,0 +1,5 @@
+* text=auto eol=lf
+*.png binary
+*.woff2 binary
+# historical files are kept byte-for-byte as they were found
+docs/history/** -text
