@@ -219,7 +219,13 @@ export function compact(doc, now = Date.now()) {
 // ---------- validation of anything that arrives from outside ----------
 
 let horizon = Infinity; // set by sanitize: stamps beyond it are refused
-const okStamp = (s) => isStamp(s) && stampTime(s) <= horizon;
+let refused = 0; // how many were, so the app can say so instead of dropping them silently
+const okStamp = (s) => {
+  if (!isStamp(s)) return false;
+  if (stampTime(s) <= horizon) return true;
+  refused++;
+  return false;
+};
 const okReg = (r, test) => Array.isArray(r) && r.length === 2 && (r[1] === '' || okStamp(r[1])) && test(r[0]);
 const okText = (n) => (v) => typeof v === 'string' && v.length <= n;
 
@@ -227,9 +233,13 @@ const okText = (n) => (v) => typeof v === 'string' && v.length <= n;
  * Rebuild a document from untrusted JSON, keeping only well-formed fields. Anyone with a list's
  * link can write to it, so a decrypted copy is still treated as hostile input.
  */
-export function sanitize(raw, now = Date.now()) {
+export function sanitize(raw, now = Date.now(), report = null) {
   horizon = now + FUTURE_MS;
-  try { return sanitizeInner(raw); } finally { horizon = Infinity; }
+  refused = 0;
+  try { return sanitizeInner(raw); } finally {
+    if (report) report.future = refused;
+    horizon = Infinity;
+  }
 }
 
 function sanitizeInner(raw) {

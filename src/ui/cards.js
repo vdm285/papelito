@@ -11,7 +11,7 @@ import { dictIndex, dictMeta } from '../data/dict.js';
 import { stampTime } from '../model/hlc.js';
 import { icons } from './icons.js';
 import { applyTheme } from './theme.js';
-import { CREDITS } from './credits.js';
+import { CREDITS, LICENCE_FILES } from './credits.js';
 import { install } from '../app/install.js';
 
 export function renderCard(app, card) {
@@ -184,17 +184,15 @@ const CARDS = {
     return html`
       ${head(app, t.about)}
       <p>${t.tagline}</p>
-      <p>${lang === 'es'
-        ? 'Sin cuentas y sin servidor propio: la hoja vive en tus teléfonos y viaja cifrada de extremo a extremo por relevos públicos de Nostr, que solo ven datos revueltos.'
-        : 'No accounts and no server of its own: the sheet lives on your phones and travels end-to-end encrypted through public Nostr relays, which only see scrambled bytes.'}</p>
+      <p>${t.aboutPrivacy}</p>
       <h3>${t.credits}</h3>
-      <ul class="credits">${CREDITS.map((c) => html`<li><a href=${c.url} target="_blank" rel="noopener">${c.name}</a> · ${c.what}. ${c.license}.</li>`)}</ul>
+      <ul class="credits">${CREDITS.map((c) => html`<li><a href=${c.url} target="_blank" rel="noopener">${loc(c.name)}</a> · ${loc(c.what)}. ${loc(c.license)}.</li>`)}</ul>
       ${m ? html`
-        <h3>${lang === 'es' ? 'Diccionario de pasillos' : 'Aisle dictionary'}</h3>
-        <p class="credits">${m.terms} ${lang === 'es' ? 'palabras, armado el' : 'words, built'} ${m.built}.</p>
+        <h3>${t.dictTitle}</h3>
+        <p class="credits">${t.dictCount(m.terms, m.built)}</p>
         <ul class="credits" lang="es">${m.sources.map((s) => html`<li>${s.url ? html`<a href=${s.url} target="_blank" rel="noopener">${s.name}</a>` : s.name}${s.credit ? html`. ${s.credit}` : nothing}${s.license ? html` (${s.license})` : nothing}</li>`)}</ul>` : nothing}
-      <h3>${lang === 'es' ? 'Licencias completas' : 'Full licences'}</h3>
-      <p class="credits">${[['OFL-Caveat.txt', 'Caveat'], ['OFL-AtkinsonHyperlegibleNext.txt', 'Atkinson Hyperlegible Next'], ['OFL-NotoEmoji.txt', 'Noto Emoji'], ['Unicode-3.0.txt', 'Unicode CLDR'], ['LICENSE-code.txt', lang === 'es' ? 'el código (dominio público)' : 'the code (public domain)']].map(([f, n], i) => html`${i ? ' · ' : ''}<a href=${`${import.meta.env.BASE_URL}licenses/${f}`} target="_blank" rel="noopener">${n}</a>`)}</p>
+      <h3>${t.licencesTitle}</h3>
+      <p class="credits">${[...LICENCE_FILES, ['LICENSE-code.txt', t.codeLicence]].map(([f, n], i) => html`${i ? ' · ' : ''}<a href=${`${import.meta.env.BASE_URL}licenses/${f}`} target="_blank" rel="noopener">${n}</a>`)}</p>
       <p class="credits"><a href="https://github.com/vdm285/listolista" target="_blank" rel="noopener">github.com/vdm285/listolista</a></p>`;
   },
 };
@@ -205,6 +203,9 @@ function doodleOf(id) {
   const e = idx && idx.aisleEmoji && idx.aisleEmoji[id];
   return e && store.prefs.doodles ? html`<span class="doodle-glyph" aria-hidden="true">${e.replace(/\uFE0F/g, '')}\uFE0E</span>` : nothing;
 }
+
+/** A credit text in the app's language (plain strings are the same in both). */
+const loc = (v) => (v && typeof v === 'object' ? v[lang] || v.es : v);
 
 function statusText(st) {
   if (st.status === 'synced') return t.synced;

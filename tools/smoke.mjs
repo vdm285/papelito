@@ -191,8 +191,10 @@ try {
     await page.keyboard.type('Súper');
     await page.evaluate(async () => {
       const { store } = window.__papelito;
-      const D = await import(new URL('./src/model/doc.js', location.href).href).catch(() => null);
-      if (!D) { store.emit('remote', { added: [], removed: [], struck: [], unstruck: [], edited: [], joined: [] }); return; } // production build: a re-render is enough
+      // the source modules exist only on the dev server; a production build gets a plain re-render
+      // (importing a missing module there would log a MIME error and fail the console check)
+      if (!window.__papelito.dev) { store.emit('remote', { added: [], removed: [], struck: [], unstruck: [], edited: [], joined: [] }); return; }
+      const D = await import(new URL('./src/model/doc.js', location.href).href);
       const H = await import(new URL('./src/model/hlc.js', location.href).href);
       const doc = D.sanitize(JSON.parse(D.canonical(store.doc)));
       D.addItem(doc, H.createClock('zz9otro0'), 'otroitem01', 'cilantro');

@@ -232,3 +232,38 @@ test('a browser that refuses storage is noticed', () => {
   const s = new Store(refusing);
   assert.ok(s.notices.some((n) => n.kind === 'noStorage'));
 });
+
+test('a copy dated more than a day ahead is refused with a notice, and a corrected clock stamps ahead too', () => {
+  const a = new Store(new Mem());
+  a.boot('https://x.test/');
+  a.add('leche');
+  const b = new Store(new Mem());
+  b.boot('https://x.test/');
+  b.setSkew(3 * 864e5); // phone B's clock (or its correction) is three days ahead
+  b.add('pan');
+  a.applyRemote(JSON.parse(canonical(b.doc)));
+  assert.ok(a.notices.some((n) => n.kind === 'clockAhead'), 'the refusal is said, not silent');
+  assert.ok(!a.items().some((i) => i.t[0] === 'pan'));
+  a.setSkew(3 * 864e5); // once A is corrected to the same time, the copy merges
+  a.applyRemote(JSON.parse(canonical(b.doc)));
+  assert.ok(a.items().some((i) => i.t[0] === 'pan'));
+});
+
+test('the other phone\'s edits and renames come with what they replaced, so they can be undone', () => {
+  const a = new Store(new Mem());
+  a.boot('https://x.test/');
+  const [id] = a.add('leche');
+  a.setTitle('Súper');
+  const b = new Store(new Mem());
+  b.boot('https://x.test/');
+  b.applyRemote(JSON.parse(canonical(a.doc)));
+  b.edit(id, 'leche deslactosada');
+  b.setTitle('Mercado');
+  const ch = a.applyRemote(JSON.parse(canonical(b.doc)));
+  assert.equal(ch.was[id], 'leche');
+  assert.equal(ch.oldTitle, 'Súper');
+  a.edit(id, ch.was[id]);
+  a.setTitle(ch.oldTitle);
+  assert.equal(a.items()[0].t[0], 'leche');
+  assert.equal(a.title(), 'Súper');
+});

@@ -34,11 +34,14 @@ export function createClock(device, now = () => Date.now()) {
   if (typeof device !== 'string' || device.length !== DEVICE_LEN) throw new Error('device id must be 8 characters');
   let last = 0;
   let n = 0;
+  let skew = 0; // ms to add to this phone's clock (from the web server's Date, see sync/session.js)
   return {
     device,
+    /** Correct this phone's clock by `ms` from now on (a phone whose clock is days off). */
+    setSkew(ms) { skew = Number.isFinite(ms) ? ms : 0; },
     /** A new stamp, later than every stamp issued or observed so far. */
     tick() {
-      const t = Math.min(Math.floor(now()), MAX_MS);
+      const t = Math.min(Math.floor(now() + skew), MAX_MS);
       if (t > last) { last = t; n = 0; } else if (n < MAX_N) n++; else { last++; n = 0; }
       return format(last, n, device);
     },
@@ -48,7 +51,7 @@ export function createClock(device, now = () => Date.now()) {
       const p = parse(stamp);
       // a stamp far in the future (a crafted copy, or a phone whose clock is broken) must not drag
       // this clock to the end of time: every later edit of this phone would then look ancient
-      if (p.ms > now() + 864e5) return;
+      if (p.ms > now() + skew + 864e5) return;
       if (p.ms > last || (p.ms === last && p.n > n)) { last = p.ms; n = p.n; }
     },
   };

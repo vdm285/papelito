@@ -13,20 +13,9 @@ export const KIND = 30078;
 export const LIVE = 21078;
 const EXPIRE_DAYS = 180;
 
-/**
- * Default relays (docs/research/2026-10-21-transport.md §6): five that took a fresh key, served the
- * newest copy back and kept data for years in the 2026-10-21 probes, from different operators; one
- * (relay.ditto.pub) runs different software, so one strfry policy change cannot take out all of
- * them; plus one fallback. Every phone writes to and reads from all of them.
- */
-export const RELAYS = [
-  'wss://relay.primal.net',
-  'wss://relay.nostr.net',
-  'wss://nostr.mom',
-  'wss://relay.coinos.io',
-  'wss://relay.ditto.pub',
-  'wss://nostr.oxtr.dev',
-];
+import { RELAYS } from './relays.js';
+
+export { RELAYS };
 const MIN_GAP_MS = 1200; // be gentle: a burst of taps goes out as one record
 const DEV_RE = /^[0-9a-z]{8}$/;
 const INK_RE = /^[a-z]{3,12}$/; // goes into a CSS variable name: letters only
@@ -111,7 +100,7 @@ export class Session {
     });
     // a short wait for the clock check (same origin, usually ~100 ms); never more than 0.8 s
     this.offset = await Promise.race([serverOffset(), new Promise((r) => setTimeout(() => r(0), 800))]);
-    serverOffset().then((o) => { this.offset = o; });
+    serverOffset().then((o) => { this.offset = o; if (this.store.setSkew) this.store.setSkew(o * 1000); });
     const now = this.now();
     // every record is a whole merged copy, so only the newest per slot matters. Some relays keep
     // every version (relay.ditto.pub): after the first visit, ask only for what is new since the

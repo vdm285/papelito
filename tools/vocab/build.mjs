@@ -307,6 +307,7 @@ for (const f of fs.existsSync(OVERRIDES) ? fs.readdirSync(OVERRIDES).sort() : []
     const body = (k < 0 ? line : line.slice(0, k)).trim();
     const why = k < 0 ? '' : line.slice(k + 1).trim();
     const ref = `override:${f}:${i + 1}`;
+    if (!why) errors.push(`${ref}: no "# why"`);
     overrideStats.lines++;
     let mm;
     if ((mm = body.match(/^\+\s+(.+?)(?:\s+=\s+(\S+))?$/))) overrideLines.push({ op: '+', term: mm[1], emoji: mm[2] || '', aisle: fileAisle, ref, why });
@@ -425,6 +426,22 @@ const sources = [
     credit: 'Nombres de emoji: Unicode CLDR 49, © 1991-2026 Unicode, Inc., licencia Unicode v3, https://www.unicode.org/license.txt (copia en LICENSES/Unicode-3.0.txt).',
   },
 ];
+// words whose only reference is an override line: the everyday layer no source has (bolillo,
+// garrafón...). The lines were drafted by an AI and await the owner's review; the app says so.
+const onlyOverride = shipped.filter((t) => t.cands.length && t.cands.every((c) => c.ref.startsWith('override:')));
+const overrideDates = [];
+for (const f of fs.existsSync(OVERRIDES) ? fs.readdirSync(OVERRIDES) : []) {
+  for (const l of lines(path.join(OVERRIDES, f))) if (l.startsWith('#')) for (const d of l.match(/\d{4}-\d{2}-\d{2}/g) || []) overrideDates.push(d);
+}
+const examples = ['bolillo', 'garrafón', 'croquetas', 'totopos'].filter((w) => onlyOverride.some((t) => fold(t.display) === fold(w)));
+sources.push({
+  name: 'Correcciones por pasillo',
+  url: 'https://github.com/vdm285/listolista/tree/main/data/overrides/aisles',
+  license: 'Dominio público (The Unlicense), como el código',
+  retrieved: overrideDates.sort().pop() || 'sin fecha',
+  credit: `${onlyOverride.length} palabras de uso diario que ninguna fuente trae${examples.length ? ` (${examples.join(', ')}…)` : ''} vienen de las líneas de corrección por pasillo: cada una dice por qué, las redactó una IA (Claude) y esperan la revisión del dueño.`,
+});
+
 const order = (a, b) => aisleRank(a.aisle) - aisleRank(b.aisle) || (fold(a.display) < fold(b.display) ? -1 : fold(a.display) > fold(b.display) ? 1 : a.display < b.display ? -1 : 1);
 shipped.sort(order);
 const dictTerms = {};
@@ -437,9 +454,14 @@ function stringify(d) {
   const body = Object.entries(d.terms).map(([k, v]) => `${JSON.stringify(k)}:${JSON.stringify(v)}`).join(',\n');
   return `${head.slice(0, -1)},\n"terms":{\n${body}\n},\n"forms":${JSON.stringify(d.forms)}}\n`;
 }
-const json = stringify(dict);
+let json = stringify(dict);
 JSON.parse(json); // must be valid
-writeText(DICT, json);
+try {
+  const prev = JSON.parse(fs.readFileSync(DICT, 'utf8'));
+  if (prev && prev.built && stringify({ ...dict, built: prev.built }) === fs.readFileSync(DICT, 'utf8')) { dict.built = prev.built; json = stringify(dict); }
+} catch { /* first build */ }
+// a build with errors never replaces the shipped dictionary
+if (!errors.length) writeText(DICT, json);
 
 // ------------------------------------------------------------------ evidence files
 const tsvOut = (file, head, rows) => writeText(path.join(BUILD, file), [head.join('\t'), ...rows.map((r) => r.map((x) => String(x ?? '').replace(/[\t\n]/g, ' ')).join('\t'))].join('\n') + '\n');

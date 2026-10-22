@@ -60,8 +60,13 @@ export class Store {
     this.rec = null;
     this.saveTimer = 0;
     this.notices = [];
+    this.skew = 0; // ms this phone's clock is behind the web server's (set by a shared session)
     if (!ls.works()) this.notices.push({ kind: 'noStorage' });
   }
+
+  /** This phone's time, corrected against the web server's when a session has measured it. */
+  now() { return Date.now() + this.skew; }
+  setSkew(ms) { this.skew = ms; this.clock.setSkew(ms); }
 
   // ---------- events ----------
   on(fn) { this.listeners.add(fn); return () => this.listeners.delete(fn); }
@@ -349,12 +354,18 @@ export class Store {
   // ---------- the other phone ----------
   /** Merge a copy that arrived from a relay or another tab. Returns the changes for animation. */
   applyRemote(raw) {
-    const incoming = sanitize(raw);
+    const report = {};
+    const incoming = sanitize(raw, this.now(), report);
+    // a copy dated more than a day ahead is not merged: say so instead of losing it silently
+    if (report.future && !this.notices.some((n) => n.kind === 'clockAhead')) { this.notices.push({ kind: 'clockAhead' }); this.emit('notice'); }
     const before = this.doc;
-    const after = merge(before, incoming);
+    const after = merge(before, incoming, this.now());
     if (canonical(after) === canonical(before)) return null;
     this.clock.observe(maxStamp(after));
     const changes = diff(before, after);
+    // what the other phone replaced, so its edits and renames can be undone like its deletions
+    changes.was = Object.fromEntries(changes.edited.map((id) => [id, before.items[id].t[0]]));
+    if (changes.title) changes.oldTitle = before.title[0];
     // phones that appear in this sheet for the first time (not this one)
     // (only on a phone that was already part of it: the one opening a link sees no news)
     changes.joined = before.dev[this.device] ? Object.keys(after.dev).filter((d) => d !== this.device && !before.dev[d] && after.dev[d].ink[0]) : [];

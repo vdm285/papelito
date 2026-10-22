@@ -53,7 +53,7 @@ try {
   // Tab from a half-written word to the suggestions does not make the fragment an item
   await page.focus('.composer textarea');
   await page.keyboard.type('lec');
-  await sleep(300);
+  await page.waitForSelector('.usual .pencil', { timeout: 5000 }).catch(() => {}); // the dictionary arrives after the first frame
   await page.keyboard.press('Tab');
   await sleep(200);
   const onSuggestion = await page.evaluate(() => !!document.activeElement.closest('.usual'));

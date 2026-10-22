@@ -53,9 +53,9 @@
  "dropped": 426,
  "review": 137,
  "bytes": {
-  "raw": 38843,
-  "gzip": 11782,
-  "brotli": 10210
+  "raw": 39276,
+  "gzip": 11989,
+  "brotli": 10401
  },
  "tests": {
   "test-60": {

@@ -77,4 +77,4 @@ if ('serviceWorker' in navigator && import.meta.env.PROD && (location.protocol =
 }
 
 // for tools/smoke.mjs and debugging
-window.__papelito = { store, sync };
+window.__papelito = { store, sync, dev: import.meta.env.DEV };

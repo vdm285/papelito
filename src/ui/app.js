@@ -88,6 +88,7 @@ export class PapelApp extends LitElement {
       this.swapSheet = true; // the next render places the new sheet on top, like a fresh page
     }
     if (kind === 'remote' && d) this.onRemote(d);
+    if (kind === 'notice') this.rev++;
     // the first thing you do on the sheet puts away the notes about how you got here; the ones
     // about something still true stay (the link moved, nothing can be saved)
     if (kind === 'change' && store.notices.length) store.notices = store.notices.filter(lasting);
@@ -113,6 +114,17 @@ export class PapelApp extends LitElement {
       const one = ids.length === 1 && store.doc.items[ids[0]];
       const label = one ? t.removedBy(who, one.t[0]) : t.removedByN(who, ids.length);
       this.showToast(label, true, () => store.restore(ids), { removed: ids, who });
+    } else if (ch.edited.length && ch.was) {
+      const ids = ch.edited.filter((id) => store.doc.items[id]);
+      const it = store.doc.items[ids[0]];
+      if (it) {
+        const who = this.whoName(it.t[1].slice(13));
+        const label = ids.length === 1 ? t.editedBy(who, ch.was[ids[0]], it.t[0]) : t.editedByN(who, ids.length);
+        this.showToast(label, true, () => { for (const id of ids) store.edit(id, ch.was[id]); });
+      }
+    } else if (ch.title && ch.oldTitle !== undefined && store.doc.title[1]) {
+      const old = ch.oldTitle;
+      this.showToast(t.renamedBy(this.whoName(store.doc.title[1].slice(13)), store.title() || t.untitled), true, () => store.setTitle(old));
     }
     // one polite sentence for screen readers: who did what on the other phone
     if (ch.added.length || ch.struck.length || ch.unstruck.length) {
@@ -574,6 +586,7 @@ export class PapelApp extends LitElement {
       if (n.kind === 'badLink') notes.push(t.badLink);
       if (n.kind === 'noStorage') notes.push(t.noStorage);
       if (n.kind === 'storageFull') notes.push(t.storageFull);
+      if (n.kind === 'clockAhead') notes.push(t.clockAhead);
       if (n.kind === 'moved') notes.push(`${t.linkMoved} ${t.movedHow}`);
     }
     return notes.length ? html`<p class="status-line" data-flip="status"><span class="margin" aria-hidden="true">${icons.pen}</span><span class="words">${notes.join(' ')}</span></p>` : nothing;
@@ -700,7 +713,7 @@ export class PapelApp extends LitElement {
   get isLong() { return store.items().length > 9; }
 }
 
-const lasting = (n) => n.kind === 'moved' || n.kind === 'noStorage' || n.kind === 'storageFull';
+const lasting = (n) => ['moved', 'noStorage', 'storageFull', 'clockAhead'].includes(n.kind);
 
 const flipKey = (el) => (el.dataset.id ? `row-${el.dataset.id}` : el.dataset.flip);
 
