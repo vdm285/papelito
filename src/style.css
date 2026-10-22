@@ -46,8 +46,8 @@
   --rule: rgba(66, 118, 190, .30);
   --rule-strong: rgba(66, 118, 190, .45);
   --margin: rgba(212, 66, 88, .55);
-  --pencil: #8b8f97;
-  --pencil-soft: #b5b8be;
+  --pencil: #6b6f77;
+  --pencil-soft: #8a8e95;
   --struck-fade: .46;
   --marker: rgba(255, 226, 48, .62);
   --marker-blend: multiply;
@@ -85,7 +85,7 @@
   --rule-strong: rgba(235, 245, 238, .16);
   --margin: rgba(255, 150, 160, .30);
   --pencil: #8fa199;
-  --pencil-soft: #6d7f77;
+  --pencil-soft: #7f9189;
   --struck-fade: .42;
   --marker: rgba(255, 236, 110, .22);
   --marker-blend: screen;
