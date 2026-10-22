@@ -29,11 +29,14 @@ jobs:
       - run: npm ci --no-audit --no-fund
       - run: npm test
       - run: node tools/vocab/check.mjs
-      # the base is the repository's name, so a rename needs no edit here
-      - run: npm run build
-        env:
-          VITE_BASE: /${{ github.event.repository.name }}/
-      - run: grep -q '/${{ github.event.repository.name }}/' dist/index.html
+      # The base is the repository's name, so a rename needs no edit here. GITHUB_REPOSITORY
+      # ("owner/name") is set on every trigger; github.event.repository is absent from a scheduled
+      # run's payload. The grep fails the job when the page does not load from that base.
+      - run: |
+          export VITE_BASE="/${GITHUB_REPOSITORY#*/}/"
+          echo "base path: $VITE_BASE"
+          npm run build
+          grep -q "${VITE_BASE}assets/" dist/index.html
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist
