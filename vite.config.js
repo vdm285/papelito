@@ -20,6 +20,12 @@ const swVersion = () => {
     const shell = ['./', './pre.js', './dict/es-MX.json', './fonts/caveat.woff2', './fonts/atkinson.woff2', './fonts/doodles.woff2', './manifest.webmanifest', './manifest-ios.webmanifest', './favicon.svg', './icon-192.png', './icon-512.png', ...assets];
     const src = readFileSync(f, 'utf8').replace('__BUILD__', id).replace('/*__SHELL__*/[]', JSON.stringify(shell));
     writeFileSync(f, src);
+    // pre.js preloads the sync chunks for a #k= link: stamp their hashed names
+    const pre = resolve(out, 'pre.js');
+    if (existsSync(pre)) {
+      const sync = assets.filter((n) => /\/(crypto|session|relays)-[\w-]+\.js$/.test(n));
+      writeFileSync(pre, readFileSync(pre, 'utf8').replace('/*__SYNC__*/[]', JSON.stringify(sync)));
+    }
     // the licence texts travel with the fonts and data we ship (OFL, Unicode): dist/licenses/
     mkdirSync(resolve(out, 'licenses'), { recursive: true });
     for (const n of readdirSync(resolve('LICENSES'))) copyFileSync(resolve('LICENSES', n), resolve(out, 'licenses', n));
@@ -37,6 +43,14 @@ const CSP = [
   "font-src 'self'", "connect-src 'self' wss:", "manifest-src 'self'", "worker-src 'self'", "object-src 'none'",
   "base-uri 'self'", "form-action 'none'",
 ].join('; ');
+// A CSP meta tag stops Chrome's preload scanner until the next parser-blocking script runs, so
+// pre.js moves after the module script and stylesheet the build injects: they start one round trip
+// sooner, and pre.js still runs before the first paint (it waits for the stylesheet).
+const preLast = () => ({
+  name: 'pre-last',
+  apply: 'build',
+  transformIndexHtml: { order: 'post', handler: (html) => html.replace('    <script src="./pre.js"></script>\n', '').replace('</head>', '    <script src="./pre.js"></script>\n  </head>') },
+});
 const csp = () => ({
   name: 'csp',
   apply: 'build',
@@ -50,6 +64,6 @@ export default defineConfig({
   build: { target: 'es2022', chunkSizeWarningLimit: 300 },
   // the top-level data/ holds caches and test-browser profiles whose locked files crash Vite's
   // watcher. Only that folder: a pattern like '**/data/**' also hid src/data/ from the dev server.
-  server: { port: 5177, host: true, strictPort: true, watch: { ignored: [`${resolve('data').replace(/\\/g, '/')}/**`, '**/dist/**', '**/.git/**'] } },
-  plugins: [swVersion(), csp()],
+  server: { port: 5177, host: true, strictPort: true, watch: { ignored: [`${resolve('data').replace(/\\/g, '/')}/**`, '**/dist*/**', '**/.git/**'] } },
+  plugins: [swVersion(), csp(), preLast()],
 });

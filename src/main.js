@@ -27,8 +27,10 @@ document.body.prepend(app);
 document.getElementById('boot')?.remove();
 
 if (booted.secret) {
-  const { listKeys } = await import('./sync/session.js');
-  const { room } = await listKeys(booted.secret);
+  // only the room name is needed to find or start the sheet: the small crypto chunk, not the
+  // whole session (public/pre.js has already started fetching both for a #k= link)
+  const { deriveKeys } = await import('./sync/crypto.js');
+  const { room } = await deriveKeys(booted.secret);
   store.openShared(booted.secret, room);
 }
 sync.follow();

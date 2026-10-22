@@ -37,8 +37,9 @@ export function completions(prefix, n = 3) {
   const f = fold(prefix);
   if (f.length < 2) return [];
   const out = [];
-  for (const term of Object.keys(index.terms)) {
-    if (fold(term).startsWith(f)) { out.push(term); if (out.length >= n * 4) break; }
+  if (!index.folded) index.folded = Object.keys(index.terms).map((term) => [fold(term), term]);
+  for (const [k, term] of index.folded) {
+    if (k.startsWith(f)) { out.push(term); if (out.length >= n * 4) break; }
   }
   return out.sort((a, b) => a.length - b.length).slice(0, n);
 }

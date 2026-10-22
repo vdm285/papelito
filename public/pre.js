@@ -8,6 +8,17 @@
   l.rel = 'manifest';
   l.href = ios ? './manifest-ios.webmanifest' : './manifest.webmanifest';
   document.head.appendChild(l);
+  // a shared link needs the sync code at once: start fetching it now, not after main.js runs
+  // (the build stamps the hashed chunk names here; the dev server leaves the list empty)
+  var SYNC = /*__SYNC__*/[];
+  if (location.hash.indexOf('#k=') === 0) {
+    for (var i = 0; i < SYNC.length; i++) {
+      var m = document.createElement('link');
+      m.rel = 'modulepreload';
+      m.href = SYNC[i];
+      document.head.appendChild(m);
+    }
+  }
   // paint the paper colour before any script or font arrives
   try {
     var p = JSON.parse(localStorage.getItem('ll.prefs') || '{}');

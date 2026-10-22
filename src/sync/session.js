@@ -16,7 +16,7 @@ const EXPIRE_DAYS = 180;
 import { RELAYS } from './relays.js';
 
 export { RELAYS };
-const MIN_GAP_MS = 1200; // be gentle: a burst of taps goes out as one record
+const MIN_GAP_MS = 600; // be gentle: a burst of taps goes out as one record (at most two copies a second)
 const DEV_RE = /^[0-9a-z]{8}$/;
 const INK_RE = /^[a-z]{3,12}$/; // goes into a CSS variable name: letters only
 
@@ -118,7 +118,7 @@ export class Session {
   }
 
   stop() {
-    clearTimeout(this.timer);
+    clearTimeout(this.timer); this.timer = 0; this.dueAt = 0;
     clearTimeout(this.repairTimer);
     clearInterval(this.presenceTimer);
     if (this.pool) this.pool.stop();
@@ -131,9 +131,14 @@ export class Session {
   changed() { this.confirmed = false; this.schedule(120); this.reportStatus(); } // a tap is one event: send it now
 
   schedule(ms) {
-    clearTimeout(this.timer);
     const wait = Math.max(ms, (this.lastSent || 0) + MIN_GAP_MS - Date.now());
-    this.timer = setTimeout(() => this.publish(), wait);
+    const due = Date.now() + wait;
+    // never push a publish that is already due sooner further out: the republish after absorbing
+    // the other phone's copy (2.5 s) used to postpone this phone's own pending edit
+    if (this.timer && this.dueAt && this.dueAt <= due) return;
+    clearTimeout(this.timer);
+    this.dueAt = due;
+    this.timer = setTimeout(() => { this.timer = 0; this.dueAt = 0; this.publish(); }, wait);
   }
 
   async publish(force = false) {
@@ -185,7 +190,7 @@ export class Session {
       if (this.seenIds.size > 3000) this.seenIds = new Set([...this.seenIds].slice(-1000));
       if (value.moved) {
         // the sheet got a new link: stop publishing here (it would only put the list back on the old link)
-        if (!this.moved) { this.moved = true; clearTimeout(this.timer); clearTimeout(this.repairTimer); this.onMoved(); this.reportStatus(); }
+        if (!this.moved) { this.moved = true; clearTimeout(this.timer); this.timer = 0; this.dueAt = 0; clearTimeout(this.repairTimer); this.onMoved(); this.reportStatus(); }
         return;
       }
       if (!value.doc) return; // a newer format

@@ -250,8 +250,13 @@ papel-app { display: block; min-height: 100%; }
   border: 2px solid var(--paper);
   margin-left: -4px;
 }
-.presence .dot.here { animation: here 2.4s ease-in-out infinite; }
-@keyframes here { 50% { box-shadow: 0 0 0 4px color-mix(in srgb, var(--c) 25%, transparent); } }
+.presence .dot { position: relative; }
+/* a phone arriving: a ring pulses three times on the compositor (transform and opacity), then
+   the dot is still. box-shadow on an infinite loop kept a modest phone's main thread 26 % busy */
+.presence .dot.here::after { content: ''; position: absolute; inset: -2px; border-radius: 50%; border: 2px solid var(--c); opacity: 0; animation: here 2.4s ease-out 3; pointer-events: none; }
+@media (prefers-reduced-motion: reduce) { .presence .dot.here::after { animation: none; } }
+.no-motion .presence .dot.here::after { animation: none; }
+@keyframes here { from { transform: scale(1); opacity: .55; } to { transform: scale(2.1); opacity: 0; } }
 .sync-icon { display: inline-grid; place-items: center; }
 .sync-icon svg { width: 19px; height: 19px; }
 .pill.sync-connecting .sync-icon, .pill.sync-sending .sync-icon { animation: breathe 1.4s ease-in-out infinite; }

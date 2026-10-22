@@ -55,13 +55,17 @@ export function markerPath(seed, lines) {
   return d;
 }
 
-/** Lay the highlighter under a new item's text. */
-export function drawMarker(row) {
-  const txt = row.querySelector('.txt');
+/** Lay the highlighter under a new item's text (`boxes` from measure(), to draw many rows at once). */
+export function drawMarker(row, boxes = measure(row)) {
   const svg = row.querySelector('.marker');
-  if (!txt || !svg) return;
-  const boxes = lineBoxes(row, txt);
+  if (!svg || !boxes) return;
   if (boxes.length) svg.firstElementChild.setAttribute('d', markerPath(row.dataset.id || 'x', boxes));
+}
+
+/** The text's line boxes for a row (a read; do all reads before any draw). */
+export function measure(row) {
+  const txt = row.querySelector('.txt');
+  return txt ? lineBoxes(row, txt) : null;
 }
 
 /** The line boxes of the text, relative to the row element. */
@@ -78,12 +82,11 @@ export function lineBoxes(row, txt) {
 
 /** Lay the strike over the text. mode: 'still' (already struck), 'draw', 'remote', 'erase'. */
 export function drawStrike(row, mode, opts = {}) {
-  const txt = row.querySelector('.txt');
   const svg = row.querySelector('.strike');
-  if (!txt || !svg) return;
+  if (!svg) return;
   const path = svg.firstElementChild;
-  const boxes = lineBoxes(row, txt);
-  if (!boxes.length) return;
+  const boxes = opts.boxes || measure(row);
+  if (!boxes || !boxes.length) return;
   path.setAttribute('d', strikePath(row.dataset.id || 'x', boxes));
   const len = path.getTotalLength();
   path.style.strokeDasharray = `${len}`;

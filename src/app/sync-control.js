@@ -45,8 +45,14 @@ export const sync = {
     const { Session } = await import('../sync/session.js');
     if (store.rec.id !== rec.id) return; // switched while loading
     session = new Session(store, {
-      onStatus: (s) => { this.state = s; this.emit(); },
-      onLive: () => this.emit(),
+      // relays acknowledge every record; re-render only when something drawn changed (the status
+      // word, who is here, what they are typing): 90 renders for 20 taps froze a long list
+      onStatus: (s) => {
+        const sig = JSON.stringify([s.status, s.others.map((o) => [o.dev, o.ink, o.typing || ''])]);
+        this.state = s;
+        if (sig !== this.drawnSig) { this.drawnSig = sig; this.emit(); }
+      },
+      onLive: () => {}, // presence arrives through onStatus too (the session reports after each)
       onMoved: () => { if (!store.notices.some((n) => n.kind === 'moved')) { store.notices.push({ kind: 'moved' }); this.emit(); } },
     });
     await session.start(rec);

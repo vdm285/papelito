@@ -10,7 +10,7 @@ import { t } from '../app/i18n.js';
 import { isDone } from '../model/doc.js';
 import { aisleOf, splitHint, AISLES, keyOf, fold } from '../model/aisles.js';
 import { dictIndex, completions } from '../data/dict.js';
-import { drawStrike, drawMarker, swipeMarker, strikeProgress, revealWriting, touchPulse } from './ink.js';
+import { drawStrike, drawMarker, swipeMarker, measure, strikeProgress, revealWriting, touchPulse } from './ink.js';
 import { icons } from './icons.js';
 import { renderCard } from './cards.js';
 import { sync } from '../app/sync-control.js';
@@ -57,7 +57,10 @@ export class PapelApp extends LitElement {
     this.off = store.on((kind, d) => this.onStore(kind, d));
     this.offSync = sync.on(() => this.requestUpdate());
     this.wideMq.addEventListener('change', (e) => { this.wide = e.matches; });
-    this.ro = new ResizeObserver(() => this.redrawStrikes());
+    this.ro = new ResizeObserver((entries) => {
+      const w = Math.round(entries[0].contentRect.width);
+      if (w !== this.sheetWidth) { this.sheetWidth = w; this.redrawStrikes(); }
+    });
     addEventListener('keydown', (e) => this.onKey(e));
     addEventListener('popstate', () => { if (this.card) { sync.holdUrl(); this.card = null; this.focusBack = true; } });
     addEventListener('scroll', () => { if (!this.stuckFrame) this.stuckFrame = requestAnimationFrame(() => { this.stuckFrame = 0; this.markStuck(); }); }, { passive: true });
@@ -85,7 +88,7 @@ export class PapelApp extends LitElement {
     this.typingOnly = false; // anything from the store may move the sheet: measure
     if (kind === 'list') {
       this.lingering.clear(); this.pendingAnim.clear(); this.hint = null; this.loadDraft(); this.seenSoon(6000);
-      this.swapSheet = true; // the next render places the new sheet on top, like a fresh page
+      if (this.querySelector('.sheet')) this.swapSheet = true; // a switch: the new sheet lands on top, like a fresh page
     }
     if (kind === 'remote' && d) this.onRemote(d);
     if (kind === 'notice') this.rev++;
@@ -409,18 +412,26 @@ export class PapelApp extends LitElement {
     const sheet = this.querySelector('.sheet');
     if (sheet && this.observed !== sheet) { this.observed = sheet; this.ro.disconnect(); this.ro.observe(sheet); }
     const reduce = !store.prefs.motion || matchMedia('(prefers-reduced-motion: reduce)').matches;
+    // what each row needs drawn, then all the measuring, then all the drawing: a measurement after
+    // a drawing forces a layout, and doing that per row froze long lists (performance audit)
+    const jobs = [];
     for (const row of this.querySelectorAll('.row[data-id]')) {
       const id = row.dataset.id;
       const mode = this.pendingAnim.get(id);
       const done = row.classList.contains('done');
-      if (mode) {
-        this.pendingAnim.delete(id);
-        if (mode === 'finish') drawStrike(row, 'still');
-        else drawStrike(row, mode, { reduce });
-        this.drawn.add(row);
-      } else if (done && !this.drawn.has(row)) { drawStrike(row, 'still'); this.drawn.add(row); }
-      else if (!done && this.drawn.has(row)) { drawStrike(row, 'none'); this.drawn.delete(row); }
-      if (row.classList.contains('new') && row.dataset.marked !== row.querySelector('.txt').textContent) { drawMarker(row); row.dataset.marked = row.querySelector('.txt').textContent; }
+      if (mode) { this.pendingAnim.delete(id); jobs.push({ row, strike: mode === 'finish' ? 'still' : mode }); this.drawn.add(row); }
+      else if (done && !this.drawn.has(row)) { jobs.push({ row, strike: 'still' }); this.drawn.add(row); }
+      else if (!done && this.drawn.has(row)) { jobs.push({ row, strike: 'none' }); this.drawn.delete(row); }
+      const text = row.querySelector('.txt').textContent;
+      if (row.classList.contains('new') && row.dataset.marked !== text) { jobs.push({ row, marker: true }); row.dataset.marked = text; }
+    }
+    for (const j of jobs) j.boxes = measure(j.row);
+    for (const j of jobs) {
+      if (j.marker) drawMarker(j.row, j.boxes);
+      else drawStrike(j.row, j.strike, { reduce, boxes: j.boxes });
+    }
+    for (const row of this.querySelectorAll('.row[data-id]')) {
+      const id = row.dataset.id;
       if (this.remoteAdded.has(id)) {
         this.remoteAdded.delete(id);
         const writing = revealWriting(row, reduce);
@@ -431,14 +442,21 @@ export class PapelApp extends LitElement {
     // everything in the sheet's flow glides to its new place together (rows, the writing line,
     // suggestions, the fold, aisle headings), so nothing overlaps while rows settle
     if (!reduce) {
+      // all positions first, then all the animations (one layout instead of one per row); rows
+      // that start and end off screen are not animated: nobody sees them glide
+      const moves = [];
+      const far = innerHeight + 200;
       for (const el of this.querySelectorAll('.body [data-id], .body [data-flip]')) {
         const before = this.rects.get(flipKey(el));
         if (before === undefined) continue;
         // a writing line stuck to the bottom of the screen is pinned there: it never glides
         if (el.hasAttribute('data-stuck') || this.stuckBefore === el) continue;
-        const dy = before - el.getBoundingClientRect().top;
-        if (Math.abs(dy) > 2) el.animate([{ transform: `translateY(${dy}px)` }, { transform: 'none' }], { duration: 340, easing: 'cubic-bezier(.2,.8,.2,1)' });
+        const top = el.getBoundingClientRect().top;
+        const dy = before - top;
+        if (Math.abs(dy) <= 2 || (before < -200 && top < -200) || (before > far && top > far)) continue;
+        moves.push([el, dy]);
       }
+      for (const [el, dy] of moves) el.animate([{ transform: `translateY(${dy}px)` }, { transform: 'none' }], { duration: 340, easing: 'cubic-bezier(.2,.8,.2,1)' });
     }
   }
 
@@ -497,8 +515,10 @@ export class PapelApp extends LitElement {
   }
 
   redrawStrikes() {
-    for (const row of this.querySelectorAll('.row.done[data-id]')) drawStrike(row, 'still');
-    for (const row of this.querySelectorAll('.row.new[data-id]')) drawMarker(row);
+    const struck = [...this.querySelectorAll('.row.done[data-id]')].map((row) => [row, measure(row)]);
+    const fresh = [...this.querySelectorAll('.row.new[data-id]')].map((row) => [row, measure(row)]);
+    for (const [row, boxes] of struck) drawStrike(row, 'still', { boxes });
+    for (const [row, boxes] of fresh) drawMarker(row, boxes);
   }
 
   // ---------- render ----------

@@ -1,7 +1,12 @@
-// Offline: answer from the cache first, refresh it in the background (a new version shows on the
-// next open). Fixes from docs/research/2026-10-21-pwa.md §5: keep the refresh alive with
-// waitUntil, revalidate past GitHub Pages' 10-minute HTTP cache, fall back to the app for any
-// navigation when offline, and never touch other origins (the relays are WebSockets anyway).
+// Offline: everything the page needs is cached at install, as one version, and served from that
+// cache. A new build is a new sw.js (VERSION and SHELL are stamped by vite.config.js), so the
+// browser installs the new version beside the old one, with the new page and its scripts
+// together; the old cache is dropped when it activates, and the next open is the new version.
+//
+// Why no background refresh of the page (performance audit, round 1b): refreshing './' into the
+// running cache stored a new index.html whose scripts that cache did not have, and the next
+// offline open was a blank page. Hashed assets never change under the same name, so they are
+// never refetched either. Other origins are never touched (the relays are WebSockets anyway).
 const VERSION = '__BUILD__';
 const CACHE = `papelito-${VERSION}`;
 const SHELL = /*__SHELL__*/[];
@@ -25,14 +30,19 @@ self.addEventListener('fetch', (e) => {
   const nav = req.mode === 'navigate';
   e.respondWith((async () => {
     const cache = await caches.open(CACHE);
-    const key = nav ? './' : req;
-    const cached = await cache.match(key, { ignoreSearch: true });
-    const fresh = fetch(req, { cache: 'no-cache' }).then((res) => {
-      if (res.ok && res.type === 'basic') cache.put(key, res.clone());
-      return res;
-    });
-    e.waitUntil(fresh.catch(() => {}));
+    // a navigation always gets this version's page (with or without ?lang= or #k=)
+    const cached = await cache.match(nav ? './' : req, { ignoreSearch: true });
     if (cached) return cached;
-    try { return await fresh; } catch { return (await cache.match('./')) || Response.error(); }
+    try {
+      const res = await fetch(req);
+      // something this version did not list (rare): keep it, but never a page in place of a file
+      const type = res.headers.get('content-type') || '';
+      if (!nav && res.ok && res.type === 'basic' && !type.includes('text/html')) cache.put(req, res.clone());
+      return res;
+    } catch {
+      // offline: the page for a navigation, an honest failure for anything else (an HTML page
+      // answering a script request is what broke the offline start)
+      return nav ? (await cache.match('./')) || Response.error() : Response.error();
+    }
   })());
 });
