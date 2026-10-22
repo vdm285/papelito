@@ -2,6 +2,10 @@
 
 The state of the code, newest first. Each section is dated. Read `AGENTS.md` first.
 
+## 2026-10-22 · A new version's offline copy asks the server, not the browser's cache
+
+GitHub Pages lets a browser reuse every file for ten minutes (`Cache-Control: max-age=600`, with an ETag). The worker's install fetched its files the ordinary way, so a deploy within ten minutes of a visit stored the previous page in the new version's copy. That page named a script the new version did not list; the worker's fallback kept that old script too (from the same browser cache), so the app stayed on the old version until the next deploy, or opened blank if the first visit came after the ten minutes. The install now asks with `cache: 'no-cache'`: unchanged files cost a 304, changed ones arrive fresh. Tested with a server that sends Pages' headers (`data/cache/gap-test/`, local): before, the new copy held the old page (1 of 6 failed); after, 6 of 6 (the new page online, after the HTTP cache expires in a fresh browser, and offline). Smoke 44/44 on the production build. The same gap was closed in A cómo, Giramundo and Tabla Viva the same day (their HANDOFFs). Reversal: `addAll(SHELL)` in `public/sw.js`.
+
 ## 2026-10-22 · Items lose their doodles; the repository is now `papelito`
 
 Two requests from the owner, after the checkpoint.

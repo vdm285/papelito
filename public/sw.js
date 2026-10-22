@@ -16,7 +16,10 @@ const CACHE = `papelito:${SCOPE}:${VERSION}`;
 const SHELL = /*__SHELL__*/[];
 
 self.addEventListener('install', (e) => {
-  e.waitUntil(caches.open(CACHE).then((c) => c.addAll(SHELL)).then(() => self.skipWaiting()));
+  // asked of the server, never of the browser's HTTP cache: Pages lets a browser reuse a file for ten
+  // minutes, and a page from before a deploy stored here names scripts this version does not have
+  // (a blank page). "no-cache" revalidates: an unchanged file costs a 304, not a download.
+  e.waitUntil(caches.open(CACHE).then((c) => c.addAll(SHELL.map((u) => new Request(u, { cache: 'no-cache' })))).then(() => self.skipWaiting()));
 });
 
 self.addEventListener('activate', (e) => {
