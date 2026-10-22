@@ -81,6 +81,7 @@ export class PapelApp extends LitElement {
 
   // ---------- store events ----------
   onStore(kind, d) {
+    this.typingOnly = false; // anything from the store may move the sheet: measure
     if (kind === 'list') {
       this.lingering.clear(); this.pendingAnim.clear(); this.hint = null; this.loadDraft(); this.seenSoon(6000);
       this.swapSheet = true; // the next render places the new sheet on top, like a fresh page
@@ -192,6 +193,7 @@ export class PapelApp extends LitElement {
     const now = Date.now();
     if (now - this.typingAt > 350) { this.typingAt = now; sync.typing(ta.value); }
     else { clearTimeout(this.typingTimer); this.typingTimer = setTimeout(() => sync.typing(ta.value), 360); }
+    this.typingOnly = true; // the suggestions follow the text; nothing on the sheet moves
     this.rev++;
   }
 
@@ -311,10 +313,13 @@ export class PapelApp extends LitElement {
   // ---------- after each render: ink and motion ----------
   willUpdate() {
     this.rects.clear();
+    // a render caused only by typing moves nothing: skip measuring every row (a layout per key)
+    if (this.typingOnly) return;
     for (const el of this.querySelectorAll('.body [data-id], .body [data-flip]')) this.rects.set(flipKey(el), el.getBoundingClientRect().top);
   }
 
   updated() {
+    if (this.typingOnly) { this.typingOnly = false; return; }
     this.welcome();
     if (this.swapSheet) {
       this.swapSheet = false;
