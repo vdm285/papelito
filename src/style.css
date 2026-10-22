@@ -260,12 +260,21 @@ papel-app { display: block; min-height: 100%; }
 .status-dot.busy { background: #d79b1e; }
 .status-dot.off { background: var(--pencil-soft); }
 
-.status-line {
+.status-line { /* a note in pencil on the first rules, like the empty sheet's */
+  display: flex; align-items: flex-start;
   margin: 0;
-  padding: 6px var(--sheet-pad-right) 0 calc(var(--margin-x) + 12px);
-  font-size: 13.5px; color: var(--chrome-soft);
-  min-height: 0;
+  min-height: var(--line);
 }
+.status-line .margin { color: var(--pencil-soft); }
+.status-line .margin svg { width: 18px; height: 18px; }
+.status-line .words {
+  flex: 1; min-width: 0;
+  padding: 0 var(--sheet-pad-right) 0 12px;
+  font: 400 calc(var(--hand-size) * .78)/var(--line) var(--font-hand);
+  color: var(--pencil);
+  transform: translateY(var(--hand-shift));
+}
+.hand-molde .status-line .words { font: 400 15px/var(--line) var(--font-ui); transform: translateY(var(--print-shift)); }
 
 /* ---------- the ruled body ---------- */
 
@@ -392,23 +401,38 @@ ol.rows, ul.rows { list-style: none; margin: 0; padding: 0; }
 }
 .hand-molde .composer textarea { font-family: var(--font-print); font-size: var(--print-size); font-weight: 500; transform: translateY(var(--print-shift)); }
 .composer textarea::placeholder { color: var(--pencil-soft); opacity: 1; }
-.composer.sticky {
-  position: sticky; bottom: var(--kb, 0px); z-index: 3;
-  /* the paper continues under the writing line: its colour, its margin line and its rule */
+.writing { position: relative; }
+.writing.sticky {
+  position: sticky; z-index: 3;
+  bottom: max(var(--kb, 0px), env(safe-area-inset-bottom, 0px));
+  /* the paper continues under the writing line: its colour, its margin line and its rules */
   background:
     linear-gradient(to right, transparent calc(var(--margin-x)), var(--margin) calc(var(--margin-x)), var(--margin) calc(var(--margin-x) + 1.5px), transparent calc(var(--margin-x) + 1.5px)),
-    linear-gradient(to top, var(--rule) 1px, transparent 1px),
+    repeating-linear-gradient(to bottom, transparent 0, transparent calc(var(--line) - 1px), var(--rule) calc(var(--line) - 1px), var(--rule) var(--line)),
     var(--grain) 0 0 / 220px 220px,
     var(--paper);
 }
+/* rows scrolling under the writing line fade into the paper instead of being cut */
+.writing.sticky[data-stuck]::before {
+  content: ''; position: absolute; left: 0; right: 0; top: -12px; height: 12px; pointer-events: none;
+  background: linear-gradient(to top, var(--paper), transparent);
+}
+html { scroll-padding-bottom: calc(var(--line) * 2 + var(--kb, 0px)); }
 
 .write-zone { min-height: calc(var(--line) * 3); cursor: text; }
 
 .hint-chip {
+  position: relative; z-index: 1;
   display: flex; gap: 8px; align-items: center;
-  margin: -6px var(--sheet-pad-right) 4px calc(var(--margin-x) + 12px);
-  font: 600 14px/1 var(--font-ui); color: var(--chrome-soft);
+  height: var(--line);
+  padding-right: calc(var(--sheet-pad-right) - 12px);
+  font: 600 14px/1 var(--font-ui); color: var(--pencil);
+  white-space: nowrap;
 }
+.hint-chip .margin { height: 100%; margin-right: 4px; }
+.hint-chip .pieces { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+.hint-chip .chip { flex: none; }
+.hint-chip .icon-btn { flex: none; width: 44px; height: 44px; }
 .chip {
   display: inline-flex; align-items: center; gap: 6px;
   min-height: 34px; padding: 0 13px;
@@ -554,11 +578,17 @@ ol.rows, ul.rows { list-style: none; margin: 0; padding: 0; }
 .swatch { width: 40px; height: 40px; border-radius: 50%; border: 3px solid var(--card); box-shadow: 0 0 0 1.5px var(--card-line); background: var(--c); cursor: pointer; }
 .swatch[aria-checked='true'] { box-shadow: 0 0 0 2.5px var(--chrome); }
 .swatch:disabled { opacity: .3; cursor: default; }
+.menu-item:disabled, .btn:disabled, .chip:disabled, .icon-btn:disabled { opacity: .4; cursor: default; }
+.menu-item:disabled svg, .icon-btn:disabled svg { opacity: .8; }
 
 .order-list { list-style: none; margin: 0; padding: 0; }
 .order-list li { display: flex; align-items: center; gap: 6px; min-height: 46px; border-bottom: 1px solid var(--card-line); font-size: 16px; }
 .order-list li .n { width: 26px; color: var(--chrome-soft); font-variant-numeric: tabular-nums; }
 .order-list li .grow { flex: 1; }
+.order-list .order-name { align-self: stretch; text-align: left; border: 0; background: none; padding: 0; font: inherit; color: inherit; cursor: pointer; }
+.order-list .order-name:disabled { opacity: 1; cursor: default; }
+.order-list li.placed .order-name { font-weight: 700; }
+.order-list li.placed .n { color: var(--chrome); font-weight: 700; }
 .order-list .icon-btn { width: 40px; height: 40px; }
 
 .credits { font-size: 14px; color: var(--chrome-soft); }
@@ -569,10 +599,10 @@ ol.rows, ul.rows { list-style: none; margin: 0; padding: 0; }
 
 .toast {
   position: fixed; z-index: 30;
-  left: 50%; bottom: calc(18px + env(safe-area-inset-bottom) + var(--kb, 0px));
-  transform: translateX(-50%);
+  left: 16px; right: 16px; margin-inline: auto; width: fit-content;
+  bottom: calc(18px + env(safe-area-inset-bottom) + var(--kb, 0px));
   display: flex; align-items: center; gap: 14px;
-  max-width: min(92vw, 520px);
+  max-width: 520px;
   padding: 10px 10px 10px 18px;
   border-radius: 14px;
   background: var(--toast); color: var(--toast-ink);
@@ -580,7 +610,7 @@ ol.rows, ul.rows { list-style: none; margin: 0; padding: 0; }
   box-shadow: 0 10px 30px -8px rgba(0,0,0,.35);
   animation: rise .22s var(--ease-out);
 }
-.toast button { border: 0; background: transparent; color: inherit; font-weight: 800; text-decoration: underline; text-underline-offset: 3px; padding: 8px 10px; cursor: pointer; white-space: nowrap; }
+.toast button { border: 0; background: transparent; color: inherit; font-weight: 800; text-decoration: underline; text-underline-offset: 3px; min-height: 44px; padding: 0 12px; cursor: pointer; white-space: nowrap; }
 
 /* ---------- the desk extras (wide screens) ---------- */
 

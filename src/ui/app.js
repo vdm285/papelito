@@ -60,6 +60,7 @@ export class PapelApp extends LitElement {
     this.ro = new ResizeObserver(() => this.redrawStrikes());
     addEventListener('keydown', (e) => this.onKey(e));
     addEventListener('popstate', () => { if (this.card) { sync.holdUrl(); this.card = null; } });
+    addEventListener('scroll', () => { if (!this.stuckFrame) this.stuckFrame = requestAnimationFrame(() => { this.stuckFrame = 0; this.markStuck(); }); }, { passive: true });
     document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') this.seenSoon(5000); });
     this.loadDraft();
     this.seenSoon(6000);
@@ -68,10 +69,8 @@ export class PapelApp extends LitElement {
   disconnectedCallback() { super.disconnectedCallback(); this.off(); this.offSync(); this.ro.disconnect(); }
 
   firstUpdated() {
-    // notices fade; the ones about something still true stay (the link moved, nothing can be saved)
-    const lasting = (n) => n.kind === 'moved' || n.kind === 'noStorage' || n.kind === 'storageFull';
-    setTimeout(() => { store.notices = store.notices.filter((n) => n.kind === 'legacy' || lasting(n)); this.rev++; }, 14000);
-    setTimeout(() => { store.notices = store.notices.filter(lasting); this.rev++; }, 40000);
+    // notices go once you start writing or striking (see onStore): a timer would move every row
+    // up under a finger about to tap one
     // strikes are measured on the text: measure again once the handwriting font has arrived
     document.fonts.ready.then(() => this.redrawStrikes());
     document.fonts.addEventListener('loadingdone', () => this.redrawStrikes());
@@ -88,6 +87,9 @@ export class PapelApp extends LitElement {
       this.swapSheet = true; // the next render places the new sheet on top, like a fresh page
     }
     if (kind === 'remote' && d) this.onRemote(d);
+    // the first thing you do on the sheet puts away the notes about how you got here; the ones
+    // about something still true stay (the link moved, nothing can be saved)
+    if (kind === 'change' && store.notices.length) store.notices = store.notices.filter(lasting);
     if (kind === 'undoable') this.showToast(d.label, true);
     if (kind === 'storageFull' && !store.notices.some((n) => n.kind === 'storageFull')) { store.notices.push({ kind: 'storageFull' }); this.showToast(t.storageFull, false); }
     this.rev++;
@@ -104,9 +106,12 @@ export class PapelApp extends LitElement {
     if (ch.removed.length) {
       const it = store.doc.items[ch.removed[0]];
       const who = it ? this.whoName(it.x[1].slice(13)) : t.someone;
-      const ids = [...ch.removed];
-      const label = ids.length === 1 && it ? t.removedBy(who, it.t[0]) : t.cleared(ids.length);
-      this.showToast(label, true, () => store.restore(ids));
+      // deletions arriving one record at a time (someone clearing items one by one) add up
+      const before = this.toast && this.toast.removed && this.toast.who === who ? this.toast.removed : [];
+      const ids = [...new Set([...before, ...ch.removed])];
+      const one = ids.length === 1 && store.doc.items[ids[0]];
+      const label = one ? t.removedBy(who, one.t[0]) : t.removedByN(who, ids.length);
+      this.showToast(label, true, () => store.restore(ids), { removed: ids, who });
     }
     // one polite sentence for screen readers: who did what on the other phone
     if (ch.added.length || ch.struck.length || ch.unstruck.length) {
@@ -132,15 +137,20 @@ export class PapelApp extends LitElement {
 
   linger(id) {
     this.lingering.add(id);
-    clearTimeout(this['lt' + id]);
-    this['lt' + id] = setTimeout(() => { this.lingering.delete(id); this.rev++; }, LINGER_MS);
+    // one timer for every strike made in a row: while you keep striking, nothing moves under your
+    // finger; a moment after the last one, all the struck rows settle in one glide
+    clearTimeout(this.lingerTimer);
+    this.lingerTimer = setTimeout(() => { this.lingering.clear(); this.rev++; }, LINGER_MS);
   }
 
   // ---------- toast ----------
-  showToast(label, undo, fn) {
+  showToast(label, undo, fn, extra = {}) {
+    this.toast = { label, undo, fn, ...extra };
+    this.toastLater(undo ? 8000 : 4500);
+  }
+  toastLater(ms) {
     clearTimeout(this.toastTimer);
-    this.toast = { label, undo, fn };
-    this.toastTimer = setTimeout(() => { this.toast = null; }, undo ? 8000 : 4500);
+    this.toastTimer = setTimeout(() => { this.toast = null; }, ms);
   }
   doUndo() {
     const fn = this.toast && this.toast.fn;
@@ -156,7 +166,7 @@ export class PapelApp extends LitElement {
       const ta = this.querySelector('.composer textarea');
       if (ta) { ta.focus(); }
     }
-    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'z' && !this.card && !isTyping(e.target)) { e.preventDefault(); store.undo(); }
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'z' && !this.card && !isTyping(e.target)) { e.preventDefault(); if (this.toast && this.toast.undo) this.doUndo(); else store.undo(); }
   }
 
   // ---------- cards ----------
@@ -222,7 +232,12 @@ export class PapelApp extends LitElement {
       if (pieces) { this.hint = { id: ids[0], pieces }; clearTimeout(this.hintTimer); this.hintTimer = setTimeout(() => { this.hint = null; }, 12000); }
       else this.hint = null;
     } else this.hint = null;
-    if (!blur) requestAnimationFrame(() => this.querySelector('.composer')?.scrollIntoView({ block: 'nearest' }));
+    if (!blur) requestAnimationFrame(() => {
+      // the new row (in the by-aisle view it may be anywhere), then the writing line
+      const row = ids.length ? this.querySelector(`.row[data-id="${ids[ids.length - 1]}"]`) : null;
+      if (row) row.scrollIntoView({ block: 'nearest' });
+      this.querySelector('.writing')?.scrollIntoView({ block: 'nearest' });
+    });
   }
 
   autosize(ta) {
@@ -292,7 +307,7 @@ export class PapelApp extends LitElement {
   onRowKey(e, id) {
     if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); this.toggle(id); }
     else if (e.key === 'Delete' || e.key === 'Backspace') { e.preventDefault(); store.remove(id); }
-    else if (e.key === 'F2' || e.key === 'e' || e.key === 'ContextMenu') { e.preventDefault(); this.openCard('item', { id }); }
+    else if (e.key === 'F2' || e.key === 'ContextMenu') { e.preventDefault(); this.openCard('item', { id }); }
     else if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
       e.preventDefault();
       const rows = [...this.querySelectorAll('.row[data-id]')];
@@ -322,6 +337,7 @@ export class PapelApp extends LitElement {
   updated() {
     if (this.typingOnly) { this.typingOnly = false; return; }
     this.welcome();
+    this.markStuck();
     if (this.swapSheet) {
       this.swapSheet = false;
       const sheet = this.querySelector('.sheet');
@@ -361,6 +377,15 @@ export class PapelApp extends LitElement {
     }
   }
 
+  /** The writing line is stuck to the bottom when its natural place is below the screen: only then do rows fade under it. */
+  markStuck() {
+    const w = this.querySelector('.writing.sticky');
+    if (!w) return;
+    const kb = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--kb')) || 0;
+    const mark = w.nextElementSibling;
+    w.toggleAttribute('data-stuck', !!mark && mark.getBoundingClientRect().top > innerHeight - kb + 1);
+  }
+
   /** The very first visit: the pencil note writes itself, once. */
   welcome() {
     const note = this.querySelector('.empty-note');
@@ -394,27 +419,32 @@ export class PapelApp extends LitElement {
         ${this.wide ? this.renderStack() : nothing}
         <main class="sheet" style="--my-ink: var(--ink-${myInk})" aria-label=${store.title() || t.untitled}>
           ${this.renderHead(rec, others)}
-          ${this.renderStatus(rec)}
           <section class="body">
+            ${this.renderStatus(rec)}
             ${byAisle ? this.renderByAisle(pending, idx, fixes) : html`<ol class="rows pending" role="list">${repeat(pending, (i) => i.id, (i) => this.renderRow(i, idx, fixes, false))}</ol>`}
             ${others.filter((o) => o.typing).map((o) => this.renderGhost(o))}
-            ${this.renderComposer(myInk, items.length)}
-            ${this.renderHint()}
-            ${this.renderSuggestions(pending.length)}
+            <div class="writing ${this.isLong ? 'sticky' : ''}" data-flip="writing">
+              ${this.renderComposer(myInk, items.length)}
+              ${this.renderHint()}
+              ${this.renderSuggestions(pending.length)}
+            </div>
+            <div class="stick-mark" aria-hidden="true"></div>
             ${struck.length ? html`
               <div class="fold" data-flip="fold" aria-expanded=${showStruck}>
                 <button @click=${() => store.savePrefs({ showStruck: !showStruck })}>${icons.chevron} ${t.struck(struck.length)}</button>
                 <button class="link" @click=${() => store.clearStruck()}>${t.clearStruck}</button>
               </div>
               ${showStruck ? html`<ol class="rows struck" role="list">${repeat(struck, (i) => i.id, (i) => this.renderRow(i, idx, fixes, true))}</ol>` : nothing}` : nothing}
-            ${!items.length ? html`<p class="empty-note">${t.emptyNote.split(' ').map((w, i) => html`<span class="w" style="--i:${i}">${w} </span>`)}</p>` : nothing}
+            ${!items.length ? html`<p class="empty-note">${(rec.secret ? t.emptyNoteShared : this.wide ? t.emptyNoteDesk : t.emptyNote).split(' ').map((w, i) => html`<span class="w" style="--i:${i}">${w} </span>`)}</p>` : nothing}
             <div class="write-zone" @click=${() => this.focusComposer()} aria-hidden="true"></div>
           </section>
         </main>
         ${this.wide ? this.renderNote(rec) : nothing}
       </div>
       ${this.card ? renderCard(this, this.card) : nothing}
-      ${this.toast ? html`<div class="toast" role="status" aria-live="polite"><span>${this.toast.label}</span>${this.toast.undo ? html`<button @click=${() => this.doUndo()}>${t.undo}</button>` : nothing}</div>` : nothing}
+      ${this.toast ? html`<div class="toast" role="status" aria-live="polite"
+        @pointerenter=${() => clearTimeout(this.toastTimer)} @pointerleave=${() => this.toastLater(4000)}
+        @focusin=${() => clearTimeout(this.toastTimer)} @focusout=${() => this.toastLater(4000)}><span>${this.toast.label}</span>${this.toast.undo ? html`<button @click=${() => this.doUndo()}>${t.undo}</button>` : nothing}</div>` : nothing}
       <div class="sr" aria-live="polite">${this.announce}</div>
     `;
   }
@@ -424,16 +454,18 @@ export class PapelApp extends LitElement {
     const st = sync.state.status;
     return html`
       <header class="head">
-        <input class="title" style="--ink: var(--ink-${store.titleInk()})" aria-label=${t.titleAria} placeholder=${t.untitled} .value=${live(store.title())} maxlength="60" enterkeyhint="next"
-          @input=${(e) => { clearTimeout(this.titleTimer); const v = e.target.value; this.titleTimer = setTimeout(() => store.setTitle(v), 500); }}
-          @change=${(e) => store.setTitle(e.target.value)}
-          @keydown=${(e) => { if (e.key === 'Enter') { e.preventDefault(); store.setTitle(e.target.value); this.focusComposer(); } }} />
+        <input class="title" style="--ink: var(--ink-${store.titleInk()})" aria-label=${t.titleAria} placeholder=${t.untitled} maxlength="60" enterkeyhint="next"
+          .value=${this.titleEditing ? this.titleDraft : live(store.title())}
+          @focus=${(e) => { this.titleEditing = true; this.titleDraft = e.target.value; }}
+          @input=${(e) => { this.titleDraft = e.target.value; clearTimeout(this.titleTimer); const v = e.target.value; this.titleTimer = setTimeout(() => store.setTitle(v), 500); }}
+          @blur=${(e) => { this.titleEditing = false; clearTimeout(this.titleTimer); store.setTitle(e.target.value); }}
+          @keydown=${(e) => { if (e.key === 'Enter') { e.preventDefault(); this.focusComposer(); } }} />
         <div class="head-tools">
           ${shared ? html`
             <button class="pill sync-${st}" @click=${() => this.openCard('share')} aria-label=${`${t.shared}: ${statusWord(st)}. ${others.length ? t.othersHere(others.length) : ''}`} title=${statusWord(st)}>
               <span class="sync-icon">${OFF.has(st) ? icons.linkOff : icons.link}</span>
               ${st === 'moved' ? t.movedShort : others.length ? html`<span class="presence">${others.slice(0, 4).map((o) => html`<span class="dot here" style="--c: var(--ink-${o.ink || 'azul'})"></span>`)}</span>` : t.shared}
-            </button>` : html`
+            </button>` : this.wide ? nothing : html`
             <button class="pill" @click=${() => sync.share(this)}>${icons.share} ${t.share}</button>`}
           <button class="icon-btn" aria-label=${t.menu} @click=${() => this.openCard('menu')}>${icons.dots}</button>
         </div>
@@ -456,7 +488,7 @@ export class PapelApp extends LitElement {
       if (n.kind === 'storageFull') notes.push(t.storageFull);
       if (n.kind === 'moved') notes.push(`${t.linkMoved} ${t.movedHow}`);
     }
-    return notes.length ? html`<p class="status-line">${notes.join(' ')}</p>` : nothing;
+    return notes.length ? html`<p class="status-line" data-flip="status"><span class="margin" aria-hidden="true">${icons.pen}</span><span class="words">${notes.join(' ')}</span></p>` : nothing;
   }
 
   renderByAisle(pending, idx, fixes) {
@@ -501,7 +533,7 @@ export class PapelApp extends LitElement {
 
   renderComposer(myInk, n) {
     return html`
-      <div class="composer ${this.isLong ? 'sticky' : ''}" data-flip="composer">
+      <div class="composer">
         <span class="margin" aria-hidden="true"></span>
         <textarea rows="1" aria-label=${t.writeAria} placeholder=${n ? t.writeMore : t.write} enterkeyhint="enter" autocomplete="off" autocapitalize="sentences" spellcheck="false"
           .value=${live(this.draft)}
@@ -513,10 +545,11 @@ export class PapelApp extends LitElement {
   renderHint() {
     const h = this.hint;
     if (!h || !store.doc.items[h.id]) return nothing;
-    return html`<div class="hint-chip" data-flip="hint">
+    return html`<div class="hint-chip">
+      <span class="margin" aria-hidden="true"></span>
       <button class="chip" @click=${() => { store.split(h.id, h.pieces); this.hint = null; }}>${t.splitAsk(h.pieces.length)}</button>
-      <span>${h.pieces.join(' · ')}</span>
-      <button class="icon-btn" style="width:34px;height:34px" aria-label=${t.close} @click=${() => { this.hint = null; }}>${icons.close}</button>
+      <span class="pieces">${h.pieces.join(' · ')}</span>
+      <button class="icon-btn" aria-label=${t.close} @click=${() => { this.hint = null; }}>${icons.close}</button>
     </div>`;
   }
 
@@ -528,12 +561,12 @@ export class PapelApp extends LitElement {
       const fromHistory = Object.values(store.history).filter((h) => fold(h.text).startsWith(f)).sort((a, b) => b.n - a.n).map((h) => h.text);
       const list = [...fromHistory, ...completions(typed, 4)].filter((x) => { const k = keyOf(x); if (seen.has(k) || fold(x) === f) return false; seen.add(k); return true; }).slice(0, 3);
       if (!list.length) return nothing;
-      return html`<div class="usual" data-flip="usual" role="group" aria-label=${t.usual}><span class="margin" aria-hidden="true">+</span><span class="usual-words">${list.map((s, i) => html`${i ? html`<span class="sep" aria-hidden="true">·</span>` : nothing}<button class="pencil" @pointerdown=${(e) => e.preventDefault()} @click=${() => { const ta = this.querySelector('.composer textarea'); ta.value = s; this.commit(ta); }}>${s}</button>`)}</span></div>`;
+      return html`<div class="usual" role="group" aria-label=${t.usual}><span class="margin" aria-hidden="true">+</span><span class="usual-words">${list.map((s, i) => html`${i ? html`<span class="sep" aria-hidden="true">·</span>` : nothing}<button class="pencil" @pointerdown=${(e) => e.preventDefault()} @click=${() => { const ta = this.querySelector('.composer textarea'); ta.value = s; this.commit(ta); }}>${s}</button>`)}</span></div>`;
     }
     if (!(this.composerFocus || pendingCount === 0)) return nothing;
     const usual = store.usual(8);
     if (!usual.length) return nothing;
-    return html`<div class="usual" data-flip="usual" role="group" aria-label=${t.usual}><span class="margin" aria-hidden="true">+</span><span class="usual-words"><span class="usual-label">${t.usual}:</span>${usual.map((u, i) => html`${i ? html`<span class="sep" aria-hidden="true">·</span>` : nothing}<button class="pencil" @pointerdown=${(e) => e.preventDefault()} @click=${() => this.addChip(u.text)}>${u.text}</button>`)}</span></div>`;
+    return html`<div class="usual" role="group" aria-label=${t.usual}><span class="margin" aria-hidden="true">+</span><span class="usual-words"><span class="usual-label">${t.usual}:</span>${usual.map((u, i) => html`${i ? html`<span class="sep" aria-hidden="true">·</span>` : nothing}<button class="pencil" @pointerdown=${(e) => e.preventDefault()} @click=${() => this.addChip(u.text)}>${u.text}</button>`)}</span></div>`;
   }
 
   renderStack() {
@@ -567,6 +600,8 @@ export class PapelApp extends LitElement {
 
   get isLong() { return store.items().length > 9; }
 }
+
+const lasting = (n) => n.kind === 'moved' || n.kind === 'noStorage' || n.kind === 'storageFull';
 
 const flipKey = (el) => (el.dataset.id ? `row-${el.dataset.id}` : el.dataset.flip);
 

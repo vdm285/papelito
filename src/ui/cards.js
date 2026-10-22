@@ -143,20 +143,23 @@ const CARDS = {
     }
   },
 
-  order(app) {
+  order(app, card) {
     const order = (store.doc.order[0] && store.doc.order[0].length ? [...store.doc.order[0]] : [...AISLES]).filter((a) => AISLES.includes(a));
     for (const a of AISLES) if (!order.includes(a)) order.push(a);
     const move = (i, d) => { const j = i + d; if (j < 0 || j >= order.length) return; [order[i], order[j]] = [order[j], order[i]]; store.setOrder(order); };
+    // the fast way: tap the aisles in the order you walk the store; each tap puts that aisle next
+    const placed = card.placed || 0;
+    const place = (i) => { const [a] = order.splice(i, 1); order.splice(placed, 0, a); store.setOrder(order); app.card = { ...card, placed: Math.min(placed + 1, order.length) }; };
     return html`
       ${head(app, t.aisleOrder)}
       <p>${t.aisleOrderHint}</p>
       <ol class="order-list">
-        ${order.map((a, i) => html`<li><span class="n">${i + 1}</span><span class="grow">${t.aisles[a]}</span>
+        ${order.map((a, i) => html`<li class=${i < placed ? 'placed' : ''}><span class="n">${i + 1}</span><button class="grow order-name" ?disabled=${i < placed} @click=${() => place(i)}>${t.aisles[a]}</button>
           <button class="icon-btn" aria-label="↑ ${t.aisles[a]}" ?disabled=${i === 0} @click=${() => move(i, -1)}>${icons.up}</button>
           <button class="icon-btn" aria-label="↓ ${t.aisles[a]}" ?disabled=${i === order.length - 1} @click=${() => move(i, 1)}>${icons.down}</button></li>`)}
       </ol>
       <div class="actions">
-        <button class="btn" @click=${() => store.setOrder(null)}>${t.reset}</button>
+        <button class="btn" @click=${() => { store.setOrder(null); app.card = { ...card, placed: 0 }; }}>${t.reset}</button>
         ${store.rec.aisles ? nothing : html`<button class="btn solid" @click=${() => { store.setAisleView(true); app.closeCard(); }}>${t.byAisle}</button>`}
       </div>`;
   },
