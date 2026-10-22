@@ -2,28 +2,50 @@
 
 The state of the code, newest first. Each section is dated. Read `AGENTS.md` first.
 
-## 2026-10-21 · Round 1 (unguided, toward the first checkpoint)
+## 2026-10-22 · Round 1 (unguided, toward the first checkpoint) — state at night
 
-**Decision: rebuild from scratch, mine the old code for parts.** The live `main` (Gemini, Jan 2026) and the unmerged `design/checkpoint-1` (Sept 2026) were both read in full by a parallel audit (reports summarized in `docs/research/2026-10-21-*.md`). Why not patch:
+**Decision: rebuild from scratch, mine the old code for parts.** The live `main` (Gemini, Jan 2026) and the unmerged `design/checkpoint-1` (Sept 2026) were read in full by a parallel audit (`docs/research/2026-10-21-*.md`). Why not patch:
 - the live app syncs in plain text through a public broker, has a cross-site-scripting hole in `sandbox.html` on the same origin, and loses title case;
-- checkpoint 1 is well built but depends on a Cloudflare Worker on the owner's account (the hard rules now say static hosting only), and its 1,651-word aisle dictionary was written by a model in January 2026 with no source (the "nothing invented" rule);
-- the product idea (one piece of paper on two phones) deserves a stage built for it, not a list with sync bolted on.
+- checkpoint 1 is well built but depends on a Cloudflare Worker on the owner's account (the rules now say static hosting only), and its 1,651-word aisle dictionary was written by a model in January 2026 with no source (the "nothing invented" rule);
+- the product idea (one piece of paper on two phones) deserves a stage built for it.
 
-**Mined, with credit:** the research (four dated docs from 2026-09-25, kept in `docs/research/`), the 14 aisle ids and the idea of per-list corrections, the HKDF + AES-GCM + padding design, undo instead of "are you sure?", "Tachados (n)", the migration contract for every storage layout the old versions wrote.
+**Mined, with credit:** the four research docs of 2026-09-25 (in `docs/research/`), the 14 aisle ids (now 16), per-list corrections, HKDF + AES-GCM + padding, undo instead of "are you sure?", "Tachados (n)", the migration contract for every storage layout the old versions wrote.
 
-**Built so far (all tested with `npm test`, 42 tests):**
-- `src/model/hlc.js`: hybrid logical clock (a phone with a wrong clock can no longer lose a tie-break; a flagged limit of checkpoint 1).
-- `src/model/doc.js`: the list as a state-based CRDT (registers + tombstones), merge/diff/sanitize/compact. Property test: 150 seeds of three phones with skewed clocks converge, and merge is commutative, associative and idempotent.
-- `src/model/parse.js`: typed, pasted and dictated text → items (WhatsApp prefixes and formatting, bullets, headings, decimal commas, quantities). "y" never splits by itself.
-- `src/model/aisles.js`: the aisle matcher rewritten against the 16 bugs the audit reproduced (same stem on both sides, longest phrase wins, form words, cautious typo guesses, cached).
-- `src/model/legacy.js`: one-time import of every old layout on vdm285.github.io (four sources, old keys never touched).
-- `src/sync/crypto.js`: secret in the link's #fragment → HKDF keys; deflate + 512-byte padding + AES-GCM.
+### What works (measured)
 
-**Liberties so far** (each reversible; listed again at the checkpoint):
-1. Rebuild instead of patch (above).
-2. Working name **Papelito** (repo keeps `listolista` until the naming card). Shortlist in the checkpoint notes.
-3. The Cloudflare relay leaves the default path (static hosting rule); its code stays in git history.
-4. The model-written dictionary is not shipped; the vocabulary is rebuilt from sourced data plus hand-curated override files.
-5. Git identity in this clone set to the owner's GitHub noreply address (his global config holds a personal address; every earlier commit used the noreply one).
+- **Engine** (`npm test`: 43 tests): hybrid logical clock; the list as a state-based CRDT with a per-device `seen` map (an item purged after 30 days can never be resurrected by a stale phone; property test over 150 random three-phone histories with skewed clocks and purges, plus a control that resurrects without `seen`); parser (WhatsApp pastes, bullets, headings, decimal commas, quantities; "y" never splits on its own); aisle matcher rewritten against the 16 bugs the audit reproduced; import of every old storage layout; crypto.
+- **Sync through public Nostr relays** (`tools/sync-live.mjs`, real relays, no browser): list received by a new phone in ~0.3 s, an add or a strike seen by the other phone in ~0.4–0.9 s, simultaneous adds converge, the two phones end in different inks, a phone opening after both left gets everything from the relays alone. In two real browser phones, an add reached the other phone 0.51 s after Enter (WebSocket trace).
+- **The paper UI** (`tools/smoke.mjs`: 34 checks, 36 with `--sync`): writing, pasting, the Notepad rule, strikes, settling, reload, undo/edit, no sideways scroll at 375–1600 px, old lists imported and opened from old links (old keys untouched), sharing (secret only in the `#fragment`, QR), settings (English, chalkboard). Screenshots: `node tools/shots.mjs` → `data/cache/shots/`.
 
-**Next:** sync transport (public relays, measured), dictionary pipeline, the paper UI, PWA, deploy.
+### Liberties taken (each reversible; the reversal in brackets)
+
+1. Rebuild instead of patch [restore `design/checkpoint-1`'s tree from history].
+2. Working name **Papelito**; the repository keeps `listolista` until the naming card [one string in `src/app/i18n.js` + the files listed in AGENTS.md "Renaming"].
+3. The Cloudflare relay leaves the default path; sync goes through six public Nostr relays [the relay still runs on the owner's account; its code is in history].
+4. The model-written dictionary is not shipped; the vocabulary is rebuilt from PROFECO + INEGI + CLDR with per-aisle override files drafted by Claude and awaiting the owner's review.
+5. 16 aisles instead of 14: Tortillería and Salchichonería are their own counters (as in Mexican stores and both sources); "Despensa" is now "Abarrotes" [`AISLES` in `src/model/aisles.js`].
+6. Writing model: the paper (the next empty rule is the writing line, newest item just above it); struck items stay in place 1.4 s, then settle under "Tachados" [a setting could keep them in place].
+7. Each phone writes in its own ink of a four-colour ballpoint; the other phone's new writing carries a marcatextos highlight until seen.
+8. Dark mode is a chalkboard (pizarrón) [`:root[data-theme='pizarron']` tokens].
+9. No custom microphone button: the keyboard's own dictation (es-MX on both platforms) plus a "¿Separar en N?" chip for comma-less dictation (research: the Web Speech API fails in iPhone home-screen apps).
+10. Handwriting font Caveat (most pen-like; needs 29–31 px) over Kalam (the media research's pick: lighter, more upright); print is Atkinson Hyperlegible Next [`tools/build-fonts.py`].
+11. Code licence: The Unlicense, like the owner's other projects.
+12. Git identity in this clone: the owner's GitHub noreply address (his global config holds a personal address; every earlier commit used the noreply one).
+13. Desktop is first-class but the phone drives the design (a shopping list is used in the store); on a desk the sheet sits beside a stack of sheets and a sticky note with the QR code to take it to the phone.
+
+### Known limits and risks
+
+- Relays promise no retention; the phones are the store. A list left unopened on every phone for months survives only on the phones (iPhone Safari tabs lose storage after 7 days without use; the installed app does not).
+- The link is the key: whoever has it can read and write. "Hacer un enlace nuevo" (Compartir card) cuts off an old link.
+- `vdm285.github.io` is shared by all the owner's Pages projects, which share localStorage: an XSS in any of them could read list secrets. A separate origin would fix it (question card).
+- iPhone: the installed app is a sealed copy; links never open it (the menu has "Abrir una lista compartida" to paste one). Whether the home-screen icon keeps the `#k=` is unverified on a device (WebKit's code says yes).
+- Puppeteer audit findings (`npm audit`) are all in puppeteer-core's browser-download chain, which the app never ships and the tools never use.
+
+### In flight at the time of writing
+
+- The dictionary pipeline (`tools/vocab/`, `data/vocab/`, `data/overrides/aisles/`) is being built and audited by sub-agents; `public/dict/es-MX.json` is a placeholder until then.
+- Three working demos of how the other phone's ink arrives (A Pluma fantasma, B Papel carbón, C Hilo entre hojas) are being built for the owner to choose from.
+
+### Next
+
+Doodles in the margin (Noto Emoji monochrome, subset to the dictionary's emoji), the WhatsApp preview image, the self-audit rounds (visual, flow, honesty, performance, accessibility, robustness, docs), then deploy to Pages and the checkpoint.
