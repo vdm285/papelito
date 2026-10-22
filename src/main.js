@@ -7,6 +7,7 @@ import { applyTheme } from './ui/theme.js';
 import { sync } from './app/sync-control.js';
 import { loadDict } from './data/dict.js';
 import { install } from './app/install.js';
+import './ui/app.js'; // static: the sheet must not wait for another round trip
 
 store.i18n = new Proxy({}, { get: (_, k) => t[k] });
 
@@ -20,7 +21,6 @@ applyTheme();
 const booted = store.boot(location.href);
 if (booted.legacyMissing) store.notices.push({ kind: 'legacyMissing' });
 
-await import('./ui/app.js');
 const app = document.createElement('papel-app');
 document.body.prepend(app);
 document.getElementById('boot')?.remove();
@@ -66,7 +66,9 @@ addEventListener('pagehide', () => store.flush());
 if (install.standalone()) { try { navigator.storage?.persist?.(); } catch { /* ignore */ } }
 if (store.prefs.awake) install.keepAwake(true);
 
-if ('serviceWorker' in navigator && location.protocol === 'https:') {
+// offline: production builds only (the dev server's files change on every save); localhost counts
+// as secure, so a local preview of a build behaves like the real site
+if ('serviceWorker' in navigator && import.meta.env.PROD && (location.protocol === 'https:' || location.hostname === 'localhost')) {
   navigator.serviceWorker.register(`${import.meta.env.BASE_URL}sw.js`).catch(() => {});
 }
 
