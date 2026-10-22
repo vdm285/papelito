@@ -2,7 +2,7 @@
 # the aisle's default emoji (Unicode emoji version ≤ 13.0, present in sources/cldr49-emoji-es-MX.tsv) and the
 # default walking order (produce first, frozen last; a starting point, not a fact about any store: every list keeps its own).
 # Tortillería and salchichonería are separate because PROFECO's categories and INEGI's codes keep them apart and
-# Mexican supermarkets have both counters (data/cache/understand/vocab.md §0). Human file; emoji chosen by Claude (AI)
+# Mexican supermarkets have both counters (docs/research/2026-10-21-vocab.md §0). Human file; emoji chosen by Claude (AI)
 # on 2026-10-22, awaiting owner review.
 id	es	en	emoji	order
 fru	Frutas y verduras	Fruit and vegetables	🥦	1

@@ -6,7 +6,7 @@ Owner: Victor (github.com/vdm285). The app opens in Mexican Spanish; English is 
 
 ## What this is
 
-A shared shopping list that behaves like **one piece of paper on two phones**: a ruled sheet where each phone writes in its own ink, strikes are drawn by hand, and what one phone writes appears on the other in about half a second. No accounts: the link (`#k=<secret>`) is the key. No server of our own: the page is static (GitHub Pages) and each list travels end-to-end encrypted through free public Nostr relays. Working name **Papelito**; the repository keeps its old name until the owner decides (see "Renaming").
+A shared shopping list that behaves like **one piece of paper on two phones**: a ruled sheet where each phone writes in its own ink, strikes are drawn by hand, and what one phone writes usually appears on the other in under a second. No accounts: the link (`#k=<secret>`) is the key. No server of our own: the page is static (GitHub Pages) and each list travels end-to-end encrypted through free public Nostr relays. Working name **Papelito**; the repository keeps its old name until the owner decides (see "Renaming").
 
 ## Do not
 
@@ -57,7 +57,7 @@ and look at the captures in `data/cache/shots/` (phone and desk, both themes, ca
 - **Python on Windows writes CRLF** in text mode: open files with `newline=''`; run `node tools/lf.mjs` before committing (`.gitattributes` enforces LF).
 - **Heredocs in this shell eat backslashes**: a Python patch written in a heredoc turned `\b` into a real backspace inside a regex, which silently broke the relay logic; backticks break heredocs too. Write every patch script to a file under `data/cache/` and run it by path; `node tools/check-text.mjs` finds control characters.
 - **lit's `live()` resets a field to the bound value on any re-render**: the writing line binds `this.draft`, so text must arrive through `input` events (as real typing does). Setting `textarea.value` from a script without an input event is undone on the next render.
-- **The sheet is rotated −0.35° on a desk**: `getBoundingClientRect` of anything on it is inflated by a few pixels. Measure with the transform removed (see the baseline measurement in HANDOFF).
+- **The sheet is rotated −0.35° on a desk**: `getBoundingClientRect` of anything on it is inflated by a few pixels, and a stuck writing line's right corner lifts off the screen edge. Measure with the transform removed (`document.querySelector('.sheet').style.transform = 'none'`, measure, restore); `--hand-shift` and `--print-shift` in `src/style.css` were found that way, by moving the text until its baseline sat 4 px above the rule at 56 px and 50 px rules.
 - **Strikes are measured on the text**: they must be redrawn when the handwriting font arrives (`document.fonts.ready`, `loadingdone`), or they are sized for the fallback font.
 - **The browser pane freezes animations when hidden or behind**: a strike that "never draws" in a pane screenshot is usually a frozen animation. Use `node tools/shots.mjs` (puppeteer, installed Chrome) for exact captures.
 - **An input's intrinsic width can widen a phone page**: grid columns are `minmax(0, 1fr)` and the title is `width: 0; flex: 1`.
@@ -71,6 +71,13 @@ and look at the captures in `data/cache/shots/` (phone and desk, both themes, ca
 - **Focus and lit**: a row that moves between lists (pending → struck) is a new element, so the focused one is lost. `app.js` records the focused row in `willUpdate` and restores it in `updated` (`keepFocus`); keep that when restructuring rows.
 - **Notices must not move rows on a timer**: rows under a finger jump. They go with the first thing done on the sheet (`onStore`), except the ones about something still true (`lasting`).
 - **Margin doodles** come from `public/fonts/doodles.woff2` (monochrome Noto Emoji subset by `tools/build-doodles.py` to the dictionary's emoji): rebuild it after `npm run dict` whenever emoji change. Whether iPhone draws them with this font or with Apple's colour emoji is unverified on a device (the text-presentation selector U+FE0E is appended to ask for the font).
+
+## Common changes
+
+- **The default walking order of aisles** lives in two places that must agree: `AISLES` in `src/model/aisles.js` and the `order` column of `data/vocab/aisles.tsv`. Change both, then `npm run dict` and `npm test` (`tools/vocab/check.mjs` names the mismatch). Lists that saved their own order are unaffected.
+- **Adding or dropping a relay**: edit `src/sync/relays.js` (the About card builds its credit from it), and the count in README and HANDOFF. Vet a candidate alone with `node tools/sync-live.mjs --relays=wss://candidate`, then a full `node tools/sync-live.mjs` and `node tools/smoke.mjs --sync`. The CSP needs nothing (`connect-src 'self' wss:`). The probe scripts of `docs/research/2026-10-21-transport.md` §8 were not committed; `sync-live.mjs` covers what matters (stores, serves back, latency).
+- **Rebuilding assets** (`npm run fonts`, `python -I tools/build-doodles.py`) needs fontTools and brotli kept on D: — `python -m pip install --target data/cache/pylib fonttools brotli` — and the doodles script downloads `NotoEmoji[wght].ttf` into `data/cache/fonts/` on its first run.
+- **Deploying**: GitHub Pages must have its source set to "GitHub Actions" (Settings → Pages, or `gh api -X PUT repos/vdm285/listolista/pages -f build_type=workflow`); with the old "deploy from a branch" setting a push publishes the raw `index.html`, which is blank. Every push to `main` runs `.github/workflows/pages.yml` (tests, dictionary check, build, deploy). After a deploy, check the Actions run and the live page's `<title>`. Before deploying, run the smoke test against a production build too (it alone has the CSP).
 
 ## Renaming (when the owner picks a name)
 

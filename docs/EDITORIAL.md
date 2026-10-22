@@ -2,7 +2,7 @@
 
 ## Words
 
-- Mexican Spanish first (*jitomate*, *súper*, *pasillo*, *Compartir*, *Deshacer*); English is a setting that sticks. Every string lives in `src/app/i18n.js`; nothing visible is hard-coded elsewhere.
+- Mexican Spanish first (*jitomate*, *súper*, *pasillo*, *Compartir*, *Deshacer*); English is a setting that sticks. Every string lives in `src/app/i18n.js`, credits in `src/ui/credits.js` (each in both languages); nothing visible is hard-coded elsewhere.
 - Short and plain. No exclamation marks, no "¡Ups!", no marketing. Say what happened and what can be done: "Se borró «leche» · Deshacer".
 - Never promise what the app cannot keep. Not "instantly", not "always": "lo que escribas aparece en el otro teléfono". Sync status says "Al día", "Conectando…" or "Sin conexión. Se guarda aquí y se envía al volver."
 - Name the other phone by its ink ("Alguien (verde)") unless that phone chose a name; never invent a name.
@@ -25,5 +25,5 @@
 
 - Every piece of someone else's work that ships (fonts, libraries, data, relays) is listed in `src/ui/credits.js` with its licence as the package or source itself states it, and shown in Menu → Acerca de. The dictionary's sources and their attribution texts travel inside `public/dict/es-MX.json` and are shown there too.
 - Licences are checked at the source before use (the package's LICENSE file, the dataset's own record), and the check is dated.
-- No images of products, brands or people. The icons are drawn in code (`src/ui/icons.js`, `tools/build-icons.mjs`); the paper grain is an SVG filter; strikes are generated paths. Emoji in the margin are the phone's own emoji font, chosen by exact Unicode CLDR names (or a reviewed override).
+- No images of products, brands or people. The icons are drawn in code (`src/ui/icons.js`, `tools/build-icons.mjs`); the paper grain is an SVG filter; strikes are generated paths. Emoji in the margin are drawn in pencil with a subset of Google's monochrome Noto Emoji (`public/fonts/doodles.woff2`, SIL OFL, built by `tools/build-doodles.py`), chosen by exact Unicode CLDR names or by an override line that says why.
 - PROFECO and INEGI are credited as sources and never presented as endorsing the app; the grouping into aisles is ours and says so.

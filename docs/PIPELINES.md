@@ -4,7 +4,7 @@ How outside data gets into Papelito, for people and for the next AI session. Tod
 **aisle vocabulary**, which turns two Mexican government datasets and the Unicode emoji names into the dictionary the app
 uses to sort a list by aisle. Nothing is fetched at run time or at deploy time: the phone downloads one static file.
 
-Written 2026-10-22. The research behind it is `data/cache/understand/vocab.md` (not committed; its §1, §2, §4, §9-§11
+Written 2026-10-22. The research behind it is `docs/research/2026-10-21-vocab.md` (its §1, §2, §4, §9-§11
 are summarised here).
 
 ---
@@ -262,35 +262,17 @@ guard against regressions; they are not evidence of coverage. A list from real u
 | | | con Congelados | 24 |
 
 - **1,717 terms**, 71 with an emoji (54 exact CLDR names, 17 human choices in override lines); 16 form words.
-- **Size**: 38,843 bytes raw, **11,782 bytes gzip** (limit 15,000), 10,210 bytes brotli.
-- **What decided each term**: QQP category 702, QQP product exception 74, ENIGH 271, head noun 23, brand 416,
-  override 225, synonym 6. Terms with a reference from each source (a term can have several): QQP products 701, QQP
-  varieties 85, QQP brands 416, ENIGH 401, head nouns 27, overrides 225, synonyms 6.
+- **Size**: 39,276 bytes raw, **11,989 bytes gzip** (limit 15,000), 10,401 bytes brotli (with the fourth credit line, for the override words).
+- **What decided each term** (`report.json` → `decidedBy`): QQP category 702, QQP product exception 74, ENIGH 272, head
+  noun 23, brand 416, override 225, synonym 5. Terms with a reference from each source (`termsWithSource`; a term can have
+  several): QQP products 701, QQP varieties 85, QQP brands 416, ENIGH 401, head nouns 27, overrides 225, synonyms 5.
+  **209 terms have no reference but an override line**; the dictionary's fourth credit line says so in the app.
 - **Human lines**: 227 override lines in 15 files (225 `+`, 2 `-`, 0 `>`), 81 varieties ticked, 73 product exceptions,
   109 drop lines, 65 blocked and 4 allowed brands, 46 category rows, 120 ENIGH prefixes and codes, 21 form rows, 5 synonyms.
 - **Tests**: test-60 55/55 (58/60 counting the 5 store-dependent rows), tricky-40 35/35 (39/40), audit-160 145/145
   (159/160).
 - 10 conflicts, 426 dropped entries, 137 review rows. Farmacia is large (QQP surveys 374 medicines); it costs little.
 
----|---:|---|---:|
-| fru Frutas y verduras | 102 | bot Botanas y dulces | 56 |
-| pan Panadería | 39 | beb Bebidas | 133 |
-| tor Tortillería | 15 | lim Limpieza y hogar | 133 |
-| car Carnes, pollo y pescado | 122 | hig Higiene personal | 147 |
-| sal Salchichonería | 35 | bbe Bebés | 33 |
-| lac Lácteos y huevo | 77 | mas Mascotas | 16 |
-| aba Abarrotes | 320 | far Farmacia | 458 |
-| | | con Congelados | 24 |
-
-- **1,710 terms**, 69 with an emoji (52 exact CLDR names, 17 human choices in override lines); 16 form words.
-- **Size**: 39,102 bytes raw, **11,846 bytes gzip** (limit 15,000), 10,276 bytes brotli.
-- **What decided each term**: QQP category 709, QQP product exception 75, ENIGH 263, head noun 22, brand 431,
-  override 204, synonym 6. Terms with a reference from each source (a term can have several): QQP products 710, QQP
-  varieties 85, QQP brands 431, ENIGH 375, head nouns 26, overrides 204, synonyms 6.
-- **Human lines**: 206 override lines in 15 files (203 `+`, 2 `-`, 1 `>`), 81 varieties ticked, 71 product exceptions,
-  66 drop lines, 47 blocked and 4 allowed brands, 46 category rows, 80 ENIGH prefixes, 21 form rows.
-- **Tests**: test-60 55/55 (58/60 counting the 5 store-dependent rows), tricky-40 32/35 (36/40).
-- 11 conflicts, 362 dropped entries, 137 review rows. Farmacia is large (QQP surveys 374 medicines); it costs little.
 
 ---
 

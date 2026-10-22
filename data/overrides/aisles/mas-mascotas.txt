@@ -1,5 +1,5 @@
 # Mascotas (mas): pet words. PROFECO QQP surveys no pet products and INEGI ENIGH 2024 has three generic rows
-# (0932: animals, food, accessories), so this aisle is almost all overrides (data/cache/understand/vocab.md §11.4).
+# (0932: animals, food, accessories), so this aisle is almost all overrides (docs/research/2026-10-21-vocab.md §11.4).
 # Drafted by Claude (AI) on 2026-10-22 from the sources' gaps; awaiting owner review.
 # Lines: "+ término [= emoji]  # why" adds a term here (an emoji is a human choice; "= -" means no emoji);
 # "- término  # why" drops a source term from this aisle; "término > aba  # why" moves a source term elsewhere.
