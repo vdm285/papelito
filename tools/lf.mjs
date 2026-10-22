@@ -7,6 +7,7 @@ const files = execFileSync('git', ['ls-files', '--cached', '--others', '--exclud
 let fixed = 0;
 for (const f of files) {
   if (/\.(png|jpg|jpeg|gif|webp|woff2?|ico|zip)$/i.test(f)) continue;
+  if (f.startsWith('docs/history/')) continue; // history stays byte-for-byte as it was found
   let buf;
   try { buf = readFileSync(f); } catch { continue; }
   if (!buf.includes(13)) continue;
