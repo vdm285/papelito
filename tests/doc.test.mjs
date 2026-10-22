@@ -308,7 +308,8 @@ test('this phone\'s own copy is never cut by the caps meant for copies from else
   for (let i = 0; i < LIMITS.items + 40; i++) addItem(d, a, `item${String(i).padStart(5, '0')}`, `cosa ${i}`);
   const raw = JSON.parse(canonical(d));
   assert.equal(liveItems(sanitize(raw, now)).length, LIMITS.items);
-  assert.equal(liveItems(sanitize(raw, Infinity, null, true)).length, LIMITS.items + 40);
+  assert.equal(liveItems(sanitize(raw, Infinity, null, 'phonea00')).length, LIMITS.items + 40, 'everything this phone wrote');
+  assert.equal(liveItems(sanitize(raw, Infinity, null, 'phoneb00')).length, LIMITS.items, 'another phone\'s items are still capped');
 });
 
 test('direction overrides in a copy from elsewhere are removed; emoji joiners are kept', () => {

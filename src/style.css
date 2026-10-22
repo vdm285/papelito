@@ -89,7 +89,7 @@
   --pencil-soft: #7f9189;
   --struck-fade: .58;
   --struck-fade-print: .8;
-  --marker: rgba(255, 226, 92, .3);
+  --marker: rgba(255, 226, 92, .17); /* print on it keeps 4.5:1 in every chalk ink (tools/contrast.mjs) */
   --marker-blend: normal;
   --chrome: #eef3ef;
   --chrome-soft: #a9b8b0;
@@ -436,16 +436,18 @@ ol.rows, ul.rows { list-style: none; margin: 0; padding: 0; }
 /* the sheet is tilted on a desk, so a stuck block's right corner lifts a few px off the screen's
    edge: a band of paper below it keeps the rows from peeking through */
 .writing.sticky[data-stuck]::after {
-  content: ''; position: absolute; left: 0; right: 0; top: 100%; height: 16px; pointer-events: none;
+  content: ''; position: absolute; left: 0; right: 0; top: 100%; pointer-events: none;
+  height: calc(max(var(--kb, 0px), env(safe-area-inset-bottom, 0px)) + 16px);
   background:
     linear-gradient(to right, transparent calc(var(--margin-x)), var(--margin) calc(var(--margin-x)), var(--margin) calc(var(--margin-x) + 1.5px), transparent calc(var(--margin-x) + 1.5px)),
+    var(--grain) 0 0 / 220px 220px,
     var(--paper);
 }
 .writing.sticky[data-stuck]::before {
   content: ''; position: absolute; left: 0; right: 0; top: -12px; height: 12px; pointer-events: none;
-  background:
-    linear-gradient(to right, transparent calc(var(--margin-x)), var(--margin) calc(var(--margin-x)), var(--margin) calc(var(--margin-x) + 1.5px), transparent calc(var(--margin-x) + 1.5px)),
-    linear-gradient(to top, var(--paper), transparent);
+  background: linear-gradient(to top, var(--paper), transparent);
+  --gap: linear-gradient(to right, #000 calc(var(--margin-x)), transparent calc(var(--margin-x)), transparent calc(var(--margin-x) + 1.5px), #000 calc(var(--margin-x) + 1.5px));
+  -webkit-mask-image: var(--gap); mask-image: var(--gap); /* the margin line shows through */
 }
 html { scroll-padding-bottom: calc(var(--line) * 2 + var(--kb, 0px)); }
 
@@ -506,7 +508,8 @@ html { scroll-padding-bottom: calc(var(--line) * 2 + var(--kb, 0px)); }
   padding: 0 var(--sheet-pad-right) 0 calc(var(--margin-x) + 12px);
   font: 650 15px/1 var(--font-ui); color: var(--chrome-soft);
 }
-.fold { position: relative; z-index: 4; } /* above the writing line's text box, shifted down onto its rule */
+.fold { position: relative; pointer-events: none; } /* its empty space never covers the writing line above */
+.fold button { position: relative; z-index: 4; pointer-events: auto; } /* above the writing line's text box, shifted down onto its rule */
 .fold button { border: 0; background: none; cursor: pointer; min-height: 44px; padding: 0; font-weight: 650; }
 .fold .link { color: var(--chrome); text-decoration: underline; text-underline-offset: 3px; }
 .fold svg { width: 16px; height: 16px; vertical-align: -3px; transition: transform .2s; }
@@ -572,7 +575,11 @@ html { scroll-padding-bottom: calc(var(--line) * 2 + var(--kb, 0px)); }
 .card-head { padding-bottom: 4px; border-bottom: 1.5px solid var(--rule-strong); }
 .card h2 { font: 600 30px/1.15 var(--font-hand); color: var(--my-ink, var(--chrome)); margin: 0; min-width: 0; overflow-wrap: anywhere; }
 .hand-molde .card h2 { font: 650 21px/1.2 var(--font-print); }
+.hand-molde .field.hand { font-family: var(--font-print); font-size: 19px; font-weight: 500; }
+.hand-molde .card .list-title { font: 650 17px/1.2 var(--font-print) !important; }
 .card hr { border: 0; border-top: 1px solid var(--card-line); margin: 18px 0 6px; }
+.card .actions { position: sticky; bottom: calc(-1 * max(18px, env(safe-area-inset-bottom))); background: var(--card); padding-block: 10px; margin-bottom: calc(-1 * max(18px, env(safe-area-inset-bottom))); }
+@media (min-width: 1180px) { .card .actions { bottom: -20px; margin-bottom: -20px; } }
 .card h3 { font: 700 12.5px/1 var(--font-ui); letter-spacing: .08em; text-transform: uppercase; color: var(--chrome-soft); margin: 18px 0 8px; }
 .card p { margin: 6px 0 12px; color: var(--chrome-soft); font-size: 15px; }
 .card .menu-item {

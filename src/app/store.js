@@ -14,7 +14,7 @@
 import { createClock, randomId, stampTime } from '../model/hlc.js';
 import {
   emptyDoc, addItem, setText, setDone, setDeleted, setTitle, setOrder, setDevice, setFix, fixes,
-  merge, diff, sanitize, compact, canonical, liveItems, isDone, isLive, maxStamp, INVISIBLE,
+  merge, diff, sanitize, compact, canonical, liveItems, isDone, isLive, maxStamp, INVISIBLE, visible,
 } from '../model/doc.js';
 import { splitInput } from '../model/parse.js';
 import { keyOf } from '../model/aisles.js';
@@ -130,7 +130,7 @@ export class Store {
     if (!raw) { this.newList(); return; }
     // this phone's own copy is trusted with its stamps (no future horizon): if the clock was set
     // back after writing, nothing written before may disappear
-    const rec = { id, secret: raw.secret, doc: compact(sanitize(raw.doc, Infinity, null, true)), aisles: !!raw.aisles, seen: raw.seen || '', wasShared: !!raw.wasShared, oldId: raw.oldId, syncedAt: Number(raw.syncedAt) || 0 };
+    const rec = { id, secret: raw.secret, doc: compact(sanitize(raw.doc, Infinity, null, this.device)), aisles: !!raw.aisles, seen: raw.seen || '', wasShared: !!raw.wasShared, oldId: raw.oldId, syncedAt: Number(raw.syncedAt) || 0 };
     this.clock.observe(maxStamp(rec.doc));
     this.rec = rec;
     this.undoStack = [];
@@ -276,7 +276,7 @@ export class Store {
     const it = this.doc.items[id];
     if (!it) return;
     const clean = String(text).replace(INVISIBLE, '').replace(/\s+/g, ' ').trim();
-    if (!clean) { this.remove(id); return; }
+    if (!visible(clean)) { this.remove(id); return; }
     if (clean === it.t[0]) return;
     const before = it.t[0];
     setText(this.doc, this.clock, id, clean);
@@ -288,7 +288,7 @@ export class Store {
     const it = this.doc.items[id];
     if (!it) return;
     setDeleted(this.doc, this.clock, id, true);
-    this.pushUndo(this.t('removed')(it.t[0]), () => { setDeleted(this.doc, this.clock, id, false); this.changed('undo', { ids: [id] }); });
+    this.pushUndo(this.t('removed')(it.t[0]), () => { setDeleted(this.doc, this.clock, id, false); this.changed('undo', { ids: [id] }); }, false, [id]);
     this.changed('remove', { id });
   }
 
@@ -296,7 +296,7 @@ export class Store {
     const ids = this.items().filter((i) => isDone(i)).map((i) => i.id);
     if (!ids.length) return;
     for (const id of ids) setDeleted(this.doc, this.clock, id, true);
-    this.pushUndo(this.t('cleared')(ids.length), () => { for (const id of ids) setDeleted(this.doc, this.clock, id, false); this.changed('undo', { ids }); });
+    this.pushUndo(this.t('cleared')(ids.length), () => { for (const id of ids) setDeleted(this.doc, this.clock, id, false); this.changed('undo', { ids }); }, false, ids);
     this.changed('clear', { ids });
   }
 
@@ -304,7 +304,7 @@ export class Store {
     const ids = this.items().map((i) => i.id);
     if (!ids.length) return;
     for (const id of ids) setDeleted(this.doc, this.clock, id, true);
-    this.pushUndo(this.t('emptied'), () => { for (const id of ids) setDeleted(this.doc, this.clock, id, false); this.changed('undo', { ids }); });
+    this.pushUndo(this.t('emptied'), () => { for (const id of ids) setDeleted(this.doc, this.clock, id, false); this.changed('undo', { ids }); }, false, ids);
     this.changed('clear', { ids });
   }
 
@@ -378,6 +378,9 @@ export class Store {
     const member = !!before.dev[this.device] || Object.keys(before.items).length > 0; // not a phone receiving the sheet for the first time
     changes.was = member ? Object.fromEntries(changes.edited.map((id) => [id, before.items[id].t[0]])) : {};
     if (changes.title && member && before.title[0]) changes.oldTitle = before.title[0];
+    // a live item gone from the merge altogether (another copy says it was deleted over a month
+    // ago): never silently; the texts are kept so Deshacer can write them again
+    changes.vanished = Object.entries(before.items).filter(([k, it]) => !after.items[k] && isLive(it)).map(([, it]) => it.t[0]);
     if (!member) changes.edited = [];
     // phones that appear in this sheet for the first time (not this one)
     // (only on a phone that was already part of it: the one opening a link sees no news)
@@ -487,14 +490,27 @@ export class Store {
   }
 
   // ---------- undo ----------
-  pushUndo(label, run, quiet = false) {
-    this.undoStack.push({ label, run });
+  /** Remember how to undo something. `ids`: the items it concerns (for focus after undoing). */
+  pushUndo(label, run, quiet = false, ids = []) {
+    const entry = { label, run, ids };
+    this.undoStack.push(entry);
     if (this.undoStack.length > 20) this.undoStack.shift();
-    if (!quiet) this.emit('undoable', { label });
+    if (!quiet) this.emit('undoable', { label, entry });
+    return entry;
   }
+  /** Ctrl+Z: the last thing done. */
   undo() {
     const u = this.undoStack.pop();
     if (u) u.run();
+    return u || null;
+  }
+  /** A toast's Deshacer: exactly the thing it names, even if other things were done since. */
+  undoEntry(entry) {
+    const i = this.undoStack.indexOf(entry);
+    if (i < 0) return false;
+    this.undoStack.splice(i, 1);
+    entry.run();
+    return true;
   }
 
   // ---------- persistence ----------

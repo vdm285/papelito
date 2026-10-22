@@ -18,6 +18,7 @@ const rgb = (c) => {
 const alpha = (c) => { const r = c.match(/rgba\([^)]*,\s*([\d.]+)\)/); return r ? parseFloat(r[1]) : 1; };
 const over = (fg, bg, k = 1) => { const a = alpha(fg) * k; const f = rgb(fg); const b = rgb(bg); return f.map((v, i) => v * a + b[i] * (1 - a)); };
 const lum = ([r, g, b]) => { const f = (v) => { v /= 255; return v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4; }; return 0.2126 * f(r) + 0.7152 * f(g) + 0.0722 * f(b); };
+const hex = (c) => `#${c.map((v) => Math.round(v).toString(16).padStart(2, '0')).join('')}`;
 const ratio = (fg, bg, k) => { const a = lum(over(fg, bg, k)); const b = lum(rgb(bg)); return (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05); };
 
 const pairs = [
@@ -29,7 +30,10 @@ const pairs = [
   ['desk-ink on desk (labels beside the paper)', 'desk-ink', 'desk'],
   ...['azul', 'roja', 'verde', 'negra', 'morada', 'cafe'].map((i) => [`struck ink ${i} (faded) on paper`, `ink-${i}`, 'paper', 'struck-fade']),
   ...['azul', 'roja', 'verde', 'negra', 'morada', 'cafe'].map((i) => [`struck ink ${i} in print (faded; needs AA) on paper`, `ink-${i}`, 'paper', 'struck-fade-print']),
+  // a new item from the other phone sits on the highlighter (needs AA: it may be in print)
+  ...['azul', 'roja', 'verde', 'negra', 'morada', 'cafe'].map((i) => [`ink ${i} on the highlighter (needs AA)`, `ink-${i}`, 'marker-on-paper']),
 ];
+for (const [, tk] of [['papel', light], ['pizarron', dark]]) tk['marker-on-paper'] = hex(over(tk.marker, tk.paper));
 for (const [theme, tk] of [['papel', light], ['pizarron', dark]]) {
   console.log(`\n${theme}`);
   for (const [name, fg, bg, fade] of pairs) {

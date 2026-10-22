@@ -96,7 +96,7 @@ export class PapelApp extends LitElement {
     // the first thing you do on the sheet puts away the notes about how you got here; the ones
     // about something still true stay (the link moved, nothing can be saved)
     if (kind === 'change' && store.notices.length && d && PERSON.has(d.kind)) store.notices = store.notices.filter(lasting);
-    if (kind === 'undoable') this.showToast(d.label, true);
+    if (kind === 'undoable') this.showToast(d.label, true, () => store.undoEntry(d.entry), { entry: d.entry });
     if (kind === 'storageFull' && !store.notices.some((n) => n.kind === 'storageFull')) { store.notices.push({ kind: 'storageFull' }); this.showToast(t.storageFull, false); }
     this.rev++;
   }
@@ -128,7 +128,11 @@ export class PapelApp extends LitElement {
       }
     } else if (ch.title && ch.oldTitle !== undefined && store.doc.title[1]) {
       const old = ch.oldTitle;
-      this.showToast(t.renamedBy(this.whoName(store.doc.title[1].slice(13)), store.title() || t.untitled), true, () => store.setTitle(old));
+      const who = this.whoName(store.doc.title[1].slice(13));
+      this.showToast(store.title() ? t.renamedBy(who, store.title()) : t.titleClearedBy(who), true, () => store.setTitle(old));
+    } else if (ch.vanished && ch.vanished.length) {
+      const texts = ch.vanished;
+      this.showToast(t.vanished(texts.length), true, () => store.add(texts.join('\n')));
     }
     // one polite sentence for screen readers: who did what on the other phone
     if (ch.added.length || ch.struck.length || ch.unstruck.length) {
@@ -146,7 +150,9 @@ export class PapelApp extends LitElement {
     this.announce = '';
     this.rev++;
     clearTimeout(this.sayTimer);
-    this.sayTimer = setTimeout(() => { this.announce = text; this.rev++; }, 80);
+    // two things said in the same moment (a deletion and an add from one record) are joined
+    this.sayNext = this.sayNext ? `${this.sayNext} ${text}` : text;
+    this.sayTimer = setTimeout(() => { this.announce = this.sayNext; this.sayNext = ''; this.rev++; }, 80);
   }
 
   whoName(device) {
@@ -169,7 +175,9 @@ export class PapelApp extends LitElement {
     const settle = () => {
       // a finger already down on a row (about to strike the next one) must not have it move away
       if (this.press) { this.lingerTimer = setTimeout(settle, 300); return; }
-      this.lingering.clear(); this.rev++;
+      this.lingering.clear();
+      if (store.notices.length) store.notices = store.notices.filter(lasting);
+      this.rev++;
     };
     this.lingerTimer = setTimeout(settle, LINGER_MS);
   }
@@ -179,7 +187,8 @@ export class PapelApp extends LitElement {
     this.toast = { label, undo, fn, ...extra };
     // a live region inserted with its text already inside is often not read: say it in the
     // persistent one (the toast itself is not a live region)
-    this.say(undo ? `${label}. ${t.undoHint}` : label);
+    // the Control+Z hint only where it works: a keyboard, and no card open
+    this.say(undo && matchMedia('(pointer: fine)').matches && !this.card ? `${label}. ${t.undoHint}` : label);
     this.toastLater(undo ? 8000 : 4500);
   }
   toastLater(ms) {
@@ -187,11 +196,11 @@ export class PapelApp extends LitElement {
     this.toastTimer = setTimeout(() => { this.toast = null; }, ms);
   }
   doUndo() {
-    const fn = this.toast && this.toast.fn;
+    const toast = this.toast;
     const t0 = this.querySelector('.toast');
-    if (t0 && t0.contains(document.activeElement)) this.toastFocus = (this.toast && this.toast.removed) || [];
+    if (t0 && t0.contains(document.activeElement)) this.toastFocus = (toast && (toast.removed || (toast.entry && toast.entry.ids))) || [];
     this.toast = null;
-    if (fn) fn(); else store.undo();
+    if (toast && toast.fn) toast.fn();
   }
 
   // ---------- keyboard ----------
@@ -203,7 +212,14 @@ export class PapelApp extends LitElement {
       if (ta) { ta.focus(); }
     }
     const emptyLine = e.target && e.target.matches && e.target.matches('.composer textarea') && !e.target.value;
-    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'z' && !e.shiftKey && !this.card && (!isTyping(e.target) || emptyLine)) { e.preventDefault(); if (this.toast && this.toast.undo) this.doUndo(); else store.undo(); }
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'z' && !e.shiftKey && !this.card && (!isTyping(e.target) || emptyLine)) {
+      e.preventDefault();
+      // the other phone's change on screen is undone first; otherwise the last thing done here
+      if (this.toast && this.toast.undo && !this.toast.entry) { this.doUndo(); return; }
+      const u = store.undo();
+      if (this.toast && this.toast.entry && !store.undoStack.includes(this.toast.entry)) this.toast = null;
+      if (u) this.say(t.undone);
+    }
   }
 
   // ---------- cards ----------
@@ -320,6 +336,7 @@ export class PapelApp extends LitElement {
       this.press.long = true;
       this.quietClick();
       if (navigator.vibrate) navigator.vibrate(12);
+      this.press = null;
       this.openCard('item', { id });
     }, LONG_PRESS_MS);
   }
@@ -393,6 +410,7 @@ export class PapelApp extends LitElement {
     const willBeDone = !isDone(it);
     if (!this.pendingAnim.has(id)) this.pendingAnim.set(id, willBeDone ? 'draw' : 'erase');
     if (willBeDone) { this.linger(id); if (navigator.vibrate) navigator.vibrate(8); }
+    this.localStrike = id;
     store.toggle(id);
   }
 
@@ -526,10 +544,14 @@ export class PapelApp extends LitElement {
       let el = rows.find((r) => r.dataset.id === this.focusRow.id);
       // a row struck from the pending list settles under Tachados, often off screen: the keyboard
       // stays where it was working, on the pending row that took its place (verification round)
-      if (el && this.focusRow.pending && el.closest('.struck')) {
+      if (el && this.focusRow.pending && el.closest('.struck') && this.localStrike === el.dataset.id) {
         const pending = [...this.querySelectorAll('.pending .row[data-id]')];
         el = pending[Math.min(this.focusRow.pendingIndex, pending.length - 1)] || null;
-        if (!el) { if (fine) this.focusComposer(); return; }
+        if (!el) {
+          // nothing left to strike: the writing line on a desk, "Tachados" on a phone (no keyboard pops up)
+          if (fine) this.focusComposer(); else this.querySelector('.fold button')?.focus({ preventScroll: true });
+          return;
+        }
       }
       el = el || rows[Math.min(this.focusRow.index, rows.length - 1)];
       if (el) { el.focus({ preventScroll: true }); el.scrollIntoView({ block: 'nearest' }); } else if (fine) this.focusComposer();
@@ -619,9 +641,9 @@ export class PapelApp extends LitElement {
       <header class="head">
         <input class="title" style="--ink: var(--ink-${store.titleInk()})" aria-label=${t.titleAria} placeholder=${t.untitled} maxlength="60" enterkeyhint="next"
           .value=${this.titleEditing ? this.titleDraft : live(store.title())}
-          @focus=${(e) => { this.titleEditing = true; this.titleDirty = false; this.titleDraft = e.target.value; }}
+          @focus=${(e) => { this.titleEditing = true; this.titleDirty = false; this.titleDraft = store.title(); e.target.value = store.title(); }}
           @input=${(e) => { this.titleDirty = true; this.titleDraft = e.target.value; clearTimeout(this.titleTimer); const v = e.target.value; this.titleTimer = setTimeout(() => store.setTitle(v), 500); }}
-          @blur=${(e) => { this.titleEditing = false; clearTimeout(this.titleTimer); if (this.titleDirty) store.setTitle(e.target.value); }}
+          @blur=${(e) => { this.titleEditing = false; clearTimeout(this.titleTimer); if (this.titleDirty) store.setTitle(e.target.value); this.rev++; }}
           @keydown=${(e) => { if (e.key === 'Enter') { e.preventDefault(); this.focusComposer(); } }} />
         <div class="head-tools">
           ${shared ? html`
@@ -709,7 +731,7 @@ export class PapelApp extends LitElement {
 
   renderComposer(myInk, n) {
     return html`
-      <div class="composer">
+      <div class="composer" @pointerdown=${(e) => { if (e.target === e.currentTarget || e.target.classList.contains('margin')) { e.preventDefault(); this.focusComposer(false); } }}>
         <span class="margin" aria-hidden="true"></span>
         <textarea rows="1" aria-label=${t.writeAria} placeholder=${n ? t.writeMore : t.write} enterkeyhint="enter" autocomplete="off" autocapitalize="sentences" spellcheck="false"
           .value=${live(this.draft)}
@@ -778,7 +800,7 @@ export class PapelApp extends LitElement {
 }
 
 // changes that a person makes on the sheet (an ink chosen automatically after a merge is not one)
-const PERSON = new Set(['add', 'toggle', 'edit', 'remove', 'clear', 'split', 'title', 'fix', 'order', 'undo']);
+const PERSON = new Set(['add', 'edit', 'remove', 'clear', 'split', 'title', 'fix', 'order', 'undo']); // a strike puts them away when rows settle
 const lasting = (n) => ['moved', 'noStorage', 'storageFull', 'clockAhead', 'clockAheadSelf'].includes(n.kind);
 
 const flipKey = (el) => (el.dataset.id ? `row-${el.dataset.id}` : el.dataset.flip);

@@ -119,10 +119,10 @@ const CARDS = {
         <div style="display:flex;align-items:center;gap:4px">
           <button class="menu-item" style="flex:1" @click=${() => { app.closeCard(); sync.openList(l.id); }}>
             ${icons.sheets}
-            <span class="grow"><span style="font: 600 24px/1.1 var(--font-hand)">${l.title || t.untitled}</span>
+            <span class="grow"><span class="list-title" style="font: 600 24px/1.1 var(--font-hand)">${l.title || t.untitled}</span>
               <span class="sub">${l.shared ? `${t.shared} · ` : ''}${t.ago(Date.now() - l.updated)}${l.id === store.rec.id ? ' · ✓' : ''}</span></span>
           </button>
-          <button class="icon-btn" aria-label=${`${t.delete}: ${l.title || t.untitled}`} @click=${() => { const back = store.forgetList(l.id); sync.follow(); app.showToast(t.removed(l.title || t.untitled), true, () => { back(); sync.follow(); }, { keep: true }); }}>${icons.trash}</button>
+          <button class="icon-btn" aria-label=${`${t.delete}: ${l.title || t.untitled}`} @click=${() => { requestAnimationFrame(() => app.querySelector('.card')?.focus({ preventScroll: true })); const back = store.forgetList(l.id); sync.follow(); app.showToast(t.removed(l.title || t.untitled), true, () => { back(); sync.follow(); }, { keep: true }); }}>${icons.trash}</button>
         </div>`)}
       <div class="actions" style="justify-content:flex-start">
         <button class="btn solid" @click=${() => { app.closeCard(); sync.newList(); }}>${icons.plus} ${t.newList}</button>

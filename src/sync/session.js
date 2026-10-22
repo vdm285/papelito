@@ -179,8 +179,11 @@ export class Session {
       // signature check we skip nor a sealed record, so a bogus created_at from the year 3000
       // never reaches lastCreated (it would make every later record of ours unpublishable)
       const known = this.seenIds.has(ev.id);
-      // a known id: its date is the one we stored (a relay could send the same id with another date)
-      const value = known ? null : (await verifyEvent(ev)) && await open(this.keys.encKey, ev.content, this.aad(slot));
+      // a known id: its date is the one we stored (a relay could send the same id with another date).
+      // A frame whose signature fails is dropped without a trace: its id is only the forger's claim,
+      // and remembering it would block the genuine record arriving from the other relays
+      if (!known && !(await verifyEvent(ev))) return;
+      const value = known ? null : await open(this.keys.encKey, ev.content, this.aad(slot));
       if (!known && (!value || value.v !== 2)) { this.junk.add(ev.id); if (this.junk.size > 2000) this.junk.clear(); return; }
       if (!known) this.dates.set(ev.id, ev.created_at);
       const date = this.dates.get(ev.id);
@@ -208,6 +211,7 @@ export class Session {
       this.reportStatus();
     } else if (ev.kind === LIVE) {
       if (this.seenIds.has(ev.id) || this.moved) return;
+      if (!(await verifyEvent(ev))) return;
       this.seenIds.add(ev.id);
       const msg = await open(this.keys.encKey, ev.content, this.aad('live'));
       if (!msg || typeof msg.dev !== 'string' || !DEV_RE.test(msg.dev) || msg.dev === this.store.device) return;

@@ -295,3 +295,39 @@ test('an edit to invisible characters only is a deletion; Ctrl+Z undoes adds and
   s.undo(); // the add of both
   assert.equal(s.items().length, 0);
 });
+
+test('a toast\'s Deshacer undoes exactly what it names, even after other actions', () => {
+  const s = new Store(new Mem());
+  s.boot('https://x.test/');
+  let entry = null;
+  s.on((kind, d) => { if (kind === 'undoable') entry = d.entry; });
+  const [a, b] = s.add('cebolla, jitomate');
+  s.remove(a);
+  const deletion = entry;
+  s.toggle(b);
+  s.add('pilas');
+  assert.ok(s.undoEntry(deletion));
+  assert.ok(s.items().some((i) => i.t[0] === 'cebolla'), 'the deletion is undone');
+  assert.ok(isDone(s.items().find((i) => i.id === b)), 'the later strike stays');
+  assert.ok(s.items().some((i) => i.t[0] === 'pilas'), 'the later add stays');
+  assert.equal(s.undoEntry(deletion), false, 'twice does nothing');
+});
+
+test('items that vanish in a merge are reported with their text, never silently', () => {
+  const now = Date.now();
+  const a = new Store(new Mem());
+  a.boot('https://x.test/');
+  a.add('pilas AA');
+  const raw = JSON.parse(canonical(a.doc));
+  // age the item past the purge window, as a copy kept for weeks would be
+  const old = Object.values(raw.items)[0];
+  const t = (now - 40 * 864e5).toString(36).padStart(9, '0');
+  for (const r of [old.t, old.d, old.x]) r[1] = t + r[1].slice(9);
+  old.c = t + old.c.slice(9);
+  const b = new Store(new Mem());
+  b.boot('https://x.test/');
+  b.applyRemote(raw);
+  const claim = { v: 2, title: ['', ''], order: [null, ''], fix: {}, dev: {}, seen: { [old.by]: old.c }, items: {} };
+  const ch = b.applyRemote(claim);
+  assert.deepEqual(ch.vanished, ['pilas AA']);
+});
