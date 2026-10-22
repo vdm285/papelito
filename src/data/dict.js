@@ -20,6 +20,7 @@ export function loadDict() {
       meta = { built: dict.built, sources: dict.sources || [], terms: Object.keys(dict.terms || {}).length };
       index = buildIndex(dict);
       index.terms = dict.terms;
+      index.aisleEmoji = Object.fromEntries((dict.aisles || []).map((a) => [a.id, a.emoji || '']));
     } catch (e) {
       console.warn(String(e));
       index = buildIndex({ terms: {} });

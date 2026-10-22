@@ -282,11 +282,12 @@ ol.rows, ul.rows { list-style: none; margin: 0; padding: 0; }
 .aisle-head {
   height: var(--line);
   display: flex; align-items: flex-end;
-  padding: 0 var(--sheet-pad-right) 9px calc(var(--margin-x) + 12px);
+  padding: 0 var(--sheet-pad-right) 9px 0;
   font: 700 12.5px/1 var(--font-ui);
   letter-spacing: .09em; text-transform: uppercase;
   color: var(--pencil);
 }
+.aisle-head .margin { height: auto; align-self: flex-end; margin-right: 12px; margin-bottom: -4px; }
 .aisle-head .n { margin-left: 8px; font-weight: 500; letter-spacing: 0; color: var(--pencil-soft); }
 
 .row {

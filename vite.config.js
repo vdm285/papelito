@@ -24,7 +24,8 @@ const swVersion = () => ({
 export default defineConfig({
   base: process.env.VITE_BASE || '/',
   build: { target: 'es2022', chunkSizeWarningLimit: 300 },
-  // data/ holds caches and test-browser profiles whose locked files crash Vite's watcher
-  server: { port: 5177, host: true, strictPort: true, watch: { ignored: ['**/data/**', '**/dist/**', '**/.git/**'] } },
+  // the top-level data/ holds caches and test-browser profiles whose locked files crash Vite's
+  // watcher. Only that folder: a pattern like '**/data/**' also hid src/data/ from the dev server.
+  server: { port: 5177, host: true, strictPort: true, watch: { ignored: [`${resolve('data').replace(/\\/g, '/')}/**`, '**/dist/**', '**/.git/**'] } },
   plugins: [swVersion()],
 });

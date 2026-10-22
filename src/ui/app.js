@@ -448,7 +448,7 @@ export class PapelApp extends LitElement {
     const groups = new Map(order.map((a) => [a, []]));
     for (const it of pending) groups.get(aisleOf(it.t[0], idx, fixes).aisle)?.push(it);
     return html`${order.filter((a) => groups.get(a).length).map((a) => html`
-      <div class="aisle-head" aria-hidden="true">${t.aisles[a]}<span class="n">${groups.get(a).length}</span></div>
+      <div class="aisle-head" aria-hidden="true"><span class="margin">${store.prefs.doodles && idx.aisleEmoji && idx.aisleEmoji[a] ? html`<span class="doodle-glyph">${idx.aisleEmoji[a].replace(/\uFE0F/g, '')}\uFE0E</span>` : nothing}</span>${t.aisles[a]}<span class="n">${groups.get(a).length}</span></div>
       <ol class="rows pending" role="list" aria-label=${t.aisles[a]}>${repeat(groups.get(a), (i) => i.id, (i) => this.renderRow(i, idx, fixes, false))}</ol>`)}`;
   }
 
