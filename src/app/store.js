@@ -109,7 +109,7 @@ export class Store {
     this.flush();
     const raw = this.ls.json(K.list(id), null);
     if (!raw) { this.newList(); return; }
-    const rec = { id, secret: raw.secret, doc: compact(sanitize(raw.doc)), aisles: !!raw.aisles, seen: raw.seen || '', wasShared: !!raw.wasShared, oldId: raw.oldId };
+    const rec = { id, secret: raw.secret, doc: compact(sanitize(raw.doc)), aisles: !!raw.aisles, seen: raw.seen || '', wasShared: !!raw.wasShared, oldId: raw.oldId, syncedAt: Number(raw.syncedAt) || 0 };
     this.clock.observe(maxStamp(rec.doc));
     this.rec = rec;
     this.undoStack = [];
@@ -327,9 +327,15 @@ export class Store {
     return changes;
   }
 
+  /** The newest record time (seconds) merged from the relays, so the next visit asks only for newer ones. */
+  noteSynced(createdAt) {
+    if (this.rec && Number.isFinite(createdAt) && createdAt > (this.rec.syncedAt || 0)) { this.rec.syncedAt = createdAt; this.save(); }
+  }
+
   // ---------- sharing ----------
   setSecret(secret, room) {
     this.rec.secret = secret;
+    this.rec.syncedAt = 0; // a new link is a new place on the relays
     const entry = this.index.find((l) => l.id === this.rec.id);
     if (entry) { entry.shared = true; entry.room = room; }
     this.rec.wasShared = false;
@@ -432,7 +438,7 @@ export class Store {
   }
 
   writeRec(rec) {
-    const out = { id: rec.id, secret: rec.secret, doc: JSON.parse(canonical(rec.doc)), aisles: rec.aisles, seen: rec.seen, wasShared: rec.wasShared || undefined, oldId: rec.oldId };
+    const out = { id: rec.id, secret: rec.secret, doc: JSON.parse(canonical(rec.doc)), aisles: rec.aisles, seen: rec.seen, wasShared: rec.wasShared || undefined, oldId: rec.oldId, syncedAt: rec.syncedAt || undefined };
     if (!this.ls.set(K.list(rec.id), JSON.stringify(out))) this.emit('storageFull');
   }
 

@@ -91,10 +91,23 @@ const sc = new Session(C, { relays });
 await sc.start(C.rec);
 const late = await until(() => liveItems(C.doc).length === 6, 20000);
 check('a phone opening later gets the whole list from the relays alone', late >= 0, `${late} ms, ${liveItems(C.doc).length} items`);
+// A comes back later and asks only for what is new since its last sync: it still gets C's change
+C.on((kind) => { if (kind === 'change') sc.changed(); });
+C.add('tomate verde');
+await sleep(1500);
+check('phone A remembers when it last synced', A.rec.syncedAt > 0, A.rec.syncedAt);
+const sa2 = new Session(A, { relays });
+await sa2.start(A.rec);
+const back = await until(() => liveItems(A.doc).some((i) => i.t[0] === 'tomate verde'), 20000);
+check('a phone coming back gets what changed while it was away', back >= 0, `${back} ms`);
+sa2.stop();
 const healthy = sc.pool.relays.filter((r) => r.state === 'open').map((r) => r.url.replace('wss://', ''));
 console.log(`relays open for C: ${healthy.length}/${relays.length}: ${healthy.join(', ')}`);
 const banned = sc.pool.relays.filter((r) => r.banned).map((r) => `${r.url} (${r.error})`);
-if (banned.length) console.log(`relays that refused: ${banned.join('; ')}`);
+if (banned.length) console.log(`relays that refused everything: ${banned.join('; ')}`);
+const partial = sc.pool.relays.filter((r) => r.noKinds.size).map((r) => `${r.url} (no kind ${[...r.noKinds].join(',')})`);
+if (partial.length) console.log(`relays that refused one kind: ${partial.join('; ')}`);
+check('no relay is dropped for refusing only the presence kind', !sc.pool.relays.some((r) => r.banned && /kind/i.test(r.error)));
 sc.stop();
 
 console.log(`total ${((Date.now() - t0) / 1000).toFixed(1)} s; ${failed ? `${failed} FAILED` : 'all passed'}`);

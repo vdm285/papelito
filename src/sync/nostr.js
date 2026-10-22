@@ -36,7 +36,8 @@ export class RelayPool {
     this.onOk = onOk || (() => {});
     this.onStatus = onStatus || (() => {});
     this.subs = new Map(); // id → filters
-    this.relays = urls.map((url) => ({ url, ws: null, state: 'idle', tries: 0, timer: 0, lastOk: 0, error: '', banned: false, pending: [] }));
+    this.relays = urls.map((url) => ({ url, ws: null, state: 'idle', tries: 0, timer: 0, lastOk: 0, error: '', banned: false, pending: [], noKinds: new Set() }));
+    this.sentKinds = new Map(); // event id → kind, to tell which kind a relay refused
     this.closed = false;
   }
 
@@ -99,8 +100,10 @@ export class RelayPool {
 
   /** Publish to every relay; queued for relays that are reconnecting. */
   publish(ev) {
+    this.sentKinds.set(ev.id, ev.kind);
+    if (this.sentKinds.size > 500) this.sentKinds.delete(this.sentKinds.keys().next().value);
     for (const r of this.relays) {
-      if (r.banned) continue;
+      if (r.banned || r.noKinds.has(ev.kind)) continue;
       if (!this.send(r, ['EVENT', ev])) { r.pending = r.pending.filter((m) => !(m[0] === 'EVENT' && sameSlot(m[1], ev))); r.pending.push(['EVENT', ev]); }
     }
   }
@@ -120,13 +123,14 @@ export class RelayPool {
     else if (type === 'OK') {
       const [, id, ok, reason = ''] = msg;
       if (ok) r.lastOk = Date.now();
-      else this.rejected(r, reason);
+      else this.rejected(r, reason, this.sentKinds.get(id));
       this.onOk(id, !!ok, reason, r.url);
       this.onStatus();
     } else if (type === 'CLOSED') {
       const reason = String(msg[2] || '');
       if (/^auth-required/.test(reason)) return; // AUTH follows
-      this.rejected(r, reason);
+      const k = reason.match(/\bkind\s*(\d+)/i);
+      this.rejected(r, reason, k ? Number(k[1]) : undefined);
     } else if (type === 'AUTH' && typeof msg[1] === 'string') {
       // NIP-42: every phone that holds the link is the list's owner, so it can log in as the list
       const ev = await signEvent(this.sk, { kind: 22242, created_at: Math.floor(Date.now() / 1000), tags: [['relay', r.url], ['challenge', msg[1]]], content: '' });
@@ -135,9 +139,12 @@ export class RelayPool {
     }
   }
 
-  rejected(r, reason) {
+  rejected(r, reason, kind) {
     r.error = reason;
-    // policies we cannot satisfy (paid, web of trust, kind not allowed): stop using that relay
+    // a relay that refuses one kind (relay.coinos.io: "blocked: kind 21078 not allowed") still
+    // carries the others: stop sending only that kind there
+    if (kind !== undefined && /\bkind\b/i.test(reason)) { r.noKinds.add(kind); this.onStatus(); return; }
+    // policies we cannot satisfy (paid, web of trust, whitelists): stop using that relay
     if (/^(blocked|restricted)/.test(reason) || /paid|payment|web of trust|not allowed|whitelist|nip-05/i.test(reason)) {
       r.banned = true;
       try { r.ws && r.ws.close(); } catch { /* ignore */ }

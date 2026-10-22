@@ -75,7 +75,13 @@ export class Session {
       onStatus: () => this.reportStatus(),
     });
     const now = Math.floor(Date.now() / 1000);
-    this.pool.subscribe('ll', [{ kinds: [KIND], authors: [this.keys.pk] }, { kinds: [LIVE], authors: [this.keys.pk], since: now - 30 }]);
+    // every record is a whole merged copy, so only the newest per slot matters. Some relays keep
+    // every version (relay.ditto.pub): after the first visit, ask only for what is new since the
+    // last sync (with a margin for clocks); the first time, the newest 60 records are plenty.
+    const since = rec.syncedAt ? { since: rec.syncedAt - 3600 } : {};
+    // two subscriptions: a relay that refuses the ephemeral kind (relay.coinos.io) closes only that one
+    this.pool.subscribe('ll', [{ kinds: [KIND], authors: [this.keys.pk], limit: 60, ...since }]);
+    this.pool.subscribe('lv', [{ kinds: [LIVE], authors: [this.keys.pk], since: now - 30 }]);
     this.pool.start();
     // publish our copy soon even if no relay answers the first query (a brand-new shared list)
     this.schedule(1500);
@@ -142,6 +148,7 @@ export class Session {
       const value = await open(this.keys.encKey, ev.content, this.aad(slot));
       if (!value || value.v !== 2 || !value.doc) return; // not ours, tampered, or a newer format
       const changes = this.store.applyRemote(value.doc);
+      this.store.noteSynced(ev.created_at);
       // keep a second full copy on the relays: republish ours after absorbing someone else's
       if (changes && slot !== this.mySlot) this.schedule(2500);
       this.status = 'synced';

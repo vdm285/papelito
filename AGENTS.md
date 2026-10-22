@@ -50,12 +50,12 @@ node tools/smoke.mjs
 node tools/shots.mjs
 ```
 
-and look at the captures in `data/cache/shots/` (phone and desk, both themes, cards). Before a commit that touches sync: `node tools/sync-live.mjs` and `node tools/smoke.mjs --sync` (they use the real relays). Before any commit: `node tools/lf.mjs` (Windows tools write CRLF).
+and look at the captures in `data/cache/shots/` (phone and desk, both themes, cards). Before a commit that touches sync: `node tools/sync-live.mjs` and `node tools/smoke.mjs --sync` (they use the real relays). Before any commit: `node tools/lf.mjs` (Windows tools write CRLF) and `node tools/check-text.mjs` (invisible control characters).
 
 ## Gotchas (each one cost time)
 
 - **Python on Windows writes CRLF** in text mode: open files with `newline=''`; run `node tools/lf.mjs` before committing (`.gitattributes` enforces LF).
-- **Heredocs with backticks break in this shell**: write scripts to `data/cache/` and run them by path.
+- **Heredocs in this shell eat backslashes**: a Python patch written in a heredoc turned `\b` into a real backspace inside a regex, which silently broke the relay logic; backticks break heredocs too. Write every patch script to a file under `data/cache/` and run it by path; `node tools/check-text.mjs` finds control characters.
 - **lit's `live()` resets a field to the bound value on any re-render**: the writing line binds `this.draft`, so text must arrive through `input` events (as real typing does). Setting `textarea.value` from a script without an input event is undone on the next render.
 - **The sheet is rotated −0.35° on a desk**: `getBoundingClientRect` of anything on it is inflated by a few pixels. Measure with the transform removed (see the baseline measurement in HANDOFF).
 - **Strikes are measured on the text**: they must be redrawn when the handwriting font arrives (`document.fonts.ready`, `loadingdone`), or they are sized for the fallback font.
