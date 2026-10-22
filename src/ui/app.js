@@ -375,6 +375,7 @@ export class PapelApp extends LitElement {
     // a render caused only by typing moves nothing: skip measuring every row (a layout per key)
     if (this.typingOnly) return;
     for (const el of this.querySelectorAll('.body [data-id], .body [data-flip]')) this.rects.set(flipKey(el), el.getBoundingClientRect().top);
+    this.stuckBefore = this.querySelector('.writing[data-stuck]');
   }
 
   updated(changed) {
@@ -421,6 +422,8 @@ export class PapelApp extends LitElement {
       for (const el of this.querySelectorAll('.body [data-id], .body [data-flip]')) {
         const before = this.rects.get(flipKey(el));
         if (before === undefined) continue;
+        // a writing line stuck to the bottom of the screen is pinned there: it never glides
+        if (el.hasAttribute('data-stuck') || this.stuckBefore === el) continue;
         const dy = before - el.getBoundingClientRect().top;
         if (Math.abs(dy) > 2) el.animate([{ transform: `translateY(${dy}px)` }, { transform: 'none' }], { duration: 340, easing: 'cubic-bezier(.2,.8,.2,1)' });
       }

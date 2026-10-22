@@ -21,7 +21,7 @@ await page.waitForSelector('.row[data-id]');
 await page.evaluate(() => document.fonts.ready);
 // strike two items the way a person would, then let the ink settle
 await page.evaluate(() => { for (const t of ['jitomate', 'leche Lala']) { const r = [...document.querySelectorAll('.pending .row')].find((x) => x.textContent.includes(t)); r.dispatchEvent(new PointerEvent('pointerdown', { bubbles: true, clientX: 300, clientY: 10, pointerId: 1, button: 0 })); r.dispatchEvent(new PointerEvent('pointerup', { bubbles: true, clientX: 300, clientY: 10, pointerId: 1, button: 0 })); r.dispatchEvent(new MouseEvent('click', { bubbles: true, clientX: 300, clientY: 10 })); } });
-await new Promise((r) => setTimeout(r, 900));
+await new Promise((r) => setTimeout(r, 550)); // the strokes are drawn; the rows have not settled yet (1.4 s)
 await page.evaluate(() => { document.activeElement && document.activeElement.blur(); });
 const png = await page.screenshot();
 await sharp(png).png({ compressionLevel: 9, palette: true, quality: 90 }).toFile('public/og.png');
