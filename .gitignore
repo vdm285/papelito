@@ -9,3 +9,4 @@ Thumbs.db
 data/cache/
 data/sources/
 dist-audit/
+dist-verify/
