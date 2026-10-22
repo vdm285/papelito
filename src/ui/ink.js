@@ -119,6 +119,6 @@ export function touchPulse(row, reduce) {
 /** Paper grain (or chalk dust) as an SVG data URI, set once on :root as --grain. */
 export function grain(theme) {
   const chalk = theme === 'pizarron';
-  const svg = `<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n' x='0' y='0'><feTurbulence type='fractalNoise' baseFrequency='${chalk ? 0.9 : 0.75}' numOctaves='${chalk ? 2 : 3}' stitchTiles='stitch'/><feColorMatrix values='${chalk ? '0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 .07 0' : '0 0 0 0 .32  0 0 0 0 .26  0 0 0 0 .16  0 0 0 .085 0'}'/></filter><rect width='220' height='220' filter='url(%23n)'/></svg>`;
+  const svg = `<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n' x='0' y='0'><feTurbulence type='fractalNoise' baseFrequency='${chalk ? 0.9 : 0.75}' numOctaves='${chalk ? 2 : 3}' stitchTiles='stitch'/><feColorMatrix values='${chalk ? '0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 .063 0' : '0 0 0 0 .32  0 0 0 0 .26  0 0 0 0 .16  0 0 0 .047 0'}'/></filter><rect width='220' height='220' filter='url(%23n)'/></svg>`;
   return `url("data:image/svg+xml;utf8,${svg.replace(/"/g, "'").replace(/#/g, '%23').replace(/\n/g, '')}")`;
 }

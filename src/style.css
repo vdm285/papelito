@@ -10,6 +10,11 @@
   font-weight: 400 700; /* one static instance at 520: no other weight is ever synthesized */
   font-display: fallback;
 }
+@font-face { /* the margin doodles: monochrome Noto Emoji, subset to the dictionary's emoji (tools/build-doodles.py) */
+  font-family: 'Noto Emoji';
+  src: url('/fonts/doodles.woff2') format('woff2');
+  font-display: swap;
+}
 @font-face {
   font-family: 'Atkinson Hyperlegible Next';
   src: url('/fonts/atkinson.woff2') format('woff2');
@@ -58,7 +63,6 @@
   --toast-ink: #fbf8f0;
   --focus: #1f3c96;
   --danger: #b8232f;
-  --grain-opacity: .55;
 
   --ink-azul: #1f3c96;
   --ink-roja: #b8232f;
@@ -97,7 +101,6 @@
   --toast-ink: #1b2420;
   --focus: #9fd0ff;
   --danger: #ff9aa2;
-  --grain-opacity: .9;
 
   --ink-azul: #a8d4ff;
   --ink-roja: #ffb4ba;
@@ -155,7 +158,6 @@ papel-app { display: block; min-height: 100%; }
   position: absolute; inset: 0;
   background-image: var(--grain);
   background-size: 220px 220px;
-  opacity: var(--grain-opacity);
   pointer-events: none;
   z-index: -1;
 }
@@ -302,7 +304,8 @@ ol.rows, ul.rows { list-style: none; margin: 0; padding: 0; }
   color: var(--pencil);
   padding-right: 4px;
 }
-.margin .doodle { width: 26px; height: 26px; opacity: .75; filter: grayscale(.15); }
+.margin .doodle-glyph { font: 400 22px/1 'Noto Emoji', sans-serif; color: var(--pencil); }
+.row.done .margin .doodle-glyph { opacity: .45; }
 .margin .qty { font: 600 15px/1 var(--font-ui); color: var(--pencil); }
 .row .words {
   position: relative;
@@ -388,6 +391,7 @@ ol.rows, ul.rows { list-style: none; margin: 0; padding: 0; }
   background:
     linear-gradient(to right, transparent calc(var(--margin-x)), var(--margin) calc(var(--margin-x)), var(--margin) calc(var(--margin-x) + 1.5px), transparent calc(var(--margin-x) + 1.5px)),
     linear-gradient(to top, var(--rule) 1px, transparent 1px),
+    var(--grain) 0 0 / 220px 220px,
     var(--paper);
 }
 

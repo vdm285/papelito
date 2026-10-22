@@ -420,7 +420,8 @@ export class PapelApp extends LitElement {
     const strikeInk = done ? store.inkOf(item.d[0]) : ink;
     const text = item.t[0];
     const a = idx ? aisleOf(text, idx, fixes) : null;
-    const doodle = store.prefs.doodles && a && a.emoji ? a.emoji : '';
+    // a pencil doodle: the emoji in text presentation, drawn by the monochrome doodle font
+    const doodle = store.prefs.doodles && a && a.emoji ? `${a.emoji.replace(/\uFE0F/g, '')}\uFE0E` : '';
     const fresh = store.isNew(item);
     return html`
       <li class="row ${done ? 'done' : ''} ${fresh ? 'new' : ''}" data-id=${item.id} role="checkbox" aria-checked=${done ? 'true' : 'false'} tabindex="0"
@@ -491,13 +492,13 @@ export class PapelApp extends LitElement {
   renderNote(rec) {
     return html`<aside class="side">${rec.secret ? html`
       <div class="note">
-        <h4>Llévatela</h4>
+        <h4>${t.noteTitle}</h4>
         <div class="qr">${sync.qr(rec)}</div>
-        <p>${t.shareQr}.</p>
+        <p>${t.noteShared}</p>
       </div>` : html`
       <div class="note">
-        <h4>Llévatela</h4>
-        <p>Comparte la hoja y escanéala con tu teléfono: lo que escribas aquí aparece allá.</p>
+        <h4>${t.noteTitle}</h4>
+        <p>${t.noteLocal}</p>
         <p style="margin-top:12px"><button class="btn" @click=${() => sync.share(this)}>${icons.share} ${t.share}</button></p>
       </div>`}
     </aside>`;
