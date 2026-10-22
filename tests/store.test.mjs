@@ -57,13 +57,14 @@ test('a split replaces one item by its pieces and can be undone', () => {
   assert.deepEqual(texts(s), ['huevos leche tortillas']);
 });
 
-test('this phone writes in its preferred ink; two phones never share one', () => {
+test('this phone writes in its preferred ink; two phones never share one', async () => {
   const a = new Store(new Mem());
   a.boot('https://x.test/');
   assert.equal(a.inkOf(a.device), 'azul');
   a.add('tortillas');
   a.setSecret('A'.repeat(43), 'r'.repeat(32));
   a.ensureInk();
+  await new Promise((r) => setTimeout(r, 5)); // real phones claim seconds apart (a same-millisecond tie is decided by the clock's counter)
   const b = new Store(new Mem());
   b.openShared('A'.repeat(43), 'r'.repeat(32));
   b.ensureInk(); // claims blue before seeing A's copy
