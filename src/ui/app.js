@@ -522,7 +522,7 @@ export class PapelApp extends LitElement {
         ${this.wide ? this.renderNote(rec) : nothing}
       </div>
       ${this.card ? renderCard(this, this.card) : nothing}
-      ${this.toast ? html`<div class="toast" role="status" aria-live="polite"
+      ${this.toast ? html`<div class="toast ${this.card && !matchMedia('(min-width: 1000px)').matches ? 'over-card' : ''}" role="status" aria-live="polite"
         @pointerenter=${() => clearTimeout(this.toastTimer)} @pointerleave=${() => this.toastLater(4000)}
         @focusin=${() => clearTimeout(this.toastTimer)} @focusout=${() => this.toastLater(4000)}><span>${this.toast.label}</span>${this.toast.undo ? html`<button @click=${() => this.doUndo()}>${t.undo}</button>` : nothing}</div>` : nothing}
       <div class="sr" aria-live="polite">${this.announce}</div>

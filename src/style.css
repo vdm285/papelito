@@ -645,6 +645,8 @@ html { scroll-padding-bottom: calc(var(--line) * 2 + var(--kb, 0px)); }
   box-shadow: 0 10px 30px -8px rgba(0,0,0,.35);
   animation: rise .22s var(--ease-out);
 }
+/* a card open on a phone fills the bottom: the toast goes to the top instead of over its buttons */
+.toast.over-card { top: max(12px, env(safe-area-inset-top, 0px)); bottom: auto; }
 .toast button { border: 0; background: transparent; color: inherit; font-weight: 800; text-decoration: underline; text-underline-offset: 3px; min-height: 44px; padding: 0 12px; cursor: pointer; white-space: nowrap; }
 
 /* ---------- the desk extras (wide screens) ---------- */

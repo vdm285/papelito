@@ -226,6 +226,18 @@ try {
     await page.goBack();
     await sleep(800);
     const now = await page.evaluate(() => ({ hash: location.hash, secret: window.__papelito.store.rec.secret, card: !!document.querySelector('.card') }));
+    // a toast while a card is open on a phone never covers the card's buttons
+    await page.evaluate(() => { const app = document.querySelector('papel-app'); app.openCard('item', { id: window.__papelito.store.items()[0].id }); });
+    await page.waitForSelector('.card .chip');
+    await page.evaluate(() => [...document.querySelectorAll('.card .chip')].find((c) => c.getAttribute('aria-pressed') === 'false').click());
+    await page.waitForSelector('.toast');
+    const clash = await page.evaluate(() => {
+      const t = document.querySelector('.toast').getBoundingClientRect();
+      return [...document.querySelectorAll('.card button')].some((b) => { const r = b.getBoundingClientRect(); return r.width && r.left < t.right && r.right > t.left && r.top < t.bottom && r.bottom > t.top; });
+    });
+    check('a toast over an open card does not cover its buttons', !clash);
+    await page.keyboard.press('Escape');
+    await sleep(300);
     check('Back closes the card and keeps the new link', !now.card && now.hash !== oldHash && now.hash === `#k=${now.secret}`, now.hash.slice(0, 8));
     check('no errors in the console', errors.filter((e) => !/WebSocket/.test(e)).length === 0, errors.slice(0, 3));
     await ctx.close();
