@@ -174,6 +174,8 @@ export class Store {
   inkOf(device) {
     const d = this.rec.doc.dev[device];
     if (d && d.ink[0]) return d.ink[0];
+    // this phone, on a list it has not claimed an ink on yet: the ink it chose once (blue at first)
+    if (device === this.device) return this.prefs.ink || INKS[0];
     // a device that never chose (an old copy): the first ink nobody else holds, stable per device
     const used = new Set(Object.values(this.rec.doc.dev).map((x) => x.ink[0]).filter(Boolean));
     const free = INKS.filter((i) => !used.has(i));
@@ -294,7 +296,14 @@ export class Store {
 
   setInk(ink) {
     setDevice(this.doc, this.clock, 'ink', ink);
+    this.savePrefs({ ink }); // the ink this phone prefers on every sheet
     this.changed('ink');
+  }
+
+  /** The ink of whoever last wrote the title (the stamp ends with the device id). */
+  titleInk() {
+    const s = this.rec.doc.title[1];
+    return s ? this.inkOf(s.slice(13)) : this.inkOf(this.device);
   }
 
   setName(name) {
@@ -358,7 +367,8 @@ export class Store {
       if (!rival) return;
       if (mine.ink[1] < rival[1].ink[1] || (mine.ink[1] === rival[1].ink[1] && this.device < rival[0])) return;
     }
-    const free = INKS.find((i) => !used.has(i)) || INKS[0];
+    const wanted = this.prefs.ink || INKS[0];
+    const free = !used.has(wanted) ? wanted : INKS.find((i) => !used.has(i)) || INKS[0];
     setDevice(this.doc, this.clock, 'ink', free);
     this.changed('ink');
   }
@@ -369,7 +379,8 @@ export class Store {
     const mine = this.doc.dev[this.device];
     if (mine && mine.ink[0]) return;
     const used = new Set(Object.entries(this.doc.dev).filter(([k]) => k !== this.device).map(([, d]) => d.ink[0]).filter(Boolean));
-    const free = INKS.find((i) => !used.has(i)) || 'azul';
+    const wanted = this.prefs.ink || INKS[0];
+    const free = !used.has(wanted) ? wanted : INKS.find((i) => !used.has(i)) || INKS[0];
     setDevice(this.doc, this.clock, 'ink', free);
     this.save();
   }

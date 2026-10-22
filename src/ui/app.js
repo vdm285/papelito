@@ -381,7 +381,7 @@ export class PapelApp extends LitElement {
     const st = sync.state.status;
     return html`
       <header class="head">
-        <input class="title" aria-label=${t.titleAria} placeholder=${t.untitled} .value=${live(store.title())} maxlength="60" enterkeyhint="next"
+        <input class="title" style="--ink: var(--ink-${store.titleInk()})" aria-label=${t.titleAria} placeholder=${t.untitled} .value=${live(store.title())} maxlength="60" enterkeyhint="next"
           @input=${(e) => { clearTimeout(this.titleTimer); const v = e.target.value; this.titleTimer = setTimeout(() => store.setTitle(v), 500); }}
           @change=${(e) => store.setTitle(e.target.value)}
           @keydown=${(e) => { if (e.key === 'Enter') { e.preventDefault(); store.setTitle(e.target.value); this.focusComposer(); } }} />
