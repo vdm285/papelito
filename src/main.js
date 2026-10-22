@@ -42,6 +42,19 @@ addEventListener('hashchange', async () => {
   if (m && (!store.rec || store.rec.secret !== m[1])) await sync.openLink(location.href);
 });
 
+// The keyboard: Android shrinks the page (interactive-widget=resizes-content); iPhone covers its
+// bottom instead. --kb is the covered height, so the sticky writing line and the toast stay above
+// the keyboard. (Measured from the visual viewport; to be checked on a real iPhone.)
+if (window.visualViewport) {
+  const vv = window.visualViewport;
+  const kb = () => {
+    const covered = Math.max(0, Math.round(innerHeight - (vv.offsetTop + vv.height)));
+    document.documentElement.style.setProperty('--kb', `${covered > 80 ? covered : 0}px`);
+  };
+  vv.addEventListener('resize', kb);
+  vv.addEventListener('scroll', kb);
+}
+
 // waking up, coming back online, leaving
 document.addEventListener('visibilitychange', () => {
   if (document.visibilityState === 'visible') { sync.wake(); if (store.prefs.awake) install.keepAwake(true); }
