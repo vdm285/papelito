@@ -136,7 +136,7 @@ const scenes = {
     await b.p.waitForFunction(() => document.querySelectorAll('.row[data-id]').length >= 10, { timeout: 30000 });
     await sleep(1500);
     // B strikes, A adds; each sees the other
-    await b.p.evaluate(() => { const row = [...document.querySelectorAll('.pending .row')].find((r) => r.textContent.includes('aguacates')); row.dispatchEvent(new PointerEvent('pointerdown', { bubbles: true, clientX: 200, clientY: 10, pointerId: 1, button: 0, pointerType: 'touch' })); row.dispatchEvent(new PointerEvent('pointerup', { bubbles: true, clientX: 200, clientY: 10, pointerId: 1, button: 0, pointerType: 'touch' })); });
+    await b.p.evaluate(() => { const row = [...document.querySelectorAll('.pending .row')].find((r) => r.textContent.includes('aguacates')); row.dispatchEvent(new PointerEvent('pointerdown', { bubbles: true, clientX: 200, clientY: 10, pointerId: 1, button: 0, pointerType: 'touch' })); row.dispatchEvent(new PointerEvent('pointerup', { bubbles: true, clientX: 200, clientY: 10, pointerId: 1, button: 0, pointerType: 'touch' })); row.dispatchEvent(new MouseEvent('click', { bubbles: true, clientX: 200, clientY: 10 })); });
     await a.p.focus('.composer textarea');
     await a.p.keyboard.type('limones');
     await a.p.keyboard.press('Enter');

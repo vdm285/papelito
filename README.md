@@ -7,7 +7,7 @@ Write "huevos, leche" at home; it appears, in your ink, on the other phone at th
 
 **Use it:** https://vdm285.github.io/listolista/
 
-![Two phones, one sheet: a strike made on the right phone drawn in red on the left one, and an item written on the left appearing on the right](docs/img/two-phones.jpg)
+![Two phones, one sheet: the right phone wrote "limones" and it arrived on the left in red ink under a yellow highlight; the right phone struck "cebolla" and the red line is drawing itself on the left, pen tip still on the paper](docs/img/two-phones.jpg)
 
 *Working name: Papelito. The repository keeps its old name, ListoLista, until the owner picks one.*
 

@@ -29,6 +29,7 @@ const tapRow = (p, text) => p.evaluate((t) => {
   const r = [...document.querySelectorAll('.pending .row')].find((x) => x.querySelector('.txt').textContent === t);
   const o = { bubbles: true, clientX: 200, clientY: 10, pointerId: 1, button: 0, pointerType: 'touch' };
   r.dispatchEvent(new PointerEvent('pointerdown', o)); r.dispatchEvent(new PointerEvent('pointerup', o));
+  r.dispatchEvent(new MouseEvent('click', { bubbles: true, clientX: 200, clientY: 10 })); // a real tap ends in a click
 }, text);
 
 const a = await phone(seedList({ fresh: false, short: true, title: 'Súper del sábado' }));

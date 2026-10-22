@@ -10,7 +10,7 @@ import { t } from '../app/i18n.js';
 import { isDone } from '../model/doc.js';
 import { aisleOf, splitHint, AISLES, keyOf, fold } from '../model/aisles.js';
 import { dictIndex, completions } from '../data/dict.js';
-import { drawStrike, drawMarker, strikeProgress, revealWriting, touchPulse } from './ink.js';
+import { drawStrike, drawMarker, swipeMarker, strikeProgress, revealWriting, touchPulse } from './ink.js';
 import { icons } from './icons.js';
 import { renderCard } from './cards.js';
 import { sync } from '../app/sync-control.js';
@@ -408,7 +408,11 @@ export class PapelApp extends LitElement {
       } else if (done && !this.drawn.has(row)) { drawStrike(row, 'still'); this.drawn.add(row); }
       else if (!done && this.drawn.has(row)) { drawStrike(row, 'none'); this.drawn.delete(row); }
       if (row.classList.contains('new') && row.dataset.marked !== row.querySelector('.txt').textContent) { drawMarker(row); row.dataset.marked = row.querySelector('.txt').textContent; }
-      if (this.remoteAdded.has(id)) { this.remoteAdded.delete(id); revealWriting(row, reduce); }
+      if (this.remoteAdded.has(id)) {
+        this.remoteAdded.delete(id);
+        const writing = revealWriting(row, reduce);
+        if (row.classList.contains('new')) swipeMarker(row, writing + 120, reduce);
+      }
       if (this.remoteTouched.has(id)) { this.remoteTouched.delete(id); touchPulse(row, reduce); }
     }
     // everything in the sheet's flow glides to its new place together (rows, the writing line,

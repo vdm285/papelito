@@ -136,10 +136,18 @@ export function strikeProgress(row, k) {
 /** The other phone wrote this: reveal it left to right at handwriting speed. */
 export function revealWriting(row, reduce) {
   const txt = row.querySelector('.txt');
-  if (!txt || reduce) return;
+  if (!txt || reduce) return 0;
   const n = txt.textContent.length;
   const dur = Math.max(380, Math.min(1500, n * 55));
   txt.animate([{ clipPath: 'inset(-20% 100% -20% 0)' }, { clipPath: 'inset(-20% 0 -20% 0)' }], { duration: dur, easing: 'cubic-bezier(.4,.1,.4,1)' });
+  return dur;
+}
+
+/** The highlighter passes over a new word once its ink is down (never before: an empty yellow blob). */
+export function swipeMarker(row, delay, reduce) {
+  const svg = row.querySelector('.marker');
+  if (!svg || reduce) return;
+  svg.animate([{ clipPath: 'inset(-40% 100% -40% -4%)' }, { clipPath: 'inset(-40% -4% -40% -4%)' }], { duration: 320, delay, easing: 'cubic-bezier(.35,.7,.35,1)', fill: 'backwards' });
 }
 
 /** A soft pulse on a row the other phone touched. */
