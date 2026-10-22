@@ -6,7 +6,7 @@
 // what someone is writing right now, so the other sheet can show the pen moving.
 
 import { deriveKeys, seal, open, slotTag } from './crypto.js';
-import { RelayPool, signEvent, publicKeyOf, dTag } from './nostr.js';
+import { RelayPool, signEvent, verifyEvent, publicKeyOf, dTag } from './nostr.js';
 import { canonical } from '../model/doc.js';
 
 export const KIND = 30078;
@@ -81,6 +81,7 @@ export class Session {
     this.status = 'connecting';
     this.offset = 0; // seconds, see serverOffset
     this.junk = new Set(); // ids of events that did not decrypt (never trusted, never retried)
+    this.dates = new Map(); // id → created_at, for events we signed or verified
   }
 
   /** Relay time in seconds: this phone's clock, corrected if it is far off. */
@@ -157,6 +158,8 @@ export class Session {
       content,
     });
     this.lastEvent = ev;
+    this.dates.set(ev.id, ev.created_at);
+    if (this.dates.size > 3000) this.dates = new Map([...this.dates].slice(-1000));
     this.lastHash = hash;
     this.lastSent = Date.now();
     this.seenIds.add(ev.id);
@@ -176,9 +179,12 @@ export class Session {
       // signature check we skip nor a sealed record, so a bogus created_at from the year 3000
       // never reaches lastCreated (it would make every later record of ours unpublishable)
       const known = this.seenIds.has(ev.id);
-      const value = known ? null : await open(this.keys.encKey, ev.content, this.aad(slot));
+      // a known id: its date is the one we stored (a relay could send the same id with another date)
+      const value = known ? null : (await verifyEvent(ev)) && await open(this.keys.encKey, ev.content, this.aad(slot));
       if (!known && (!value || value.v !== 2)) { this.junk.add(ev.id); if (this.junk.size > 2000) this.junk.clear(); return; }
-      const at = Number.isFinite(ev.created_at) && ev.created_at <= this.now() + 86400 ? ev.created_at : 0;
+      if (!known) this.dates.set(ev.id, ev.created_at);
+      const date = this.dates.get(ev.id);
+      const at = Number.isFinite(date) && date <= this.now() + 86400 ? date : 0;
       if (/^[0-9a-f]{32}$/.test(slot)) this.slots.add(slot);
       if (at > this.maxSeen) this.maxSeen = at;
       if (slot === this.mySlot && at) {

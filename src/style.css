@@ -424,7 +424,7 @@ ol.rows, ul.rows { list-style: none; margin: 0; padding: 0; }
 .writing { position: relative; }
 .writing.sticky {
   position: sticky; z-index: 3;
-  bottom: max(var(--kb, 0px), env(safe-area-inset-bottom, 0px));
+  bottom: calc(max(var(--kb, 0px), env(safe-area-inset-bottom, 0px)) + 8px); /* descenders stay on screen */
   /* the paper continues under the writing line: its colour, its margin line and its rules */
   background:
     linear-gradient(to right, transparent calc(var(--margin-x)), var(--margin) calc(var(--margin-x)), var(--margin) calc(var(--margin-x) + 1.5px), transparent calc(var(--margin-x) + 1.5px)),
@@ -443,7 +443,9 @@ ol.rows, ul.rows { list-style: none; margin: 0; padding: 0; }
 }
 .writing.sticky[data-stuck]::before {
   content: ''; position: absolute; left: 0; right: 0; top: -12px; height: 12px; pointer-events: none;
-  background: linear-gradient(to top, var(--paper), transparent);
+  background:
+    linear-gradient(to right, transparent calc(var(--margin-x)), var(--margin) calc(var(--margin-x)), var(--margin) calc(var(--margin-x) + 1.5px), transparent calc(var(--margin-x) + 1.5px)),
+    linear-gradient(to top, var(--paper), transparent);
 }
 html { scroll-padding-bottom: calc(var(--line) * 2 + var(--kb, 0px)); }
 
@@ -538,10 +540,10 @@ html { scroll-padding-bottom: calc(var(--line) * 2 + var(--kb, 0px)); }
   animation: rise .26s var(--ease-out);
 }
 .card::before { content: ''; display: block; width: 40px; height: 4px; border-radius: 4px; background: var(--card-line); margin: 2px auto 10px; }
-@media (min-width: 760px) and (max-width: 999.98px) { /* a tablet: a bottom sheet of a sensible width */
+@media (min-width: 760px) and (max-width: 1179.98px) { /* a tablet or a small laptop: a bottom sheet of a sensible width */
   .card { left: 0; right: 0; margin-inline: auto; max-width: 560px; }
 }
-@media (min-width: 1000px) {
+@media (min-width: 1180px) {
   .scrim, :root[data-theme='pizarron'] .scrim { background: transparent; } /* the paper is never dimmed on a desk */
   .card {
     left: auto; right: 24px;
@@ -663,7 +665,8 @@ html { scroll-padding-bottom: calc(var(--line) * 2 + var(--kb, 0px)); }
   animation: rise .22s var(--ease-out);
 }
 /* a card open on a phone fills the bottom: the toast goes to the top instead of over its buttons */
-.toast.over-card { top: max(12px, env(safe-area-inset-top, 0px)); bottom: auto; }
+.toast.over-card { top: max(12px, env(safe-area-inset-top, 0px)); bottom: auto; pointer-events: none; } /* a tap on its words reaches the scrim */
+.toast.over-card button { pointer-events: auto; }
 .toast button { border: 0; background: transparent; color: inherit; font-weight: 800; text-decoration: underline; text-underline-offset: 3px; min-height: 44px; padding: 0 12px; cursor: pointer; white-space: nowrap; }
 
 /* ---------- the desk extras (wide screens) ---------- */

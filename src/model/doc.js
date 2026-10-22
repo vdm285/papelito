@@ -115,8 +115,13 @@ export function see(doc, device, stamp) {
   if (!doc.seen[device] || stamp > doc.seen[device]) doc.seen[device] = stamp;
 }
 
-// invisible format characters (U+200B…, U+200E, U+2060-2064, …) never belong in an item
-const clip = (s, n) => String(s ?? '').replace(/\p{Cf}/gu, '').replace(/\s+/g, ' ').trim().slice(0, n);
+// invisible format characters (U+200B…, U+200E, U+2060-2064, …) never belong in an item; the
+// zero-width joiner stays, because emoji sequences (👨‍👩‍👧, 🏳️‍🌈) are built with it
+export const INVISIBLE = /(?!\u200d)\p{Cf}/gu;
+const clip = (s, n) => String(s ?? '').replace(INVISIBLE, '').replace(/\s+/g, ' ').trim().slice(0, n);
+// a copy from another phone keeps its text, except direction overrides that could make one item
+// read as another (U+202A-202E, U+2066-2069)
+const BIDI = /[\u202a-\u202e\u2066-\u2069]/g;
 
 // ---------- merging ----------
 
@@ -127,6 +132,8 @@ const clip = (s, n) => String(s ?? '').replace(/\p{Cf}/gu, '').replace(/\s+/g, '
  * purged legitimately. A crafted `seen` claim, a truncated copy or two tabs racing can therefore
  * never delete a young item (robustness audit, round 1).
  */
+const lastTouch = (it) => [it.c, it.t[1], it.d[1], it.x[1]].reduce((m, s) => (s > m ? s : m), '');
+
 export function merge(a, b, now = Date.now()) {
   const purgeable = now - TOMBSTONE_DAYS * 864e5;
   const out = emptyDoc();
@@ -151,7 +158,10 @@ export function merge(a, b, now = Date.now()) {
       const it = src[k];
       if (!cur) {
         // held by one side only: keep it unless the other side saw it born (then it was purged there)
-        if (other.items[k] === undefined && (other.seen[it.by] || '') >= it.c && stampTime(it.c) < purgeable) continue;
+        // ...and only if nothing touched it within the window either: a tombstone is purged a month
+        // after the deletion, so an honest copy that lacks an item it saw born lacks it because that
+        // item was deleted (after its last change) more than a month ago
+        if (other.items[k] === undefined && (other.seen[it.by] || '') >= it.c && stampTime(lastTouch(it)) < purgeable) continue;
         out.items[k] = { ...it };
         continue;
       }
@@ -233,19 +243,22 @@ const okText = (n) => (v) => typeof v === 'string' && v.length <= n;
  * Rebuild a document from untrusted JSON, keeping only well-formed fields. Anyone with a list's
  * link can write to it, so a decrypted copy is still treated as hostile input.
  */
-export function sanitize(raw, now = Date.now(), report = null) {
+let caps = true;
+export function sanitize(raw, now = Date.now(), report = null, own = false) {
   horizon = now + FUTURE_MS;
+  caps = !own;
   refused = 0;
   try { return sanitizeInner(raw); } finally {
     if (report) report.future = refused;
     horizon = Infinity;
+    caps = true;
   }
 }
 
 function sanitizeInner(raw) {
   const doc = emptyDoc();
   if (!raw || typeof raw !== 'object' || raw.v !== DOC_VERSION) return doc;
-  if (okReg(raw.title, okText(LIMITS.title))) doc.title = [raw.title[0], raw.title[1]];
+  if (okReg(raw.title, okText(LIMITS.title))) doc.title = [raw.title[0].replace(BIDI, ''), raw.title[1]];
   if (okReg(raw.order, (v) => v === null || (Array.isArray(v) && v.length <= LIMITS.aisles && v.every((x) => typeof x === 'string' && AISLE_RE.test(x))))) {
     doc.order = [raw.order[0] ? [...new Set(raw.order[0])] : null, raw.order[1]];
   }
@@ -284,15 +297,16 @@ function sanitizeInner(raw) {
       if (!okReg(it.t, okText(LIMITS.text))) continue;
       if (!okReg(it.d, (v) => v === '' || (typeof v === 'string' && DEV_RE.test(v)))) continue;
       if (!okReg(it.x, (v) => v === 0 || v === 1)) continue;
-      const item = { c: it.c, by: it.by, t: [it.t[0], it.t[1]], d: [it.d[0], it.d[1]], x: [it.x[0], it.x[1]] };
+      const item = { c: it.c, by: it.by, t: [it.t[0].replace(BIDI, ''), it.t[1]], d: [it.d[0], it.d[1]], x: [it.x[0], it.x[1]] };
       if (item.x[0] === 1) dead.push([k, item]);
-      else if (item.t[0].replace(/\p{Cf}/gu, '').trim()) live.push([k, item]); // an empty live item is noise
+      else if (item.t[0].replace(INVISIBLE, '').trim()) live.push([k, item]); // an empty live item is noise
     }
     const newest = (key) => (p, q) => (p[1][key][1] < q[1][key][1] ? 1 : -1);
     live.sort((p, q) => (p[1].c < q[1].c ? 1 : -1));
     dead.sort(newest('x'));
-    for (const [k, item] of live.slice(0, LIMITS.items)) doc.items[k] = item;
-    for (const [k, item] of dead.slice(0, LIMITS.tombstones)) doc.items[k] = item;
+    // this phone's own copy is never cut (the caps are for what arrives from elsewhere)
+    for (const [k, item] of caps ? live.slice(0, LIMITS.items) : live) doc.items[k] = item;
+    for (const [k, item] of caps ? dead.slice(0, LIMITS.tombstones) : dead) doc.items[k] = item;
   }
   return doc;
 }

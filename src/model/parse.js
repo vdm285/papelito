@@ -18,7 +18,7 @@ const MAX = 160;
 
 export function splitInput(text) {
   const out = [];
-  for (let line of String(text ?? '').replace(/\p{Cf}/gu, '').split(/\r?\n/)) {
+  for (let line of String(text ?? '').replace(/(?!\u200d)\p{Cf}/gu, '').split(/\r?\n/)) {
     line = line.replace(WA_PREFIX, '').replace(WA_PREFIX_ANDROID, '');
     if (/:\s*$/.test(line) && line.trim().split(/\s+/).length <= 6) continue; // a heading
     // a heading followed by several items on the same line: "Trae: huevos, leche" (but

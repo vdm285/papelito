@@ -267,3 +267,31 @@ test('the other phone\'s edits and renames come with what they replaced, so they
   assert.equal(a.items()[0].t[0], 'leche');
   assert.equal(a.title(), 'Súper');
 });
+
+test('a phone receiving a sheet for the first time is not told that anything was renamed or changed', () => {
+  const a = new Store(new Mem());
+  a.boot('https://x.test/');
+  a.add('leche');
+  a.setTitle('Súper del sábado');
+  a.setSecret('E'.repeat(43), 'n'.repeat(32));
+  a.ensureInk();
+  const b = new Store(new Mem());
+  b.openShared('E'.repeat(43), 'n'.repeat(32));
+  const ch = b.applyRemote(JSON.parse(canonical(a.doc)));
+  assert.equal(ch.oldTitle, undefined, 'a title appearing on an empty copy is not a rename');
+  assert.deepEqual(ch.edited, []);
+});
+
+test('an edit to invisible characters only is a deletion; Ctrl+Z undoes adds and strikes too', () => {
+  const s = new Store(new Mem());
+  s.boot('https://x.test/');
+  const [a, b] = s.add('leche, pan');
+  s.edit(a, '​‎');
+  assert.ok(!s.items().some((i) => i.id === a));
+  s.toggle(b);
+  s.undo();
+  assert.ok(!isDone(s.items().find((i) => i.id === b)), 'the strike is undone');
+  s.undo(); // the deletion of "leche"
+  s.undo(); // the add of both
+  assert.equal(s.items().length, 0);
+});

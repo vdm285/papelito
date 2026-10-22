@@ -284,3 +284,39 @@ test('sanitize drops empty live items and repeated aisles in the order', () => {
   assert.deepEqual(Object.keys(s.items), ['item0001']);
   assert.deepEqual(s.order[0], ['lac', 'fru']);
 });
+
+test('a seen claim never drops an item touched within the purge window, even an old one', () => {
+  const now = Date.now();
+  const old = createClock('phonea00', () => now - 40 * 864e5);
+  const fresh = createClock('phonea00', () => now - 864e5);
+  const d = emptyDoc();
+  addItem(d, old, 'item0001', 'pilas AA');
+  addItem(d, old, 'item0002', 'foco del baño');
+  setText(d, fresh, 'item0002', 'foco del baño (led)'); // edited yesterday
+  const claim = emptyDoc();
+  claim.seen.phonea00 = d.items.item0002.c;
+  const m = merge(d, claim, now);
+  assert.ok(m.items.item0002, 'touched yesterday: kept');
+  assert.ok(!m.items.item0001, 'untouched for 40 days: the honest purge case');
+});
+
+test('this phone\'s own copy is never cut by the caps meant for copies from elsewhere', () => {
+  const now = Date.now();
+  let t = now - 864e5;
+  const a = createClock('phonea00', () => (t += 10));
+  const d = emptyDoc();
+  for (let i = 0; i < LIMITS.items + 40; i++) addItem(d, a, `item${String(i).padStart(5, '0')}`, `cosa ${i}`);
+  const raw = JSON.parse(canonical(d));
+  assert.equal(liveItems(sanitize(raw, now)).length, LIMITS.items);
+  assert.equal(liveItems(sanitize(raw, Infinity, null, true)).length, LIMITS.items + 40);
+});
+
+test('direction overrides in a copy from elsewhere are removed; emoji joiners are kept', () => {
+  const now = Date.now();
+  const a = createClock('phonea00', () => now);
+  const d = emptyDoc();
+  addItem(d, a, 'item0001', 'leche');
+  d.items.item0001.t[0] = '‮leche de soya';
+  const s = sanitize(JSON.parse(canonical(d)), now);
+  assert.equal(s.items.item0001.t[0], 'leche de soya');
+});

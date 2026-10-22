@@ -94,7 +94,7 @@ const CARDS = {
     const a = idx ? aisleOf(it.t[0], idx, store.fixes()) : { aisle: 'otr', guess: false };
     const by = app.whoName(it.by);
     const struckBy = isDone(it) ? app.whoName(it.d[0]) : '';
-    const save = (ta) => { store.edit(card.id, ta.value); };
+    const save = (ta) => { store.edit(card.id, ta.value, true); };
     return html`
       ${head(app, t.edit)}
       <textarea class="field hand" rows="2" aria-label=${t.edit} style="--ink: var(--ink-${store.inkOf(it.by)})" .value=${it.t[0]} maxlength="160"
@@ -122,7 +122,7 @@ const CARDS = {
             <span class="grow"><span style="font: 600 24px/1.1 var(--font-hand)">${l.title || t.untitled}</span>
               <span class="sub">${l.shared ? `${t.shared} · ` : ''}${t.ago(Date.now() - l.updated)}${l.id === store.rec.id ? ' · ✓' : ''}</span></span>
           </button>
-          <button class="icon-btn" aria-label=${`${t.delete}: ${l.title || t.untitled}`} @click=${() => { const back = store.forgetList(l.id); sync.follow(); app.showToast(t.removed(l.title || t.untitled), true, () => { back(); sync.follow(); }); }}>${icons.trash}</button>
+          <button class="icon-btn" aria-label=${`${t.delete}: ${l.title || t.untitled}`} @click=${() => { const back = store.forgetList(l.id); sync.follow(); app.showToast(t.removed(l.title || t.untitled), true, () => { back(); sync.follow(); }, { keep: true }); }}>${icons.trash}</button>
         </div>`)}
       <div class="actions" style="justify-content:flex-start">
         <button class="btn solid" @click=${() => { app.closeCard(); sync.newList(); }}>${icons.plus} ${t.newList}</button>

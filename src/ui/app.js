@@ -87,6 +87,7 @@ export class PapelApp extends LitElement {
   onStore(kind, d) {
     this.typingOnly = false; // anything from the store may move the sheet: measure
     if (kind === 'list') {
+      if (this.toast && !this.toast.keep) this.toast = null;
       this.lingering.clear(); this.pendingAnim.clear(); this.hint = null; this.loadDraft(); this.seenSoon(6000);
       if (this.querySelector('.sheet')) this.swapSheet = true; // a switch: the new sheet lands on top, like a fresh page
     }
@@ -94,7 +95,7 @@ export class PapelApp extends LitElement {
     if (kind === 'notice') this.rev++;
     // the first thing you do on the sheet puts away the notes about how you got here; the ones
     // about something still true stay (the link moved, nothing can be saved)
-    if (kind === 'change' && store.notices.length) store.notices = store.notices.filter(lasting);
+    if (kind === 'change' && store.notices.length && d && PERSON.has(d.kind)) store.notices = store.notices.filter(lasting);
     if (kind === 'undoable') this.showToast(d.label, true);
     if (kind === 'storageFull' && !store.notices.some((n) => n.kind === 'storageFull')) { store.notices.push({ kind: 'storageFull' }); this.showToast(t.storageFull, false); }
     this.rev++;
@@ -165,7 +166,12 @@ export class PapelApp extends LitElement {
     // one timer for every strike made in a row: while you keep striking, nothing moves under your
     // finger; a moment after the last one, all the struck rows settle in one glide
     clearTimeout(this.lingerTimer);
-    this.lingerTimer = setTimeout(() => { this.lingering.clear(); this.rev++; }, LINGER_MS);
+    const settle = () => {
+      // a finger already down on a row (about to strike the next one) must not have it move away
+      if (this.press) { this.lingerTimer = setTimeout(settle, 300); return; }
+      this.lingering.clear(); this.rev++;
+    };
+    this.lingerTimer = setTimeout(settle, LINGER_MS);
   }
 
   // ---------- toast ----------
@@ -202,7 +208,12 @@ export class PapelApp extends LitElement {
 
   // ---------- cards ----------
   openCard(kind, args = {}) {
-    if (!this.card) { this.cardOpener = document.activeElement; history.pushState({ card: kind }, ''); }
+    if (!this.card) {
+      this.cardOpener = document.activeElement;
+      const row = this.cardOpener && this.cardOpener.closest ? this.cardOpener.closest('.row[data-id]') : null;
+      this.cardOpenerIndex = row ? [...this.querySelectorAll('.row[data-id]')].indexOf(row) : -1;
+      history.pushState({ card: kind }, '');
+    }
     this.card = { kind, ...args };
   }
   closeCard() {
@@ -387,6 +398,7 @@ export class PapelApp extends LitElement {
 
   // ---------- after each render: ink and motion ----------
   willUpdate() {
+    document.documentElement.classList.toggle('hand-molde', store.prefs.hand === 'molde');
     const sh = this.querySelector('.sheet');
     this.sheetX = sh ? sh.getBoundingClientRect().left : null;
     const a = document.activeElement;
@@ -495,6 +507,9 @@ export class PapelApp extends LitElement {
       const o = this.cardOpener;
       this.cardOpener = null;
       if (o && o.isConnected && o !== document.body) { o.focus({ preventScroll: true }); return; }
+      const rows = [...this.querySelectorAll('.row[data-id]')];
+      const next = this.cardOpenerIndex >= 0 ? rows[Math.min(this.cardOpenerIndex, rows.length - 1)] : null;
+      if (next) { next.focus({ preventScroll: true }); next.scrollIntoView({ block: 'nearest' }); return; }
       if (fine) this.focusComposer();
       return;
     }
@@ -583,14 +598,14 @@ export class PapelApp extends LitElement {
                 <button class="link" @click=${() => store.clearStruck()}>${t.clearStruck}</button>
               </div>
               ${showStruck ? html`<ol class="rows struck" id="struck-list" role="list">${repeat(struck, (i) => i.id, (i) => this.renderRow(i, idx, fixes, true))}</ol>` : nothing}` : nothing}
-            ${!items.length ? html`<p class="empty-note">${(rec.secret ? t.emptyNoteShared : this.wide ? t.emptyNoteDesk : t.emptyNote).split(' ').map((w, i) => html`<span class="w" style="--i:${i}">${w} </span>`)}</p>` : nothing}
+            ${!items.length && !store.notices.some((n) => n.kind === 'firstShared') ? html`<p class="empty-note">${(rec.secret ? t.emptyNoteShared : this.wide ? t.emptyNoteDesk : t.emptyNote).split(' ').map((w, i) => html`<span class="w" style="--i:${i}">${w} </span>`)}</p>` : nothing}
             <div class="write-zone" @click=${() => this.focusComposer()} aria-hidden="true"></div>
           </section>
         </main>
         ${this.wide ? this.renderNote(rec) : nothing}
       </div>
       ${this.card ? renderCard(this, this.card) : nothing}
-      ${this.toast ? html`<div class="toast ${this.card && !matchMedia('(min-width: 1000px)').matches ? 'over-card' : ''}"
+      ${this.toast ? html`<div class="toast ${this.card && !matchMedia('(min-width: 1180px)').matches ? 'over-card' : ''}"
         @pointerenter=${() => clearTimeout(this.toastTimer)} @pointerleave=${() => this.toastLater(4000)}
         @focusin=${() => clearTimeout(this.toastTimer)} @focusout=${() => this.toastLater(4000)}><span>${this.toast.label}</span>${this.toast.undo ? html`<button @click=${() => this.doUndo()}>${t.undo}</button>` : nothing}</div>` : nothing}
       <div class="sr" aria-live="polite">${this.announce}</div>
@@ -604,13 +619,13 @@ export class PapelApp extends LitElement {
       <header class="head">
         <input class="title" style="--ink: var(--ink-${store.titleInk()})" aria-label=${t.titleAria} placeholder=${t.untitled} maxlength="60" enterkeyhint="next"
           .value=${this.titleEditing ? this.titleDraft : live(store.title())}
-          @focus=${(e) => { this.titleEditing = true; this.titleDraft = e.target.value; }}
-          @input=${(e) => { this.titleDraft = e.target.value; clearTimeout(this.titleTimer); const v = e.target.value; this.titleTimer = setTimeout(() => store.setTitle(v), 500); }}
-          @blur=${(e) => { this.titleEditing = false; clearTimeout(this.titleTimer); store.setTitle(e.target.value); }}
+          @focus=${(e) => { this.titleEditing = true; this.titleDirty = false; this.titleDraft = e.target.value; }}
+          @input=${(e) => { this.titleDirty = true; this.titleDraft = e.target.value; clearTimeout(this.titleTimer); const v = e.target.value; this.titleTimer = setTimeout(() => store.setTitle(v), 500); }}
+          @blur=${(e) => { this.titleEditing = false; clearTimeout(this.titleTimer); if (this.titleDirty) store.setTitle(e.target.value); }}
           @keydown=${(e) => { if (e.key === 'Enter') { e.preventDefault(); this.focusComposer(); } }} />
         <div class="head-tools">
           ${shared ? html`
-            <button class="pill sync-${st}" @click=${() => this.openCard('share')} aria-label=${`${t.shared}: ${statusWord(st)}. ${others.length ? t.othersHere(others.length) : ''}`} title=${statusWord(st)}>
+            <button class="pill sync-${st}" @click=${() => this.openCard('share')} aria-label=${`${t.shared}: ${statusWord(st).replace(/\.$/, '')}. ${others.length ? t.othersHere(others.length) : ''}`} title=${statusWord(st)}>
               <span class="sync-icon">${OFF.has(st) ? icons.linkOff : icons.link}</span>
               ${st === 'moved' ? t.movedShort : others.length ? html`<span class="presence">${others.slice(0, 4).map((o) => html`<span class="dot here" style="--c: var(--ink-${o.ink || 'azul'})"></span>`)}</span>` : t.shared}
             </button>` : this.wide ? nothing : html`
@@ -635,6 +650,7 @@ export class PapelApp extends LitElement {
       if (n.kind === 'noStorage') notes.push(t.noStorage);
       if (n.kind === 'storageFull') notes.push(t.storageFull);
       if (n.kind === 'clockAhead') notes.push(t.clockAhead);
+      if (n.kind === 'clockAheadSelf') notes.push(t.clockAheadSelf);
       if (n.kind === 'moved') notes.push(`${t.linkMoved} ${t.movedHow}`);
     }
     return notes.length ? html`<p class="status-line" data-flip="status"><span class="margin" aria-hidden="true">${icons.pen}</span><span class="words">${notes.join(' ')}</span></p>` : nothing;
@@ -707,9 +723,9 @@ export class PapelApp extends LitElement {
     if (!h || !store.doc.items[h.id]) return nothing;
     return html`<div class="hint-chip">
       <span class="margin" aria-hidden="true"></span>
-      <button class="chip" @click=${() => { store.split(h.id, h.pieces); this.hint = null; }}>${t.splitAsk(h.pieces.length)}</button>
+      <button class="chip" @pointerdown=${(e) => e.preventDefault()} @click=${() => { store.split(h.id, h.pieces); this.hint = null; }}>${t.splitAsk(h.pieces.length)}</button>
       <span class="pieces">${h.pieces.join(' · ')}</span>
-      <button class="icon-btn" aria-label=${t.close} @click=${() => { this.hint = null; }}>${icons.close}</button>
+      <button class="icon-btn" aria-label=${t.close} @pointerdown=${(e) => e.preventDefault()} @click=${() => { this.hint = null; }}>${icons.close}</button>
     </div>`;
   }
 
@@ -761,7 +777,9 @@ export class PapelApp extends LitElement {
   get isLong() { return store.items().length > 9; }
 }
 
-const lasting = (n) => ['moved', 'noStorage', 'storageFull', 'clockAhead'].includes(n.kind);
+// changes that a person makes on the sheet (an ink chosen automatically after a merge is not one)
+const PERSON = new Set(['add', 'toggle', 'edit', 'remove', 'clear', 'split', 'title', 'fix', 'order', 'undo']);
+const lasting = (n) => ['moved', 'noStorage', 'storageFull', 'clockAhead', 'clockAheadSelf'].includes(n.kind);
 
 const flipKey = (el) => (el.dataset.id ? `row-${el.dataset.id}` : el.dataset.flip);
 

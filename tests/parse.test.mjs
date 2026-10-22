@@ -76,3 +76,7 @@ test('a line too long for the paper splits at a word, never mid-word', () => {
   assert.ok(out.every((p) => p.length <= 160));
   assert.equal(out.join(' '), long);
 });
+
+test('emoji sequences keep their zero-width joiners', () => {
+  assert.deepEqual(splitInput('👨‍👩‍👧 pañales\n🏳️‍🌈 globos'), ['👨‍👩‍👧 pañales', '🏳️‍🌈 globos']);
+});

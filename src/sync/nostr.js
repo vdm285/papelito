@@ -25,6 +25,20 @@ export async function signEvent(sk, ev) {
 export const publicKeyOf = (sk) => toHex(schnorr.getPublicKey(sk));
 
 /**
+ * Is this event what its author signed? The sealed content proves who wrote it, but not its
+ * created_at: a relay could resend a genuine record with another date (a day ahead, and every
+ * later record of ours would be refused as "too late"). The id is the hash of all the fields and
+ * the signature covers the id, so both are checked before the date is believed.
+ */
+export async function verifyEvent(ev) {
+  try {
+    const id = toHex(await sha256(enc.encode(JSON.stringify([0, ev.pubkey, ev.created_at, ev.kind, ev.tags, ev.content]))));
+    if (id !== ev.id || typeof ev.sig !== 'string') return false;
+    return await schnorr.verifyAsync(fromHex(ev.sig), fromHex(id), fromHex(ev.pubkey));
+  } catch { return false; }
+}
+
+/**
  * One WebSocket per relay, reconnecting with backoff. Subscriptions are re-sent on reconnect.
  * Events: onEvent(ev, relayUrl), onEose(subId, relayUrl), onStatus().
  */

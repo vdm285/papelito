@@ -49,3 +49,16 @@ test('a 600-item list fits comfortably in one relay message', async () => {
   const blob = await seal(k.encKey, { v: 2, items });
   assert.ok(blob.length < 60_000, `${blob.length} chars`);
 });
+
+test('a relay cannot change a record\'s date: the id and the signature are checked', async () => {
+  const { signEvent, verifyEvent } = await import('../src/sync/nostr.js');
+  const sk = crypto.getRandomValues(new Uint8Array(32));
+  sk[0] = 1; // well inside the curve order
+  const ev = await signEvent(sk, { kind: 30078, created_at: 1792000000, tags: [['d', 'x']], content: 'sealed' });
+  assert.equal(await verifyEvent(ev), true);
+  assert.equal(await verifyEvent({ ...ev, created_at: ev.created_at + 72000 }), false, 'same id, another date');
+  const { createHash } = await import('node:crypto');
+  const forged = { ...ev, created_at: ev.created_at + 72000 };
+  forged.id = createHash('sha256').update(JSON.stringify([0, forged.pubkey, forged.created_at, forged.kind, forged.tags, forged.content])).digest('hex');
+  assert.equal(await verifyEvent(forged), false, 'a recomputed id without the key fails the signature');
+});

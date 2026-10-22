@@ -11,10 +11,10 @@
 //   ll.imported        1 once the old versions' lists have been imported
 //   ll.gone            ids of sheets deleted on this phone (so another tab's index cannot bring them back)
 
-import { createClock, randomId } from '../model/hlc.js';
+import { createClock, randomId, stampTime } from '../model/hlc.js';
 import {
   emptyDoc, addItem, setText, setDone, setDeleted, setTitle, setOrder, setDevice, setFix, fixes,
-  merge, diff, sanitize, compact, canonical, liveItems, isDone, isLive, maxStamp,
+  merge, diff, sanitize, compact, canonical, liveItems, isDone, isLive, maxStamp, INVISIBLE,
 } from '../model/doc.js';
 import { splitInput } from '../model/parse.js';
 import { keyOf } from '../model/aisles.js';
@@ -66,7 +66,14 @@ export class Store {
 
   /** This phone's time, corrected against the web server's when a session has measured it. */
   now() { return Date.now() + this.skew; }
-  setSkew(ms) { this.skew = ms; this.clock.setSkew(ms); }
+  setSkew(ms) {
+    this.skew = ms;
+    this.clock.setSkew(ms);
+    // what this phone wrote while its clock ran a day or more fast cannot reach the other phone
+    // until that date: say so here rather than show "Al día"
+    const m = this.rec && maxStamp(this.doc);
+    if (m && stampTime(m) > this.now() + 864e5 && !this.notices.some((n) => n.kind === 'clockAheadSelf')) { this.notices.push({ kind: 'clockAheadSelf' }); this.emit('notice'); }
+  }
 
   // ---------- events ----------
   on(fn) { this.listeners.add(fn); return () => this.listeners.delete(fn); }
@@ -123,7 +130,7 @@ export class Store {
     if (!raw) { this.newList(); return; }
     // this phone's own copy is trusted with its stamps (no future horizon): if the clock was set
     // back after writing, nothing written before may disappear
-    const rec = { id, secret: raw.secret, doc: compact(sanitize(raw.doc, Infinity)), aisles: !!raw.aisles, seen: raw.seen || '', wasShared: !!raw.wasShared, oldId: raw.oldId, syncedAt: Number(raw.syncedAt) || 0 };
+    const rec = { id, secret: raw.secret, doc: compact(sanitize(raw.doc, Infinity, null, true)), aisles: !!raw.aisles, seen: raw.seen || '', wasShared: !!raw.wasShared, oldId: raw.oldId, syncedAt: Number(raw.syncedAt) || 0 };
     this.clock.observe(maxStamp(rec.doc));
     this.rec = rec;
     this.undoStack = [];
@@ -232,7 +239,10 @@ export class Store {
       addItem(this.doc, this.clock, id, p);
       ids.push(id);
     }
-    if (ids.length) this.changed('add', { ids });
+    if (ids.length) {
+      this.pushUndo('', () => { for (const id of ids) setDeleted(this.doc, this.clock, id, true); this.changed('undo', { ids }); }, true);
+      this.changed('add', { ids });
+    }
     return ids;
   }
 
@@ -258,18 +268,19 @@ export class Store {
     const done = !isDone(it);
     setDone(this.doc, this.clock, id, done);
     if (done) this.remember(it.t[0]);
+    this.pushUndo('', () => { setDone(this.doc, this.clock, id, !done); this.changed('undo', { id }); }, true);
     this.changed('toggle', { id, done });
   }
 
-  edit(id, text) {
+  edit(id, text, quiet = false) {
     const it = this.doc.items[id];
     if (!it) return;
-    const clean = String(text).replace(/\s+/g, ' ').trim();
+    const clean = String(text).replace(INVISIBLE, '').replace(/\s+/g, ' ').trim();
     if (!clean) { this.remove(id); return; }
     if (clean === it.t[0]) return;
     const before = it.t[0];
     setText(this.doc, this.clock, id, clean);
-    this.pushUndo(this.t('edited')(clean), () => { setText(this.doc, this.clock, id, before); this.changed('undo'); });
+    this.pushUndo(this.t('edited')(clean), () => { setText(this.doc, this.clock, id, before); this.changed('undo'); }, quiet);
     this.changed('edit', { id });
   }
 
@@ -303,7 +314,7 @@ export class Store {
   }
 
   setTitle(text) {
-    const clean = String(text).replace(/\s+/g, ' ').trim();
+    const clean = String(text).replace(INVISIBLE, '').replace(/\s+/g, ' ').trim();
     if (clean === this.title()) return;
     setTitle(this.doc, this.clock, clean);
     this.changed('title');
@@ -364,8 +375,10 @@ export class Store {
     this.clock.observe(maxStamp(after));
     const changes = diff(before, after);
     // what the other phone replaced, so its edits and renames can be undone like its deletions
-    changes.was = Object.fromEntries(changes.edited.map((id) => [id, before.items[id].t[0]]));
-    if (changes.title) changes.oldTitle = before.title[0];
+    const member = !!before.dev[this.device] || Object.keys(before.items).length > 0; // not a phone receiving the sheet for the first time
+    changes.was = member ? Object.fromEntries(changes.edited.map((id) => [id, before.items[id].t[0]])) : {};
+    if (changes.title && member && before.title[0]) changes.oldTitle = before.title[0];
+    if (!member) changes.edited = [];
     // phones that appear in this sheet for the first time (not this one)
     // (only on a phone that was already part of it: the one opening a link sees no news)
     changes.joined = before.dev[this.device] ? Object.keys(after.dev).filter((d) => d !== this.device && !before.dev[d] && after.dev[d].ink[0]) : [];
@@ -474,10 +487,10 @@ export class Store {
   }
 
   // ---------- undo ----------
-  pushUndo(label, run) {
+  pushUndo(label, run, quiet = false) {
     this.undoStack.push({ label, run });
     if (this.undoStack.length > 20) this.undoStack.shift();
-    this.emit('undoable', { label });
+    if (!quiet) this.emit('undoable', { label });
   }
   undo() {
     const u = this.undoStack.pop();
@@ -508,7 +521,8 @@ export class Store {
 
   writeRec(rec) {
     const out = { id: rec.id, secret: rec.secret, doc: JSON.parse(canonical(rec.doc)), aisles: rec.aisles, seen: rec.seen, wasShared: rec.wasShared || undefined, oldId: rec.oldId, syncedAt: rec.syncedAt || undefined };
-    if (!this.ls.set(K.list(rec.id), JSON.stringify(out))) this.emit('storageFull');
+    if (this.ls.set(K.list(rec.id), JSON.stringify(out))) { if (this.notices.some((n) => n.kind === 'storageFull')) { this.notices = this.notices.filter((n) => n.kind !== 'storageFull'); this.emit('notice'); } }
+    else if (!this.notices.some((n) => n.kind === 'noStorage')) this.emit('storageFull');
   }
 
   /**
