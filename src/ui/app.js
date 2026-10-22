@@ -99,10 +99,13 @@ export class PapelApp extends LitElement {
       const label = ids.length === 1 && it ? t.removedBy(who, it.t[0]) : t.cleared(ids.length);
       this.showToast(label, true, () => store.restore(ids));
     }
-    const msgs = [];
-    if (ch.added.length) msgs.push(`${ch.added.length} +`);
-    if (ch.struck.length) msgs.push(`${ch.struck.length} ✓`);
-    this.announce = msgs.join(' · ');
+    // one polite sentence for screen readers: who did what on the other phone
+    if (ch.added.length || ch.struck.length || ch.unstruck.length) {
+      const any = ch.added[0] || ch.struck[0] || ch.unstruck[0];
+      const it = store.doc.items[any];
+      const dev = ch.added.length ? it && it.by : it && (it.d[0] || it.d[1].slice(13));
+      this.announce = t.remoteSummary(this.whoName(dev || ''), ch.added.length, ch.struck.length, ch.unstruck.length);
+    }
     if (document.visibilityState === 'visible') this.seenSoon(7000);
   }
 
