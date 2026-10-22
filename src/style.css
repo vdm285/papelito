@@ -229,6 +229,11 @@ papel-app { display: block; min-height: 100%; }
 }
 .presence .dot.here { animation: here 2.4s ease-in-out infinite; }
 @keyframes here { 50% { box-shadow: 0 0 0 4px color-mix(in srgb, var(--c) 25%, transparent); } }
+.sync-icon { display: inline-grid; place-items: center; }
+.sync-icon svg { width: 19px; height: 19px; }
+.pill.sync-connecting .sync-icon, .pill.sync-sending .sync-icon { animation: breathe 1.4s ease-in-out infinite; }
+.pill.sync-offline, .pill.sync-trouble { color: var(--chrome-soft); border-style: dashed; }
+@keyframes breathe { 50% { opacity: .35; } }
 .status-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--pencil-soft); }
 .status-dot.ok { background: #2f9e5b; }
 .status-dot.busy { background: #d79b1e; }

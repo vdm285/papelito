@@ -74,6 +74,10 @@ const conv = await until(() => {
 }, 20000);
 check('simultaneous adds on both phones converge', conv >= 0, `${conv} ms`);
 
+// the two phones write in different inks, and both agree on whose is whose
+const inks = await until(() => A.inkOf(A.device) !== A.inkOf(B.device) && A.inkOf(B.device) === B.inkOf(B.device) && B.inkOf(A.device) === A.inkOf(A.device), 15000);
+check('each phone writes in its own ink, the same on both phones', inks >= 0, `A ${A.inkOf(A.device)}, B ${B.inkOf(B.device)}`);
+
 // presence: each sees the other
 const pres = await until(() => sa.others().length >= 1 && sb.others().length >= 1, 15000);
 check('each phone sees the other as present', pres >= 0, `${pres} ms`);

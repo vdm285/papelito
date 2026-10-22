@@ -174,9 +174,12 @@ export class Store {
   inkOf(device) {
     const d = this.rec.doc.dev[device];
     if (d && d.ink[0]) return d.ink[0];
-    // devices that never chose: a stable pick from the free inks, by order of first appearance
-    const order = Object.keys(this.rec.doc.dev).sort();
-    return INKS[Math.max(0, order.indexOf(device)) % INKS.length] || 'azul';
+    // a device that never chose (an old copy): the first ink nobody else holds, stable per device
+    const used = new Set(Object.values(this.rec.doc.dev).map((x) => x.ink[0]).filter(Boolean));
+    const free = INKS.filter((i) => !used.has(i));
+    let h = 0;
+    for (const ch of device) h = (h * 31 + ch.charCodeAt(0)) >>> 0;
+    return (free.length ? free[h % free.length] : INKS[h % INKS.length]) || 'azul';
   }
   nameOf(device) {
     if (device === this.device) return this.t('you');
@@ -320,6 +323,7 @@ export class Store {
     this.rec.doc = after;
     this.save();
     this.emit('remote', changes);
+    this.resolveInk();
     return changes;
   }
 
@@ -334,8 +338,28 @@ export class Store {
     this.emit('shared');
   }
 
+  /**
+   * Two phones must never write in the same ink. Keep mine if nobody else has it, or if I
+   * claimed it first; otherwise take the first free one. Runs after every merge of a shared list.
+   */
+  resolveInk() {
+    if (!this.rec || !this.rec.secret) return;
+    const mine = this.doc.dev[this.device];
+    const others = Object.entries(this.doc.dev).filter(([k]) => k !== this.device);
+    const used = new Set(others.map(([, d]) => d.ink[0]).filter(Boolean));
+    if (mine && mine.ink[0]) {
+      const rival = others.find(([, d]) => d.ink[0] === mine.ink[0]);
+      if (!rival) return;
+      if (mine.ink[1] < rival[1].ink[1] || (mine.ink[1] === rival[1].ink[1] && this.device < rival[0])) return;
+    }
+    const free = INKS.find((i) => !used.has(i)) || INKS[0];
+    setDevice(this.doc, this.clock, 'ink', free);
+    this.changed('ink');
+  }
+
   /** A device id that has not written yet still needs an ink: claim a free one on first share. */
   ensureInk() {
+    if (!this.rec) return;
     const mine = this.doc.dev[this.device];
     if (mine && mine.ink[0]) return;
     const used = new Set(Object.entries(this.doc.dev).filter(([k]) => k !== this.device).map(([, d]) => d.ink[0]).filter(Boolean));

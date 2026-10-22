@@ -30,6 +30,9 @@ export const sync = {
       return;
     }
     this.setUrl(`#k=${rec.secret}`);
+    // a phone that joins by link takes a free ink once it has seen the others' (resolveInk runs
+    // after every merge too); if nothing arrives, it claims one anyway
+    setTimeout(() => { if (store.rec && store.rec.id === rec.id) { store.ensureInk(); store.resolveInk(); } }, 3000);
     if (session && sessionList === rec.id && session.keys) return;
     if (session) session.stop();
     sessionList = rec.id;

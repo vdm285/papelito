@@ -67,7 +67,8 @@ export class PapelApp extends LitElement {
   disconnectedCallback() { super.disconnectedCallback(); this.off(); this.offSync(); this.ro.disconnect(); }
 
   firstUpdated() {
-    this.ro.observe(this.querySelector('.sheet'));
+    setTimeout(() => { store.notices = store.notices.filter((n) => n.kind === 'legacy'); this.rev++; }, 14000);
+    setTimeout(() => { store.notices = []; this.rev++; }, 40000);
     // strikes are measured on the text: measure again once the handwriting font has arrived
     document.fonts.ready.then(() => this.redrawStrikes());
     document.fonts.addEventListener('loadingdone', () => this.redrawStrikes());
@@ -297,6 +298,8 @@ export class PapelApp extends LitElement {
   }
 
   updated() {
+    const sheet = this.querySelector('.sheet');
+    if (sheet && this.observed !== sheet) { this.observed = sheet; this.ro.disconnect(); this.ro.observe(sheet); }
     const reduce = !store.prefs.motion || matchMedia('(prefers-reduced-motion: reduce)').matches;
     for (const row of this.querySelectorAll('.row[data-id]')) {
       const id = row.dataset.id;
@@ -377,8 +380,8 @@ export class PapelApp extends LitElement {
           @keydown=${(e) => { if (e.key === 'Enter') { e.preventDefault(); store.setTitle(e.target.value); this.focusComposer(); } }} />
         <div class="head-tools">
           ${shared ? html`
-            <button class="pill" @click=${() => this.openCard('share')} aria-label=${`${t.shared}. ${others.length ? t.othersHere(others.length) : ''}`}>
-              <span class="status-dot ${st === 'synced' ? 'ok' : st === 'offline' || st === 'trouble' ? 'off' : 'busy'}"></span>
+            <button class="pill sync-${st}" @click=${() => this.openCard('share')} aria-label=${`${t.shared}: ${statusWord(st)}. ${others.length ? t.othersHere(others.length) : ''}`} title=${statusWord(st)}>
+              <span class="sync-icon">${st === 'offline' || st === 'trouble' ? icons.linkOff : icons.link}</span>
               ${others.length ? html`<span class="presence">${others.slice(0, 4).map((o) => html`<span class="dot here" style="--c: var(--ink-${o.ink || 'azul'})"></span>`)}</span>` : t.shared}
             </button>` : html`
             <button class="pill" @click=${() => sync.share(this)}>${icons.share} ${t.share}</button>`}
@@ -502,6 +505,8 @@ export class PapelApp extends LitElement {
 
   get isLong() { return store.items().length > 9; }
 }
+
+const statusWord = (st) => (st === 'synced' ? t.synced : st === 'offline' ? t.offline : st === 'trouble' ? t.syncTrouble : t.syncing);
 
 const isTyping = (el) => el && (el.tagName === 'TEXTAREA' || el.tagName === 'INPUT' || el.isContentEditable);
 
