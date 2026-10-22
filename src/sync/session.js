@@ -95,7 +95,7 @@ export class Session {
   wake() { if (this.pool) { this.pool.wake(); this.schedule(400); this.here(); } }
 
   /** Something changed locally: publish our slot soon (taps close together go out as one). */
-  changed() { this.confirmed = false; this.schedule(300); this.reportStatus(); }
+  changed() { this.confirmed = false; this.schedule(120); this.reportStatus(); } // a tap is one event: send it now
 
   schedule(ms) {
     clearTimeout(this.timer);
