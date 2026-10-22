@@ -11,7 +11,7 @@
 // sentence case. Old shared lists come back as local lists: their room names were public on a
 // broker, so they cannot be the secret of a private list (the person shares again).
 
-import { emptyDoc } from './doc.js';
+import { emptyDoc, see } from './doc.js';
 import { format } from './hlc.js';
 
 const MAX_ITEMS = 600;
@@ -65,7 +65,8 @@ export function importLegacy(store, device) {
       const created = createdMs(it, base, i);
       const s = format(created, 0, device);
       const iid = itemId(oldId, it.id, i);
-      doc.items[iid] = { c: s, by: device, t: [it.text.replace(/\s+/g, ' ').trim().slice(0, 160), s], d: [it.done ? device : '', s], a: ['', s], x: [0, s] };
+      doc.items[iid] = { c: s, by: device, t: [it.text.replace(/\s+/g, ' ').trim().slice(0, 160), s], d: [it.done ? device : '', s], x: [0, s] };
+      see(doc, device, s);
     });
     const t = sentenceCase(String(title ?? '').trim()).slice(0, 60);
     doc.title = [t === 'Nueva lista' || t === 'Mi lista' || t === 'Lista' ? '' : t, t ? format(base, 0, device) : ''];

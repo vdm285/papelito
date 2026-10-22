@@ -26,7 +26,13 @@ export async function deriveKeys(secret) {
   const base = await crypto.subtle.importKey('raw', raw, 'HKDF', false, ['deriveBits', 'deriveKey']);
   const bits = (info, n) => crypto.subtle.deriveBits({ name: 'HKDF', hash: 'SHA-256', salt: SALT, info: enc.encode(info) }, base, n * 8).then((b) => new Uint8Array(b));
   const encKey = await crypto.subtle.deriveKey({ name: 'HKDF', hash: 'SHA-256', salt: SALT, info: enc.encode('enc') }, base, { name: 'AES-GCM', length: 256 }, false, ['encrypt', 'decrypt']);
-  return { encKey, sign: await bits('sign', 32), room: toHex(await bits('room', 16)) };
+  const slotKey = await crypto.subtle.importKey('raw', await bits('slot', 32), { name: 'HMAC', hash: 'SHA-256' }, false, ['sign']);
+  return { encKey, slotKey, sign: await bits('sign', 32), signAlt: await bits('sign/1', 32), room: toHex(await bits('room', 16)) };
+}
+
+/** Each phone's slot on the relays: an HMAC of its device id, so relays never see the id itself. */
+export async function slotTag(slotKey, device) {
+  return toHex(new Uint8Array(await crypto.subtle.sign('HMAC', slotKey, enc.encode(device)))).slice(0, 32);
 }
 
 export async function seal(encKey, value, aad = '') {

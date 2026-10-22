@@ -37,7 +37,7 @@ export function createClock(device, now = () => Date.now()) {
     device,
     /** A new stamp, later than every stamp issued or observed so far. */
     tick() {
-      const t = now();
+      const t = Math.floor(now());
       if (t > last) { last = t; n = 0; } else if (n < MAX_N) n++; else { last++; n = 0; }
       return format(last, n, device);
     },

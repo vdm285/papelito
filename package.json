@@ -16,6 +16,10 @@
     "vite": "^6.4.5"
   },
   "dependencies": {
-    "lit": "^3.3.3"
+    "@fontsource-variable/atkinson-hyperlegible-next": "^5.3.0",
+    "@fontsource-variable/caveat": "^5.3.0",
+    "@noble/secp256k1": "^3.2.0",
+    "lit": "^3.3.3",
+    "uqr": "^0.1.3"
   }
 }

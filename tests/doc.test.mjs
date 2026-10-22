@@ -2,7 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createClock, parse, isStamp, randomId } from '../src/model/hlc.js';
 import {
-  emptyDoc, addItem, setText, setDone, setAisle, setDeleted, setTitle, setOrder, setDevice,
+  emptyDoc, addItem, setText, setDone, setFix, fixes, setDeleted, setTitle, setOrder, setDevice,
   merge, sameDoc, canonical, diff, compact, sanitize, liveItems, maxStamp, TOMBSTONE_DAYS,
 } from '../src/model/doc.js';
 
@@ -40,12 +40,12 @@ test('basic edits read back', () => {
   addItem(d, c, 'item0001', '  huevos   blancos ');
   addItem(d, c, 'item0002', 'leche');
   setDone(d, c, 'item0001', true);
-  setAisle(d, c, 'item0002', 'lacteos');
+  setFix(d, c, 'leche', 'lac');
   setTitle(d, c, 'Súper del sábado');
   const items = liveItems(d);
   assert.deepEqual(items.map((i) => i.t[0]), ['huevos blancos', 'leche']);
   assert.equal(items[0].d[0], 'aaaaaaaa');
-  assert.equal(items[1].a[0], 'lacteos');
+  assert.deepEqual({ ...fixes(d) }, { leche: 'lac' });
   setDeleted(d, c, 'item0001', true);
   assert.deepEqual(liveItems(d).map((i) => i.id), ['item0002']);
 });
@@ -103,12 +103,14 @@ test('property: random edits on three phones with skewed clocks, merged at rando
       if (op < 0.3 || !known.length) { const id = `it${String(ids.length).padStart(6, '0')}`; ids.push(id); addItem(d, c, id, `cosa ${ids.length}`); }
       else if (op < 0.5) setDone(d, c, pick(), r() < 0.7);
       else if (op < 0.6) setText(d, c, pick(), `texto ${step}`);
-      else if (op < 0.7) setAisle(d, c, pick(), r() < 0.5 ? 'lacteos' : '');
+      else if (op < 0.7) setFix(d, c, r() < 0.5 ? 'leche' : 'cafe molido', r() < 0.6 ? 'lac' : '');
       else if (op < 0.8) setDeleted(d, c, pick(), r() < 0.8);
       else if (op < 0.85) setTitle(d, c, `lista ${step}`);
       else if (op < 0.88) setOrder(d, c, r() < 0.5 ? ['frutas', 'carnes'] : null);
       else if (op < 0.9) setDevice(d, c, 'ink', r() < 0.5 ? 'azul' : 'verde');
       else {
+        // sometimes time passes and a phone purges its old tombstones
+        if (r() < 0.25) { wall += (TOMBSTONE_DAYS + 1) * 864e5 * r(); compact(docs[p], wall + skews[p]); }
         // sync two phones (one direction or both), observing stamps like the app does
         const q = (p + 1 + Math.floor(r() * 2)) % 3;
         const m = merge(docs[p], docs[q]);
@@ -149,6 +151,29 @@ test('diff reports what the other phone did', () => {
   assert.equal(ch.title, true);
 });
 
+test('a purged item never comes back from a stale copy (and the control without `seen` would)', () => {
+  let now = 1_800_000_000_000;
+  const a = createClock('phonea00', () => now);
+  const b = createClock('phoneb00', () => now);
+  const d = emptyDoc();
+  addItem(d, a, 'item0001', 'cilantro');
+  addItem(d, a, 'item0002', 'cebolla');
+  const stale = clone(d); // phone B goes into a drawer
+  setDeleted(d, a, 'item0001', true);
+  now += (TOMBSTONE_DAYS + 5) * 864e5;
+  compact(d, now); // the tombstone is purged on phone A
+  assert.equal(d.items.item0001, undefined);
+  addItem(stale, b, 'item0003', 'limones'); // B adds offline, months later
+  const m1 = merge(d, stale);
+  const m2 = merge(stale, d);
+  assert.ok(sameDoc(m1, m2));
+  assert.deepEqual(liveItems(m1).map((i) => i.t[0]).sort(), ['cebolla', 'limones']);
+  // control: forget what A had seen, and the deleted item resurrects
+  const forgetful = clone(d);
+  forgetful.seen = Object.create(null);
+  assert.ok(liveItems(merge(forgetful, stale)).some((i) => i.t[0] === 'cilantro'), 'control should resurrect');
+});
+
 test('compact drops only old tombstones', () => {
   const now = 1_800_000_000_000;
   const old = createClock('phonea00', () => now - (TOMBSTONE_DAYS + 1) * 864e5);
@@ -171,8 +196,13 @@ test('sanitize rejects hostile input', () => {
     dev: { __proto__x: {}, 'BAD!': {} },
     items: {
       '__proto__': { c: 'x' },
-      good0001: { c: '0000000010000aaaaaaaa', by: 'aaaaaaaa', t: ['ok', '0000000010000aaaaaaaa'], d: ['', ''], a: ['', ''], x: [0, ''] },
-      bad00001: { c: '0000000010000aaaaaaaa', by: 'aaaaaaaa', t: [{ evil: 1 }, '0000000010000aaaaaaaa'], d: ['', ''], a: ['', ''], x: [0, ''] },
+      good0001: { c: '0000000010000aaaaaaaa', by: 'aaaaaaaa', t: ['ok', '0000000010000aaaaaaaa'], d: ['', ''], x: [0, ''] },
+      bad00001: { c: '0000000010000aaaaaaaa', by: 'aaaaaaaa', t: [{ evil: 1 }, '0000000010000aaaaaaaa'], d: ['', ''], x: [0, ''] },
+    },
+    fix: {
+      leche: ['lac', '0000000010000aaaaaaaa'],
+      'Bad Key!': ['lac', '0000000010000aaaaaaaa'],
+      cafe: ['<b>', '0000000010000aaaaaaaa'],
     },
   };
   // a literal __proto__ key only survives as an own key when it arrives as JSON text
@@ -182,6 +212,7 @@ test('sanitize rejects hostile input', () => {
   assert.equal(d.order[0], null);
   assert.deepEqual(Object.keys(d.items), ['good0001']);
   assert.equal(Object.keys(d.dev).length, 0);
+  assert.deepEqual(Object.keys(d.fix), ['leche']);
   assert.equal(sanitize(null).v, 2);
   assert.equal(sanitize({ v: 1 }).title[1], '');
 });

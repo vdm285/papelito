@@ -45,7 +45,7 @@ test('padding hides small differences in size', async () => {
 test('a 600-item list fits comfortably in one relay message', async () => {
   const k = await deriveKeys(newSecret());
   const items = {};
-  for (let i = 0; i < 600; i++) items[`it${String(i).padStart(6, '0')}`] = { c: '0mgx3k2a10000phonea00', by: 'phonea00', t: [`producto número ${i} con un nombre largo`, '0mgx3k2a10000phonea00'], d: ['', ''], a: ['', ''], x: [0, '0mgx3k2a10000phonea00'] };
+  for (let i = 0; i < 600; i++) items[`it${String(i).padStart(6, '0')}`] = { c: '0mgx3k2a10000phonea00', by: 'phonea00', t: [`producto número ${i} con un nombre largo`, '0mgx3k2a10000phonea00'], d: ['', ''], x: [0, '0mgx3k2a10000phonea00'] };
   const blob = await seal(k.encKey, { v: 2, items });
   assert.ok(blob.length < 60_000, `${blob.length} chars`);
 });
