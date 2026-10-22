@@ -6,13 +6,13 @@ import { fold, stem, words, keyOf, buildIndex, aisleOf, splitHint } from '../src
 const DICT = {
   terms: {
     tortillas: ['pan', '🫓'], jitomate: ['fru', '🍅'], aguacate: ['fru', '🥑'], limón: 'fru', chile: ['fru', '🌶️'], 'chile serrano': 'fru',
-    'chiles en lata': 'des', papa: 'fru', papas: 'bot', 'papas fritas': 'bot', frijol: 'des', nuez: 'des', 'pan dulce': 'pan', pan: 'pan',
+    'chiles en lata': 'aba', papa: 'fru', papas: 'bot', 'papas fritas': 'bot', frijol: 'aba', nuez: 'aba', 'pan dulce': 'pan', pan: 'pan',
     leche: ['lac', '🥛'], crema: 'lac', 'crema para manos': 'hig', huevo: ['lac', '🥚'], 'papel de baño': 'hig', detergente: 'lim',
     'detergente en polvo': 'lim', desinfectante: 'lim', pollo: 'car', cecina: 'car', jamón: 'car', zote: 'lim', 'coca cola': 'beb', coca: 'beb',
-    '7up': 'beb', helado: 'con', verdura: 'fru', mantequilla: 'lac', aguacatero: 'otr', dona: 'pan', vela: 'lim', pañal: 'bbe', 'ajo': 'fru', 'ajo en polvo': 'des',
+    '7up': 'beb', helado: 'con', verdura: 'fru', mantequilla: 'lac', aguacatero: 'otr', dona: 'pan', vela: 'lim', pañal: 'bbe', 'ajo': 'fru', 'ajo en polvo': 'aba',
     'constructor': 'otr', cacahuate: 'bot', mameyes: 'fru', pilas: 'lim', piña: 'fru',
   },
-  forms: { congelado: { '*': 'con' }, congelada: { '*': 'con' }, lata: { fru: 'des' }, enlatado: { fru: 'des' } },
+  forms: { congelado: { '*': 'con' }, congelada: { '*': 'con' }, lata: { fru: 'aba' }, enlatado: { fru: 'aba' } },
 };
 const idx = buildIndex(DICT);
 const A = (t, fixes) => aisleOf(t, idx, fixes).aisle;
@@ -51,8 +51,8 @@ test('the old matcher bugs stay fixed', () => {
 });
 
 test('longest phrase wins, then the exact spelling', () => {
-  assert.equal(A('chiles en lata'), 'des');
-  assert.equal(A('ajo en polvo'), 'des');
+  assert.equal(A('chiles en lata'), 'aba');
+  assert.equal(A('ajo en polvo'), 'aba');
   assert.equal(A('pan dulce'), 'pan');
   assert.equal(A('papas fritas'), 'bot');
   assert.equal(A('papa'), 'fru');
@@ -60,7 +60,7 @@ test('longest phrase wins, then the exact spelling', () => {
 });
 
 test('form words move the aisle', () => {
-  assert.equal(A('lata de chile'), 'des');
+  assert.equal(A('lata de chile'), 'aba');
   assert.equal(A('verduras congeladas'), 'con');
   assert.equal(A('helado'), 'con');
 });
@@ -79,9 +79,9 @@ test('typo guesses are cautious and marked', () => {
 });
 
 test('hand corrections win and are keyed by the stemmed phrase', () => {
-  const fixes = { [keyOf('café')]: 'des' };
-  assert.equal(A('café', fixes), 'des');
-  assert.equal(A('2 cafés', fixes), 'des');
+  const fixes = { [keyOf('café')]: 'aba' };
+  assert.equal(A('café', fixes), 'aba');
+  assert.equal(A('2 cafés', fixes), 'aba');
 });
 
 test('unknown things go to Otros', () => {

@@ -1,0 +1,17 @@
+{
+  "name": "Papelito — la lista del súper",
+  "short_name": "Papelito",
+  "description": "La lista del súper en una hoja que dos teléfonos comparten.",
+  "id": "./",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "lang": "es-MX",
+  "background_color": "#fdfbf5",
+  "theme_color": "#fdfbf5",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

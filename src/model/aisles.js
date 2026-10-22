@@ -17,7 +17,10 @@
 
 import { splitQuantity } from './parse.js';
 
-export const AISLES = ['fru', 'pan', 'car', 'lac', 'con', 'des', 'bot', 'beb', 'lim', 'hig', 'far', 'bbe', 'mas', 'otr'];
+// 16 aisles in a default walking order (produce first, frozen last). Tortillería and salchichonería
+// are their own counters in Mexican supermarkets and in both sources (PROFECO, INEGI). The order is a
+// starting point, not a fact about any store: each list keeps its own (doc.order).
+export const AISLES = ['fru', 'pan', 'tor', 'car', 'sal', 'lac', 'aba', 'bot', 'beb', 'lim', 'hig', 'bbe', 'mas', 'far', 'con', 'otr'];
 
 const FILLER = new Set('de del la el los las un una unos unas uno para con a al en y o mi tu su por que lo le les'.split(' '));
 

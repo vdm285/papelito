@@ -5,6 +5,7 @@
 const es = {
   appName: 'Papelito',
   tagline: 'La lista del súper en una hoja que dos teléfonos comparten.',
+  emptyNote: 'Escribe aquí lo que falta. Compártela y aparece en el otro teléfono.',
   untitled: 'Lista del súper',
   write: 'Escribe lo que falta…',
   writeMore: 'Algo más…',
@@ -91,9 +92,9 @@ const es = {
   doodles: 'Dibujitos en el margen',
   // aisles (ids from src/model/aisles.js; walking order is the list's own)
   aisles: {
-    fru: 'Frutas y verduras', pan: 'Panadería y tortillería', car: 'Carnes y salchichonería', lac: 'Lácteos y huevo',
-    con: 'Congelados', des: 'Despensa', bot: 'Botanas y dulces', beb: 'Bebidas', lim: 'Limpieza y hogar',
-    hig: 'Higiene personal', far: 'Farmacia', bbe: 'Bebés', mas: 'Mascotas', otr: 'Otros',
+    fru: 'Frutas y verduras', pan: 'Panadería', tor: 'Tortillería', car: 'Carnes, pollo y pescado', sal: 'Salchichonería',
+    lac: 'Lácteos y huevo', aba: 'Abarrotes', bot: 'Botanas y dulces', beb: 'Bebidas', lim: 'Limpieza y hogar',
+    hig: 'Higiene personal', bbe: 'Bebés', mas: 'Mascotas', far: 'Farmacia', con: 'Congelados', otr: 'Otros',
   },
   ago: (ms) => agoEs(ms),
 };
@@ -101,6 +102,7 @@ const es = {
 const en = {
   ...es,
   tagline: 'A shopping list on one sheet of paper that two phones share.',
+  emptyNote: 'Write what you need. Share it and it shows up on the other phone.',
   untitled: 'Shopping list',
   write: 'Write what you need…',
   writeMore: 'Anything else…',
@@ -178,9 +180,9 @@ const en = {
   motion: 'Animations',
   doodles: 'Doodles in the margin',
   aisles: {
-    fru: 'Fruit and vegetables', pan: 'Bakery and tortillas', car: 'Meat and deli', lac: 'Dairy and eggs',
-    con: 'Frozen', des: 'Pantry', bot: 'Snacks and sweets', beb: 'Drinks', lim: 'Cleaning and home',
-    hig: 'Personal care', far: 'Pharmacy', bbe: 'Baby', mas: 'Pets', otr: 'Other',
+    fru: 'Fruit and vegetables', pan: 'Bakery', tor: 'Tortillas', car: 'Meat, poultry and fish', sal: 'Deli',
+    lac: 'Dairy and eggs', aba: 'Pantry', bot: 'Snacks and sweets', beb: 'Drinks', lim: 'Cleaning and home',
+    hig: 'Personal care', bbe: 'Baby', mas: 'Pets', far: 'Pharmacy', con: 'Frozen', otr: 'Other',
   },
   ago: (ms) => agoEn(ms),
 };

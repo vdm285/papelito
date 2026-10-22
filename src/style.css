@@ -15,8 +15,8 @@
   --sheet-pad-right: 18px;
   --hand-size: 31px;
   --print-size: 21px;
-  --hand-shift: 3px;            /* sits the handwriting on its rule */
-  --print-shift: 1px;
+  --hand-shift: calc(var(--line) * .5 - 13px); /* sits the handwriting on its rule (measured) */
+  --print-shift: calc(var(--line) * .5 - 12px);
   --radius: 14px;
   --ease-out: cubic-bezier(.2, .8, .2, 1);
 
@@ -123,14 +123,17 @@ papel-app { display: block; min-height: 100%; }
 .desk {
   min-height: 100dvh;
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: minmax(0, 1fr); /* an input's intrinsic width must never widen the page */
   justify-items: center;
 }
 
 .sheet {
   position: relative;
   width: 100%;
+  min-width: 0;
   min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
   background-color: var(--paper);
   isolation: isolate;
 }
@@ -178,6 +181,7 @@ papel-app { display: block; min-height: 100%; }
 .title {
   flex: 1;
   min-width: 0;
+  width: 0;
   font: var(--ink-weight) calc(var(--hand-size) * 1.32)/1.1 var(--font-hand);
   color: var(--ink, var(--ink-azul));
   text-shadow: var(--ink-shadow);
@@ -190,6 +194,12 @@ papel-app { display: block; min-height: 100%; }
 .title:focus-visible { outline: none; box-shadow: 0 2px 0 var(--focus); border-radius: 0; }
 
 .head-tools { display: flex; align-items: center; gap: 4px; padding-bottom: 6px; }
+@media (max-width: 759px) {
+  /* on a phone the title gets the whole width of the sheet; the two buttons sit in the corner */
+  .head { display: block; position: relative; padding-top: calc(max(8px, env(safe-area-inset-top)) + 40px); min-height: 0; }
+  .head-tools { position: absolute; top: max(6px, env(safe-area-inset-top)); right: 8px; padding: 0; }
+  .title { width: 100%; }
+}
 .pill {
   display: inline-flex; align-items: center; gap: 7px;
   height: 36px; padding: 0 14px;
@@ -235,7 +245,8 @@ papel-app { display: block; min-height: 100%; }
 
 .body {
   position: relative;
-  padding-bottom: calc(var(--line) * 3);
+  flex: 1;
+  padding-bottom: calc(var(--line) * 2);
   background-image: repeating-linear-gradient(to bottom, transparent 0, transparent calc(var(--line) - 1px), var(--rule) calc(var(--line) - 1px), var(--rule) var(--line));
   background-position: 0 0;
 }
@@ -345,7 +356,14 @@ ol.rows, ul.rows { list-style: none; margin: 0; padding: 0; }
 }
 .hand-molde .composer textarea { font-family: var(--font-print); font-size: var(--print-size); font-weight: 500; transform: translateY(var(--print-shift)); }
 .composer textarea::placeholder { color: var(--pencil-soft); opacity: 1; }
-.composer.sticky { position: sticky; bottom: var(--kb, 0px); z-index: 3; background: var(--paper); box-shadow: 0 -10px 18px -10px color-mix(in srgb, var(--paper) 90%, #000 10%); }
+.composer.sticky {
+  position: sticky; bottom: var(--kb, 0px); z-index: 3;
+  /* the paper continues under the writing line: its colour, its margin line and its rule */
+  background:
+    linear-gradient(to right, transparent calc(var(--margin-x)), var(--margin) calc(var(--margin-x)), var(--margin) calc(var(--margin-x) + 1.5px), transparent calc(var(--margin-x) + 1.5px)),
+    linear-gradient(to top, var(--rule) 1px, transparent 1px),
+    var(--paper);
+}
 
 .write-zone { min-height: calc(var(--line) * 3); cursor: text; }
 
@@ -365,13 +383,29 @@ ol.rows, ul.rows { list-style: none; margin: 0; padding: 0; }
 .chip.on { background: var(--chip-on); color: var(--chip-on-ink); }
 .chip.ghost { background: transparent; border: 1.5px dashed var(--pencil-soft); color: var(--chrome-soft); }
 
-.usual {
-  display: flex; flex-wrap: wrap; gap: 8px;
-  padding: 10px var(--sheet-pad-right) 4px calc(var(--margin-x) + 12px);
+.usual { /* suggestions are written in pencil on the next rules; a tap writes them in ink */
+  display: flex; align-items: flex-start;
+  min-height: var(--line);
 }
-.usual-label { width: 100%; font: 700 12px/1 var(--font-ui); letter-spacing: .08em; text-transform: uppercase; color: var(--pencil); margin-bottom: 2px; }
-.usual .chip { font-family: var(--font-hand); font-size: 22px; font-weight: 600; background: transparent; border: 1.5px solid var(--card-line); color: var(--chrome-soft); padding: 0 12px 2px; }
-.hand-molde .usual .chip { font-family: var(--font-ui); font-size: 15px; }
+.usual-words {
+  flex: 1; min-width: 0;
+  display: block;
+  padding: 0 var(--sheet-pad-right) 0 12px;
+  font: 400 calc(var(--hand-size) * .82)/var(--line) var(--font-hand);
+  color: var(--pencil);
+  transform: translateY(var(--hand-shift));
+}
+.usual .margin { font: 600 20px/1 var(--font-ui); color: var(--pencil-soft); align-items: flex-end; padding-bottom: 12px; }
+.usual .pencil, .usual .sep, .usual-label { white-space: nowrap; }
+.usual-label { margin-right: 6px; }
+.usual .sep { margin: 0 4px; color: var(--pencil-soft); }
+.usual .pencil {
+  border: 0; background: none; padding: 0 2px; margin: 0;
+  font: inherit; color: var(--chrome-soft); cursor: pointer;
+  text-decoration: underline dotted 1.5px; text-underline-offset: 5px; text-decoration-color: var(--pencil-soft);
+}
+.usual .pencil:hover { color: var(--my-ink, var(--ink-azul)); }
+.hand-molde .usual-words { font: 400 16px/var(--line) var(--font-ui); transform: translateY(var(--print-shift)); }
 
 .fold {
   display: flex; align-items: center; justify-content: space-between;
@@ -384,11 +418,14 @@ ol.rows, ul.rows { list-style: none; margin: 0; padding: 0; }
 .fold svg { width: 16px; height: 16px; vertical-align: -3px; transition: transform .2s; }
 .fold[aria-expanded='true'] svg { transform: rotate(90deg); }
 
-.empty-note {
-  padding: calc(var(--line) * .25) var(--sheet-pad-right) 0 calc(var(--margin-x) + 12px);
-  font: 400 15px/1.45 var(--font-ui); color: var(--pencil);
-  max-width: 34ch;
+.empty-note { /* a note in pencil, written on the rules like everything else */
+  margin: 0;
+  padding: 0 var(--sheet-pad-right) 0 calc(var(--margin-x) + 12px);
+  font: 400 calc(var(--hand-size) * .8)/var(--line) var(--font-hand);
+  color: var(--pencil);
+  transform: translateY(var(--hand-shift));
 }
+.hand-molde .empty-note { font: 400 16px/var(--line) var(--font-ui); }
 
 /* ---------- cards (menus, share, an item) ---------- */
 
@@ -457,7 +494,7 @@ ol.rows, ul.rows { list-style: none; margin: 0; padding: 0; }
   outline: none;
 }
 .field:focus { border-color: var(--focus); }
-.field.hand { font: var(--ink-weight) 28px/1.2 var(--font-hand); color: var(--ink, var(--chrome)); padding: 8px 14px; }
+.field.hand { font: var(--ink-weight) 28px/1.2 var(--font-hand); color: var(--ink, var(--chrome)); padding: 8px 14px; resize: none; }
 .chips { display: flex; flex-wrap: wrap; gap: 8px; }
 .actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 16px; flex-wrap: wrap; }
 .btn {

@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="es-MX">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content" />
+    <title>Papelito</title>
+    <meta name="description" content="La lista del súper en una hoja que dos teléfonos comparten. Sin cuentas; viaja cifrada." />
+    <meta name="theme-color" content="#fdfbf5" />
+    <meta property="og:title" content="Papelito" />
+    <meta property="og:description" content="La lista del súper en una hoja que dos teléfonos comparten. Lo que escribes aquí aparece allá." />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="https://vdm285.github.io/listolista/og.png" />
+    <meta property="og:url" content="https://vdm285.github.io/listolista/" />
+    <meta name="apple-mobile-web-app-title" content="Papelito" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="./apple-touch-icon.png" />
+    <script>
+      // iPhone keeps the page's own address (with the list's #k=) when the manifest has no
+      // start_url; Android needs one to install. Docs: docs/research/2026-10-21-pwa.md §3.
+      (function () {
+        var ios = /iPhone|iPad|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+        var l = document.createElement('link');
+        l.rel = 'manifest';
+        l.href = ios ? './manifest-ios.webmanifest' : './manifest.webmanifest';
+        document.head.appendChild(l);
+        // paint the paper colour before any script or font arrives
+        try {
+          var p = JSON.parse(localStorage.getItem('ll.prefs') || '{}');
+          var dark = p.theme === 'pizarron' || (p.theme !== 'papel' && matchMedia('(prefers-color-scheme: dark)').matches);
+          document.documentElement.dataset.theme = dark ? 'pizarron' : 'papel';
+        } catch (e) {}
+      })();
+    </script>
+    <style>
+      html { background: #fdfbf5; }
+      html[data-theme='pizarron'] { background: #263630; }
+      #boot { position: fixed; inset: 0; }
+    </style>
+  </head>
+  <body>
+    <div id="boot" aria-hidden="true"></div>
+    <noscript>Papelito necesita JavaScript para guardar tu lista en este teléfono.</noscript>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

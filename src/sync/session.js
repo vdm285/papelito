@@ -13,14 +13,21 @@ export const KIND = 30078;
 export const LIVE = 21078;
 const EXPIRE_DAYS = 180;
 
-/** Default relays: accepted a fresh key, read back and replaced records in the 2026-10-21 probes. */
+/**
+ * Default relays (docs/research/2026-10-21-transport.md §6): five that took a fresh key, served the
+ * newest copy back and kept data for years in the 2026-10-21 probes, from different operators; one
+ * (relay.ditto.pub) runs different software, so one strfry policy change cannot take out all of
+ * them; plus one fallback. Every phone writes to and reads from all of them.
+ */
 export const RELAYS = [
   'wss://relay.primal.net',
-  'wss://nostr.oxtr.dev',
   'wss://relay.nostr.net',
+  'wss://nostr.mom',
   'wss://relay.coinos.io',
-  'wss://nostr-pub.wellorder.net',
+  'wss://relay.ditto.pub',
+  'wss://nostr.oxtr.dev',
 ];
+const MIN_GAP_MS = 1200; // be gentle: a burst of taps goes out as one record
 
 export async function listKeys(secret) {
   const k = await deriveKeys(secret);
@@ -92,7 +99,8 @@ export class Session {
 
   schedule(ms) {
     clearTimeout(this.timer);
-    this.timer = setTimeout(() => this.publish(), ms);
+    const wait = Math.max(ms, (this.lastSent || 0) + MIN_GAP_MS - Date.now());
+    this.timer = setTimeout(() => this.publish(), wait);
   }
 
   async publish(force = false) {
@@ -112,6 +120,7 @@ export class Session {
     });
     this.lastEvent = ev;
     this.lastHash = hash;
+    this.lastSent = Date.now();
     this.seenIds.add(ev.id);
     this.pool.publish(ev);
     this.reportStatus();
