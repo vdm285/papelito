@@ -75,7 +75,8 @@ export class PapelApp extends LitElement {
     document.fonts.ready.then(() => this.redrawStrikes());
     document.fonts.addEventListener('loadingdone', () => this.redrawStrikes());
     // desktop: a real keyboard is there, so the first frame is ready to write
-    if (matchMedia('(pointer: fine)').matches && !this.card) this.focusComposer();
+    // (without scrolling: the first frame shows the top of the sheet; typing brings the line into view)
+    if (matchMedia('(pointer: fine)').matches && !this.card) this.focusComposer(false);
     if (install.pendingHint()) setTimeout(() => install.showHint(this), 600);
   }
 
@@ -200,9 +201,9 @@ export class PapelApp extends LitElement {
     try { if (v) localStorage.setItem(`ll.draft.${store.rec.id}`, v); else localStorage.removeItem(`ll.draft.${store.rec.id}`); } catch { /* ignore */ }
   }
 
-  focusComposer() {
+  focusComposer(scroll = true) {
     const ta = this.querySelector('.composer textarea');
-    if (ta) ta.focus({ preventScroll: false });
+    if (ta) ta.focus({ preventScroll: !scroll });
   }
 
   onComposerInput(e) {

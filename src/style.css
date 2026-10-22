@@ -425,6 +425,14 @@ ol.rows, ul.rows { list-style: none; margin: 0; padding: 0; }
     var(--paper);
 }
 /* rows scrolling under the writing line fade into the paper instead of being cut */
+/* the sheet is tilted on a desk, so a stuck block's right corner lifts a few px off the screen's
+   edge: a band of paper below it keeps the rows from peeking through */
+.writing.sticky[data-stuck]::after {
+  content: ''; position: absolute; left: 0; right: 0; top: 100%; height: 16px; pointer-events: none;
+  background:
+    linear-gradient(to right, transparent calc(var(--margin-x)), var(--margin) calc(var(--margin-x)), var(--margin) calc(var(--margin-x) + 1.5px), transparent calc(var(--margin-x) + 1.5px)),
+    var(--paper);
+}
 .writing.sticky[data-stuck]::before {
   content: ''; position: absolute; left: 0; right: 0; top: -12px; height: 12px; pointer-events: none;
   background: linear-gradient(to top, var(--paper), transparent);
