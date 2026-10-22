@@ -148,7 +148,7 @@ const CARDS = {
           <button class="icon-btn" aria-label="↓ ${t.aisles[a]}" ?disabled=${i === order.length - 1} @click=${() => move(i, 1)}>${icons.down}</button></li>`)}
       </ol>
       <div class="actions">
-        <button class="btn" @click=${() => store.setOrder(null)}>${t.cancel === 'Cancel' ? 'Reset' : 'Restablecer'}</button>
+        <button class="btn" @click=${() => store.setOrder(null)}>${t.reset}</button>
         ${store.rec.aisles ? nothing : html`<button class="btn solid" @click=${() => { store.setAisleView(true); app.closeCard(); }}>${t.byAisle}</button>`}
       </div>`;
   },
