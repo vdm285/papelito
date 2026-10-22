@@ -18,8 +18,13 @@ try {
   const first = await page.evaluate(() => document.activeElement.dataset.id);
   await page.keyboard.press('Space');
   await sleep(1900); // linger, then settle under Tachados
-  const now = await page.evaluate(() => ({ id: document.activeElement.dataset && document.activeElement.dataset.id, done: document.activeElement.classList.contains('done') }));
-  check('a struck row keeps the keyboard focus after it settles', now.id === first && now.done, now);
+  const now = await page.evaluate(() => {
+    const a = document.activeElement;
+    const r = a.getBoundingClientRect();
+    return { id: a.dataset && a.dataset.id, pending: !!a.closest('.pending'), done: a.classList.contains('done'), onScreen: r.top >= 0 && r.bottom <= innerHeight };
+  });
+  // the item settles under Tachados (often off screen); the keyboard stays in the pending list, on screen
+  check('after a strike settles, focus stays on the pending row that took its place, on screen', now.pending && !now.done && now.id !== first && now.onScreen, now);
   await page.focus('.pending .row[data-id]');
   const before = await page.evaluate(() => [...document.querySelectorAll('.pending .row[data-id]')].map((r) => r.dataset.id));
   await page.keyboard.press('Delete');

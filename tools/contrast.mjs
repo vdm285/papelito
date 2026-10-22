@@ -28,6 +28,7 @@ const pairs = [
   ['toast', 'toast-ink', 'toast'],
   ['desk-ink on desk (labels beside the paper)', 'desk-ink', 'desk'],
   ...['azul', 'roja', 'verde', 'negra', 'morada', 'cafe'].map((i) => [`struck ink ${i} (faded) on paper`, `ink-${i}`, 'paper', 'struck-fade']),
+  ...['azul', 'roja', 'verde', 'negra', 'morada', 'cafe'].map((i) => [`struck ink ${i} in print (faded; needs AA) on paper`, `ink-${i}`, 'paper', 'struck-fade-print']),
 ];
 for (const [theme, tk] of [['papel', light], ['pizarron', dark]]) {
   console.log(`\n${theme}`);

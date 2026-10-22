@@ -171,6 +171,9 @@ export class PapelApp extends LitElement {
   // ---------- toast ----------
   showToast(label, undo, fn, extra = {}) {
     this.toast = { label, undo, fn, ...extra };
+    // a live region inserted with its text already inside is often not read: say it in the
+    // persistent one (the toast itself is not a live region)
+    this.say(undo ? `${label}. ${t.undoHint}` : label);
     this.toastLater(undo ? 8000 : 4500);
   }
   toastLater(ms) {
@@ -179,6 +182,8 @@ export class PapelApp extends LitElement {
   }
   doUndo() {
     const fn = this.toast && this.toast.fn;
+    const t0 = this.querySelector('.toast');
+    if (t0 && t0.contains(document.activeElement)) this.toastFocus = (this.toast && this.toast.removed) || [];
     this.toast = null;
     if (fn) fn(); else store.undo();
   }
@@ -191,7 +196,8 @@ export class PapelApp extends LitElement {
       const ta = this.querySelector('.composer textarea');
       if (ta) { ta.focus(); }
     }
-    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'z' && !this.card && !isTyping(e.target)) { e.preventDefault(); if (this.toast && this.toast.undo) this.doUndo(); else store.undo(); }
+    const emptyLine = e.target && e.target.matches && e.target.matches('.composer textarea') && !e.target.value;
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'z' && !e.shiftKey && !this.card && (!isTyping(e.target) || emptyLine)) { e.preventDefault(); if (this.toast && this.toast.undo) this.doUndo(); else store.undo(); }
   }
 
   // ---------- cards ----------
@@ -269,7 +275,7 @@ export class PapelApp extends LitElement {
     sync.typing('');
     if (ids.length === 1) {
       const pieces = dictIndex() && splitHint(store.doc.items[ids[0]].t[0], dictIndex());
-      if (pieces) { this.hint = { id: ids[0], pieces }; clearTimeout(this.hintTimer); this.hintTimer = setTimeout(() => { this.hint = null; }, 12000); }
+      if (pieces) { this.hint = { id: ids[0], pieces }; this.say(`${t.splitAsk(pieces.length)} ${pieces.join(', ')}`); clearTimeout(this.hintTimer); this.hintTimer = setTimeout(() => { this.hint = null; }, 12000); }
       else this.hint = null;
     } else this.hint = null;
     if (!blur) requestAnimationFrame(() => {
@@ -385,7 +391,12 @@ export class PapelApp extends LitElement {
     this.sheetX = sh ? sh.getBoundingClientRect().left : null;
     const a = document.activeElement;
     const row = a && a.closest ? a.closest('.row[data-id]') : null;
-    this.focusRow = row ? { id: row.dataset.id, index: [...this.querySelectorAll('.row[data-id]')].indexOf(row) } : null;
+    this.focusRow = row ? {
+      id: row.dataset.id,
+      index: [...this.querySelectorAll('.row[data-id]')].indexOf(row),
+      pending: !row.closest('.struck'),
+      pendingIndex: [...this.querySelectorAll('.pending .row[data-id]')].indexOf(row),
+    } : null;
     this.rects.clear();
     // a render caused only by typing moves nothing: skip measuring every row (a layout per key)
     if (this.typingOnly) return;
@@ -487,10 +498,26 @@ export class PapelApp extends LitElement {
       if (fine) this.focusComposer();
       return;
     }
+    if (this.toastFocus && lost && !this.card) {
+      // Deshacer was pressed from the keyboard: the restored row, or the writing line
+      const ids = this.toastFocus;
+      this.toastFocus = null;
+      const el = ids.map((id) => this.querySelector(`.row[data-id="${id}"]`)).find(Boolean);
+      if (el) { el.focus({ preventScroll: true }); el.scrollIntoView({ block: 'nearest' }); } else if (fine) this.focusComposer(false);
+      return;
+    }
     if (this.focusRow && lost && !this.card) {
       const rows = [...this.querySelectorAll('.row[data-id]')];
-      const el = rows.find((r) => r.dataset.id === this.focusRow.id) || rows[Math.min(this.focusRow.index, rows.length - 1)];
-      if (el) el.focus({ preventScroll: true }); else if (fine) this.focusComposer();
+      let el = rows.find((r) => r.dataset.id === this.focusRow.id);
+      // a row struck from the pending list settles under Tachados, often off screen: the keyboard
+      // stays where it was working, on the pending row that took its place (verification round)
+      if (el && this.focusRow.pending && el.closest('.struck')) {
+        const pending = [...this.querySelectorAll('.pending .row[data-id]')];
+        el = pending[Math.min(this.focusRow.pendingIndex, pending.length - 1)] || null;
+        if (!el) { if (fine) this.focusComposer(); return; }
+      }
+      el = el || rows[Math.min(this.focusRow.index, rows.length - 1)];
+      if (el) { el.focus({ preventScroll: true }); el.scrollIntoView({ block: 'nearest' }); } else if (fine) this.focusComposer();
     }
   }
 
@@ -538,6 +565,7 @@ export class PapelApp extends LitElement {
       <div class="desk ${store.prefs.hand === 'molde' ? 'hand-molde' : ''} ${this.card ? 'card-open' : ''}" ?inert=${!!this.card}>
         ${this.wide ? this.renderStack() : nothing}
         <main class="sheet" style="--my-ink: var(--ink-${myInk})" aria-label=${store.title() || t.untitled}>
+          <h1 class="sr">${store.title() || t.untitled}</h1>
           ${this.renderHead(rec, others)}
           <section class="body">
             ${this.renderStatus(rec)}
@@ -550,11 +578,11 @@ export class PapelApp extends LitElement {
             </div>
             <div class="stick-mark" aria-hidden="true"></div>
             ${struck.length ? html`
-              <div class="fold" data-flip="fold" aria-expanded=${showStruck}>
-                <button @click=${() => store.savePrefs({ showStruck: !showStruck })}>${icons.chevron} ${t.struck(struck.length)}</button>
+              <div class="fold" data-flip="fold" data-open=${showStruck}>
+                <button aria-expanded=${showStruck ? 'true' : 'false'} aria-controls="struck-list" @click=${() => store.savePrefs({ showStruck: !showStruck })}>${icons.chevron} ${t.struck(struck.length)}</button>
                 <button class="link" @click=${() => store.clearStruck()}>${t.clearStruck}</button>
               </div>
-              ${showStruck ? html`<ol class="rows struck" role="list">${repeat(struck, (i) => i.id, (i) => this.renderRow(i, idx, fixes, true))}</ol>` : nothing}` : nothing}
+              ${showStruck ? html`<ol class="rows struck" id="struck-list" role="list">${repeat(struck, (i) => i.id, (i) => this.renderRow(i, idx, fixes, true))}</ol>` : nothing}` : nothing}
             ${!items.length ? html`<p class="empty-note">${(rec.secret ? t.emptyNoteShared : this.wide ? t.emptyNoteDesk : t.emptyNote).split(' ').map((w, i) => html`<span class="w" style="--i:${i}">${w} </span>`)}</p>` : nothing}
             <div class="write-zone" @click=${() => this.focusComposer()} aria-hidden="true"></div>
           </section>
@@ -562,7 +590,7 @@ export class PapelApp extends LitElement {
         ${this.wide ? this.renderNote(rec) : nothing}
       </div>
       ${this.card ? renderCard(this, this.card) : nothing}
-      ${this.toast ? html`<div class="toast ${this.card && !matchMedia('(min-width: 1000px)').matches ? 'over-card' : ''}" role="status" aria-live="polite"
+      ${this.toast ? html`<div class="toast ${this.card && !matchMedia('(min-width: 1000px)').matches ? 'over-card' : ''}"
         @pointerenter=${() => clearTimeout(this.toastTimer)} @pointerleave=${() => this.toastLater(4000)}
         @focusin=${() => clearTimeout(this.toastTimer)} @focusout=${() => this.toastLater(4000)}><span>${this.toast.label}</span>${this.toast.undo ? html`<button @click=${() => this.doUndo()}>${t.undo}</button>` : nothing}</div>` : nothing}
       <div class="sr" aria-live="polite">${this.announce}</div>
@@ -633,7 +661,7 @@ export class PapelApp extends LitElement {
     const doodle = store.prefs.doodles && a && a.emoji ? `${a.emoji.replace(/\uFE0F/g, '')}\uFE0E` : '';
     const fresh = store.isNew(item);
     return html`
-      <li class="row ${done ? 'done' : ''} ${fresh ? 'new' : ''}" data-id=${item.id} role="checkbox" aria-checked=${done ? 'true' : 'false'} tabindex="0"
+      <li class="row ${done ? 'done' : ''} ${fresh ? 'new' : ''}" data-id=${item.id} role="checkbox" aria-checked=${done ? 'true' : 'false'} aria-keyshortcuts="F2 Delete" tabindex="0"
         style="--ink: var(--ink-${ink}); --strike-ink: var(--ink-${strikeInk})"
         @pointerdown=${(e) => this.onRowDown(e, item.id)} @pointermove=${(e) => this.onRowMove(e)} @pointerup=${(e) => this.onRowUp(e)} @pointercancel=${() => this.onRowCancel()}
         @click=${(e) => this.onRowClick(e, item.id)}
@@ -693,7 +721,7 @@ export class PapelApp extends LitElement {
       const fromHistory = Object.values(store.history).filter((h) => fold(h.text).startsWith(f)).sort((a, b) => b.n - a.n).map((h) => h.text);
       const list = [...fromHistory, ...completions(typed, 4)].filter((x) => { const k = keyOf(x); if (seen.has(k) || fold(x) === f) return false; seen.add(k); return true; }).slice(0, 3);
       if (!list.length) return nothing;
-      return html`<div class="usual" role="group" aria-label=${t.usual}><span class="margin" aria-hidden="true">+</span><span class="usual-words">${list.map((s, i) => html`${i ? html`<span class="sep" aria-hidden="true">·</span>` : nothing}<button class="pencil" @pointerdown=${(e) => e.preventDefault()} @click=${() => { const ta = this.querySelector('.composer textarea'); ta.value = s; this.commit(ta); }}>${s}</button>`)}</span></div>`;
+      return html`<div class="usual" role="group" aria-label=${t.suggestions}><span class="margin" aria-hidden="true">+</span><span class="usual-words">${list.map((s, i) => html`${i ? html`<span class="sep" aria-hidden="true">·</span>` : nothing}<button class="pencil" @pointerdown=${(e) => e.preventDefault()} @click=${() => { const ta = this.querySelector('.composer textarea'); ta.value = s; this.commit(ta); }}>${s}</button>`)}</span></div>`;
     }
     if (!(this.composerFocus || pendingCount === 0)) return nothing;
     const usual = store.usual(8);

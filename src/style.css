@@ -49,6 +49,7 @@
   --pencil: #6b6f77;
   --pencil-soft: #8a8e95;
   --struck-fade: .68; /* struck words stay readable: 3:1 or more for every ink (tools/contrast.mjs) */
+  --struck-fade-print: .9; /* in print (smaller than large text): 4.5:1 or more */
   --marker: rgba(255, 226, 48, .62);
   --marker-blend: multiply;
   --chrome: #2a2722;
@@ -87,6 +88,7 @@
   --pencil: #8fa199;
   --pencil-soft: #7f9189;
   --struck-fade: .58;
+  --struck-fade-print: .8;
   --marker: rgba(255, 226, 92, .3);
   --marker-blend: normal;
   --chrome: #eef3ef;
@@ -321,7 +323,7 @@ ol.rows, ul.rows { list-style: none; margin: 0; padding: 0; }
 .row:focus-visible { background: color-mix(in srgb, var(--focus) 8%, transparent); outline: 2.5px solid var(--focus); outline-offset: -3px; border-radius: 4px; }
 /* the writing line shows it has the pen: an underline in the writer's ink */
 /* (from the margin line on: the margin is not part of the line you write on) */
-.composer:focus-within::after { content: ''; position: absolute; left: var(--margin-x); right: 0; bottom: 0; height: 2px; background: color-mix(in srgb, var(--my-ink, var(--ink-azul)) 60%, transparent); pointer-events: none; }
+.composer:focus-within::after { content: ''; position: absolute; left: var(--margin-x); right: 0; bottom: 0; height: 2px; background: var(--my-ink, var(--ink-azul)); pointer-events: none; }
 .composer textarea:focus-visible { outline: none; }
 .margin {
   flex: 0 0 var(--margin-x);
@@ -359,6 +361,7 @@ ol.rows, ul.rows { list-style: none; margin: 0; padding: 0; }
 .row .marker path { fill: var(--marker); }
 .row.new .marker { opacity: 1; }
 .row.done .txt { opacity: var(--struck-fade); }
+.hand-molde .row.done .txt { opacity: var(--struck-fade-print); } /* print is not large text: 4.5:1 */
 .row .strike {
   position: absolute; left: 0; top: 0;
   width: 100%; height: 100%;
@@ -501,10 +504,11 @@ html { scroll-padding-bottom: calc(var(--line) * 2 + var(--kb, 0px)); }
   padding: 0 var(--sheet-pad-right) 0 calc(var(--margin-x) + 12px);
   font: 650 15px/1 var(--font-ui); color: var(--chrome-soft);
 }
+.fold { position: relative; z-index: 4; } /* above the writing line's text box, shifted down onto its rule */
 .fold button { border: 0; background: none; cursor: pointer; min-height: 44px; padding: 0; font-weight: 650; }
 .fold .link { color: var(--chrome); text-decoration: underline; text-underline-offset: 3px; }
 .fold svg { width: 16px; height: 16px; vertical-align: -3px; transition: transform .2s; }
-.fold[aria-expanded='true'] svg { transform: rotate(90deg); }
+.fold[data-open='true'] svg { transform: rotate(90deg); }
 
 .empty-note { /* a note in pencil, written on the rules like everything else */
   margin: 0;
@@ -606,7 +610,7 @@ html { scroll-padding-bottom: calc(var(--line) * 2 + var(--kb, 0px)); }
 }
 .field:focus { border-color: var(--focus); }
 .field.hand { font: var(--ink-weight) 28px/1.2 var(--font-hand); color: var(--ink, var(--chrome)); padding: 8px 14px; resize: none; }
-.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chips { display: flex; flex-wrap: wrap; gap: 10px 8px; }
 .actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 16px; flex-wrap: wrap; }
 .btn {
   min-height: 46px; padding: 0 18px;
@@ -710,8 +714,12 @@ html { scroll-padding-bottom: calc(var(--line) * 2 + var(--kb, 0px)); }
 @media (forced-colors: active) {
   .row:focus-visible { outline-color: Highlight; }
   .chip.on, .chip[aria-pressed='true'], .swatch[aria-checked='true'] { outline: 2px solid Highlight; outline-offset: 2px; }
-  .strike path { stroke: CanvasText; }
-  .row.done .txt { opacity: 1; }
+  .row .strike path { stroke: CanvasText; }
+  .row.done .txt { opacity: 1; text-decoration: line-through; }
+  .switch { background: Canvas; border: 1px solid CanvasText; }
+  .switch::after { background: CanvasText; box-shadow: none; }
+  [aria-checked='true'] > .switch { background: Highlight; border-color: Highlight; }
+  [aria-checked='true'] > .switch::after { background: HighlightText; }
   .presence .dot, .swatch { forced-color-adjust: none; }
   .composer:focus-within::after { background: Highlight; }
 }
