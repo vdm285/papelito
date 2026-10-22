@@ -67,6 +67,7 @@ const es = {
   shareRotateHint: 'El enlace viejo deja de recibir cambios. Manda el nuevo a quien deba tenerlo.',
   shareRotated: 'Enlace nuevo listo. Mándalo otra vez.',
   firstShared: 'Esta hoja es compartida. Lo que escribas aparece en el otro teléfono.',
+  joined: (ink) => `Otro teléfono se unió a la hoja. Escribe en tinta ${ink}.`,
   // sync status
   syncing: 'Conectando…',
   synced: 'Al día',
@@ -165,6 +166,7 @@ const en = {
   shareRotateHint: 'The old link stops receiving changes. Send the new one to whoever should have it.',
   shareRotated: 'New link ready. Send it again.',
   firstShared: 'This sheet is shared. What you write shows up on the other phone.',
+  joined: (ink) => `Another phone joined the sheet. It writes in ${ink} ink.`,
   syncing: 'Connecting…',
   synced: 'Up to date',
   offline: 'Offline. Saved here; it will be sent when you are back.',

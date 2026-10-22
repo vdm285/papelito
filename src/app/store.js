@@ -327,6 +327,9 @@ export class Store {
     if (canonical(after) === canonical(before)) return null;
     this.clock.observe(maxStamp(after));
     const changes = diff(before, after);
+    // phones that appear in this sheet for the first time (not this one)
+    // (only on a phone that was already part of it: the one opening a link sees no news)
+    changes.joined = before.dev[this.device] ? Object.keys(after.dev).filter((d) => d !== this.device && !before.dev[d] && after.dev[d].ink[0]) : [];
     // remember strikes made on the other phone too (the household's habits)
     for (const id of changes.struck) this.remember(after.items[id].t[0]);
     this.rec.doc = after;

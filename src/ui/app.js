@@ -92,6 +92,9 @@ export class PapelApp extends LitElement {
     for (const id of ch.unstruck) this.pendingAnim.set(id, 'erase');
     for (const id of ch.added) this.remoteAdded.add(id);
     for (const id of ch.edited) this.remoteTouched.add(id);
+    if (ch.joined && ch.joined.length && Object.keys(store.doc.items).length) {
+      this.showToast(t.joined((t.inks[store.inkOf(ch.joined[0])] || '').toLowerCase()), false);
+    }
     if (ch.removed.length) {
       const it = store.doc.items[ch.removed[0]];
       const who = it ? this.whoName(it.x[1].slice(13)) : t.someone;
