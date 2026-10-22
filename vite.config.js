@@ -58,7 +58,7 @@ const csp = () => ({
     <meta http-equiv="Content-Security-Policy" content="${CSP}" />`),
 });
 
-// VITE_BASE is set by the Pages workflow (/listolista/ while the repository keeps that name).
+// VITE_BASE is set by the Pages workflow from the repository's name (/papelito/).
 export default defineConfig({
   base: process.env.VITE_BASE || '/',
   build: { target: 'es2022', chunkSizeWarningLimit: 300 },

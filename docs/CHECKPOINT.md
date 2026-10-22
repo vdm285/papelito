@@ -16,9 +16,9 @@ because something had to arrive somehow; B or C would replace those two function
 
 ## The owner's answers (2026-10-22)
 
-- **Name: Papelito.** The repository and its address keep the name `listolista`.
+- **Name: Papelito.** The repository kept the name `listolista` at first; later the same day the owner asked for it to be renamed too (below).
 - **How the other phone's ink arrives: A, Pluma fantasma** (already in the app; B and C stay in `docs/portfolio/` as records).
-- **Address: stay at vdm285.github.io/listolista.**
+- **Address: stay at vdm285.github.io/listolista**, later changed by the owner the same day: the repository is now `papelito`, the app lives at vdm285.github.io/papelito, and the old address forwards (HANDOFF, 2026-10-22).
 - **Next round: learn each list's aisle order from the order things get struck.**
 
 Questions 5 to 10 below are still open.

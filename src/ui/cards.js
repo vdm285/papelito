@@ -193,7 +193,7 @@ const CARDS = {
         <ul class="credits" lang="es">${m.sources.map((s) => html`<li>${s.url ? html`<a href=${s.url} target="_blank" rel="noopener">${s.name}</a>` : s.name}${s.credit ? html`. ${s.credit}` : nothing}${s.license ? html` (${s.license})` : nothing}</li>`)}</ul>` : nothing}
       <h3>${t.licencesTitle}</h3>
       <p class="credits">${[...LICENCE_FILES, ['LICENSE-code.txt', t.codeLicence]].map(([f, n], i) => html`${i ? ' · ' : ''}<a href=${`${import.meta.env.BASE_URL}licenses/${f}`} target="_blank" rel="noopener">${n}</a>`)}</p>
-      <p class="credits"><a href="https://github.com/vdm285/listolista" target="_blank" rel="noopener">github.com/vdm285/listolista</a></p>`;
+      <p class="credits"><a href="https://github.com/vdm285/papelito" target="_blank" rel="noopener">github.com/vdm285/papelito</a></p>`;
   },
 };
 

@@ -29,10 +29,11 @@ jobs:
       - run: npm ci --no-audit --no-fund
       - run: npm test
       - run: node tools/vocab/check.mjs
+      # the base is the repository's name, so a rename needs no edit here
       - run: npm run build
         env:
-          VITE_BASE: /listolista/
-      - run: grep -q '/listolista/' dist/index.html
+          VITE_BASE: /${{ github.event.repository.name }}/
+      - run: grep -q '/${{ github.event.repository.name }}/' dist/index.html
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist

@@ -37,7 +37,7 @@ const QQP_DIR = path.resolve(opt('--qqp', process.env.QQP_EXTRACT || 'D:/_GitHub
 const QQP_MANIFEST = path.resolve(QQP_DIR, '..', 'raw', 'manifest.json'); // CompaPrecio's record of the archives (sha256, retrieved)
 const STREAM = path.join(CACHE_DIR, 'qqp-stream');
 const DL = path.join(CACHE_DIR, 'dl');
-const UA = 'Papelito-vocab/1.0 (https://github.com/vdm285/listolista; build-time, a few requests a year)';
+const UA = 'Papelito-vocab/1.0 (https://github.com/vdm285/papelito; build-time, a few requests a year)';
 const sha256 = (buf) => crypto.createHash('sha256').update(buf).digest('hex');
 const log = (...a) => console.log('[sources]', ...a);
 

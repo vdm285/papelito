@@ -1,12 +1,12 @@
-# AGENTS.md — Papelito (repository `listolista`)
+# AGENTS.md — Papelito (repository `papelito`, called `listolista` until 2026-10-22)
 
 Read this before changing anything. `HANDOFF.md` is the state of the code, dated, newest first. `docs/VISION.md` says where the product is going and why; `docs/EDITORIAL.md` the rules for words, ink and media on screen; `docs/PIPELINES.md` how the aisle dictionary is built; `docs/research/` the dated research behind every decision. The owner's general method lives outside the repo in `D:\_GitHub\revamp-playbook.md`. `CLAUDE.md` imports this file.
 
-Owner: Victor (github.com/vdm285). The app opens in Mexican Spanish; English is a setting (`?lang=en` in a link, or Menú → Ajustes). Audience: the owner and the person he shops with first, friends and family next, anyone later.
+Owner: Victor (github.com/vdm285). The app opens in Mexican Spanish; English is a setting (`?lang=en` in a link, or Menú → Ajustes). Audience: the owner and the person the owner shops with first, friends and family next, anyone later.
 
 ## What this is
 
-A shared shopping list that behaves like **one piece of paper on two phones**: a ruled sheet where each phone writes in its own ink, strikes are drawn by hand, and what one phone writes appears on the other in about a third of a second (median 0.37 s, measured). No accounts: the link (`#k=<secret>`) is the key. No server of our own: the page is static (GitHub Pages) and each list travels end-to-end encrypted through free public Nostr relays. Its name is **Papelito** (the owner's choice, 2026-10-22); the repository and its address keep the old name `listolista`.
+A shared shopping list that behaves like **one piece of paper on two phones**: a ruled sheet where each phone writes in its own ink, strikes are drawn by hand, and what one phone writes appears on the other in about a third of a second (median 0.37 s, measured). No accounts: the link (`#k=<secret>`) is the key. No server of our own: the page is static (GitHub Pages) and each list travels end-to-end encrypted through free public Nostr relays. Its name is **Papelito** (the owner's choice, 2026-10-22). The repository was renamed from `listolista` the same day: the app lives at https://vdm285.github.io/papelito/, and the old address forwards (see "The rename").
 
 ## Do not
 
@@ -31,7 +31,7 @@ A shared shopping list that behaves like **one piece of paper on two phones**: a
 - `src/ui/` — `app.js` (the sheet, gestures, ink and motion after each render), `cards.js` (menu, share, item, sheets, open link, aisle order, settings, about), `ink.js` (hand-drawn strike paths, the travelling pen, handwriting reveal, paper grain), `icons.js`, `theme.js`, `credits.js`.
 - `src/data/dict.js` — loads `public/dict/es-MX.json` after the first frame.
 - `public/` — `sw.js` (offline; stamped by `vite.config.js`), two manifests, icons (from `tools/build-icons.mjs`), the dictionary.
-- `tools/` — checks: `smoke.mjs` (flows in a browser, PASS/FAIL), `keyboard.mjs` (focus after strikes, deletes and cards; click activation; pressed states), `sync-live.mjs` (phones through the real relays, no browser: latency, inks, come-back, link rotation), `perf.mjs` (first load on a throttled phone, medians), `contrast.mjs` (WCAG ratios of every text colour, both themes), `check-text.mjs` (control characters), `lf.mjs` (line endings). Captures: `shots.mjs` (screenshots at exact sizes), `demo-anim.mjs` (animated two-phone capture), `og.mjs` (the link preview `public/og.png`). Assets: `build-icons.mjs` (app icons), `build-fonts.py` (subset fonts), `build-doodles.py` (the margin doodles font). Data: `vocab/` (the dictionary pipeline, `docs/PIPELINES.md`). `lib/seed.mjs` (demo lists for all of the above).
+- `tools/` — checks: `smoke.mjs` (flows in a browser, PASS/FAIL), `keyboard.mjs` (focus after strikes, deletes and cards; click activation; pressed states), `sync-live.mjs` (phones through the real relays, no browser: latency, inks, come-back, link rotation), `perf.mjs` (first load on a throttled phone, medians), `contrast.mjs` (WCAG ratios of every text colour, both themes), `check-text.mjs` (control characters), `lf.mjs` (line endings). Captures: `shots.mjs` (screenshots at exact sizes), `demo-anim.mjs` (animated two-phone capture), `og.mjs` (the link preview `public/og.png`). Assets: `build-icons.mjs` (app icons), `build-fonts.py` (subset fonts), `build-doodles.py` (the aisle doodles font). Data: `vocab/` (the dictionary pipeline, `docs/PIPELINES.md`). `lib/seed.mjs` (demo lists for all of the above).
 - `docs/history/` — versions that never reached git.
 
 ## Checks before a commit
@@ -70,18 +70,26 @@ and look at the captures in `data/cache/shots/` (phone and desk, both themes, ca
 - **`python -I` ignores `PYTHONIOENCODING`**: printing non-Latin-1 text to this console fails; call `sys.stdout.reconfigure(encoding='utf-8')` first.
 - **Focus and lit**: a row that moves between lists (pending → struck) is a new element, so the focused one is lost. `app.js` records the focused row in `willUpdate` and restores it in `updated` (`keepFocus`); keep that when restructuring rows.
 - **Notices must not move rows on a timer**: rows under a finger jump. They go with the first thing done on the sheet (`onStore`), except the ones about something still true (`lasting`).
-- **Margin doodles** come from `public/fonts/doodles.woff2` (monochrome Noto Emoji subset by `tools/build-doodles.py` to the dictionary's emoji): rebuild it after `npm run dict` whenever emoji change. Whether iPhone draws them with this font or with Apple's colour emoji is unverified on a device (the text-presentation selector U+FE0E is appended to ask for the font).
+- **Aisle doodles** come from `public/fonts/doodles.woff2` (monochrome Noto Emoji subset by `tools/build-doodles.py` to the 16 aisles' emoji): rebuild it when an aisle's emoji changes in `data/vocab/aisles.tsv`. Items have no doodle (the owner's choice, 2026-10-22); the dictionary's per-item emoji are kept for a later round and the app does not draw them. Whether iPhone draws them with this font or with Apple's colour emoji is unverified on a device (the text-presentation selector U+FE0E is appended to ask for the font).
 
 ## Common changes
 
 - **The default walking order of aisles** lives in two places that must agree: `AISLES` in `src/model/aisles.js` and the `order` column of `data/vocab/aisles.tsv`. Change both, then `npm run dict` and `npm test` (`tools/vocab/check.mjs` names the mismatch). Lists that saved their own order are unaffected.
 - **Adding or dropping a relay**: edit `src/sync/relays.js` (the About card builds its credit from it), and the count in README and HANDOFF. Vet a candidate alone with `node tools/sync-live.mjs --relays=wss://candidate`, then a full `node tools/sync-live.mjs` and `node tools/smoke.mjs --sync`. The CSP needs nothing (`connect-src 'self' wss:`). The probe scripts of `docs/research/2026-10-21-transport.md` §8 were not committed; `sync-live.mjs` covers what matters (stores, serves back, latency).
 - **Rebuilding assets** (`npm run fonts`, `python -I tools/build-doodles.py`) needs fontTools and brotli kept on D: — `python -m pip install --target data/cache/pylib fonttools brotli` — and the doodles script downloads `NotoEmoji[wght].ttf` into `data/cache/fonts/` on its first run.
-- **Deploying**: GitHub Pages must have its source set to "GitHub Actions" (Settings → Pages, or `gh api -X PUT repos/vdm285/listolista/pages -f build_type=workflow`); with the old "deploy from a branch" setting a push publishes the raw `index.html`, which is blank. Every push to `main` runs `.github/workflows/pages.yml` (tests, dictionary check, build, deploy). After a deploy, check the Actions run and the live page's `<title>`. Before deploying, run the smoke test against a production build too (it alone has the CSP).
+- **Deploying**: GitHub Pages must have its source set to "GitHub Actions" (Settings → Pages, or `gh api -X PUT repos/vdm285/papelito/pages -f build_type=workflow`); with the old "deploy from a branch" setting a push publishes the raw `index.html`, which is blank. Every push to `main` runs `.github/workflows/pages.yml` (tests, dictionary check, build, deploy). After a deploy, check the Actions run and the live page's `<title>`. Before deploying, run the smoke test against a production build too (it alone has the CSP).
 
-## Renaming (when the owner picks a name)
+## The rename (done 2026-10-22)
 
-Change: `appName` and the strings in `src/app/i18n.js`, `<title>` and the `og:` and `apple-mobile-web-app-title` tags in `index.html`, both manifests, README and docs titles, `package.json` `name`, the cache prefix in `public/sw.js`. If the repository is renamed: `VITE_BASE` in `.github/workflows/pages.yml`, the URLs in README, `index.html` (`og:url`, `og:image`) and `src/ui/cards.js`, and the local folder. Do not change: the storage keys (`ll.*`), the document version, the HKDF salt `papelito/v2` in `src/sync/crypto.js` (changing it would orphan every shared list).
+The repository `vdm285/listolista` became `vdm285/papelito`, and the app moved from vdm285.github.io/listolista/ to vdm285.github.io/papelito/ (GitHub does not forward Pages addresses).
+
+- **The base path is the repository's name**: `VITE_BASE` in `.github/workflows/pages.yml` is `/${{ github.event.repository.name }}/`, so another rename needs no edit there.
+- **URLs that name the repository**: README, `index.html` (`og:url`, `og:image`), `src/ui/cards.js` (the About card's code link), `tools/vocab/build.mjs` (the overrides' credit URL; then `npm run dict`), `tools/vocab/fetch-sources.mjs` (User-Agent).
+- **The old address** is a separate public repository, `vdm285/listolista`, holding only a forward: `index.html` and `404.html` send any old path to the new address with its query and `#k=` link, and a `sw.js` retires the old offline copy (it deletes the old caches' entries, unregisters itself and reloads open tabs into the forward). Do not delete it: links shared and home-screen icons made before the rename go through it. While it exists, github.com/vdm285/listolista no longer redirects to this repository.
+- **Lists did not move**: storage belongs to the origin, which is the same, so `ll.*` and the old app's keys are where they were.
+- **Do not change**: the storage keys (`ll.*`), the document version, the HKDF salt `papelito/v2` in `src/sync/crypto.js` (changing it would orphan every shared list).
+- **The local folder** `D:\_GitHub\listolista` keeps its name: nothing in the build depends on it, and Claude sessions and their memory are tied to the path.
+- **Caches are shared by the whole origin**: `public/sw.js` names its caches after its scope and deletes only its own older versions. Another project's worker on vdm285.github.io can still delete ours (A cómo's did on every deploy until 2026-10-22); offline then degrades to online until the next install.
 
 ## Conventions
 

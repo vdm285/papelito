@@ -32,7 +32,7 @@ For two people buying groceries in Mexico (research: `docs/research/2026-10-21-u
 
 | # | Checkpoint | Who | Status |
 |---|---|---|---|
-| 1 | The paper for two (this rebuild) | the owner and the person he shops with | built; awaiting the owner's review |
+| 1 | The paper for two (this rebuild) | the owner and the person the owner shops with | built; awaiting the owner's review |
 | 2 | Friends and family | 10–20 people | after the phone test; own address decided |
 | 3 | Public, open source | anyone | licence, contribution rules |
 

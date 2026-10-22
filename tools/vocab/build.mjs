@@ -436,7 +436,7 @@ for (const f of fs.existsSync(OVERRIDES) ? fs.readdirSync(OVERRIDES) : []) {
 const examples = ['bolillo', 'garrafón', 'croquetas', 'totopos'].filter((w) => onlyOverride.some((t) => fold(t.display) === fold(w)));
 sources.push({
   name: 'Correcciones por pasillo',
-  url: 'https://github.com/vdm285/listolista/tree/main/data/overrides/aisles',
+  url: 'https://github.com/vdm285/papelito/tree/main/data/overrides/aisles',
   license: 'Dominio público (The Unlicense), como el código',
   retrieved: overrideDates.sort().pop() || 'sin fecha',
   credit: `${onlyOverride.length} palabras de uso diario que ninguna fuente trae${examples.length ? ` (${examples.join(', ')}…)` : ''} vienen de las líneas de corrección por pasillo: cada una dice por qué, las redactó una IA (Claude) y esperan la revisión del dueño.`,

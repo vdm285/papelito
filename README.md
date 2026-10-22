@@ -5,11 +5,11 @@ A shopping list that behaves like one piece of paper on two phones.
 
 Write "huevos, leche" at home; it appears, in your ink, on the other phone at the supermarket. A strike there draws itself here. No accounts, nothing to install, no server of its own: the link is the key, and the list travels end-to-end encrypted.
 
-**Use it:** https://vdm285.github.io/listolista/
+**Use it:** https://vdm285.github.io/papelito/
 
 ![Two phones, one sheet: the right phone wrote "limones" and it arrived on the left in red ink under a yellow highlight; the right phone struck "cebolla" and the red line is drawing itself across it on the left](docs/img/two-phones.jpg)
 
-*The repository and its address keep the old name, ListoLista.*
+*Until 2026-10-22 the repository was called ListoLista; its old address, vdm285.github.io/listolista, forwards here with the list's link intact.*
 
 ## What it does
 
@@ -42,7 +42,7 @@ npm run dict           # rebuild and check the aisle dictionary
 
 ## Credits
 
-Typefaces Caveat, Atkinson Hyperlegible Next and Noto Emoji for the margin doodles (SIL Open Font License), Lit (BSD-3-Clause), noble-secp256k1, uqr and two helpers of Vite (MIT). Product vocabulary from «Quién es Quién en los Precios», PROFECO (CC BY 4.0), and the ENIGH 2024 spending catalogue (Fuente: INEGI); emoji names from Unicode CLDR (Unicode License v3). The grouping into aisles is ours; neither agency endorses this app. 209 everyday words that no source has (bolillo, totopos…) come from per-aisle override lines drafted by an AI and awaiting the owner's review; the app says so too. Full list in the app (Menú → Acerca de) and in `src/ui/credits.js`.
+Typefaces Caveat, Atkinson Hyperlegible Next and Noto Emoji for the aisle doodles (SIL Open Font License), Lit (BSD-3-Clause), noble-secp256k1, uqr and two helpers of Vite (MIT). Product vocabulary from «Quién es Quién en los Precios», PROFECO (CC BY 4.0), and the ENIGH 2024 spending catalogue (Fuente: INEGI); emoji names from Unicode CLDR (Unicode License v3). The grouping into aisles is ours; neither agency endorses this app. 209 everyday words that no source has (bolillo, totopos…) come from per-aisle override lines drafted by an AI and awaiting the owner's review; the app says so too. Full list in the app (Menú → Acerca de) and in `src/ui/credits.js`.
 
 Built by Victor Mikhailov with AI (Gemini for the versions of December 2025 to January 2026; Claude for the September 2026 checkpoint and this rebuild).
 

@@ -8,7 +8,11 @@
 // offline open was a blank page. Hashed assets never change under the same name, so they are
 // never refetched either. Other origins are never touched (the relays are WebSockets anyway).
 const VERSION = '__BUILD__';
-const CACHE = `papelito-${VERSION}`;
+// The origin vdm285.github.io is shared (the owner's other projects, and until 2026-10-22 this app
+// at /listolista/), and caches belong to the origin, not to a path: this worker's caches carry its
+// scope, and it deletes only its own older versions, never another path's.
+const SCOPE = new URL('./', location.href).pathname;
+const CACHE = `papelito:${SCOPE}:${VERSION}`;
 const SHELL = /*__SHELL__*/[];
 
 self.addEventListener('install', (e) => {
@@ -17,7 +21,10 @@ self.addEventListener('install', (e) => {
 
 self.addEventListener('activate', (e) => {
   e.waitUntil((async () => {
-    for (const k of await caches.keys()) if (k.startsWith('papelito-') && k !== CACHE) await caches.delete(k);
+    for (const k of await caches.keys()) {
+      // papelito-<version>: the names used before 2026-10-22, only ever at /listolista/, which now forwards here
+      if ((k.startsWith(`papelito:${SCOPE}:`) && k !== CACHE) || k.startsWith('papelito-')) await caches.delete(k);
+    }
     await self.clients.claim();
   })());
 });
