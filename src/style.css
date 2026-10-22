@@ -2,13 +2,25 @@
    Themes: "papel" (a ruled notebook sheet, ballpoint inks) and "pizarron" (a school chalkboard,
    chalks). Every colour is a token below; components never hard-code one. */
 
-@import '@fontsource-variable/caveat/wght.css';
-@import '@fontsource-variable/atkinson-hyperlegible-next/wght.css';
+/* Both faces are subset at build time to Spanish and English (tools/build-fonts.py) and preloaded
+   by index.html, so the first frame shows the real handwriting. Licences: LICENSES/OFL-*.txt. */
+@font-face {
+  font-family: 'Caveat';
+  src: url('/fonts/caveat.woff2') format('woff2');
+  font-weight: 400 700; /* one static instance at 520: no other weight is ever synthesized */
+  font-display: fallback;
+}
+@font-face {
+  font-family: 'Atkinson Hyperlegible Next';
+  src: url('/fonts/atkinson.woff2') format('woff2');
+  font-weight: 200 800;
+  font-display: fallback;
+}
 
 :root {
-  --font-hand: 'Caveat Variable', 'Segoe Print', 'Bradley Hand', cursive;
-  --font-print: 'Atkinson Hyperlegible Next Variable', system-ui, sans-serif;
-  --font-ui: 'Atkinson Hyperlegible Next Variable', system-ui, sans-serif;
+  --font-hand: 'Caveat', 'Segoe Print', 'Bradley Hand', cursive;
+  --font-print: 'Atkinson Hyperlegible Next', system-ui, sans-serif;
+  --font-ui: 'Atkinson Hyperlegible Next', system-ui, sans-serif;
 
   --line: 56px;                 /* one rule = one touch target at the store */
   --margin-x: 52px;             /* the red margin line */
@@ -104,6 +116,7 @@
 * { box-sizing: border-box; }
 html, body { margin: 0; height: 100%; }
 body {
+  font-synthesis: none;
   background: var(--desk);
   color: var(--chrome);
   font: 16px/1.4 var(--font-ui);
@@ -337,6 +350,14 @@ ol.rows, ul.rows { list-style: none; margin: 0; padding: 0; }
   white-space: nowrap;
 }
 .row .who { align-self: center; margin-left: 6px; width: 9px; height: 9px; border-radius: 50%; background: var(--ink); opacity: .55; flex: 0 0 auto; }
+
+/* the other phone's pen, while it writes */
+.row.ghost { cursor: default; }
+.row.ghost .margin { color: var(--ink); opacity: .55; }
+.row.ghost .margin svg { width: 20px; height: 20px; }
+.row.ghost .txt { opacity: .55; }
+.ghost-nib { display: inline-block; width: 7px; height: 7px; margin-left: 3px; border-radius: 50%; background: var(--ink); vertical-align: middle; animation: nib 1s ease-in-out infinite; }
+@keyframes nib { 50% { opacity: .25; transform: translateY(-3px); } }
 
 /* the writing line */
 .composer {

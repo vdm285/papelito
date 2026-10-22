@@ -14,7 +14,7 @@ const swVersion = () => ({
     const assets = existsSync(resolve('dist/assets'))
       ? readdirSync(resolve('dist/assets')).filter((n) => !/\.woff2$/.test(n) || /-latin-wght/.test(n)).map((n) => `./assets/${n}`)
       : [];
-    const shell = ['./', './dict/es-MX.json', './manifest.webmanifest', './manifest-ios.webmanifest', './favicon.svg', './icon-192.png', './icon-512.png', ...assets];
+    const shell = ['./', './dict/es-MX.json', './fonts/caveat.woff2', './fonts/atkinson.woff2', './manifest.webmanifest', './manifest-ios.webmanifest', './favicon.svg', './icon-192.png', './icon-512.png', ...assets];
     const src = readFileSync(f, 'utf8').replace('__BUILD__', id).replace('/*__SHELL__*/[]', JSON.stringify(shell));
     writeFileSync(f, src);
   },

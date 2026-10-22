@@ -13,16 +13,17 @@
     "live": "node tools/sync-live.mjs",
     "smoke": "node tools/smoke.mjs",
     "shots": "node tools/shots.mjs",
-    "lf": "node tools/lf.mjs"
+    "lf": "node tools/lf.mjs",
+    "fonts": "python -I tools/build-fonts.py"
   },
   "devDependencies": {
     "puppeteer-core": "^24.43.1",
     "sharp": "^0.34.5",
-    "vite": "^6.4.5"
+    "vite": "^6.4.5",
+    "@fontsource-variable/caveat": "^5.3.0",
+    "@fontsource-variable/atkinson-hyperlegible-next": "^5.3.0"
   },
   "dependencies": {
-    "@fontsource-variable/atkinson-hyperlegible-next": "^5.3.0",
-    "@fontsource-variable/caveat": "^5.3.0",
     "@noble/secp256k1": "^3.2.0",
     "lit": "^3.3.3",
     "uqr": "^0.1.3"
