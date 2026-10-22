@@ -27,7 +27,8 @@
 import { isStamp, stampTime, DEVICE_LEN } from './hlc.js';
 
 export const DOC_VERSION = 2;
-export const LIMITS = { items: 600, text: 160, title: 60, name: 24, aisles: 40, devices: 24, fixes: 300, key: 80 };
+export const LIMITS = { items: 600, tombstones: 1500, text: 160, title: 60, name: 24, aisles: 40, devices: 24, fixes: 300, key: 80 };
+const FUTURE_MS = 864e5; // a stamp more than a day ahead of this phone's clock is refused (crafted or a broken clock)
 export const TOMBSTONE_DAYS = 30;
 
 const ID_RE = /^[0-9a-z]{8,12}$/;
@@ -114,12 +115,20 @@ export function see(doc, device, stamp) {
   if (!doc.seen[device] || stamp > doc.seen[device]) doc.seen[device] = stamp;
 }
 
-const clip = (s, n) => String(s ?? '').replace(/\s+/g, ' ').trim().slice(0, n);
+// invisible format characters (U+200B…, U+200E, U+2060-2064, …) never belong in an item
+const clip = (s, n) => String(s ?? '').replace(/\p{Cf}/gu, '').replace(/\s+/g, ' ').trim().slice(0, n);
 
 // ---------- merging ----------
 
-/** Merge two documents. Pure, commutative, associative and idempotent. */
-export function merge(a, b) {
+/**
+ * Merge two documents. Commutative, associative and idempotent for honest copies.
+ * `now` only bounds the `seen` rule: an item held by one side is dropped because the other side
+ * "saw it born" only if it is older than the purge window, since only such an item can have been
+ * purged legitimately. A crafted `seen` claim, a truncated copy or two tabs racing can therefore
+ * never delete a young item (robustness audit, round 1).
+ */
+export function merge(a, b, now = Date.now()) {
+  const purgeable = now - TOMBSTONE_DAYS * 864e5;
   const out = emptyDoc();
   out.title = later(a.title, b.title);
   out.order = later(a.order, b.order);
@@ -142,7 +151,7 @@ export function merge(a, b) {
       const it = src[k];
       if (!cur) {
         // held by one side only: keep it unless the other side saw it born (then it was purged there)
-        if (other.items[k] === undefined && (other.seen[it.by] || '') >= it.c) continue;
+        if (other.items[k] === undefined && (other.seen[it.by] || '') >= it.c && stampTime(it.c) < purgeable) continue;
         out.items[k] = { ...it };
         continue;
       }
@@ -209,19 +218,26 @@ export function compact(doc, now = Date.now()) {
 
 // ---------- validation of anything that arrives from outside ----------
 
-const okReg = (r, test) => Array.isArray(r) && r.length === 2 && (r[1] === '' || isStamp(r[1])) && test(r[0]);
+let horizon = Infinity; // set by sanitize: stamps beyond it are refused
+const okStamp = (s) => isStamp(s) && stampTime(s) <= horizon;
+const okReg = (r, test) => Array.isArray(r) && r.length === 2 && (r[1] === '' || okStamp(r[1])) && test(r[0]);
 const okText = (n) => (v) => typeof v === 'string' && v.length <= n;
 
 /**
  * Rebuild a document from untrusted JSON, keeping only well-formed fields. Anyone with a list's
  * link can write to it, so a decrypted copy is still treated as hostile input.
  */
-export function sanitize(raw) {
+export function sanitize(raw, now = Date.now()) {
+  horizon = now + FUTURE_MS;
+  try { return sanitizeInner(raw); } finally { horizon = Infinity; }
+}
+
+function sanitizeInner(raw) {
   const doc = emptyDoc();
   if (!raw || typeof raw !== 'object' || raw.v !== DOC_VERSION) return doc;
   if (okReg(raw.title, okText(LIMITS.title))) doc.title = [raw.title[0], raw.title[1]];
   if (okReg(raw.order, (v) => v === null || (Array.isArray(v) && v.length <= LIMITS.aisles && v.every((x) => typeof x === 'string' && AISLE_RE.test(x))))) {
-    doc.order = [raw.order[0] ? [...raw.order[0]] : null, raw.order[1]];
+    doc.order = [raw.order[0] ? [...new Set(raw.order[0])] : null, raw.order[1]];
   }
   if (raw.fix && typeof raw.fix === 'object') {
     let n = 0;
@@ -242,22 +258,31 @@ export function sanitize(raw) {
   }
   if (raw.seen && typeof raw.seen === 'object') {
     for (const k of Object.keys(raw.seen).slice(0, LIMITS.devices * 4)) {
-      if (DEV_RE.test(k) && isStamp(raw.seen[k])) doc.seen[k] = raw.seen[k];
+      if (DEV_RE.test(k) && okStamp(raw.seen[k])) doc.seen[k] = raw.seen[k];
     }
   }
   if (raw.items && typeof raw.items === 'object') {
-    let n = 0;
-    for (const k of Object.keys(raw.items)) {
-      if (n >= LIMITS.items) break;
+    // live items and tombstones are capped separately: a busy month of cleared items must never
+    // push live items out (robustness audit). Within a cap, the newest are kept.
+    const live = [];
+    const dead = [];
+    const keys = Object.keys(raw.items);
+    for (const k of keys.length > 20000 ? keys.slice(0, 20000) : keys) {
       const it = raw.items[k];
       if (!ID_RE.test(k) || !it || typeof it !== 'object' || !own(raw.items, k)) continue;
-      if (!isStamp(it.c) || typeof it.by !== 'string' || !DEV_RE.test(it.by)) continue;
+      if (!okStamp(it.c) || typeof it.by !== 'string' || !DEV_RE.test(it.by)) continue;
       if (!okReg(it.t, okText(LIMITS.text))) continue;
       if (!okReg(it.d, (v) => v === '' || (typeof v === 'string' && DEV_RE.test(v)))) continue;
       if (!okReg(it.x, (v) => v === 0 || v === 1)) continue;
-      doc.items[k] = { c: it.c, by: it.by, t: [it.t[0], it.t[1]], d: [it.d[0], it.d[1]], x: [it.x[0], it.x[1]] };
-      n++;
+      const item = { c: it.c, by: it.by, t: [it.t[0], it.t[1]], d: [it.d[0], it.d[1]], x: [it.x[0], it.x[1]] };
+      if (item.x[0] === 1) dead.push([k, item]);
+      else if (item.t[0].replace(/\p{Cf}/gu, '').trim()) live.push([k, item]); // an empty live item is noise
     }
+    const newest = (key) => (p, q) => (p[1][key][1] < q[1][key][1] ? 1 : -1);
+    live.sort((p, q) => (p[1].c < q[1].c ? 1 : -1));
+    dead.sort(newest('x'));
+    for (const [k, item] of live.slice(0, LIMITS.items)) doc.items[k] = item;
+    for (const [k, item] of dead.slice(0, LIMITS.tombstones)) doc.items[k] = item;
   }
   return doc;
 }

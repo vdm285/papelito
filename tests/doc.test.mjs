@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { createClock, parse, isStamp, randomId } from '../src/model/hlc.js';
 import {
   emptyDoc, addItem, setText, setDone, setFix, fixes, setDeleted, setTitle, setOrder, setDevice,
-  merge, sameDoc, canonical, diff, compact, sanitize, liveItems, maxStamp, TOMBSTONE_DAYS,
+  merge, sameDoc, canonical, diff, compact, sanitize, liveItems, maxStamp, TOMBSTONE_DAYS, LIMITS,
 } from '../src/model/doc.js';
 
 // Deterministic PRNG (mulberry32) so a failing seed can be replayed.
@@ -152,7 +152,7 @@ test('diff reports what the other phone did', () => {
 });
 
 test('a purged item never comes back from a stale copy (and the control without `seen` would)', () => {
-  let now = 1_800_000_000_000;
+  let now = 1_700_000_000_000;
   const a = createClock('phonea00', () => now);
   const b = createClock('phoneb00', () => now);
   const d = emptyDoc();
@@ -164,18 +164,18 @@ test('a purged item never comes back from a stale copy (and the control without 
   compact(d, now); // the tombstone is purged on phone A
   assert.equal(d.items.item0001, undefined);
   addItem(stale, b, 'item0003', 'limones'); // B adds offline, months later
-  const m1 = merge(d, stale);
-  const m2 = merge(stale, d);
+  const m1 = merge(d, stale, now);
+  const m2 = merge(stale, d, now);
   assert.ok(sameDoc(m1, m2));
   assert.deepEqual(liveItems(m1).map((i) => i.t[0]).sort(), ['cebolla', 'limones']);
   // control: forget what A had seen, and the deleted item resurrects
   const forgetful = clone(d);
   forgetful.seen = Object.create(null);
-  assert.ok(liveItems(merge(forgetful, stale)).some((i) => i.t[0] === 'cilantro'), 'control should resurrect');
+  assert.ok(liveItems(merge(forgetful, stale, now)).some((i) => i.t[0] === 'cilantro'), 'control should resurrect');
 });
 
 test('compact drops only old tombstones', () => {
-  const now = 1_800_000_000_000;
+  const now = 1_700_000_000_000;
   const old = createClock('phonea00', () => now - (TOMBSTONE_DAYS + 1) * 864e5);
   const fresh = createClock('phoneb00', () => now);
   const d = emptyDoc();
@@ -215,4 +215,72 @@ test('sanitize rejects hostile input', () => {
   assert.deepEqual(Object.keys(d.fix), ['leche']);
   assert.equal(sanitize(null).v, 2);
   assert.equal(sanitize({ v: 1 }).title[1], '');
+});
+
+test('a crafted or truncated `seen` claim never deletes a young item; an old purged one stays purged', () => {
+  const now = Date.now();
+  const a = createClock('phonea00', () => now);
+  const d = emptyDoc();
+  addItem(d, a, 'item0001', 'tortillas');
+  const evil = emptyDoc();
+  evil.seen.phonea00 = d.items.item0001.c; // "I saw it born" without holding it
+  assert.equal(liveItems(merge(d, clone(evil), now)).length, 1);
+  assert.equal(liveItems(merge(clone(evil), d, now)).length, 1);
+  // the same claim about an item older than the purge window is the honest purge case
+  const old = createClock('phonea00', () => now - (TOMBSTONE_DAYS + 2) * 864e5);
+  const o = emptyDoc();
+  addItem(o, old, 'item0002', 'cilantro');
+  const purged = emptyDoc();
+  purged.seen.phonea00 = o.items.item0002.c;
+  assert.equal(liveItems(merge(o, purged, now)).length, 0);
+});
+
+test('stamps from the far future are refused, and do not drag the clock along', () => {
+  const now = Date.now();
+  const ahead = createClock('phoneb00', () => now + 3 * 864e5);
+  const d = emptyDoc();
+  addItem(d, ahead, 'item0001', 'de mañana');
+  setTitle(d, ahead, 'Del futuro');
+  const s = sanitize(JSON.parse(canonical(d)), now);
+  assert.equal(Object.keys(s.items).length, 0);
+  assert.equal(s.title[0], '');
+  assert.equal(Object.keys(s.seen).length, 0);
+  // a few hours ahead is a slightly wrong clock, not an attack: kept
+  const near = createClock('phoneb00', () => now + 3 * 36e5);
+  const e = emptyDoc();
+  addItem(e, near, 'item0002', 'pan');
+  assert.equal(Object.keys(sanitize(JSON.parse(canonical(e)), now).items).length, 1);
+  const mine = createClock('phonea00', () => now);
+  mine.observe(d.items.item0001.c);
+  assert.ok(parse(mine.tick()).ms <= now);
+  const broken = createClock('phonea00', () => 1e15);
+  assert.ok(isStamp(broken.tick()));
+});
+
+test('tombstones never push live items out, and the newest are kept within each cap', () => {
+  const now = Date.now();
+  let t = now - 20 * 864e5;
+  const a = createClock('phonea00', () => t);
+  const d = emptyDoc();
+  for (let i = 0; i < LIMITS.tombstones + 50; i++) { t += 1000; const id = `dead${String(i).padStart(5, '0')}`; addItem(d, a, id, `borrado ${i}`); setDeleted(d, a, id, true); }
+  for (let i = 0; i < LIMITS.items + 10; i++) { t += 1000; addItem(d, a, `live${String(i).padStart(5, '0')}`, `vivo ${i}`); }
+  const s = sanitize(JSON.parse(canonical(d)), now);
+  const live = liveItems(s);
+  assert.equal(live.length, LIMITS.items);
+  assert.ok(!s.items.live00000 && s.items[`live${String(LIMITS.items + 9).padStart(5, '0')}`], 'the oldest live items go first');
+  assert.equal(Object.keys(s.items).length - live.length, LIMITS.tombstones);
+  assert.ok(!s.items.dead00000, 'the oldest tombstones go first');
+});
+
+test('sanitize drops empty live items and repeated aisles in the order', () => {
+  const now = Date.now();
+  const a = createClock('phonea00', () => now);
+  const d = emptyDoc();
+  addItem(d, a, 'item0001', 'leche');
+  addItem(d, a, 'item0002', 'x');
+  d.items.item0002.t[0] = '​ ';
+  setOrder(d, a, ['lac', 'fru', 'lac']);
+  const s = sanitize(JSON.parse(canonical(d)), now);
+  assert.deepEqual(Object.keys(s.items), ['item0001']);
+  assert.deepEqual(s.order[0], ['lac', 'fru']);
 });

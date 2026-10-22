@@ -11,9 +11,14 @@ const BULLET = /^\s*(?:[-*•·▪◦‣–—>+]|\[[ xX✓✔]?\]|[☐☑✓✔
 const WA_PREFIX = /^\s*\[[^\]]{4,40}\]\s*[^:\n]{1,40}:\s*/u; // [18:03, 21/10/2026] Ana: huevos
 const WA_PREFIX_ANDROID = /^\s*\d{1,2}\/\d{1,2}\/\d{2,4},?\s+\d{1,2}:\d{2}(?:\s*[ap]\.?\s?m\.?)?\s*-\s*[^:\n]{1,40}:\s*/iu; // 21/10/26, 18:03 - Ana: huevos
 
+// what a chat copy brings along that is not an item
+const NOT_AN_ITEM = /^<?\s*(multimedia omitido|media omitted|imagen omitida|image omitted|video omitido|video omitted|audio omitido|audio omitted|sticker omitido|sticker omitted|gif omitido|gif omitted|documento omitido|document omitted|se eliminó este mensaje|this message was deleted|mensaje editado)\s*>?$/iu;
+const HAS_CONTENT = /[\p{L}\p{N}]/u; // an item needs a letter or a digit (a lone 👍 is a reaction)
+const MAX = 160;
+
 export function splitInput(text) {
   const out = [];
-  for (let line of String(text ?? '').split(/\r?\n/)) {
+  for (let line of String(text ?? '').replace(/\p{Cf}/gu, '').split(/\r?\n/)) {
     line = line.replace(WA_PREFIX, '').replace(WA_PREFIX_ANDROID, '');
     if (/:\s*$/.test(line) && line.trim().split(/\s+/).length <= 6) continue; // a heading
     // a heading followed by several items on the same line: "Trae: huevos, leche" (but
@@ -23,7 +28,15 @@ export function splitInput(text) {
     const parts = line.replace(/(\d),(\d)/g, '$1\u0000$2').split(/[,;]/);
     for (let p of parts) {
       p = p.replace(/\u0000/g, ',');
-      p = stripDecoration(p);
+      p = stripDecoration(p).replace(/^(?:y|e)\s+(?=\S)/iu, ''); // "y papel de baño" from a pasted sentence
+      if (!p || NOT_AN_ITEM.test(p) || !HAS_CONTENT.test(p)) continue;
+      // too long for one line on the paper: split at a word boundary instead of cutting words off
+      while (p.length > MAX) {
+        const cut = p.lastIndexOf(' ', MAX);
+        const at = cut > MAX / 2 ? cut : MAX;
+        out.push(p.slice(0, at).trim());
+        p = p.slice(at).trim();
+      }
       if (p) out.push(p);
     }
   }

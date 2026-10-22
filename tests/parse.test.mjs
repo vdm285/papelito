@@ -58,3 +58,21 @@ test('quantities split from the thing', () => {
   assert.deepEqual(q('2 detergente en polvo'), ['2', 'detergente en polvo']);
   assert.deepEqual(q('3 desinfectante de cocina'), ['3', 'desinfectante de cocina']);
 });
+
+test('chat leftovers are not items: media placeholders, reactions, invisible characters', () => {
+  assert.deepEqual(splitInput('[12/10/26, 9:14] Ana: <Multimedia omitido>\n[12/10/26, 9:15] Ana: le​che\n👍\n⁠'), ['leche']);
+  assert.deepEqual(splitInput('Media omitted\nimagen omitida\npan'), ['pan']);
+  assert.deepEqual(splitInput('2 🥑'), ['2 🥑']);
+});
+
+test('a leading "y" from a pasted sentence goes, "yogur" stays', () => {
+  assert.deepEqual(splitInput('leche, y papel de baño, yogur'), ['leche', 'papel de baño', 'yogur']);
+});
+
+test('a line too long for the paper splits at a word, never mid-word', () => {
+  const long = Array.from({ length: 40 }, (_, i) => `palabra${i}`).join(' ');
+  const out = splitInput(long);
+  assert.ok(out.length > 1);
+  assert.ok(out.every((p) => p.length <= 160));
+  assert.equal(out.join(' '), long);
+});

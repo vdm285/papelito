@@ -68,7 +68,7 @@ export function importLegacy(store, device) {
       doc.items[iid] = { c: s, by: device, t: [it.text.replace(/\s+/g, ' ').trim().slice(0, 160), s], d: [it.done ? device : '', s], x: [0, s] };
       see(doc, device, s);
     });
-    const t = sentenceCase(String(title ?? '').trim()).slice(0, 60);
+    const t = sentenceCase(typeof title === 'string' ? title.trim() : '').slice(0, 60);
     doc.title = [t === 'Nueva lista' || t === 'Mi lista' || t === 'Lista' ? '' : t, t ? format(base, 0, device) : ''];
     lists.push({ oldId, title: doc.title[0], doc, ...extra });
   }

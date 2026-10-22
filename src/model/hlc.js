@@ -9,6 +9,7 @@ const MS = 9;
 const N = 4;
 export const DEVICE_LEN = 8;
 const MAX_N = 36 ** N - 1;
+const MAX_MS = 36 ** MS - 1; // the year 5188: a clock beyond it would make stamps one character too long
 
 const pad = (s, w) => (s.length >= w ? s : '0'.repeat(w - s.length) + s);
 
@@ -37,7 +38,7 @@ export function createClock(device, now = () => Date.now()) {
     device,
     /** A new stamp, later than every stamp issued or observed so far. */
     tick() {
-      const t = Math.floor(now());
+      const t = Math.min(Math.floor(now()), MAX_MS);
       if (t > last) { last = t; n = 0; } else if (n < MAX_N) n++; else { last++; n = 0; }
       return format(last, n, device);
     },
@@ -45,6 +46,9 @@ export function createClock(device, now = () => Date.now()) {
     observe(stamp) {
       if (!isStamp(stamp)) return;
       const p = parse(stamp);
+      // a stamp far in the future (a crafted copy, or a phone whose clock is broken) must not drag
+      // this clock to the end of time: every later edit of this phone would then look ancient
+      if (p.ms > now() + 864e5) return;
       if (p.ms > last || (p.ms === last && p.n > n)) { last = p.ms; n = p.n; }
     },
   };
