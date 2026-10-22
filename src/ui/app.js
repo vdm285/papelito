@@ -80,7 +80,10 @@ export class PapelApp extends LitElement {
 
   // ---------- store events ----------
   onStore(kind, d) {
-    if (kind === 'list') { this.lingering.clear(); this.pendingAnim.clear(); this.hint = null; this.loadDraft(); this.seenSoon(6000); }
+    if (kind === 'list') {
+      this.lingering.clear(); this.pendingAnim.clear(); this.hint = null; this.loadDraft(); this.seenSoon(6000);
+      this.swapSheet = true; // the next render places the new sheet on top, like a fresh page
+    }
     if (kind === 'remote' && d) this.onRemote(d);
     if (kind === 'undoable') this.showToast(d.label, true);
     if (kind === 'storageFull') this.showToast('No se pudo guardar en este teléfono: el almacenamiento está lleno.', false);
@@ -312,6 +315,16 @@ export class PapelApp extends LitElement {
 
   updated() {
     this.welcome();
+    if (this.swapSheet) {
+      this.swapSheet = false;
+      const sheet = this.querySelector('.sheet');
+      const reduce = !store.prefs.motion || matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (sheet && !reduce) {
+        const base = getComputedStyle(sheet).transform;
+        const tilt = base && base !== 'none' ? base : '';
+        sheet.animate([{ opacity: 0, transform: `translateY(18px) ${tilt}` }, { opacity: 1, transform: tilt || 'none' }], { duration: 280, easing: 'cubic-bezier(.2,.8,.2,1)' });
+      }
+    }
     const sheet = this.querySelector('.sheet');
     if (sheet && this.observed !== sheet) { this.observed = sheet; this.ro.disconnect(); this.ro.observe(sheet); }
     const reduce = !store.prefs.motion || matchMedia('(prefers-reduced-motion: reduce)').matches;
