@@ -1,7 +1,8 @@
-# The doodles in the paper's margin: the emoji the aisle dictionary uses, drawn with Google's
-# monochrome Noto Emoji (SIL OFL 1.1), so they look like pencil drawings in the ink of the page
-# instead of colour stickers that differ on every phone. Subset to exactly the emoji the
-# dictionary and the aisles use; committed to public/fonts/doodles.woff2.
+# The aisle doodles: each aisle's emoji, drawn with Google's monochrome Noto Emoji (SIL OFL 1.1),
+# so they look like pencil drawings in the ink of the page instead of colour stickers that differ
+# on every phone. Subset to exactly the aisles' emoji; committed to public/fonts/doodles.woff2.
+# Items have no doodle since 2026-10-22 (the owner's choice: only some words had one), so the
+# per-item emoji the dictionary still carries are left out of the font.
 # Run after `npm run dict`: python -I tools/build-doodles.py
 # Source font: google/fonts ofl/notoemoji/NotoEmoji[wght].ttf, fetched once into data/cache/fonts/.
 import json
@@ -34,9 +35,6 @@ if not os.path.exists(CACHE):
 with open(os.path.join(ROOT, 'public/dict/es-MX.json'), encoding='utf8') as f:
     d = json.load(f)
 emoji = set()
-for v in d.get('terms', {}).values():
-    if isinstance(v, list) and len(v) > 1 and v[1]:
-        emoji.add(v[1])
 for a in d.get('aisles', []):
     if isinstance(a, dict) and a.get('emoji'):
         emoji.add(a['emoji'])

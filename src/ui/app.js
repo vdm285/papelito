@@ -695,8 +695,8 @@ export class PapelApp extends LitElement {
     const strikeInk = done ? store.inkOf(item.d[0]) : ink;
     const text = item.t[0];
     const a = idx ? aisleOf(text, idx, fixes) : null;
-    // a pencil doodle: the emoji in text presentation, drawn by the monochrome doodle font
-    const doodle = store.prefs.doodles && a && a.emoji ? `${a.emoji.replace(/\uFE0F/g, '')}\uFE0E` : '';
+    // no doodle per item (the owner's choice, 2026-10-22): the dictionary draws only some words,
+    // and a sheet where some rows have one and others not looks unfinished; aisles keep theirs
     const fresh = store.isNew(item);
     return html`
       <li class="row ${done ? 'done' : ''} ${fresh ? 'new' : ''}" data-id=${item.id} role="checkbox" aria-checked=${done ? 'true' : 'false'} aria-keyshortcuts="F2 Delete" tabindex="0"
@@ -706,7 +706,7 @@ export class PapelApp extends LitElement {
         @contextmenu=${(e) => { e.preventDefault(); this.onRowCancel(); this.quietClick(); this.openCard('item', { id: item.id }); }}
         @keydown=${(e) => this.onRowKey(e, item.id)}>
         <svg class="marker" aria-hidden="true"><path></path></svg>
-        <span class="margin" aria-hidden="true">${doodle ? html`<span class="doodle-glyph">${doodle}</span>` : nothing}</span>
+        <span class="margin" aria-hidden="true"></span>
         <span class="words"><span class="txt">${text}</span>${this.rowDetails(item, done, fresh)}</span>
         ${store.rec.aisles && a && a.guess && !inStruck ? html`<span class="aisle-tag" title=${t.aisleGuess}>?</span>` : nothing}
         <svg class="strike" aria-hidden="true"><path></path></svg>

@@ -129,7 +129,7 @@ const es = {
   hand: 'Letra',
   hands: { mano: 'A mano', molde: 'De molde' },
   motion: 'Animaciones',
-  doodles: 'Dibujitos en el margen',
+  doodles: 'Dibujitos de los pasillos',
   // aisles (ids from src/model/aisles.js; walking order is the list's own)
   aisles: {
     fru: 'Frutas y verduras', pan: 'Panadería', tor: 'Tortillería', car: 'Carnes, pollo y pescado', sal: 'Salchichonería',
@@ -252,7 +252,7 @@ const en = {
   hand: 'Lettering',
   hands: { mano: 'Handwritten', molde: 'Print' },
   motion: 'Animations',
-  doodles: 'Doodles in the margin',
+  doodles: 'Aisle doodles',
   aisles: {
     fru: 'Fruit and vegetables', pan: 'Bakery', tor: 'Tortillas', car: 'Meat, poultry and fish', sal: 'Deli',
     lac: 'Dairy and eggs', aba: 'Pantry', bot: 'Snacks and sweets', beb: 'Drinks', lim: 'Cleaning and home',

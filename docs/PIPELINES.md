@@ -25,7 +25,7 @@ are summarised here).
 ```
 
 - A **term** is a phrase as people write it: lowercase, with accents and ñ. Its value is the aisle id, or `[aisle, emoji]`
-  when it has a doodle for the paper's margin. The app also offers terms as completions while typing.
+  when it has an emoji (kept for a later round: since 2026-10-22 the app draws only the aisles' doodles, not the items'). The app also offers terms as completions while typing.
 - A **form** word moves an item from one aisle to another whatever the head word is ("chiles en lata" → abarrotes,
   "verduras congeladas" → congelados).
 - The file is written one term per line so that a diff shows what changed.
@@ -181,8 +181,8 @@ left out and why), `report.json` (counts, sizes, test scores).
 ### How to add or fix a word
 
 Edit, then `npm run dict`, then read `data/vocab/build/review.tsv` and the `git diff` of `public/dict/es-MX.json`.
-When the set of emoji changes (a new automatic CLDR match counts: "sartén" brought 🍳), rebuild the margin font with
-`python -I tools/build-doodles.py`, or the font has no drawing for the new emoji.
+When an aisle's emoji changes (`data/vocab/aisles.tsv`), rebuild the doodle font with `python -I tools/build-doodles.py`,
+or the font has no drawing for it. A term's emoji needs no rebuild: items are not drawn (2026-10-22).
 
 - **An everyday word no source has** (a colloquial name, a pan dulce, a pet word): add `+ word  # what it is; the source
   term it names` to the aisle's file in `data/overrides/aisles/`.

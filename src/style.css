@@ -334,11 +334,8 @@ ol.rows, ul.rows { list-style: none; margin: 0; padding: 0; }
   padding-right: 4px;
 }
 .margin .doodle-glyph { font: 400 22px/1 'Noto Emoji', sans-serif; color: var(--pencil); }
-.row .margin .doodle-glyph { transform: translateY(var(--hand-shift)); }
-.hand-molde .row .margin .doodle-glyph { transform: translateY(var(--print-shift)); }
 .doodle-glyph { font-family: 'Noto Emoji', sans-serif; font-weight: 400; }
 .chip .doodle-glyph, .order-name .doodle-glyph { font-size: 17px; line-height: 1; color: inherit; opacity: .8; margin-right: 7px; }
-.row.done .margin .doodle-glyph { opacity: .45; }
 .margin .qty { font: 600 15px/1 var(--font-ui); color: var(--pencil); }
 .row .words {
   position: relative;
