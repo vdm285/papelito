@@ -6,7 +6,7 @@ Owner: Victor (github.com/vdm285). The app opens in Mexican Spanish; English is 
 
 ## What this is
 
-A shared shopping list that behaves like **one piece of paper on two phones**: a ruled sheet where each phone writes in its own ink, strikes are drawn by hand, and what one phone writes usually appears on the other in under a second. No accounts: the link (`#k=<secret>`) is the key. No server of our own: the page is static (GitHub Pages) and each list travels end-to-end encrypted through free public Nostr relays. Working name **Papelito**; the repository keeps its old name until the owner decides (see "Renaming").
+A shared shopping list that behaves like **one piece of paper on two phones**: a ruled sheet where each phone writes in its own ink, strikes are drawn by hand, and what one phone writes appears on the other in about a third of a second (median 0.37 s, measured). No accounts: the link (`#k=<secret>`) is the key. No server of our own: the page is static (GitHub Pages) and each list travels end-to-end encrypted through free public Nostr relays. Working name **Papelito**; the repository keeps its old name until the owner decides (see "Renaming").
 
 ## Do not
 

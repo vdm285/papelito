@@ -12,7 +12,7 @@ For two people buying groceries in Mexico (research: `docs/research/2026-10-21-u
 
 - **No accounts for anyone, no ads, nothing to install.** Keep needs a Google account and an invitation; Bring! and Listonic need sign-ins and show ads. Here the list is a link.
 - **The first frame is the list.** Not a grid of notes, not a spinner: the sheet, drawn from the phone's storage before any network.
-- **The quantum moment is visible and dependable.** Each phone writes in its own ink; the other phone's work usually arrives in under a second through free public relays, and every change survives offline edits on both phones (a CRDT merge, tested on random histories).
+- **The quantum moment is visible and dependable.** Each phone writes in its own ink; the other phone's work arrives in about a third of a second (measured: median 0.37 s) through free public relays, and every change survives offline edits on both phones (a CRDT merge, tested on random histories).
 - **It knows Mexican shopping.** *Jitomate*, *garrafón*, *Fabuloso*, *bolillo*: an aisle dictionary built from PROFECO's price survey and INEGI's household-spending catalogue, in your store's walking order, corrected once per list.
 - **It remembers "lo de siempre".** The household's own history suggests what is probably running out, written in pencil on the next line.
 - **It is private.** The list travels end-to-end encrypted; the relays carry padded blobs they cannot read.

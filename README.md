@@ -14,7 +14,7 @@ Write "huevos, leche" at home; it appears, in your ink, on the other phone at th
 ## What it does
 
 - **The first frame is the list.** It opens straight to the sheet, drawn from your phone's storage; the network only ever adds to it. Works offline; installs as an app.
-- **One sheet, two phones.** Tap *Compartir*, send the link (WhatsApp, or the QR code on a computer). Each phone writes in its own ink (six to choose from); the other phone's writing and strikes usually arrive in under a second (median 0.8 s over 12 measured edits, 0.2–1.4 s; about 3 s when both phones write at the same moment), through free public Nostr relays that carry encrypted, padded copies they cannot read.
+- **One sheet, two phones.** Tap *Compartir*, send the link (WhatsApp, or the QR code on a computer). Each phone writes in its own ink (six to choose from); the other phone's writing and strikes arrive in about a third of a second (median 0.37 s over 21 measured edits on the live relays, 0.21–0.68 s, both phones writing at once included), through free public Nostr relays that carry encrypted, padded copies they cannot read.
 - **Paper manners.** Commas, new lines and pasted WhatsApp lists become items. Tap to strike, or swipe and draw the line yourself. What you leave on the writing line stays on the paper. Everything can be undone, including what the other phone deleted, changed or renamed.
 - **Mexican aisles.** *Ordenar por pasillo* groups the list in your store's walking order, from a dictionary built from PROFECO's price survey and INEGI's household-spending catalogue. Correct an aisle once; the list remembers it, on both phones.
 - **Lo de siempre.** Your household's own history suggests, in pencil, what is probably running out.

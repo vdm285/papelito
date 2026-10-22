@@ -23,7 +23,15 @@ Round 1b (honesty and docs critics):
 - *Docs say what was measured…* — latency (median 0.8 s over 12 edits, 0.2–1.4 s; about 3 s when both write at once), the clock and undo claims, VISION's "reviewed", the quote's date, `npm run smoke -- --sync`; AGENTS "Common changes" (aisle order in two places, relays, asset prerequisites, deploying).
 - *Checkpoint material lives in the repo* — `docs/CHECKPOINT.md` (names, ten questions, phone test) and `docs/portfolio/` (the three demos).
 
-**Numbers now** (each from the tool's own output, 2026-10-22): `npm test` 76; `node tools/smoke.mjs` 44 (46 with `--sync`); `node tools/keyboard.mjs` 9; `node tools/sync-live.mjs` 14; `node tools/contrast.mjs`: text ≥4.5:1, struck words and placeholders ≥3:1, both themes; dictionary 1,717 terms, 11,989 B gzip; doodle font 74 emoji, 27,060 B.
+Round 1b (performance critic), re-measured with its own scripts after the fixes (*Offline start survives a deploy…*):
+- Blocker fixed: after a deploy, the next offline open was a blank page (the service worker refreshed `index.html` into a cache without its scripts). The worker now serves one installed version and never refreshes the page in the background; replayed end to end (`data/cache/audit/performance/deploy-race.mjs`, `deploy-update.mjs`).
+- Presence pulse: 26 % → 0.4 % of a 4x-throttled main thread while the other phone is on the sheet.
+- 200 items at 4x: aisle view toggle ~1,050 → 168–201 ms; settling a strike 265–850 → 13–140 ms in `updated()` (two-pass measuring, no glide off screen); relay acknowledgements no longer re-render the sheet.
+- First open of a shared link on throttled 3G: sheet 3.1 → 2.2 s, blank 0.9 → 0.2 s, FCP now recorded. Cold start (12 items): 1.68 s to the sheet, 129 KB; warm 0.47 s, 0 KB (`node tools/perf.mjs`).
+- Sync latency over 21 edits on the live relays: median 0.37 s, 0.21–0.68 s, both phones writing at once included (was median 0.8 s; about 3 s at once): a pending edit is never postponed by a republish, and records are spaced 0.6 s.
+- Not done, flagged: reading from all six relays doubles the download (each record comes back from every relay; about 1.4 MB down in 5 minutes on a 200-item two-phone sheet). Reading from three would halve it, at some cost in resilience: a decision for the next round.
+
+**Numbers now** (each from the tool's own output, 2026-10-22): `npm test` 76; `node tools/smoke.mjs` 44 (46 with `--sync`), on the dev server, the production build and the live site; `node tools/keyboard.mjs` 9; `node tools/sync-live.mjs` 14 (add 0.24–0.34 s, strike 0.49–0.64 s, both at once 0.66–0.68 s); `node tools/contrast.mjs`: text ≥4.5:1, struck words and placeholders ≥3:1, both themes; dictionary 1,717 terms, 11,989 B gzip; doodle font 74 emoji, 27,060 B.
 
 **Decisions taken without the owner in this round** (the way back in brackets):
 1. The writing line has no length limit, because whole lists are pasted into it; a single line longer than the paper's 160 characters splits at a word [`MAX` in `src/model/parse.js`; a `maxlength` on the composer would cut pastes].
