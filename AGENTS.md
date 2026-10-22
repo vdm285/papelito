@@ -1,94 +1,40 @@
-# AGENTS.md — ListoLista (read this first)
+# AGENTS.md — Papelito (repository `listolista`)
 
-Vendor-neutral briefing for any AI agent working on this repo (Claude, ChatGPT/Codex, Gemini,
-Grok, or a local model). `CLAUDE.md` just imports it. Whoever changes direction or architecture
-updates this file.
+Read this before changing anything. `HANDOFF.md` is the state of the code, dated, newest first. `docs/VISION.md` says where the product is going and why; `docs/PIPELINES.md` how data gets in; `docs/EDITORIAL.md` the rules for words and media on screen; `docs/research/` the dated research. The owner's general method lives outside the repo in `D:\_GitHub\revamp-playbook.md`. `CLAUDE.md` imports this file.
 
-## Owner and working rules (from Victor's HQ, 2026-09-29)
-Owner: Victor (github.com/vdm285). Stage: learning, portfolio and open source; not commercial.
-- **Replies:** checklist first (what's done, what needs Victor), then short details, in plain language.
-- **Language:** English with AIs; products for Victor's close circle start in Spanish.
-- **Who decides:** technical calls (tools, code, tests, free installs, pushes, `main` included) are the
-  agent's; tell Victor after. Design, direction and business: discuss first, Victor decides. A suggested
-  default may apply after 7 days of silence for technical choices only. Always ask first: force pushes,
-  deleting his data, anything posted or sent in his name, logins and passwords.
-- **Pushback:** on logic or design flaws and untested claims (not caution or licence caveats).
-- **Depth:** build quick, ideas deep ("quick" or "deep" from Victor overrides). When our own test
-  contradicts a trusted source, show both sides briefly and test both.
-- **Code and words:** lean code with a short "why" note (not golfed); short, plain text for users;
-  reusable modules. Naming: say if an industry-standard name exists, else propose a few analogy-based
-  names.
-- **Test it ourselves:** when a claim is thin or contested, run a small test: pass mark first, plus a
-  control that can fail.
-- **Brief card:** only when a run carries direction or design choices not yet agreed (e.g. how bold a revamp
-  should be), Victor approves a one-screen card first (goal, will / won't do, what he will see, budget and stop rule).
-  Technical runs within an agreed direction need no card: tell him after.
-- **Checkpoints:** show what works, a live preview and "how to try it on your phone"; numbered steps
-  whenever his hands are needed.
-- **Locked prototype skeleton:** a `prototype` branch, locked on GitHub, holds only the data the app
-  keeps and the rules it enforces.
-- **Look:** plain by default (bare wireframe first); polish is an opt-in layer where the visuals are
-  the product.
-- **To-dos:** one dated list per project, in its `ROADMAP.md`.
-- **Here:** test local juniors on natural chores (manual: ~/local-ai/docs/manuals/js-logic.md); log each
-  run in HQ via this project's notes for HQ (or tell Victor); don't edit ~/local-ai directly.
+Owner: Victor (github.com/vdm285). The app opens in Mexican Spanish; English is a setting. Audience: the owner and the people he shops with first, friends and family next, anyone later.
 
-Personal context: in Claude's per-project memory, outside git.
+## What this is
 
-## Mission
-A **"quantum-linked piece of paper"** for shopping lists. One person writes "huevos, leche" at
-home; it appears on the other's phone at the supermarket; they tap an item and it is struck through
-on the first phone; they add what was forgotten. The benchmark is **Windows Notepad**: it opens
-instantly, you see what you type, nothing else in the way.
+A shared shopping list that behaves like **one piece of paper on two phones**. You write "huevos, leche" at home; it appears, in your ink, on the other phone at the supermarket; a strike there draws itself here. No accounts: the link is the key. No server of our own: the page is static (GitHub Pages) and the list travels end-to-end encrypted through free public relays. Working name **Papelito**; the repository keeps its old name until the owner decides.
 
-Rollout by checkpoints (each one used and trusted before the next):
-1. The first two testers, from Victor's close circle (two phones).
-2. Friends and family (feedback).
-3. Free public open-source app (community contributions; maybe a donate button).
+## Do not
 
-## Design principles (non-negotiable)
-1. **Zero-click start:** open straight into the list, ready to write. Cut every predictable click.
-   (iPhone and Android won't raise the keyboard without one tap, so the list and a large
-   tap-to-write area appear in the first frame.)
-2. **Few clear choices:** secondary actions live in one labelled menu or small edge icons.
-3. **Pay for what you use:** the bare core loads first; optional features (aisle dictionary,
-   sync library) load only when used.
-4. **No accounts, no login screens, ever.** Share by link; the link is the key.
-5. **Optionality:** dead-simple default; power features are opt-in switches.
-6. **Zero running cost** for Victor.
-7. Spanish first (English when it goes public).
+- Do not add a server, an account, analytics, ads, a paid API or a key the browser can see. Static hosting only; free keyless sources at runtime; build-time keys only as free GitHub Actions secrets (today: none).
+- Do not invent anything: no made-up item, aisle, price or fact. Vocabulary comes from sourced data or from the override files, and says which (`docs/PIPELINES.md`).
+- Do not use media without its credit and a checked licence (`docs/EDITORIAL.md`, "Credits").
+- Do not put list contents anywhere but the phone and the encrypted blob. Never in a URL query, never in logs, never in plain text on a relay.
+- Do not trust a decrypted list: anyone with the link can write to it. Everything goes through `sanitize()` (`src/model/doc.js`).
+- Do not use `innerHTML` with data. Text goes through lit templates or `textContent`.
+- Do not delete or rewrite the old app's localStorage keys (`listolista_*`, `inputs`, `last_local_id`): they are the way back, and the origin `vdm285.github.io` is shared with the owner's other projects.
+- Do not write downloads, caches or scratch anywhere but `data/cache/` (on D:). Never on C:. The project `.npmrc` keeps npm's cache there too.
+- Do not edit pipeline outputs by hand; curate through `data/overrides/` and rerun.
 
-## Current state
-- `main` (live at vdm285.github.io/listolista): the original single file plus the 2026-09-25 safety
-  patch (no injection, unguessable room ids, publish-after-merge, pinned mqtt.js). Shared lists still
-  use the public HiveMQ broker in plain text until checkpoint 1 goes live.
-- Branch `design/checkpoint-1` (not live): the rebuild, built by `tools/build.py` from `src/` into one
-  `index.html`. End-to-end encrypted sync through our Cloudflare relay (`relay/`), link `#k=<secret>`;
-  merge, aisle matcher and dictionary as tested modules; PWA (manifest without start_url, sw.js,
-  icons); v1 lists migrate automatically. Tests: `sh tests/run.sh` (jsc) and `relay/test/run.sh`
-  (Node + local wrangler). Deploy: `tools/deploy.sh relay|preview` after `wrangler login`.
-- Waiting on Victor: Cloudflare account + `wrangler login`; Papel vs Renglones (build = Renglones);
-  51 dictionary conflicts (`data/aisles-review.md`); the store's aisle order; two-phone test (an
-  iPhone and an Android) on the preview before going live.
-- Known flags: iPhone needs one tap for the keyboard; "huevos y leche" without a comma stays one item;
-  Android install without start_url to be checked on his phone.
+## Where things live
 
-## Decisions so far
-- Writing model: "paper" (Notepad-like lines) vs "rows" (input on top): Victor decides after
-  trying the mock-ups (claude.ai artifact, 2026-09-25).
-- Checkpoint 1 includes: private encrypted share link, instant sync + strike-through,
-  home-screen icon + offline, optional aisle sorting. Spanish.
-- Sync: end-to-end encrypted, key in the link's `#` part; relay behind one small interface
-  (Cloudflare Worker + Durable Object recommended; encrypted public MQTT as zero-setup fallback).
-  Google Sheets is not the sync channel; maybe "export to Sheet" later.
-- Aisle sorting: rewrite the matcher (whole words, accents folded, plurals, quantities); 14
-  aisles in walking order; corrections synced per list; no on-device ML for now.
+- `src/model/`: pure logic with tests in `tests/` — `hlc.js` (clock), `doc.js` (the list as a CRDT), `parse.js` (text → items), `aisles.js` (aisle matcher), `legacy.js` (import of the old versions' storage).
+- `src/sync/`: `crypto.js` (keys from the link secret, sealing).
+- `docs/history/`: versions that never reached git.
 
-## How to work here
-- Edit `src/` and `data/`, never `index.html` directly; run `python3 tools/build.py`.
-- Branch per piece of work; `main` is the live site.
-- Tests before features: pure logic (matcher, merge, crypto) is tested headless with macOS
-  `jsc` (built in; no Node needed); UI checked in a browser. Tests are protected: don't weaken
-  them to make code pass.
-- Local juniors (via ~/local-ai/scripts/delegate.sh) get bounded chores with a pass/fail command.
-- Research lives in `docs/research/` (dated, fact-checked).
+## Checks before a commit
+
+```bash
+npm test
+```
+
+## Conventions
+
+- Commit per feature, message says why. Update `HANDOFF.md` (dated section, newest first) and the relevant doc in the same commit.
+- Liberties taken without the owner are listed in `HANDOFF.md` with the one-line reversal.
+- Git identity for this clone: the owner's GitHub noreply address (set in `.git/config`).
+- Scripts go in files and run by path (heredocs with backticks break in this shell).

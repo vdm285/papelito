@@ -1,3 +1,10 @@
-.wrangler-e2e.log
-relay/.wrangler/
-.wrangler/
+node_modules/
+dist/
+.vite/
+*.log
+Thumbs.db
+.DS_Store
+
+# Downloads, caches, scratch and raw sources stay on D:, under the project, never committed.
+data/cache/
+data/sources/
