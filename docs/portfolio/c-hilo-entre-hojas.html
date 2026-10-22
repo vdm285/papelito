@@ -1,0 +1,1236 @@
+<title>Hilo entre hojas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:wght@400;600;700;800&display=swap">
+<style>
+/* Layout: two phones lying on the desk, side by side (stacked on a phone). Each shows the same ruled
+   sheet; the other phone lives as an ink dot in the sheet's top corner, and everything it does
+   arrives as a fine thread spun out of that dot. One deliberate look: paper on a desk. */
+:root {
+  color-scheme: light;
+  --desk: #e7e1d5;
+  --desk-light: #efeae0;
+  --chrome: #2a2722;
+  --chrome-hover: #3b372f;
+  --chrome-soft: #6b665c;
+  --paper: #fdfbf5;
+  --rule: rgba(66, 118, 190, .30);
+  --margin: rgba(212, 66, 88, .55);
+  --pencil: #8b8f97;
+  --ink-azul: #1f3c96;
+  --ink-roja: #b8232f;
+  --wash: rgba(31, 60, 150, .045);
+  --bezel: #1c1d21;
+  --bezel-edge: #3a3c43;
+  --island: #0c0c0e;
+  --home: rgba(42, 39, 34, .5);
+  --card: #fffdf8;
+  --card-hover: #ffffff;
+  --card-line: #d8cfbd;
+  --card-line-strong: #bfb39c;
+  --toast: #2a2722;
+  --toast-ink: #fbf8f0;
+  --focus: #1f3c96;
+  --shadow-phone: 0 2px 3px rgba(60, 44, 20, .16), 0 30px 54px -24px rgba(60, 44, 20, .55);
+  --shadow-toast: 0 12px 26px -12px rgba(20, 14, 4, .6);
+  --shadow-play: 0 1px 2px rgba(40, 30, 10, .2);
+  --shadow-card: 0 1px 0 rgba(60, 44, 20, .07);
+  --del-hover: rgba(42, 39, 34, .07);
+
+  --font-hand: 'Caveat', 'Segoe Print', 'Bradley Hand', cursive;
+  --font-ui: 'Atkinson Hyperlegible Next', 'Atkinson Hyperlegible', system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  --row: 48px;          /* one rule */
+  --margin-x: 44px;     /* the red margin line */
+  --text-x: 56px;       /* where the handwriting starts */
+  --hand-size: 27px;
+  --shift: 10px;        /* measured at load: puts each baseline 3px above its rule */
+  --tshift: 8px;
+  --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n' x='0' y='0'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .32 0 0 0 0 .26 0 0 0 0 .16 0 0 0 .055 0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  padding-inline: 16px;
+  background-color: var(--desk);
+  background-image: radial-gradient(120% 60% at 50% 0%, var(--desk-light), var(--desk) 72%);
+  color: var(--chrome);
+  font: 400 16px/1.45 var(--font-ui);
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+}
+button { font: inherit; color: inherit; }
+[hidden] { display: none !important; }   /* the caret and the toast set their own display */
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; }
+
+/* ---------- page ---------- */
+.wrap { width: min(744px, 100%); margin-inline: auto; padding-block: 18px 56px; }
+.cap { display: grid; gap: 4px; margin-bottom: 18px; }
+h1 { margin: 0; display: flex; align-items: center; gap: 12px; font: 700 27px/1.15 var(--font-ui); letter-spacing: -.01em; text-wrap: balance; }
+.letter {
+  flex: 0 0 auto; display: inline-grid; place-items: center; width: 34px; height: 34px;
+  border: 1.5px solid var(--chrome); border-radius: 52% 48% 50% 47%;
+  font: 700 17px/1 var(--font-ui); letter-spacing: 0;
+}
+.es { margin: 4px 0 0; font-size: 17px; line-height: 1.45; max-width: 62ch; text-wrap: pretty; }
+.en { margin: 0; font-size: 14px; line-height: 1.4; color: var(--chrome-soft); max-width: 70ch; text-wrap: pretty; }
+.controls { margin-top: 8px; display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+.play {
+  display: inline-flex; align-items: center; gap: 9px; padding: 11px 19px 11px 15px;
+  border: 0; border-radius: 999px; background: var(--chrome); color: var(--toast-ink);
+  font: 700 15px/1 var(--font-ui); cursor: pointer; box-shadow: var(--shadow-play);
+  transition: background .15s;
+}
+@media (hover: hover) { .play:hover { background: var(--chrome-hover); } }
+.play span { font-size: 12px; }
+.play:focus-visible, .act:focus-visible { outline: 2.5px solid var(--focus); outline-offset: 3px; }
+
+.desk { display: grid; grid-template-columns: repeat(2, minmax(0, 340px)); justify-content: space-between; gap: 40px 64px; align-items: start; }
+.col { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+.label { margin: 0; display: flex; align-items: center; gap: 9px; font: 700 15px/1.2 var(--font-ui); }
+.sw { flex: 0 0 auto; width: 10px; height: 10px; border-radius: 52% 48% 50% 47%; background: var(--c); }
+.hint { margin: 2px 0 0; font-size: 14px; line-height: 1.4; color: var(--chrome-soft); text-wrap: pretty; }
+.hint span { display: block; margin-top: 2px; font-size: 12.5px; }
+
+.acts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.act {
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px;
+  min-height: 66px; padding: 9px 6px 8px; border: 1px solid var(--card-line); border-radius: 12px;
+  background: var(--card); color: var(--chrome); font: 600 13.5px/1.2 var(--font-ui);
+  text-align: center; text-wrap: balance; cursor: pointer;
+  box-shadow: var(--shadow-card); transition: background .15s, border-color .15s, transform .15s;
+}
+@media (hover: hover) { .act:hover:not(:disabled) { background: var(--card-hover); border-color: var(--card-line-strong); } }
+.act:active:not(:disabled) { transform: translateY(1px); }
+.act:disabled { opacity: .5; cursor: default; }
+.act svg { width: 36px; height: 14px; fill: none; stroke: var(--ink-roja); stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; overflow: visible; }
+.act svg .soft { stroke: var(--pencil); }
+.act svg .fill { fill: var(--ink-roja); stroke: none; }
+
+@media (max-width: 760px) {
+  .wrap { width: min(340px, 100%); padding-block: 22px 44px; }
+  .desk { grid-template-columns: minmax(0, 1fr); gap: 34px; }
+  h1 { font-size: 24px; }
+  .es { font-size: 16px; }
+}
+
+/* ---------- the phone ---------- */
+.phone {
+  position: relative; width: 100%; height: 640px; padding: 9px; border-radius: 46px;
+  background: var(--bezel); box-shadow: inset 0 0 0 1px var(--bezel-edge), var(--shadow-phone);
+}
+.screen { position: relative; height: 100%; border-radius: 37px; overflow: hidden; background: var(--paper); isolation: isolate; }
+.status {
+  position: absolute; inset: 0 0 auto 0; height: 42px; z-index: 4; pointer-events: none;
+  display: flex; align-items: center; justify-content: space-between; padding: 2px 24px 0 30px;
+  font: 700 13.5px/1 var(--font-ui); color: var(--chrome);
+}
+.island { position: absolute; top: 10px; left: 50%; width: 86px; height: 25px; margin-left: -43px; border-radius: 13px; background: var(--island); }
+.sys { width: 44px; height: 12px; }
+.home { position: absolute; bottom: 7px; left: 50%; width: 112px; height: 4px; margin-left: -56px; border-radius: 2px; background: var(--home); z-index: 4; pointer-events: none; }
+
+/* ---------- the sheet ---------- */
+.page {
+  position: absolute; inset: 0; overflow-x: hidden; overflow-y: auto; scrollbar-width: none;
+  padding-bottom: 96px;
+  background-color: var(--paper);
+  background-image:
+    var(--grain),
+    linear-gradient(90deg, transparent var(--margin-x), var(--margin) var(--margin-x), var(--margin) calc(var(--margin-x) + 1.5px), transparent calc(var(--margin-x) + 1.5px)),
+    linear-gradient(var(--paper), var(--paper)),
+    repeating-linear-gradient(180deg, transparent 0, transparent calc(var(--row) - 1px), var(--rule) calc(var(--row) - 1px), var(--rule) var(--row));
+  background-size: 180px 180px, 100% 100%, 100% var(--row), 100% 100%;
+  background-repeat: repeat, no-repeat, no-repeat, repeat;
+  background-attachment: local;
+  transition: opacity .16s ease;
+}
+.page::-webkit-scrollbar { display: none; }
+.screen.resetting .page, .screen.resetting .threads { opacity: 0; }
+.head { position: relative; height: calc(var(--row) * 2); }
+.title {
+  position: absolute; left: var(--text-x); right: 52px; top: var(--row); height: var(--row); margin: 0;
+  font: 600 35px/var(--row) var(--font-hand); color: var(--ink-azul); white-space: nowrap;
+  transform: translateY(var(--tshift));
+}
+.items { list-style: none; margin: 0; padding: 0; }
+.row { position: relative; height: var(--row); --ink: var(--ink-azul); user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; }
+.row.gone, .row.opening { overflow: hidden; }
+.row.gone { pointer-events: none; }
+.row.lifted .hit, .row.lifted .strike { visibility: hidden; }
+.hit {
+  position: absolute; inset: 0 40px 0 0; display: block; margin: 0; padding: 0 0 0 var(--text-x);
+  border: 0; border-radius: 0; background: transparent; text-align: left; cursor: default;
+}
+button.hit { cursor: pointer; }
+@media (hover: hover) {
+  button.hit:hover::before { content: ''; position: absolute; left: calc(var(--text-x) - 9px); right: 2px; top: 10px; bottom: -4px; border-radius: 10px; background: var(--wash); pointer-events: none; }
+}
+button.hit:focus-visible { outline: none; }
+button.hit:focus-visible::after {
+  content: ''; position: absolute; left: calc(var(--text-x) - 9px); right: 2px; top: 10px; bottom: -4px;
+  border: 2px solid var(--focus); border-radius: 10px; pointer-events: none;
+}
+.txt {
+  position: relative; display: block; height: var(--row);
+  font: 500 var(--hand-size)/var(--row) var(--font-hand); color: var(--ink);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  transform: translateY(var(--shift));
+}
+.w { transition: opacity .25s ease; }
+.row.struck .w { opacity: .45; transition-delay: .1s; }
+.l { display: inline-block; white-space: pre; font-style: normal; transform-origin: 0 72%; }
+.pencil { position: absolute; left: 0; top: 0; color: var(--pencil); white-space: pre; }
+.strike { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
+.strike path { fill: none; stroke-width: 2.1; stroke-linecap: round; stroke-linejoin: round; opacity: .92; }
+.del {
+  position: absolute; right: 5px; top: 13px; width: 34px; height: 34px; padding: 0;
+  display: grid; place-items: center; border: 0; border-radius: 50%;
+  background: transparent; color: var(--pencil); opacity: 0; cursor: pointer; transition: opacity .15s, background .15s, color .15s;
+}
+.del svg { width: 13px; height: 13px; fill: none; stroke: currentColor; stroke-width: 1.9; stroke-linecap: round; }
+/* the × shows on hover (mouse), on keyboard focus, or after a long press; a plain tap on a phone does not leave it behind */
+@media (hover: hover) { .row:hover .del { opacity: 1; } .del:hover { color: var(--chrome); background: var(--del-hover); } }
+.row.armed .del, .del:focus-visible { opacity: 1; }
+.row:has(:focus-visible) .del { opacity: 1; }
+.del:focus-visible { outline: 2px solid var(--focus); outline-offset: 0; color: var(--chrome); }
+
+.writing { position: relative; height: var(--row); }
+.write {
+  position: absolute; left: 0; top: 0; width: calc(100% - 16px); height: var(--row);
+  margin: 0; padding: 0 0 0 var(--text-x); border: 0; border-radius: 0; background: transparent; outline: none;
+  font: 500 var(--hand-size)/var(--row) var(--font-hand); color: var(--ink-azul); caret-color: var(--ink-azul);
+  white-space: nowrap; overflow: hidden; transform: translateY(var(--shift));
+}
+.write::placeholder { color: var(--pencil); opacity: 1; }
+.write.ro { color: var(--ink-roja); pointer-events: none; }
+.write.ro .ph { color: var(--pencil); }
+.caret { display: inline-block; width: 1.6px; height: 25px; margin-left: 1px; vertical-align: -4px; background: var(--ink-roja); animation: blink 1.05s steps(1) infinite; }
+@keyframes blink { 50% { opacity: 0; } }
+.writing:focus-within::after { content: ''; position: absolute; left: var(--text-x); right: 18px; bottom: -1px; height: 2px; border-radius: 1px; background: var(--focus); }
+
+/* ---------- the other phone: its dot and its thread ---------- */
+.threads { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 2; pointer-events: none; overflow: visible; transition: opacity .16s ease; }
+.threads path { fill: none; stroke: var(--other); stroke-linecap: round; stroke-linejoin: round; }
+.th-dots { stroke-width: 1.5; stroke-dasharray: .01 5.2; }
+.th-base { stroke-width: 1.6; opacity: .58; }
+.th-flow { stroke-width: 1.9; stroke-dasharray: 4 14; }
+.th-hook { stroke-width: 1.5; opacity: .78; }
+.th-bead { fill: var(--other); opacity: 0; }
+.flyers { position: absolute; inset: 0; z-index: 2; pointer-events: none; overflow: hidden; }
+.flyer { position: absolute; margin: 0; will-change: transform, opacity; }
+.dot { position: absolute; top: 67px; right: 23px; width: 10px; height: 10px; z-index: 3; animation: breathe 3.6s ease-in-out infinite; }
+.dot .core { position: absolute; inset: 0; border-radius: 52% 48% 50% 47%; background: var(--other); }
+.dot .ring { position: absolute; inset: -1px; border-radius: 50%; border: 1px solid var(--other); opacity: 0; }
+@keyframes breathe { 0%, 100% { transform: scale(.86); opacity: .8; } 50% { transform: scale(1.08); opacity: 1; } }
+
+.toast {
+  position: absolute; left: 12px; right: 12px; bottom: 22px; z-index: 5; margin: 0;
+  padding: 12px 10px 12px 15px; border-radius: 14px; background: var(--toast); color: var(--toast-ink);
+  font: 600 14px/1.35 var(--font-ui); box-shadow: var(--shadow-toast);
+}
+.toast .undo {
+  margin: -6px -2px; padding: 6px 6px; border: 0; border-radius: 6px; background: transparent; color: inherit;
+  font: 800 14px/1 var(--font-ui); text-decoration: underline; text-underline-offset: 3px; cursor: pointer;
+}
+.toast .undo:focus-visible { outline: 2px solid var(--toast-ink); outline-offset: 1px; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+</style>
+
+<main class="wrap">
+  <header class="cap">
+    <h1><span class="letter" aria-hidden="true">C</span><span class="sr">Opción C · </span><span>Hilo entre hojas</span></h1>
+    <p class="es">El puntito de tinta en la esquina de cada hoja es el otro teléfono, y cuando escribe, tacha o borra, de ese punto sale un hilo fino que lo hace sobre tu hoja.</p>
+    <p class="en" lang="en">The ink dot in the corner of each sheet is the other phone, and when it writes, strikes or deletes, a fine thread comes out of that dot and does it on your sheet.</p>
+    <div class="controls">
+      <button id="play" class="play" type="button"><span aria-hidden="true">&#x25B6;&#xFE0E;</span>Ver la demostración</button>
+    </div>
+  </header>
+
+  <div class="desk">
+    <section class="col" aria-labelledby="labL">
+      <h2 class="label" id="labL"><i class="sw" style="--c: var(--ink-azul)" aria-hidden="true"></i>Tu teléfono (tinta azul)</h2>
+      <div class="phone"><div class="screen" id="screenL"></div></div>
+      <p class="hint">Escribe y pulsa Enter. Toca una cosa para tacharla; para borrarla usa la × (en un teléfono, mantenla presionada).<span lang="en">Type and press Enter. Tap an item to strike it; to delete it use the × (on a phone, press and hold).</span></p>
+    </section>
+    <section class="col" aria-labelledby="labR">
+      <h2 class="label" id="labR"><i class="sw" style="--c: var(--ink-roja)" aria-hidden="true"></i>El otro teléfono (tinta roja)</h2>
+      <div class="phone"><div class="screen" id="screenR"></div></div>
+      <div class="acts" role="group" aria-label="Haz que el otro teléfono actúe">
+        <button class="act" id="actWrite" type="button"><svg viewBox="0 0 36 14" aria-hidden="true"><path d="M2 10c3-6 5-8 5.5-4.5S8 11 11 7s4-7 5.5-3.5-.5 7 3 4.5 3.5-6 5.5-3.5.5 4.5 3.5 3 3-2 5-1.5"/></svg><span>Que escriba<br>algo</span></button>
+        <button class="act" id="actStrike" type="button"><svg viewBox="0 0 36 14" aria-hidden="true"><path class="soft" d="M4 8.5h7M14 8.5h9M26 8.5h6"/><path d="M1.5 9.2c6-.6 9-1.6 14-1.2s10-.9 19-1.9"/></svg><span>Que tache<br>algo</span></button>
+        <button class="act" id="actDelete" type="button"><svg viewBox="0 0 36 14" aria-hidden="true"><path class="soft" d="M3 11.5h12"/><path d="M15.5 11.5c7 0 11-3 13.5-8.4"/><circle class="fill" cx="30" cy="2.6" r="2.3"/></svg><span>Que borre<br>algo</span></button>
+      </div>
+    </section>
+  </div>
+  <p id="live" class="sr" aria-live="polite"></p>
+  <footer style="margin-top:8px;font-size:12.5px;line-height:1.45;color:var(--chrome-soft);max-width:70ch"><p style="margin:0">Una simulación: los dos teléfonos viven en esta página y la red es una espera de 0.45 s (en la app real, el otro teléfono tardó 0.4–0.9 s en las pruebas). Tipografías: Caveat y Atkinson Hyperlegible Next (SIL Open Font License), servidas por Google Fonts.</p><p style="margin:2px 0 0" lang="en">A simulation: both phones live on this page and the network is a 0.45 s wait (in the real app the other phone took 0.4–0.9 s in tests). Typefaces: Caveat y Atkinson Hyperlegible Next (SIL Open Font License), served by Google Fonts.</p></footer>
+</main>
+
+<template id="tpl-screen">
+  <div class="page">
+    <div class="head"><p class="title">Súper del sábado</p></div>
+    <ul class="items"></ul>
+    <div class="writing"></div>
+  </div>
+  <svg class="threads" aria-hidden="true">
+    <path class="th-dots"/>
+    <path class="th-base"/>
+    <path class="th-flow"/>
+    <path class="th-hook"/>
+    <circle class="th-bead" r="2.1" cx="0" cy="0"/>
+  </svg>
+  <div class="flyers" aria-hidden="true"></div>
+  <div class="status" aria-hidden="true">
+    <span>9:41</span><span class="island"></span>
+    <svg class="sys" viewBox="0 0 44 12"><g fill="currentColor"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="4.5" y="5.5" width="3" height="6.5" rx="1"/><rect x="9" y="3" width="3" height="9" rx="1"/><rect x="13.5" y=".5" width="3" height="11.5" rx="1"/></g><rect x="20.5" y="1" width="20" height="10" rx="3" fill="none" stroke="currentColor" stroke-opacity=".45"/><rect x="22.5" y="3" width="13" height="6" rx="1.5" fill="currentColor"/><path d="M42.6 4.6v2.8" stroke="currentColor" stroke-opacity=".45" stroke-width="1.5" stroke-linecap="round"/></svg>
+  </div>
+  <span class="dot" role="img"><span class="ring"></span><span class="core"></span></span>
+  <div class="toast" hidden><span class="msg"></span> · <button type="button" class="undo">Deshacer</button></div>
+  <span class="home" aria-hidden="true"></span>
+</template>
+
+<script>
+(() => {
+  'use strict';
+
+  /* ---------- constants ---------- */
+  const INK = { azul: 'var(--ink-azul)', roja: 'var(--ink-roja)' };
+  const WHO = { azul: 'Azul', roja: 'Rojo' };
+  const NET_MS = 450;          // the simulated network
+  const ROW = 48;
+  const BASE = 44;             // baseline inside a row: 3px above its rule
+  const START = [
+    { id: 'a1', text: 'tortillas', ink: 'azul' },
+    { id: 'a2', text: 'jitomate', ink: 'azul' },
+    { id: 'a3', text: 'cebolla', ink: 'azul' },
+    { id: 'r1', text: '2 aguacates', ink: 'roja' },
+    { id: 'a4', text: 'leche', ink: 'azul' },
+    { id: 'a5', text: 'pan Bimbo', ink: 'azul' },
+  ];
+  const SPARE = ['limones', 'huevo', 'queso Oaxaca', 'crema', 'frijoles', 'arroz', 'servilletas', 'café'];
+  const CANCEL = Symbol('cancel');   // the demo was restarted: drop what is in flight
+  const GONE = Symbol('gone');       // the row a motion was aiming at disappeared
+  const reduceMQ = matchMedia('(prefers-reduced-motion: reduce)');
+  const reduced = () => reduceMQ.matches;
+  const live = document.getElementById('live');
+  const tpl = document.getElementById('tpl-screen');
+  const M = { xh: 11.5 };      // x-height of the handwriting, measured once the font is in
+  const midY = () => BASE - M.xh / 2;
+  let epoch = 0;
+  let seq = 0;
+  let L = null, R = null;
+
+  /* ---------- small helpers ---------- */
+  const h = (tag, cls) => { const e = document.createElement(tag); if (cls) e.className = cls; return e; };
+  const sv = (tag, attrs = {}) => { const e = document.createElementNS('http://www.w3.org/2000/svg', tag); for (const k in attrs) e.setAttribute(k, attrs[k]); return e; };
+  const lerp = (a, b, t) => a + (b - a) * t;
+  const clamp01 = (x) => Math.max(0, Math.min(1, x));
+  const easeOut = (k) => 1 - Math.pow(1 - k, 3);
+  const easeIn = (k) => k * k;
+  const easeInOut = (k) => (k < 0.5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2);
+
+  function seeded(str) {   // same seed, same stroke, on both phones
+    let x = 2166136261;
+    for (let i = 0; i < str.length; i++) { x ^= str.charCodeAt(i); x = Math.imul(x, 16777619); }
+    return () => { x ^= x << 13; x ^= x >>> 17; x ^= x << 5; return ((x >>> 0) % 10000) / 10000; };
+  }
+
+  /** Waits on the wall clock; a restart turns the wait into CANCEL. */
+  function wait(ms) {
+    const my = epoch;
+    return new Promise((res, rej) => setTimeout(() => (my === epoch ? res() : rej(CANCEL)), ms));
+  }
+
+  /**
+   * One motion, driven by the wall clock: frame(ms, now) is called with the time since the start,
+   * never with per-frame deltas, so a throttled pane only drops frames. A guard timer forces the
+   * final frame if animation frames stop coming at all.
+   */
+  function timeline(total, frame) {
+    const my = epoch;
+    return new Promise((res, rej) => {
+      const t0 = performance.now();
+      let done = false;
+      let guard = 0;
+      const stop = (err) => { done = true; clearTimeout(guard); if (err) rej(err); else res(); };
+      const end = () => {
+        if (done) return;
+        if (my !== epoch) return stop(CANCEL);
+        try { frame(total, performance.now()); } catch (e) { return stop(e); }
+        stop();
+      };
+      const step = () => {
+        if (done) return;
+        if (my !== epoch) return stop(CANCEL);
+        const now = performance.now();
+        const ms = now - t0;
+        if (ms >= total) return end();
+        try { frame(Math.max(0, ms), now); } catch (e) { return stop(e); }
+        requestAnimationFrame(step);
+      };
+      guard = setTimeout(end, total + 400);
+      requestAnimationFrame(step);
+    });
+  }
+
+  /* ---------- geometry ---------- */
+  const lp = (a, b, t) => ({ x: lerp(a.x, b.x, t), y: lerp(a.y, b.y, t) });
+  function splitAt(c, t) {   // de Casteljau: the first part [0, t] of a cubic
+    const [p0, p1, p2, p3] = c;
+    const a = lp(p0, p1, t), b = lp(p1, p2, t), d = lp(p2, p3, t);
+    const e = lp(a, b, t), f = lp(b, d, t);
+    return [p0, a, e, lp(e, f, t)];
+  }
+  const bez = (c, t) => splitAt(c, t)[3];
+  function tangentAt(c, t) {
+    const [a, b, d, e] = c; const u = 1 - t;
+    return {
+      x: 3 * u * u * (b.x - a.x) + 6 * u * t * (d.x - b.x) + 3 * t * t * (e.x - d.x),
+      y: 3 * u * u * (b.y - a.y) + 6 * u * t * (d.y - b.y) + 3 * t * t * (e.y - d.y),
+    };
+  }
+  const fx = (p) => `${p.x.toFixed(2)} ${p.y.toFixed(2)}`;
+  const dStr = (c) => `M${fx(c[0])}C${fx(c[1])} ${fx(c[2])} ${fx(c[3])}`;
+
+  /**
+   * The thread from the dot to a point: drops out of the dot, then sweeps in from the right.
+   * `pen`: while it writes or strikes, the end comes down onto the line from above, like a pen,
+   * so the part of the word it has not reached yet stays clear of the thread.
+   */
+  function curveFor(P0, P3, now, pen = false) {
+    const dx = P3.x - P0.x, dy = P3.y - P0.y;
+    const sway = now && !reduced() ? Math.sin(now / 900) * 1.6 : 0;
+    const P1 = { x: P0.x - 8 + sway, y: P0.y + Math.max(26, dy * 0.55) };
+    const P2 = pen
+      ? { x: P3.x + Math.min(24, Math.max(14, -dx * 0.08)), y: P3.y - Math.min(44, Math.max(28, dy * 0.3)) }
+      : { x: P3.x + Math.max(30, -dx * 0.5), y: P3.y - Math.max(10, dy * 0.12) };
+    return [P0, P1, P2, P3];
+  }
+
+  /**
+   * The strike: a quick ballpoint line through the middle of the x-height, starting a little before
+   * the word, rising 1-2 degrees, one subtle wobble, overshooting the end. Row coordinates.
+   */
+  function strikeD(seed, left, right) {
+    const r = seeded(seed);
+    const x0 = left - 3 - r() * 4;
+    const x1 = right + 3 + r() * 6;
+    const w = x1 - x0;
+    const rise = Math.tan((1 + r()) * Math.PI / 180) * w;
+    const mid = midY() + (r() - 0.5) * 1.4;
+    const y0 = mid + rise / 2, y1 = mid - rise / 2;
+    const wob = (1.4 + r() * 1.2) * (r() < 0.5 ? -1 : 1);
+    const c1x = x0 + w * (0.28 + r() * 0.08), c2x = x0 + w * (0.64 + r() * 0.08);
+    const c1y = lerp(y0, y1, 0.3) - wob, c2y = lerp(y0, y1, 0.68) + wob * 0.85;
+    return `M${x0.toFixed(1)} ${y0.toFixed(1)}C${c1x.toFixed(1)} ${c1y.toFixed(1)} ${c2x.toFixed(1)} ${c2y.toFixed(1)} ${x1.toFixed(1)} ${y1.toFixed(1)}`;
+  }
+
+  /* ---------- the thread of one sheet ---------- */
+  class Thread {
+    constructor(phone, base, flow, bead) { this.phone = phone; this.base = base; this.flow = flow; this.bead = bead; this.pen = false; }
+    /** Draw the part [0, t] of the thread to `tip` (or of a fixed curve); ink flows from the dot. */
+    render(tip, t, now = performance.now(), fixed = null) {
+      if (t <= 0.004) { this.clear(); return; }
+      const c = fixed || curveFor(this.phone.dotPos(), tip, now, this.pen);
+      const s = t >= 0.999 ? c : splitAt(c, t);
+      const d = dStr(s);
+      this.base.setAttribute('d', d);
+      this.flow.setAttribute('d', d);
+      this.flow.style.strokeDashoffset = reduced() ? '0' : (-((now * 0.11) % 18)).toFixed(2);
+      this.bead.setAttribute('cx', s[3].x.toFixed(2));
+      this.bead.setAttribute('cy', s[3].y.toFixed(2));
+      this.bead.style.opacity = '1';
+    }
+    clear() { this.base.removeAttribute('d'); this.flow.removeAttribute('d'); this.bead.style.opacity = '0'; }
+  }
+
+  /* ---------- the network ---------- */
+  function net(from, ev) {
+    const my = epoch;
+    const to = from === L ? R : L;
+    setTimeout(() => { if (my === epoch) to.receive(ev); }, NET_MS);
+  }
+
+  /* ---------- one phone ---------- */
+  class Phone {
+    constructor(side) {
+      this.side = side;
+      this.ink = side === 'L' ? 'azul' : 'roja';
+      this.other = side === 'L' ? 'roja' : 'azul';
+      this.interactive = side === 'L';
+      this.screen = document.getElementById('screen' + side);
+      this.screen.append(tpl.content.cloneNode(true));
+      this.screen.style.setProperty('--other', INK[this.other]);
+      const q = (s) => this.screen.querySelector(s);
+      this.page = q('.page'); this.list = q('.items'); this.writing = q('.writing');
+      this.dots = q('.th-dots'); this.hook = q('.th-hook');
+      this.thread = new Thread(this, q('.th-base'), q('.th-flow'), q('.th-bead'));
+      this.flyers = q('.flyers'); this.dot = q('.dot'); this.core = q('.core'); this.ring = q('.ring');
+      this.toast = q('.toast'); this.toastMsg = q('.toast .msg'); this.undoBtn = q('.toast .undo');
+      this.dot.setAttribute('aria-label', side === 'L' ? 'Punto rojo: el otro teléfono' : 'Punto azul: tu teléfono');
+      this.queue = []; this.pumping = -1; this.ghost = null; this.dotsOwner = null;
+      this.buildWriting();
+      this.wire();
+      this.reset();
+    }
+
+    /* --- building --- */
+    buildWriting() {
+      if (this.interactive) {
+        const input = h('input', 'write');
+        input.id = 'writeL'; input.type = 'text'; input.autocomplete = 'off'; input.spellcheck = false; input.maxLength = 32;
+        input.placeholder = 'Escribe lo que falta…';
+        input.setAttribute('enterkeyhint', 'done');
+        input.setAttribute('aria-label', 'Escribe lo que falta');
+        this.input = input;
+        this.writing.append(input);
+      } else {
+        const d = h('div', 'write ro'); d.setAttribute('aria-hidden', 'true');
+        this.draftEl = h('span', 'draft');
+        this.caret = h('span', 'caret'); this.caret.hidden = true;
+        this.ph = h('span', 'ph'); this.ph.textContent = 'Escribe lo que falta…';
+        d.append(this.draftEl, this.caret, this.ph);
+        this.writing.append(d);
+      }
+    }
+
+    makeRow(item) {
+      const li = h('li', 'row');
+      li.dataset.id = item.id;
+      li.style.setProperty('--ink', INK[item.ink]);
+      const hit = h(this.interactive ? 'button' : 'div', 'hit');
+      if (this.interactive) { hit.type = 'button'; hit.setAttribute('aria-pressed', String(!!item.struck)); }
+      const txt = h('span', 'txt');
+      const w = h('span', 'w'); w.textContent = item.text;
+      txt.append(w); hit.append(txt);
+      const svg = sv('svg', { class: 'strike', 'aria-hidden': 'true' }); svg.append(sv('path'));
+      li.append(hit, svg);
+      if (this.interactive) {
+        const del = h('button', 'del'); del.type = 'button';
+        del.setAttribute('aria-label', `Borrar «${item.text}»`);
+        const x = sv('svg', { viewBox: '0 0 13 13', 'aria-hidden': 'true' }); x.append(sv('path', { d: 'M2 2l9 9M11 2l-9 9' }));
+        del.append(x); li.append(del);
+      }
+      if (item.struck) li.classList.add('struck');
+      return li;
+    }
+
+    wire() {
+      this.undoBtn.addEventListener('click', () => this.undo());
+      const hold = (on) => () => this.holdToast(on);
+      this.toast.addEventListener('pointerenter', hold(true)); this.toast.addEventListener('pointerleave', hold(false));
+      this.toast.addEventListener('focusin', hold(true)); this.toast.addEventListener('focusout', hold(false));
+      if (!this.interactive) return;
+      this.input.addEventListener('input', () => {
+        this.draft = this.input.value;
+        net(this, { type: 'typing', text: this.draft.trim() ? this.draft : '' });
+      });
+      this.input.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' && !e.isComposing) { e.preventDefault(); this.commitDraft(); }
+      });
+      this.list.addEventListener('click', (e) => {
+        const row = e.target.closest('.row');
+        if (!row || !row.dataset.id || row.classList.contains('gone')) return;
+        if (e.target.closest('.del')) { this.localDelete(row.dataset.id, e.detail === 0); return; }
+        if (!e.target.closest('.hit')) return;
+        if (this.suppressClick) { this.suppressClick = false; return; }
+        this.disarm();
+        this.localToggle(row.dataset.id);
+      });
+      // press and hold on a touch screen reveals the ×
+      this.list.addEventListener('pointerdown', (e) => {
+        this.suppressClick = false;
+        if (e.pointerType === 'mouse') return;
+        const row = e.target.closest('.row');
+        if (!row || !row.dataset.id || e.target.closest('.del')) return;
+        if (this.armed && this.armed !== row) this.disarm();
+        const x0 = e.clientX, y0 = e.clientY;
+        clearTimeout(this.lpTimer);
+        this.lpTimer = setTimeout(() => { row.classList.add('armed'); this.armed = row; this.suppressClick = true; }, 480);
+        const cancel = (ev) => {
+          if (ev.type === 'pointermove' && Math.hypot(ev.clientX - x0, ev.clientY - y0) < 8) return;
+          clearTimeout(this.lpTimer);
+          removeEventListener('pointermove', cancel); removeEventListener('pointerup', cancel); removeEventListener('pointercancel', cancel);
+        };
+        addEventListener('pointermove', cancel); addEventListener('pointerup', cancel); addEventListener('pointercancel', cancel);
+      });
+      this.list.addEventListener('contextmenu', (e) => { if (e.target.closest('.row')) e.preventDefault(); });
+      document.addEventListener('pointerdown', (e) => { if (this.armed && !this.armed.contains(e.target)) this.disarm(); });
+    }
+    disarm() { if (this.armed) this.armed.classList.remove('armed'); this.armed = null; }
+
+    reset() {
+      this.queue = []; this.pumping = -1;
+      this.items = START.map((x) => ({ ...x, struck: false }));
+      this.deleted = null; this.draft = ''; this.typingNow = false;
+      if (this.ghost) this.ghost.dead = true;
+      this.ghost = null; this.dotsOwner = null;
+      clearTimeout(this.toastTimer); this.toast.hidden = true;
+      this.list.textContent = ''; this.flyers.textContent = '';
+      this.thread.clear(); this.dots.removeAttribute('d'); this.resetHook();
+      this.page.scrollTop = 0;
+      for (const it of this.items) this.list.append(this.makeRow(it));
+      if (this.interactive) this.input.value = '';
+      else { this.caret.hidden = true; this.setDraftDisplay(''); }
+      this.writeChain = Promise.resolve();
+      this.changed();
+    }
+
+    /* --- lookups and measures --- */
+    find(id) { return this.items.find((i) => i.id === id); }
+    findText(t) { return this.items.find((i) => i.text === t); }
+    rowOf(id) { return this.list.querySelector(`.row[data-id="${CSS.escape(id)}"]:not(.gone)`); }
+    rect() { return this.screen.getBoundingClientRect(); }
+    dotPos() {
+      const sc = this.rect(), r = this.dot.getBoundingClientRect();
+      return { x: (r.left + r.right) / 2 - sc.left, y: (r.top + r.bottom) / 2 - sc.top };
+    }
+    wordBox(row) {
+      const rr = row.getBoundingClientRect();
+      const w = row.querySelector('.w').getBoundingClientRect();
+      const t = row.querySelector('.txt').getBoundingClientRect();
+      return { left: w.left - rr.left, right: Math.min(w.right, t.right) - rr.left };
+    }
+    indexBefore(el) {
+      let n = 0;
+      for (const c of this.list.children) { if (c === el) break; if (c.dataset.id && !c.classList.contains('gone')) n++; }
+      return n;
+    }
+    insertRow(row, index) {
+      const next = this.items[index + 1];
+      const nextRow = next && this.rowOf(next.id);
+      if (nextRow) this.list.insertBefore(row, nextRow);
+      else if (this.ghost && this.ghost.row.isConnected) this.list.insertBefore(row, this.ghost.row);
+      else this.list.append(row);
+    }
+    scrollTo(el) {   // only the sheet scrolls, never the page around the phones
+      const pr = this.page.getBoundingClientRect(), r = el.getBoundingClientRect();
+      if (r.bottom > pr.bottom - 84) this.page.scrollTop += r.bottom - (pr.bottom - 84);
+      else if (r.top < pr.top + 100) this.page.scrollTop -= (pr.top + 100) - r.top;
+    }
+    say(msg) { if (this.side === 'L') live.textContent = msg; }
+    changed() { if (this.side === 'R') refreshActs(); }
+
+    /* --- the strike, still --- */
+    strikeStill(row, item) {
+      const path = row.querySelector('.strike path');
+      const b = this.wordBox(row);
+      path.setAttribute('d', strikeD(item.id, b.left, b.right));
+      path.style.stroke = INK[item.strikeInk || item.ink];
+      path.style.strokeDasharray = 'none';
+      path.style.strokeDashoffset = '0';
+      row.classList.add('struck');
+      const hit = row.querySelector('button.hit'); if (hit) hit.setAttribute('aria-pressed', 'true');
+    }
+    redrawStill() {
+      for (const it of this.items) {
+        if (!it.struck) continue;
+        const row = this.rowOf(it.id);
+        const path = row && row.querySelector('.strike path');
+        if (row && path && !path.getAnimations().length && path.style.strokeDasharray === 'none') this.strikeStill(row, it);
+      }
+    }
+
+    /* --- row motions shared by local and remote --- */
+    openRow(row) {
+      if (reduced()) return Promise.resolve();
+      row.classList.add('opening');
+      const a = row.animate([{ height: '0px' }, { height: ROW + 'px' }], { duration: 240, easing: 'cubic-bezier(.2,.8,.2,1)' });
+      return Promise.race([a.finished.catch(() => {}), wait(300)]).finally(() => row.classList.remove('opening'));
+    }
+    collapse(row, dur = 360, delay = 0) {
+      row.classList.add('gone');
+      if (reduced()) { row.remove(); return; }
+      const a = row.animate([{ height: ROW + 'px' }, { height: '0px' }], { duration: dur, delay, easing: 'cubic-bezier(.4,0,.2,1)', fill: 'forwards' });
+      const done = () => row.remove();
+      a.onfinish = done;
+      setTimeout(done, dur + delay + 300);
+    }
+
+    /* --- the dot --- */
+    pulseDot() {
+      if (reduced()) return;
+      this.ring.animate([{ transform: 'scale(1)', opacity: 0.6 }, { transform: 'scale(3)', opacity: 0 }], { duration: 700, easing: 'cubic-bezier(.2,.7,.3,1)' });
+      this.core.animate([{ transform: 'scale(1)' }, { transform: 'scale(1.32)' }, { transform: 'scale(1)' }], { duration: 280, easing: 'ease-out' });
+    }
+    kickDot() {
+      if (reduced()) return;
+      this.core.animate([{ transform: 'scale(1)' }, { transform: 'scale(1.4)', offset: 0.3 }, { transform: 'scale(1)' }], { duration: 380, easing: 'ease-out' });
+    }
+    gulpDot() {
+      if (reduced()) return;
+      this.core.animate([{ transform: 'scale(1.5)' }, { transform: 'scale(.9)', offset: 0.5 }, { transform: 'scale(1)' }], { duration: 440, easing: 'ease-out' });
+      this.ring.animate([{ transform: 'scale(1)', opacity: 0.4 }, { transform: 'scale(2.2)', opacity: 0 }], { duration: 520, easing: 'ease-out' });
+    }
+    async flashThread(tip) {   // reduced motion: the thread is shown as a still state, then put away
+      this.thread.render(tip, 1);
+      await wait(520);
+      this.thread.clear();
+    }
+    resetHook() { this.hook.removeAttribute('d'); this.hook.removeAttribute('transform'); this.hook.style.opacity = ''; }
+
+    /* --- toast --- */
+    showToast(msg) {
+      this.toastMsg.textContent = msg;
+      this.toast.hidden = false;
+      this.toastToken = (this.toastToken || 0) + 1;
+      if (!reduced()) this.toast.animate([{ opacity: 0, transform: 'translateY(10px)' }, { opacity: 1, transform: 'none' }], { duration: 220, easing: 'cubic-bezier(.2,.8,.2,1)' });
+      this.armToast(7000);
+    }
+    armToast(ms) { clearTimeout(this.toastTimer); this.toastTimer = setTimeout(() => this.hideToast(), ms); }
+    holdToast(on) { if (this.toast.hidden) return; if (on) clearTimeout(this.toastTimer); else this.armToast(4000); }
+    hideToast() {
+      clearTimeout(this.toastTimer);
+      if (this.toast.hidden) return;
+      const token = this.toastToken;
+      if (reduced()) { this.toast.hidden = true; return; }
+      this.toast.animate([{ opacity: 1 }, { opacity: 0, transform: 'translateY(6px)' }], { duration: 160, easing: 'ease-in' })
+        .finished.then(() => { if (token === this.toastToken) this.toast.hidden = true; }, () => {});
+    }
+
+    /* --- local actions (this phone's own hand) --- */
+    setDraft(text, send = true) {
+      this.draft = text;
+      if (this.interactive) { if (this.input.value !== text) this.input.value = text; }
+      else this.setDraftDisplay(text);
+      if (send) net(this, { type: 'typing', text: text.trim() ? text : '' });
+    }
+    setDraftDisplay(text) { this.draftEl.textContent = text; this.ph.hidden = !!text || this.typingNow; }
+    caretOn(on) {
+      if (this.interactive) return;
+      this.typingNow = on; this.caret.hidden = !on; this.ph.hidden = on || !!this.draft;
+    }
+    commitDraft() {
+      const text = this.draft.trim();
+      if (!text) return;
+      this.setDraft('', false);
+      this.localAdd(text);
+    }
+    /** Write a word letter by letter in this phone's writing line, then press Enter. */
+    writeWord(word) {
+      const my = epoch;
+      const run = async () => {
+        if (my !== epoch) return;
+        const w = word || SPARE.find((s) => !this.findText(s)) || SPARE[0];
+        const r = seeded(w);
+        this.caretOn(true);
+        try {
+          for (const ch of Array.from(w)) { this.setDraft(this.draft + ch); await wait(105 + r() * 75); }
+          await wait(380);
+          this.commitDraft();
+        } finally { if (my === epoch) this.caretOn(false); }
+      };
+      const p = this.writeChain.then(run);
+      this.writeChain = p.catch(() => {});
+      return p;
+    }
+    localAdd(text) {
+      const item = { id: `${this.side}${++seq}`, text, ink: this.ink, struck: false };
+      this.items.push(item);
+      this.list.append(this.makeRow(item));   // the words stay where they were written
+      this.scrollTo(this.writing);
+      net(this, { type: 'add', item: { ...item } });
+      this.changed();
+      return item;
+    }
+    localToggle(id) {
+      const item = this.find(id), row = this.rowOf(id);
+      if (!item || !row) return;
+      const on = !item.struck;
+      item.struck = on; item.strikeInk = this.ink;
+      const hit = row.querySelector('button.hit'); if (hit) hit.setAttribute('aria-pressed', String(on));
+      const path = row.querySelector('.strike path');
+      for (const a of path.getAnimations()) a.cancel();
+      if (on) {
+        const b = this.wordBox(row);
+        path.setAttribute('d', strikeD(id, b.left, b.right));
+        path.style.stroke = INK[this.ink];
+        const len = path.getTotalLength();
+        path.style.strokeDasharray = 'none'; path.style.strokeDashoffset = '0';
+        if (!reduced()) path.animate([{ strokeDasharray: `${len} ${len}`, strokeDashoffset: len }, { strokeDasharray: `${len} ${len}`, strokeDashoffset: 0 }], { duration: Math.min(320, 150 + len * 0.6), easing: 'cubic-bezier(.3,.6,.2,1)' });
+        row.classList.add('struck');
+      } else {
+        const len = path.getTotalLength() || 1;
+        path.style.strokeDasharray = `${len} ${len}`; path.style.strokeDashoffset = String(len);
+        if (!reduced()) path.animate([{ strokeDashoffset: 0, opacity: 0.92 }, { strokeDashoffset: -len * 0.15, opacity: 0 }], { duration: 220, easing: 'ease-in' });
+        row.classList.remove('struck');
+      }
+      net(this, { type: 'strike', id, on, by: this.ink });
+      this.changed();
+    }
+    localDelete(id, refocus = false) {
+      const idx = this.items.findIndex((i) => i.id === id);
+      if (idx < 0) return;
+      this.items.splice(idx, 1);
+      const row = this.rowOf(id);
+      if (row) {
+        if (refocus) {
+          let n = row.nextElementSibling;
+          while (n && !(n.dataset.id && !n.classList.contains('gone'))) n = n.nextElementSibling;
+          const target = n ? n.querySelector('.hit') : this.input;
+          if (target) target.focus();
+        }
+        if (this.armed === row) this.armed = null;
+        if (!reduced()) {
+          for (const p of row.querySelectorAll('.hit, .strike')) p.animate([{ opacity: 1, transform: 'none' }, { opacity: 0, transform: 'translateY(-4px) scale(.97)' }], { duration: 180, easing: 'ease-in', fill: 'forwards' });
+        }
+        this.collapse(row, 260, 110);
+      }
+      net(this, { type: 'delete', id, by: this.ink });
+      this.changed();
+    }
+    undo() {   // Deshacer: put it back here, and send it back to the other sheet
+      const d = this.deleted;
+      if (!d) return;
+      this.deleted = null;
+      this.hideToast();
+      if (this.find(d.item.id)) return;
+      const index = Math.min(d.index, this.items.length);
+      this.items.splice(index, 0, d.item);
+      const row = this.makeRow(d.item);
+      this.insertRow(row, index);
+      if (d.item.struck) this.strikeStill(row, d.item);
+      if (!reduced()) {
+        this.openRow(row).catch(() => {});
+        for (const p of row.querySelectorAll('.hit, .strike')) p.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 260, delay: 120, fill: 'backwards' });
+      }
+      const hit = row.querySelector('button.hit');
+      if (hit) hit.focus({ preventScroll: true });
+      net(this, { type: 'restore', item: { ...d.item }, index, by: this.ink });
+      this.changed();
+    }
+
+    /* --- what arrives from the other phone --- */
+    receive(ev) {
+      const last = this.queue[this.queue.length - 1];
+      if (ev.type === 'typing' && last && last.type === 'typing') { this.queue[this.queue.length - 1] = ev; return; }
+      this.queue.push(ev);
+      this.pump();
+    }
+    async pump() {
+      if (this.pumping === epoch) return;
+      const my = this.pumping = epoch;
+      while (this.queue.length && my === epoch) {
+        const ev = this.queue.shift();
+        try { await this.handle(ev); } catch (e) {
+          if (e === CANCEL) return;
+          if (e !== GONE) console.error(e);
+          this.thread.clear(); this.resetHook(); this.flyers.textContent = '';
+        }
+      }
+      if (this.pumping === my) this.pumping = -1;
+    }
+    handle(ev) {
+      switch (ev.type) {
+        case 'typing': this.showTyping(ev.text); return null;
+        case 'add': return this.remoteAdd(ev.item);
+        case 'strike': return this.remoteStrike(ev.id, ev.on, ev.by);
+        case 'delete': return this.remoteDelete(ev.id, ev.by);
+        case 'restore': return this.remoteRestore(ev.item, ev.index, ev.by);
+        default: return null;
+      }
+    }
+
+    /* (1) typing: a dotted thread to a fresh line, where pencil letters gather at its end */
+    showTyping(text) {
+      if (!text) { this.endTyping(); return; }
+      let g = this.ghost;
+      if (!g) g = this.ghost = this.makeGhost();
+      this.setPencil(g, text);
+      this.pulseDot();
+    }
+    makeGhost() {
+      const row = h('li', 'row ghost'); row.setAttribute('aria-hidden', 'true');
+      const hit = h('div', 'hit'); const txt = h('span', 'txt');
+      const pencil = h('span', 'pencil'); const w = h('span', 'w');
+      txt.append(pencil, w); hit.append(txt); row.append(hit);
+      this.list.append(row);
+      this.scrollTo(this.writing);
+      const g = { row, pencil, letters: [], born: performance.now(), ending: 0, fade: false, converted: false, dead: false, done: false, from: null, to: null, cur: null, t0: 0 };
+      if (!reduced()) { row.classList.add('opening'); row.animate([{ height: '0px' }, { height: ROW + 'px' }], { duration: 220, easing: 'cubic-bezier(.2,.8,.2,1)' }).finished.then(() => row.classList.remove('opening'), () => {}); }
+      this.typingLoop(g);
+      return g;
+    }
+    setPencil(g, text) {
+      const chars = Array.from(text), cur = g.letters;
+      let k = 0;
+      while (k < cur.length && k < chars.length && cur[k].textContent === chars[k]) k++;
+      while (cur.length > k) cur.pop().remove();
+      for (let i = k; i < chars.length; i++) {
+        const s = h('i', 'l'); s.textContent = chars[i];
+        g.pencil.append(s); cur.push(s);
+        if (!reduced()) s.animate([{ opacity: 0, transform: 'translate(6px, -9px) scale(.5)' }, { opacity: 1, transform: 'none' }], { duration: 230, easing: 'cubic-bezier(.2,.8,.2,1)' });
+      }
+    }
+    pencilTip(g) {
+      const sc = this.rect(), pr = g.pencil.getBoundingClientRect(), rr = g.row.getBoundingClientRect();
+      return { x: (g.letters.length ? pr.right : pr.left) - sc.left + 2, y: rr.top - sc.top + midY() };
+    }
+    typingLoop(g) {
+      const my = epoch;
+      const step = () => {
+        if (my !== epoch || g.dead) return;
+        const now = performance.now();
+        const target = g.converted && g.to ? g.to : this.pencilTip(g);
+        if (!g.to) { g.from = g.to = g.cur = target; g.t0 = now; }
+        else if (Math.abs(target.x - g.to.x) > 0.5 || Math.abs(target.y - g.to.y) > 0.5) { g.from = g.cur; g.to = target; g.t0 = now; }
+        const k = reduced() ? 1 : easeOut(clamp01((now - g.t0) / 160));
+        g.cur = lp(g.from, g.to, k);
+        let t = reduced() ? 1 : easeOut(clamp01((now - g.born) / 320));
+        let alpha = reduced() ? 0.85 : 0.64 + 0.2 * Math.sin(now / 53) * Math.sin(now / 137 + 1.7) + 0.1 * Math.sin(now / 23);
+        if (g.ending) {
+          const e = clamp01((now - g.ending) / 260);
+          if (g.fade) alpha *= 1 - e; else t *= 1 - easeIn(e);
+          if (e >= 1) { this.finishGhost(g); return; }
+        }
+        this.dotsOwner = g;
+        this.drawDots(g.cur, t, alpha, now);
+        requestAnimationFrame(step);
+      };
+      requestAnimationFrame(step);
+    }
+    drawDots(tip, t, alpha, now) {
+      if (t <= 0.004 || alpha <= 0.01) { this.dots.removeAttribute('d'); return; }
+      const c = curveFor(this.dotPos(), tip, now);
+      this.dots.setAttribute('d', dStr(t >= 0.999 ? c : splitAt(c, t)));
+      this.dots.style.opacity = alpha.toFixed(3);
+      this.dots.style.strokeDashoffset = reduced() ? '0' : (-((now * 0.022) % 5.2)).toFixed(2);
+    }
+    endTyping() {
+      const g = this.ghost;
+      if (!g) return;
+      this.ghost = null;
+      g.ending = performance.now(); g.fade = false;
+      for (const s of g.letters) if (!reduced()) s.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 220, fill: 'forwards' });
+      if (reduced()) this.finishGhost(g); else setTimeout(() => this.finishGhost(g), 650);
+    }
+    finishGhost(g) {
+      if (g.done) return;
+      g.done = g.dead = true;
+      if (this.dotsOwner === g) { this.dots.removeAttribute('d'); this.dotsOwner = null; }
+      if (!g.converted && g.row.isConnected) this.collapse(g.row, 220);
+    }
+
+    /* (2) added: the thread shoots to the line, ink flows, the word blooms out of its end */
+    async remoteAdd(item) {
+      if (this.find(item.id)) return;
+      const g = this.ghost;
+      let row, pencil = null;
+      if (g && g.row.isConnected) {
+        this.items.splice(this.indexBefore(g.row), 0, item);
+        row = this.makeRow(item);
+        pencil = g.pencil;
+        row.querySelector('.txt').prepend(pencil);
+        g.row.replaceWith(row);
+        g.converted = true; g.fade = true; g.ending = performance.now();
+        this.ghost = null;
+        setTimeout(() => this.finishGhost(g), 600);
+      } else {
+        this.items.push(item);
+        row = this.makeRow(item);
+        this.insertRow(row, this.items.length - 1);
+      }
+      this.changed();
+      this.say(`${WHO[item.ink]} escribió «${item.text}»`);
+      await this.bloom(row, item, pencil, !pencil);
+    }
+    async bloom(row, item, pencil, open) {
+      const w = row.querySelector('.w');
+      const chars = Array.from(item.text);
+      w.textContent = '';
+      const spans = chars.map((ch) => { const s = h('i', 'l'); s.textContent = ch; s.style.opacity = '0'; w.append(s); return s; });
+      const pl = pencil ? Array.from(pencil.children) : [];
+      this.thread.pen = true;
+      const finish = () => {
+        if (!row.isConnected) return;
+        if (pencil) pencil.remove();
+        w.textContent = item.text;
+        if (item.struck) this.strikeStill(row, item);
+      };
+      if (open) await this.openRow(row);
+      this.scrollTo(row);
+      if (reduced()) {
+        finish();
+        const sc = this.rect(), wr = w.getBoundingClientRect(), rr = row.getBoundingClientRect();
+        await this.flashThread({ x: wr.left - sc.left - 3, y: rr.top - sc.top + midY() });
+        return;
+      }
+      const wl = w.getBoundingClientRect().left;
+      const xs = [0];
+      for (const s of spans) xs.push(s.getBoundingClientRect().right - wl);
+      const n = spans.length;
+      const PER = Math.min(72, 900 / Math.max(1, n));
+      const T1 = 350, T2 = T1 + 170, T3 = T2 + PER * n, T4 = T3 + 240, TOTAL = T4 + 300;
+      const lit = new Array(n).fill(false);
+      this.kickDot();
+      await timeline(TOTAL, (ms, now) => {
+        if (!row.isConnected) throw GONE;
+        const sc = this.rect(), wr = w.getBoundingClientRect(), rr = row.getBoundingClientRect();
+        const x0 = wr.left - sc.left, y = rr.top - sc.top + midY();
+        const b = ms - T2;
+        for (let i = 0; i < n; i++) {
+          if (!lit[i] && b >= i * PER) { lit[i] = true; this.popLetter(spans[i], pl[i], ms > T3 + 200); }
+        }
+        let tip, t = 1;
+        if (ms < T2) { tip = { x: x0 - 3, y }; t = ms < T1 ? easeOut(ms / T1) : 1; }
+        else if (ms < T3) {
+          const q = b / PER, k = Math.min(n - 1, Math.floor(q)), f = q - k;
+          tip = { x: x0 + lerp(xs[k], xs[k + 1], clamp01(f)) + 1, y: y + Math.sin(b / 42) * 1.4 };
+        } else {
+          tip = { x: x0 + xs[n] + 2, y };
+          if (ms >= T4) t = 1 - easeIn(clamp01((ms - T4) / 300));
+        }
+        this.thread.render(tip, t, now);
+      });
+      finish();
+      this.thread.clear();
+      this.gulpDot();
+    }
+    popLetter(s, p, instant) {
+      s.style.opacity = '';
+      if (!instant) s.animate([{ opacity: 0, transform: 'translate(-2px, 3px) scale(.3)', filter: 'blur(.8px)' }, { opacity: 1, transform: 'none', filter: 'blur(0)' }], { duration: 260, easing: 'cubic-bezier(.2,.9,.25,1)' });
+      if (p) p.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 180, fill: 'forwards' });
+    }
+
+    /* (3) struck: the thread lands left of the word and draws the strike as it pulls through */
+    async remoteStrike(id, on, by) {
+      const item = this.find(id), row = this.rowOf(id);
+      if (!item || !row || !!item.struck === on) return;
+      item.struck = on; item.strikeInk = by;
+      this.changed();
+      this.scrollTo(row);
+      const hit = row.querySelector('button.hit'); if (hit) hit.setAttribute('aria-pressed', String(on));
+      const path = row.querySelector('.strike path');
+      for (const a of path.getAnimations()) a.cancel();
+      if (on) { const b = this.wordBox(row); path.setAttribute('d', strikeD(id, b.left, b.right)); path.style.stroke = INK[by]; }
+      const len = path.getTotalLength() || 1;
+      path.style.strokeDasharray = `${len} ${len}`;
+      this.thread.pen = true;
+      this.say(`${WHO[by]} ${on ? 'tachó' : 'destachó'} «${item.text}»`);
+      const at = (Ln) => {
+        const p = path.getPointAtLength(Ln), rr = row.getBoundingClientRect(), sc = this.rect();
+        return { x: rr.left - sc.left + p.x, y: rr.top - sc.top + p.y };
+      };
+      if (reduced()) {
+        path.style.strokeDashoffset = on ? '0' : String(len);
+        row.classList.toggle('struck', on);
+        await this.flashThread(at(on ? 0 : len));
+        return;
+      }
+      path.style.strokeDashoffset = on ? String(len) : '0';
+      const DRAW = Math.min(950, 380 + len * 2.2);
+      const T1 = 350, T2 = T1 + 90, T3 = T2 + DRAW, T4 = T3 + 160, TOTAL = T4 + 300;
+      let settled = false;
+      this.kickDot();
+      await timeline(TOTAL, (ms, now) => {
+        if (!row.isConnected || row.classList.contains('gone')) throw GONE;
+        if (ms < T2) { this.thread.render(at(on ? 0 : len), ms < T1 ? easeOut(ms / T1) : 1, now); return; }
+        if (ms < T3) {
+          const k = easeInOut((ms - T2) / DRAW);
+          const Ln = on ? k * len : (1 - k) * len;     // ink laid down (or taken back) so far
+          path.style.strokeDashoffset = String(len - Ln);
+          this.thread.render(at(Ln), 1, now);
+          return;
+        }
+        if (!settled) {
+          settled = true;
+          path.style.strokeDashoffset = on ? '0' : String(len);
+          if (on) path.style.strokeDasharray = 'none';
+          row.classList.toggle('struck', on);
+        }
+        this.thread.render(at(on ? len : 0), ms < T4 ? 1 : 1 - easeIn(clamp01((ms - T4) / 300)), now);
+      });
+      this.thread.clear();
+      this.gulpDot();
+    }
+
+    /* (4) deleted: the thread hooks the word and reels it up into the dot; the row closes */
+    async remoteDelete(id, by) {
+      const idx = this.items.findIndex((i) => i.id === id);
+      if (idx < 0) return;
+      const item = this.items[idx];
+      const row = this.rowOf(id);
+      this.items.splice(idx, 1);
+      this.deleted = { item: { ...item }, index: idx, by };
+      this.changed();
+      this.say(`${WHO[by]} borró «${item.text}»`);
+      const toast = () => this.showToast(`${WHO[by]} borró «${item.text}»`);
+      this.thread.pen = false;
+      if (!row) { toast(); return; }
+      this.scrollTo(row);
+      const sc = this.rect(), rr = row.getBoundingClientRect(), wr = row.querySelector('.w').getBoundingClientRect();
+      const A0 = { x: Math.min(wr.right, rr.right - 40) - sc.left + 4, y: rr.top - sc.top + midY() };
+      if (reduced()) {
+        this.thread.render(A0, 1);
+        await wait(450);
+        row.remove();
+        this.thread.clear();
+        toast();
+        return;
+      }
+      const C = curveFor(this.dotPos(), A0, 0);
+      this.hook.setAttribute('d', `M${fx(A0)}c3 2.4 4.4 8.6.4 12.2c-2.6 2.2-6.4 1.4-7.4-1.6`);   // a fishhook under the word's end
+      const hl = this.hook.getTotalLength() || 1;
+      this.hook.style.strokeDasharray = `${hl} ${hl}`;
+      this.hook.style.strokeDashoffset = String(hl);
+      const T1 = 350, T2 = T1 + 170, T3 = T2 + 130, PULL = 780, TOTAL = T3 + PULL;
+      const a0 = Math.atan2(-tangentAt(C, 1).y, -tangentAt(C, 1).x);
+      let flyer = null, closing = false, told = false;
+      this.kickDot();
+      try {
+        await timeline(TOTAL, (ms, now) => {
+          if (ms < T1) { this.thread.render(null, easeOut(ms / T1), now, C); return; }
+          if (ms < T2) {
+            this.hook.style.strokeDashoffset = String(hl * (1 - easeOut((ms - T1) / (T2 - T1))));
+            this.thread.render(null, 1, now, C);
+            return;
+          }
+          if (ms < T3) {   // a small tug: the word gives a little toward the hook
+            this.hook.style.strokeDashoffset = '0';
+            row.style.transform = `translateX(${(Math.sin(((ms - T2) / (T3 - T2)) * Math.PI) * 2.5).toFixed(2)}px)`;
+            this.thread.render(null, 1, now, C);
+            return;
+          }
+          if (!flyer) { row.style.transform = ''; flyer = this.makeFlyer(row, A0); row.classList.add('lifted'); }
+          if (!closing && ms >= T3 + 200) { closing = true; this.collapse(row, 400); }
+          if (!told && ms >= T3 + PULL * 0.74) { told = true; toast(); }
+          const q = easeInOut(clamp01((ms - T3) / PULL));
+          const t = 1 - q;
+          const A = bez(C, Math.max(t, 0.0001));
+          const tg = tangentAt(C, Math.max(t, 0.0001));
+          const rot = ((Math.atan2(-tg.y, -tg.x) - a0) * 180 / Math.PI) * 0.55;
+          const s = 1 - 0.9 * q;
+          const op = q < 0.5 ? 1 : Math.max(0, 1 - (q - 0.5) / 0.5);
+          flyer.style.transform = `translate(${(A.x - A0.x).toFixed(2)}px, ${(A.y - A0.y).toFixed(2)}px) rotate(${rot.toFixed(2)}deg) scale(${s.toFixed(3)})`;
+          flyer.style.opacity = op.toFixed(3);
+          this.hook.setAttribute('transform', `translate(${fx(A)}) rotate(${rot.toFixed(2)}) scale(${s.toFixed(3)}) translate(${(-A0.x).toFixed(2)} ${(-A0.y).toFixed(2)})`);
+          this.hook.style.opacity = (op * 0.78).toFixed(3);
+          this.thread.render(null, t, now, C);
+        });
+      } finally {
+        if (flyer) flyer.remove();
+        row.style.transform = '';
+        if (row.isConnected && !closing) this.collapse(row, 300);
+      }
+      this.resetHook();
+      this.thread.clear();
+      this.gulpDot();
+      if (!told) toast();
+    }
+    makeFlyer(row, A0) {
+      const sc = this.rect(), rr = row.getBoundingClientRect();
+      const f = h('div', row.className + ' flyer');
+      f.style.cssText = row.style.cssText;
+      f.append(row.querySelector('.hit').cloneNode(true), row.querySelector('.strike').cloneNode(true));
+      f.inert = true;
+      const left = rr.left - sc.left, top = rr.top - sc.top;
+      Object.assign(f.style, { left: left + 'px', top: top + 'px', width: rr.width + 'px', transform: 'none', transformOrigin: `${(A0.x - left).toFixed(2)}px ${(A0.y - top).toFixed(2)}px` });
+      this.flyers.append(f);
+      return f;
+    }
+
+    /* Deshacer on the other sheet: it comes back through the thread, like a new word */
+    async remoteRestore(item, index, by) {
+      if (this.find(item.id)) return;
+      index = Math.min(index, this.items.length);
+      this.items.splice(index, 0, item);
+      if (this.deleted && this.deleted.item.id === item.id) { this.deleted = null; this.hideToast(); }
+      const row = this.makeRow(item);
+      this.insertRow(row, index);
+      this.changed();
+      this.say(`${WHO[by]} devolvió «${item.text}»`);
+      await this.bloom(row, item, null, true);
+    }
+  }
+
+  /* ---------- fonts: sit the handwriting on its rules ---------- */
+  function baselineOf(font) {
+    const d = h('div');
+    d.style.cssText = `position:absolute;left:-9999px;top:0;visibility:hidden;white-space:nowrap;font:${font};line-height:${ROW}px;height:${ROW}px`;
+    d.textContent = 'x';
+    const i = h('i'); i.style.cssText = 'display:inline-block;width:1px;height:0;vertical-align:baseline';
+    d.append(i); document.body.append(d);
+    const y = i.getBoundingClientRect().bottom - d.getBoundingClientRect().top;
+    d.remove();
+    return y;
+  }
+  function measure() {
+    const fam = getComputedStyle(document.documentElement).getPropertyValue('--font-hand').trim() || 'cursive';
+    const root = document.documentElement.style;
+    root.setProperty('--shift', (BASE - baselineOf(`500 27px ${fam}`)).toFixed(2) + 'px');
+    root.setProperty('--tshift', (BASE - baselineOf(`600 35px ${fam}`)).toFixed(2) + 'px');
+    try {
+      const ctx = h('canvas').getContext('2d');
+      ctx.font = `500 27px ${fam}`;
+      const xh = ctx.measureText('x').actualBoundingBoxAscent;
+      if (xh > 4 && xh < 20) M.xh = xh;
+    } catch (e) { /* keep the estimate */ }
+  }
+  function onFonts() { measure(); if (L) L.redrawStill(); if (R) R.redrawStill(); }
+
+  /* ---------- the controls ---------- */
+  const actWrite = document.getElementById('actWrite');
+  const actStrike = document.getElementById('actStrike');
+  const actDelete = document.getElementById('actDelete');
+  function refreshActs() {
+    if (!R) return;
+    actStrike.disabled = !R.items.some((i) => !i.struck);
+    actDelete.disabled = R.items.length === 0;
+  }
+  actWrite.addEventListener('click', () => { R.writeWord(null).catch(() => {}); });
+  actStrike.addEventListener('click', () => {
+    const t = R.items.find((i) => i.text === 'jitomate' && !i.struck) || R.items.find((i) => !i.struck);
+    if (t) R.localToggle(t.id);
+  });
+  actDelete.addEventListener('click', () => {
+    const t = R.findText('pan Bimbo') || R.items[R.items.length - 1];
+    if (t) R.localDelete(t.id);
+  });
+
+  /* ---------- the scripted demonstration (about 12 s) ---------- */
+  let started = false;
+  async function demo(replay) {
+    const my = ++epoch;
+    try {
+      if (replay && !reduced()) {
+        for (const p of [L, R]) p.screen.classList.add('resetting');
+        await wait(170);
+      }
+      L.reset(); R.reset();
+      requestAnimationFrame(() => { for (const p of [L, R]) p.screen.classList.remove('resetting'); });
+      await wait(350);
+      await R.writeWord('limones');                     // typing shown on the left, then it is added
+      await wait(1500);
+      const j = R.findText('jitomate'); if (j && !j.struck) R.localToggle(j.id);
+      await wait(1900);
+      const p = R.findText('pan Bimbo'); if (p) R.localDelete(p.id);
+      await wait(2050);
+      await L.writeWord('cilantro');                    // now the left phone writes, and strikes
+      await wait(1450);
+      const c = L.findText('cebolla'); if (c && !c.struck) L.localToggle(c.id);
+    } catch (e) {
+      if (e !== CANCEL) console.error(e);
+    } finally {
+      if (my === epoch) for (const ph of [L, R]) ph.screen.classList.remove('resetting');
+    }
+  }
+  document.getElementById('play').addEventListener('click', () => { started = true; demo(true); });
+
+  /* ---------- boot ---------- */
+  L = new Phone('L');
+  R = new Phone('R');
+  refreshActs();
+  measure();
+  const fontsReady = document.fonts
+    ? Promise.race([document.fonts.load('500 27px Caveat').then(() => document.fonts.ready), new Promise((r) => setTimeout(r, 2500))])
+    : Promise.resolve();
+  fontsReady.then(onFonts);
+  if (document.fonts && document.fonts.addEventListener) document.fonts.addEventListener('loadingdone', onFonts);
+  setTimeout(() => { fontsReady.then(() => { if (!started) { started = true; demo(false); } }); }, 1200);
+})();
+</script>

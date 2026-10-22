@@ -1,0 +1,1094 @@
+<title>Papel carbón</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@500..600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:wght@400..700&display=swap">
+<style>
+/* Layout: two phones on a desk, side by side (stacked on a phone); each screen is the same ruled sheet,
+   one the original and the other its carbon copy. */
+:root {
+  color-scheme: light;
+  --desk: #cdd5ca;
+  --desk-hi: #dce2d8;
+  --desk-ink: #22272b;
+  --desk-soft: #4c5553;
+  --bezel: #1c1d21;
+  --bezel-hi: #34363d;
+  --paper: #fdfbf5;
+  --rule: rgba(66, 118, 190, .30);
+  --rule-strong: rgba(66, 118, 190, .45);
+  --margin: rgba(212, 66, 88, .55);
+  --ink-azul: #1f3c96;
+  --ink-roja: #b8232f;
+  --carbon: #3d3a8f;
+  --press: #efe9da;
+  --pencil: #858a93;
+  --pencil-soft: #a4a8b0;
+  --status: #26282d;
+  --slip: #2a2b31;
+  --slip-ink: #fdfbf5;
+  --focus: #1f3c96;
+  --btn: #26282d;
+  --btn-hi: #383b43;
+  --btn-ink: #fdfbf5;
+  --act-line: rgba(184, 35, 47, .5);
+  --act-hover: #fff1ee;
+  --del-hover: rgba(31, 60, 150, .07);
+  --writing: rgba(31, 60, 150, .06);
+  --phone-rim: rgba(255, 255, 255, .07);
+  --phone-shadow: rgba(28, 34, 26, .18);
+  --phone-shadow-far: rgba(28, 34, 26, .48);
+  --slip-shadow: rgba(20, 20, 30, .5);
+  --homebar: rgba(30, 30, 34, .28);
+  --press-shade: #4b3d24;
+  --press-light: #ffffff;
+  --fluid-top: #fdfdfc;
+  --fluid-mid: #f5f5f2;
+  --fluid-low: #e6e4dc;
+  --fluid-edge: rgba(160, 150, 128, .32);
+  --fluid-bristle: #8c826c;
+  --fluid-gloss: #ffffff;
+  --fluid-shadow: rgba(74, 60, 34, .30);
+  --fluid-shadow-edge: rgba(74, 60, 34, .38);
+  --font-hand: 'Caveat', 'Segoe Print', 'Bradley Hand', cursive;
+  --font-ui: 'Atkinson Hyperlegible Next', 'Atkinson Hyperlegible', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --line: 48px;
+  --margin-x: 44px;
+  --hand: 27px;
+  --hand-w: 540;
+  --hand-shift: 11px;
+  --grain: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n' x='0' y='0'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .32  0 0 0 0 .26  0 0 0 0 .16  0 0 0 .085 0'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--desk) radial-gradient(130% 70% at 50% 0%, var(--desk-hi), var(--desk) 62%) no-repeat;
+  color: var(--desk-ink);
+  font: 16px/1.45 var(--font-ui);
+  -webkit-font-smoothing: antialiased;
+}
+button { font-family: var(--font-ui); }
+
+.page {
+  max-width: calc(340px * 2 + 56px + 32px);
+  margin: 0 auto;
+  padding-inline: 16px;
+  padding-block: 28px 56px;
+}
+
+/* ---------- caption ---------- */
+.caption { display: grid; gap: 6px; max-width: 64ch; }
+.caption h1 {
+  margin: 0;
+  display: flex; align-items: center; gap: 12px;
+  font: 700 26px/1.15 var(--font-ui);
+  letter-spacing: -.005em;
+  text-wrap: balance;
+}
+.caption .letter {
+  display: inline-grid; place-items: center;
+  width: 34px; height: 34px;
+  border: 1.5px solid var(--desk-ink);
+  border-radius: 9px;
+  font: 700 18px/1 var(--font-ui);
+}
+.caption .es { margin: 4px 0 0; font-size: 16.5px; }
+.caption .en { margin: 0; font-size: 13.5px; color: var(--desk-soft); }
+.controls { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
+.play {
+  display: inline-flex; align-items: center; gap: 8px;
+  border: 0; border-radius: 999px;
+  padding: 12px 20px;
+  background: var(--btn); color: var(--btn-ink);
+  font: 700 15px/1 var(--font-ui);
+  cursor: pointer;
+}
+.play:hover { background: var(--btn-hi); }
+.play .tri { font-size: 12px; }
+
+/* ---------- desk & phones ---------- */
+.stage {
+  display: flex; flex-wrap: wrap; justify-content: center; align-items: flex-start;
+  gap: 32px 56px;
+  margin-top: 30px;
+}
+.col { width: 340px; max-width: 100%; display: flex; flex-direction: column; align-items: center; gap: 12px; min-width: 0; }
+.who { margin: 0; display: flex; align-items: center; gap: 8px; font: 600 14.5px/1.2 var(--font-ui); }
+.who .dot { width: 10px; height: 10px; border-radius: 50%; }
+.who .dot.azul { background: var(--ink-azul); }
+.who .dot.roja { background: var(--ink-roja); }
+.hint { margin: 0; font-size: 13px; color: var(--desk-soft); text-align: center; text-wrap: balance; }
+
+.phone {
+  position: relative;
+  width: 340px; max-width: 100%;
+  height: 640px;
+  padding: 9px;
+  border-radius: 48px;
+  background: linear-gradient(150deg, var(--bezel-hi), var(--bezel) 38%);
+  box-shadow: inset 0 0 0 1.5px var(--phone-rim), 0 2px 3px var(--phone-shadow), 0 24px 46px -18px var(--phone-shadow-far);
+}
+.screen {
+  position: relative;
+  height: 100%;
+  border-radius: 39px;
+  overflow: hidden;
+  display: flex; flex-direction: column;
+  background: var(--grain), var(--paper);
+  isolation: isolate;
+}
+.status {
+  position: relative;
+  flex: 0 0 auto;
+  height: 46px;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 2px 24px 0 30px;
+  font: 700 13.5px/1 var(--font-ui);
+  color: var(--status);
+}
+.island { position: absolute; left: 50%; top: 11px; width: 92px; height: 26px; border-radius: 13px; background: var(--bezel); transform: translateX(-50%); }
+.sys { display: flex; gap: 6px; align-items: center; }
+.sys svg { fill: currentColor; display: block; }
+
+.sheet {
+  flex: 1; min-height: 0;
+  display: flex; flex-direction: column;
+  background: linear-gradient(to right, transparent var(--margin-x), var(--margin) var(--margin-x), var(--margin) calc(var(--margin-x) + 1.5px), transparent calc(var(--margin-x) + 1.5px));
+}
+.head {
+  flex: 0 0 auto;
+  height: 62px;
+  display: flex; align-items: flex-end;
+  padding: 0 18px 7px calc(var(--margin-x) + 12px);
+  border-bottom: 1.5px solid var(--rule-strong);
+}
+.title { margin: 0; font: 600 36px/1 var(--font-hand); color: var(--ink-azul); white-space: nowrap; }
+.body {
+  flex: 1; min-height: 0;
+  overflow-y: auto; overflow-x: hidden;
+  scrollbar-width: none;
+  padding-bottom: 96px;
+  background-image: repeating-linear-gradient(to bottom, transparent 0, transparent calc(var(--line) - 1px), var(--rule) calc(var(--line) - 1px), var(--rule) var(--line));
+  background-attachment: local;
+}
+.body::-webkit-scrollbar { display: none; }
+
+/* ---------- rows ---------- */
+.rows { list-style: none; margin: 0; padding: 0; }
+.row { position: relative; display: flex; align-items: flex-start; min-height: var(--line); }
+.row .margin, .composer .margin { flex: 0 0 var(--margin-x); height: var(--line); }
+.row .words {
+  flex: 1; min-width: 0;
+  display: block;
+  margin: 0; border: 0; border-radius: 6px;
+  padding: 0 40px 0 12px;
+  background: none;
+  text-align: left;
+  font: inherit; color: inherit;
+  -webkit-tap-highlight-color: transparent;
+  appearance: none;
+}
+button.words { cursor: pointer; }
+button.words:focus-visible { outline: 2px solid var(--focus); outline-offset: -3px; }
+.row .ink {
+  position: relative;
+  display: block;
+  font: var(--hand-w) var(--hand)/var(--line) var(--font-hand);
+  color: var(--ink);
+  overflow-wrap: anywhere;
+  transform: translateY(var(--hand-shift));
+}
+.row .txt { position: relative; transition: opacity .45s ease; }   /* positioned: paints over the carbon */
+.row.done .txt { opacity: .45; }
+
+.strike { position: absolute; left: 0; top: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
+.strike path { fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.strike .ink-line { stroke: var(--strike-ink, var(--ink)); stroke-width: 2.6; opacity: 0; }
+.strike .carbon-line { stroke: var(--carbon); stroke-width: 3; opacity: 0; }
+.row.done .strike .ink-line { opacity: .92; }
+.row.carboning .strike .ink-line { opacity: 0; }
+.row.carboning .strike .carbon-line { opacity: .78; transform: translate(1.3px, .9px); }
+
+/* the carbon impression and the pressure marks, laid exactly over the words */
+.carbon, .emboss { position: absolute; left: 0; top: 0; right: 0; pointer-events: none; opacity: 0; }
+.carbon { color: var(--carbon); -webkit-text-stroke: .45px var(--carbon); filter: url(#carbon-text); }
+.emboss { z-index: -1; color: var(--press); filter: url(#press); }
+.row.carbon-state .txt { opacity: 0; }
+.row.carbon-state .carbon { opacity: .72; transform: translate(1.5px, .9px); }
+.row.carbon-state .emboss { opacity: 1; }
+.press { display: inline-block; white-space: pre; color: var(--press); filter: url(#press); }
+
+/* corrector: liquid paper over the word */
+.fluid { position: absolute; padding: 4px; pointer-events: none; }
+.fluid svg { display: block; overflow: visible; filter: drop-shadow(0 1px 1px var(--fluid-shadow)) drop-shadow(0 0 .5px var(--fluid-shadow-edge)); }
+.row.going { pointer-events: none; }
+
+.del {
+  position: absolute; right: 6px; top: 8px;
+  width: 32px; height: 32px;
+  display: grid; place-items: center;
+  border: 0; border-radius: 50%;
+  background: transparent;
+  color: var(--pencil);
+  font: 400 24px/1 var(--font-ui);
+  cursor: pointer;
+  opacity: 0;
+  pointer-events: none;   /* a hidden × never takes a tap meant for the word */
+  transition: opacity .15s ease, background-color .15s ease;
+}
+/* the × shows on mouse hover, on keyboard focus, or after a long press (no sticky hover after a tap) */
+@media (hover: hover) { .row:hover .del { opacity: 1; pointer-events: auto; } }
+.row:has(:focus-visible) .del, .row.show-del .del { opacity: 1; pointer-events: auto; }
+.del:hover { color: var(--ink); background: var(--del-hover); }
+.del:focus-visible { outline: 2px solid var(--focus); outline-offset: 0; opacity: 1; pointer-events: auto; }
+
+/* the writing line */
+.composer { position: relative; display: flex; align-items: flex-start; height: var(--line); }
+.composer .margin { display: flex; align-items: center; justify-content: center; color: var(--pencil-soft); }
+.composer:focus-within { background: var(--writing); box-shadow: inset 0 -2px 0 var(--focus); }
+.composer:focus-within .margin { color: var(--my-ink); }
+.composer input {
+  flex: 1; min-width: 0;
+  height: var(--line);
+  margin: 0; border: 0; outline: none; border-radius: 0;
+  padding: 0 40px 0 12px;
+  background: transparent;
+  font: var(--hand-w) var(--hand)/var(--line) var(--font-hand);
+  color: var(--my-ink);
+  caret-color: var(--my-ink);
+  transform: translateY(var(--hand-shift));
+}
+.composer input::placeholder { color: var(--pencil-soft); opacity: 1; transition: color .25s ease; }
+.composer.pressing input::placeholder { color: transparent; }
+.passive .composer input { pointer-events: none; }
+.slot {
+  position: absolute; left: calc(var(--margin-x) + 12px); right: 40px; top: 0;
+  height: var(--line);
+  font: var(--hand-w) var(--hand)/var(--line) var(--font-hand);
+  white-space: nowrap;
+  transform: translateY(var(--hand-shift));
+  pointer-events: none;
+}
+
+/* the toast and the home bar */
+.toast {
+  position: absolute; left: 14px; right: 14px; bottom: 26px; z-index: 5;
+  display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 2px 4px;
+  padding: 9px 12px;
+  border-radius: 14px;
+  background: var(--slip); color: var(--slip-ink);
+  font: 500 14px/1.3 var(--font-ui);
+  box-shadow: 0 8px 22px -8px var(--slip-shadow);
+}
+.toast .sep { opacity: .55; }
+.toast .undo {
+  border: 0; background: none; color: inherit;
+  padding: 4px 6px; border-radius: 6px;
+  font: 700 14px/1.2 var(--font-ui);
+  text-decoration: underline; text-underline-offset: 3px;
+  cursor: pointer;
+}
+.toast .undo:focus-visible { outline: 2px solid var(--slip-ink); outline-offset: 1px; }
+.homebar { position: absolute; left: 50%; bottom: 8px; width: 112px; height: 4.5px; border-radius: 3px; background: var(--homebar); transform: translateX(-50%); }
+
+/* the other phone's buttons */
+.acts { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
+.act {
+  border: 1.5px solid var(--act-line);
+  border-radius: 999px;
+  padding: 9px 14px;
+  background: var(--paper); color: var(--ink-roja);
+  font: 700 14px/1.15 var(--font-ui);
+  cursor: pointer;
+}
+.act:hover { background: var(--act-hover); }
+.act:disabled { opacity: .45; cursor: default; }
+.act:disabled:hover { background: var(--paper); }
+@media (min-width: 900px) {
+  .acts { flex-wrap: nowrap; width: max-content; }
+  .act { padding-inline: 13px; }
+}
+.play:focus-visible, .act:focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
+
+.sr { position: absolute; top: 0; left: 0; margin: 0; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.defs { position: absolute; width: 0; height: 0; overflow: hidden; }
+
+@media (prefers-reduced-motion: reduce) {
+  .row .txt, .del, .composer input::placeholder { transition: none; }
+}
+</style>
+
+<svg class="defs" aria-hidden="true" focusable="false">
+  <defs>
+    <!-- carbon on a word: uneven pressure, speckled grain, soft edges -->
+    <filter id="carbon-text" x="-4%" y="-30%" width="108%" height="160%" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency="0.95" numOctaves="1" seed="4" result="speck"/>
+      <feColorMatrix in="speck" type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  2.6 0 0 0 -0.75" result="speckA"/>
+      <feTurbulence type="fractalNoise" baseFrequency="0.05" numOctaves="2" seed="11" result="patch"/>
+      <feColorMatrix in="patch" type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  1.2 0 0 0 0.42" result="patchA"/>
+      <feTurbulence type="fractalNoise" baseFrequency="0.6" numOctaves="2" seed="9" result="warp"/>
+      <feDisplacementMap in="SourceGraphic" in2="warp" scale="1.7" xChannelSelector="R" yChannelSelector="G" result="moved"/>
+      <feGaussianBlur in="moved" stdDeviation="0.25" result="soft"/>
+      <feComposite in="soft" in2="speckA" operator="arithmetic" k1="0.3" k2="0.95" k3="0" k4="0" result="grainy"/>
+      <feComposite in="grainy" in2="patchA" operator="arithmetic" k1="1" k2="0" k3="0" k4="0"/>
+    </filter>
+    <!-- the same carbon, for the strike line (user space: a thin line has almost no bounding box) -->
+    <filter id="carbon-line" filterUnits="userSpaceOnUse" x="-40" y="-40" width="1200" height="600" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency="0.95" numOctaves="1" seed="5" result="speck"/>
+      <feColorMatrix in="speck" type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  2.6 0 0 0 -0.7" result="speckA"/>
+      <feTurbulence type="fractalNoise" baseFrequency="0.5" numOctaves="2" seed="13" result="warp"/>
+      <feDisplacementMap in="SourceGraphic" in2="warp" scale="2.4" xChannelSelector="R" yChannelSelector="G" result="moved"/>
+      <feGaussianBlur in="moved" stdDeviation="0.3" result="soft"/>
+      <feComposite in="soft" in2="speckA" operator="arithmetic" k1="0.5" k2="0.58" k3="0" k4="0"/>
+    </filter>
+    <!-- a pen pressed through the sheet above: paper-coloured groove, dark upper wall, light lower lip -->
+    <filter id="press" x="-3%" y="-35%" width="106%" height="170%" color-interpolation-filters="sRGB">
+      <feComponentTransfer in="SourceAlpha" result="outside"><feFuncA type="table" tableValues="1 0"/></feComponentTransfer>
+      <feGaussianBlur in="outside" stdDeviation="0.8" result="outsideSoft"/>
+      <feOffset in="outsideSoft" dx="0.5" dy="1" result="shDown"/>
+      <feFlood style="flood-color: var(--press-shade)" flood-opacity="0.72"/>
+      <feComposite in2="shDown" operator="in"/>
+      <feComposite in2="SourceAlpha" operator="in" result="inner"/>
+      <feOffset in="outsideSoft" dx="-0.4" dy="-0.8" result="hiUp"/>
+      <feFlood style="flood-color: var(--press-light)" flood-opacity="0.9"/>
+      <feComposite in2="hiUp" operator="in"/>
+      <feComposite in2="SourceAlpha" operator="in" result="innerHi"/>
+      <feOffset in="SourceAlpha" dx="0" dy="0.9" result="down"/>
+      <feComposite in="down" in2="SourceAlpha" operator="out" result="lip"/>
+      <feFlood style="flood-color: var(--press-light)" flood-opacity="1"/>
+      <feComposite in2="lip" operator="in" result="lipCol"/>
+      <feMerge>
+        <feMergeNode in="lipCol"/>
+        <feMergeNode in="SourceGraphic"/>
+        <feMergeNode in="inner"/>
+        <feMergeNode in="innerHi"/>
+      </feMerge>
+    </filter>
+    <!-- correction fluid: bright, a touch cooler than the paper, shaded at the lower edge -->
+    <linearGradient id="fluid-fill" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" style="stop-color: var(--fluid-top)"/>
+      <stop offset=".45" style="stop-color: var(--fluid-mid)"/>
+      <stop offset="1" style="stop-color: var(--fluid-low)"/>
+    </linearGradient>
+  </defs>
+</svg>
+
+<main class="page">
+  <header class="caption">
+    <h1><span class="letter">B</span><span>Papel carbón</span></h1>
+    <p class="es">Los dos teléfonos son una hoja y su copia al carbón, como en un talonario por duplicado, así que lo que escribe uno se calca en el otro.</p>
+    <p class="en" lang="en">The two phones are a sheet and its carbon copy, as in a duplicate receipt book, so what one writes is traced onto the other.</p>
+    <div class="controls">
+      <button type="button" class="play" id="play"><span class="tri" aria-hidden="true">▶</span>Ver la demostración</button>
+    </div>
+  </header>
+
+  <section class="stage" aria-label="Los dos teléfonos">
+    <div class="col">
+      <p class="who"><span class="dot azul" aria-hidden="true"></span>Tu teléfono (tinta azul)</p>
+      <div class="phone" id="phone-left"></div>
+      <p class="hint">Escribe y pulsa Enter · toca un renglón para tacharlo · × para borrarlo</p>
+    </div>
+    <div class="col">
+      <p class="who"><span class="dot roja" aria-hidden="true"></span>El otro teléfono (tinta roja)</p>
+      <div class="phone" id="phone-right"></div>
+      <div class="acts" role="group" aria-label="Lo que hace el otro teléfono">
+        <button type="button" class="act" id="act-write">Que escriba algo</button>
+        <button type="button" class="act" id="act-strike">Que tache algo</button>
+        <button type="button" class="act" id="act-delete">Que borre algo</button>
+      </div>
+    </div>
+  </section>
+  <footer style="margin-top:8px;font-size:12.5px;line-height:1.45;color:var(--desk-soft);max-width:70ch"><p style="margin:0">Una simulación: los dos teléfonos viven en esta página y la red es una espera de 0.45 s (en la app real, el otro teléfono tardó 0.4–0.9 s en las pruebas). Tipografías: Caveat y Atkinson Hyperlegible Next (SIL Open Font License), servidas por Google Fonts.</p><p style="margin:2px 0 0" lang="en">A simulation: both phones live on this page and the network is a 0.45 s wait (in the real app the other phone took 0.4–0.9 s in tests). Typefaces: Caveat y Atkinson Hyperlegible Next (SIL Open Font License), served by Google Fonts.</p></footer>
+</main>
+<p class="sr" id="live" aria-live="polite"></p>
+
+<script>
+(() => {
+  'use strict';
+
+  const LINE = 48;          // one rule, in px (matches --line)
+  const NET = 450;          // the simulated network, in ms
+  const NS = 'http://www.w3.org/2000/svg';
+  const INK = { azul: 'var(--ink-azul)', roja: 'var(--ink-roja)' };
+  const NAME = { azul: 'Azul', roja: 'Rojo' };
+  const START = [
+    ['i1', 'tortillas', 'azul'], ['i2', 'jitomate', 'azul'], ['i3', 'cebolla', 'azul'],
+    ['i4', '2 aguacates', 'roja'], ['i5', 'leche', 'azul'], ['i6', 'pan Bimbo', 'azul'],
+  ];
+  const MORE = ['limones', 'tostadas', 'frijoles', 'crema', 'huevo', 'café', 'servilletas', 'queso fresco'];
+
+  const reduceQ = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const reduce = () => reduceQ.matches;
+  const CANCEL = Symbol('cancel');
+  let epoch = 0;            // bumps on every reset: stale timers and deliveries drop themselves
+  let seq = 0;
+
+  // ---------- small helpers ----------
+  function seeded(str) {
+    let h = 2166136261;
+    for (let i = 0; i < str.length; i++) { h ^= str.charCodeAt(i); h = Math.imul(h, 16777619); }
+    return () => { h ^= h << 13; h ^= h >>> 17; h ^= h << 5; return ((h >>> 0) % 10000) / 10000; };
+  }
+  const f = (n) => n.toFixed(1);
+  const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
+  const svgEl = (tag, attrs) => { const e = document.createElementNS(NS, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); return e; };
+  const sleep = (ms, e) => new Promise((res, rej) => setTimeout(() => (e === epoch ? res() : rej(CANCEL)), ms));
+  const later = (ms, fn) => { const e = epoch; setTimeout(() => { if (e === epoch) fn(); }, ms); };
+  const quiet = (a) => a.finished.catch(() => {});
+
+  // ---------- handwriting metrics (measured, so the words sit on their rule in any font) ----------
+  const M = { base: 33, xh: 11 };
+  function measure() {
+    const probe = el('div', 'row');
+    probe.style.cssText = 'position:absolute;left:-9999px;top:0;visibility:hidden;';
+    const ink = el('span', 'ink');
+    ink.style.transform = 'none';
+    ink.append('xl');
+    const mark = el('span');
+    mark.style.cssText = 'display:inline-block;width:1px;height:0;vertical-align:baseline;';
+    ink.append(mark);
+    probe.append(ink);
+    document.body.append(probe);
+    M.base = mark.offsetTop;
+    const cs = getComputedStyle(ink);
+    const size = parseFloat(cs.fontSize) || 27;
+    const font = `${cs.fontWeight} ${cs.fontSize} ${cs.fontFamily}`;   // read before the probe leaves the page
+    probe.remove();
+    const ctx = document.createElement('canvas').getContext('2d');
+    ctx.font = font;
+    const xm = ctx.measureText('x');
+    M.xh = xm.actualBoundingBoxAscent > size * 0.2 ? xm.actualBoundingBoxAscent : size * 0.4;
+    // baseline 3.5px above the rule (the rule is the last pixel of each 48px band)
+    document.documentElement.style.setProperty('--hand-shift', `${(LINE - 4.5 - M.base).toFixed(2)}px`);
+  }
+
+  // ---------- strike geometry: same seed, same stroke on both phones ----------
+  function strikeD(seed, lines) {
+    const r = seeded(seed + '/strike');
+    let d = '';
+    for (const ln of lines) {
+      const x0 = ln.left - 2 - r() * 4;            // starts a little before the word
+      const x1 = ln.right + 3 + r() * 5;           // overshoots the end
+      const w = x1 - x0;
+      const mid = ln.base - M.xh * 0.5 + (r() - 0.5) * 1.2;   // through the middle of the x-height
+      const rise = w * Math.tan((1 + r()) * Math.PI / 180);  // rising 1 to 2 degrees
+      const y0 = mid + rise / 2, y1 = mid - rise / 2;
+      const a = (0.7 + r() * 0.7) * (r() < 0.5 ? -1 : 1);   // one subtle wobble
+      const c1x = x0 + w * (0.3 + r() * 0.06), c2x = x0 + w * (0.66 + r() * 0.06);
+      const c1y = y0 + (y1 - y0) * 0.33 + a, c2y = y0 + (y1 - y0) * 0.68 - a * 0.8;
+      d += `M${f(x0)} ${f(y0)}C${f(c1x)} ${f(c1y)} ${f(c2x)} ${f(c2y)} ${f(x1)} ${f(y1)}`;
+    }
+    return d;
+  }
+
+  function lineRects(it) {
+    const b = it.inkEl.getBoundingClientRect();
+    const out = [];
+    for (const rc of it.txt.getClientRects()) {
+      if (rc.width < 1) continue;
+      const idx = Math.max(0, Math.floor((rc.top - b.top + rc.height / 2) / LINE));
+      out.push({ left: rc.left - b.left, right: rc.right - b.left, base: idx * LINE + M.base });
+    }
+    return out;
+  }
+
+  function setGeometry(it) {
+    const lines = lineRects(it);
+    if (!lines.length) return 0;
+    const d = strikeD(it.id, lines);
+    it.cp.setAttribute('d', d);
+    it.ip.setAttribute('d', d);
+    return it.ip.getTotalLength();
+  }
+
+  // ---------- correction fluid geometry ----------
+  function smoothClosed(pts) {
+    const n = pts.length;
+    let d = `M${f(pts[0][0])} ${f(pts[0][1])}`;
+    for (let i = 0; i < n; i++) {
+      const p0 = pts[(i - 1 + n) % n], p1 = pts[i], p2 = pts[(i + 1) % n], p3 = pts[(i + 2) % n];
+      d += `C${f(p1[0] + (p2[0] - p0[0]) / 6)} ${f(p1[1] + (p2[1] - p0[1]) / 6)} ${f(p2[0] - (p3[0] - p1[0]) / 6)} ${f(p2[1] - (p3[1] - p1[1]) / 6)} ${f(p2[0])} ${f(p2[1])}`;
+    }
+    return d + 'Z';
+  }
+
+  function fluidSvg(seed, W, H) {
+    const r = seeded(seed + '/fluid');
+    const rl = H * 0.44, rr = H * 0.52, cy = H / 2;
+    const n = Math.max(4, Math.round((W - rl - rr) / 11));
+    const pts = [];
+    for (let i = 0; i <= n; i++) pts.push([rl + (W - rl - rr) * i / n, 1.4 + (r() - 0.5) * 2.6]);
+    for (const deg of [-55, -18, 18, 55]) {           // the end where the brush lifts and the fluid pools
+      const t = deg * Math.PI / 180;
+      pts.push([W - rr + Math.cos(t) * rr * (1 + r() * 0.08), cy + Math.sin(t) * (cy + 0.9)]);
+    }
+    for (let i = n; i >= 0; i--) pts.push([rl + (W - rl - rr) * i / n, H - 1.4 + (r() - 0.5) * 2.6]);
+    for (const deg of [128, 180, 232]) {               // where the brush first touched
+      const t = deg * Math.PI / 180;
+      pts.push([rl + Math.cos(t) * rl * 0.9, cy + Math.sin(t) * (cy - 0.8)]);
+    }
+    const svg = svgEl('svg', { width: f(W), height: f(H), viewBox: `0 0 ${f(W)} ${f(H)}`, 'aria-hidden': 'true', focusable: 'false' });
+    svg.append(svgEl('path', { d: smoothClosed(pts), fill: 'url(#fluid-fill)', style: 'stroke: var(--fluid-edge)', 'stroke-width': '.6' }));
+    // bristle marks: short, uneven streaks in the direction of the swipe
+    const span = W - rl - rr;
+    for (let i = 0; i < 5; i++) {
+      const y = H * (0.45 + r() * 0.42);
+      const x0 = rl * 0.8 + r() * span * 0.45;
+      const x1 = Math.min(W - rr * 0.9, x0 + span * (0.3 + r() * 0.5));
+      svg.append(svgEl('path', { d: `M${f(x0)} ${f(y)}Q${f((x0 + x1) / 2)} ${f(y + (r() - 0.5) * 1.6)} ${f(x1)} ${f(y + (r() - 0.5) * 1)}`, fill: 'none', style: 'stroke: var(--fluid-bristle)', 'stroke-opacity': (0.06 + r() * 0.07).toFixed(3), 'stroke-width': f(0.6 + r() * 0.5), 'stroke-linecap': 'round' }));
+    }
+    const gy = H * 0.27;
+    const gloss = svgEl('g', { class: 'gloss' });
+    gloss.append(svgEl('path', { d: `M${f(rl * 0.8)} ${f(gy + 1.4)}Q${f(W * 0.45)} ${f(gy - 1)} ${f(W - rr * 1.1)} ${f(gy + 0.2)}`, fill: 'none', style: 'stroke: var(--fluid-gloss)', 'stroke-width': '6', 'stroke-linecap': 'round', opacity: '.6' }));
+    gloss.append(svgEl('path', { d: `M${f(rl * 1.1)} ${f(gy + 0.6)}Q${f(W * 0.5)} ${f(gy - 1.6)} ${f(W - rr * 1.4)} ${f(gy - 0.4)}`, fill: 'none', style: 'stroke: var(--fluid-gloss)', 'stroke-width': '1.8', 'stroke-linecap': 'round' }));
+    gloss.append(svgEl('ellipse', { cx: f(W - rr * 0.75), cy: f(H * 0.32), rx: '3.6', ry: '1.7', style: 'fill: var(--fluid-gloss)' }));
+    svg.append(gloss);
+    return { svg, gloss };
+  }
+
+  // ---------- the phones ----------
+  const PENCIL = '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path d="M4.5 19.5l1.1-4.4L15.9 4.8a1.7 1.7 0 0 1 2.4 0l.9.9a1.7 1.7 0 0 1 0 2.4L8.9 18.4z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M14 6.7l3.3 3.3" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>';
+  const STATUS = '<span class="clock">11:05</span><span class="island"></span><span class="sys"><svg width="17" height="11" viewBox="0 0 17 11" aria-hidden="true" focusable="false"><rect x="0" y="7" width="3" height="4" rx=".8"/><rect x="4.5" y="5" width="3" height="6" rx=".8"/><rect x="9" y="2.5" width="3" height="8.5" rx=".8"/><rect x="13.5" y="0" width="3" height="11" rx=".8"/></svg><svg width="25" height="12" viewBox="0 0 25 12" aria-hidden="true" focusable="false"><rect x=".5" y=".5" width="21" height="11" rx="3" fill="none" stroke="currentColor" opacity=".45"/><rect x="2" y="2" width="14" height="8" rx="1.8"/><path d="M23.2 4.2v3.6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" opacity=".45"/></svg></span>';
+
+  function buildPhone(host, ink, interactive, inputId) {
+    host.textContent = '';
+    const screen = el('div', 'screen');
+    const status = el('div', 'status');
+    status.setAttribute('aria-hidden', 'true');
+    status.innerHTML = STATUS;   // static markup, no data
+    const sheet = el('div', 'sheet');
+    const head = el('div', 'head');
+    head.append(el('p', 'title', 'Súper del sábado'));
+    const body = el('div', 'body');
+    const list = el('ul', 'rows');
+    const composer = el('div', 'composer');
+    const mg = el('span', 'margin');
+    mg.setAttribute('aria-hidden', 'true');
+    mg.innerHTML = PENCIL;       // static markup, no data
+    const input = el('input');
+    input.type = 'text';
+    input.id = inputId;
+    input.autocomplete = 'off';
+    input.spellcheck = false;
+    input.enterKeyHint = 'done';
+    input.placeholder = 'Escribe lo que falta…';
+    input.setAttribute('aria-label', interactive ? 'Escribe lo que falta' : 'Renglón del otro teléfono');
+    if (!interactive) { input.readOnly = true; input.tabIndex = -1; }
+    const slot = el('span', 'slot');
+    slot.setAttribute('aria-hidden', 'true');
+    composer.append(mg, input, slot);
+    body.append(list, composer);
+    sheet.append(head, body);
+    const toast = el('div', 'toast');
+    toast.hidden = true;
+    const msg = el('span', 'msg');
+    const sep = el('span', 'sep', '·');
+    sep.setAttribute('aria-hidden', 'true');
+    const undo = el('button', 'undo', 'Deshacer');
+    undo.type = 'button';
+    toast.append(msg, sep, undo);
+    const bar = el('span', 'homebar');
+    bar.setAttribute('aria-hidden', 'true');
+    screen.append(status, sheet, toast, bar);
+    host.append(screen);
+    host.style.setProperty('--my-ink', INK[ink]);
+    if (!interactive) host.classList.add('passive');
+    return { ink, interactive, host, screen, sheet, body, list, composer, input, slot, toast, msg, undo, items: new Map(), press: null, toastTimer: 0, onUndo: null, other: null };
+  }
+
+  const L = buildPhone(document.getElementById('phone-left'), 'azul', true, 'escribe-tu');
+  const R = buildPhone(document.getElementById('phone-right'), 'roja', false, 'escribe-otro');
+  L.other = R; R.other = L;
+  const PHONES = [L, R];
+
+  // ---------- rows ----------
+  function makeRow(p, it) {
+    const li = el('li', 'row item' + (it.struck ? ' done' : ''));
+    li.dataset.id = it.id;
+    li.style.setProperty('--ink', INK[it.ink]);
+    if (it.strikeInk) li.style.setProperty('--strike-ink', INK[it.strikeInk]);
+    const mg = el('span', 'margin');
+    mg.setAttribute('aria-hidden', 'true');
+    const words = el(p.interactive ? 'button' : 'div', 'words');
+    if (p.interactive) { words.type = 'button'; words.setAttribute('aria-pressed', String(!!it.struck)); }
+    const ink = el('span', 'ink');
+    const txt = el('span', 'txt', it.text);
+    const svg = svgEl('svg', { class: 'strike', 'aria-hidden': 'true', focusable: 'false' });
+    const cp = svgEl('path', { class: 'carbon-line', filter: 'url(#carbon-line)' });
+    const ip = svgEl('path', { class: 'ink-line' });
+    svg.append(cp, ip);
+    ink.append(txt, svg);
+    words.append(ink);
+    li.append(mg, words);
+    if (p.interactive) {
+      const del = el('button', 'del', '×');
+      del.type = 'button';
+      del.setAttribute('aria-label', `Borrar «${it.text}»`);
+      li.append(del);
+    }
+    Object.assign(it, { row: li, words, inkEl: ink, txt, cp, ip });
+    return li;
+  }
+
+  const snap = (it) => ({ id: it.id, text: it.text, ink: it.ink, struck: !!it.struck, strikeInk: it.strikeInk || null });
+  const itemRows = (p) => [...p.list.querySelectorAll(':scope > .row.item:not(.going)')];
+  function insertRow(p, row, index) {
+    const rows = itemRows(p);
+    const ghost = p.list.querySelector(':scope > .row.ghost');
+    const ref = index != null && index < rows.length ? rows[index] : ghost;
+    p.list.insertBefore(row, ref || null);
+  }
+  function addItem(p, data, index) {
+    const it = { ...data };
+    p.items.set(it.id, it);
+    insertRow(p, makeRow(p, it), index);
+    if (it.struck) { setGeometry(it); it.ip.style.strokeDasharray = 'none'; }
+    return it;
+  }
+  function findItem(p, text, pred = () => true) {
+    for (const it of p.items.values()) if (it.text === text && pred(it)) return it;
+    return null;
+  }
+  function announce(p, text) { if (p === L) document.getElementById('live').textContent = text; }
+  function keepInView(p, row) {
+    const br = p.body.getBoundingClientRect(), rr = row.getBoundingClientRect();
+    const over = rr.bottom + LINE - (br.bottom - 90);
+    if (over > 0) p.body.scrollTop += over;
+  }
+
+  // ---------- the network ----------
+  function send(from, ev) {
+    const e = epoch, to = from.other;
+    setTimeout(() => { if (e === epoch) receive(to, ev); }, NET);
+  }
+  function receive(p, ev) {
+    if (ev.type === 'typing') showPress(p, ev.text);
+    else if (ev.type === 'add') arriveAdd(p, ev.item, null, ev.by);
+    else if (ev.type === 'restore') arriveAdd(p, ev.item, ev.index, null);
+    else if (ev.type === 'strike') arriveStrike(p, ev.id, ev.on, ev.by);
+    else if (ev.type === 'delete') arriveDelete(p, ev.id, ev.by);
+  }
+
+  // ---------- (1) typing on the other phone: pressure marks, no ink ----------
+  function showPress(p, text) {
+    if (!text) { clearPress(p); return; }
+    if (!p.press) {
+      const box = el('span', 'press');
+      box.setAttribute('aria-hidden', 'true');
+      const a = el('span'), b = el('span', 'fresh');
+      box.append(a, b);
+      let ghost = null;
+      if (!p.input.value) {                       // on the empty writing line, where the word will land
+        p.slot.append(box);
+        p.composer.classList.add('pressing');
+      } else {                                    // this phone is writing too: the marks take the next rule
+        ghost = el('li', 'row ghost');
+        ghost.setAttribute('aria-hidden', 'true');
+        const words = el('div', 'words'), ink = el('span', 'ink');
+        ink.append(box);
+        words.append(ink);
+        ghost.append(el('span', 'margin'), words);
+        p.list.append(ghost);
+      }
+      p.press = { box, a, b, ghost, text: '' };
+    }
+    const P = p.press, prev = P.text;
+    if (text.length === prev.length + 1 && text.startsWith(prev)) {
+      P.a.textContent = prev;
+      P.b.textContent = text.slice(-1);
+      if (!reduce()) P.b.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 170, easing: 'ease-out' });
+    } else {
+      P.a.textContent = text;
+      P.b.textContent = '';
+    }
+    P.text = text;
+  }
+  function clearPress(p) {
+    const P = p.press;
+    if (!P) return;
+    P.box.remove();
+    if (P.ghost) P.ghost.remove();
+    p.composer.classList.remove('pressing');
+    p.press = null;
+  }
+  function relocatePress(p) {
+    if (p.press && !p.press.ghost && p.input.value) { const t = p.press.text; clearPress(p); showPress(p, t); }
+  }
+
+  // ---------- (2) an item arrives: carbon impression that develops into ink ----------
+  function develop(it) {
+    const emboss = el('span', 'emboss', it.text);
+    const carbon = el('span', 'carbon', it.text);
+    emboss.setAttribute('aria-hidden', 'true');
+    carbon.setAttribute('aria-hidden', 'true');
+    it.inkEl.insertBefore(emboss, it.txt);
+    it.inkEl.insertBefore(carbon, it.txt);        // under the ink: the ink develops on top of the impression
+    // the impression lands at once and is read for a beat, then develops into ink over 800 ms
+    const LAND = 70, HOLD = 420, DEV = 800, T = HOLD + DEV, h = HOLD / T, end = it.struck ? 0.45 : 1;
+    if (it.struck) {                              // a struck item coming back (Deshacer): its line is carbon too
+      it.row.classList.add('carboning');
+      later(reduce() ? 900 : HOLD, () => {
+        it.row.classList.remove('carboning');
+        if (it.struck && !reduce()) strikeState(it, 'carbon');
+      });
+    }
+    if (reduce()) {                               // states only: the impression, then the ink
+      it.row.classList.add('carbon-state');
+      later(900, () => { it.row.classList.remove('carbon-state'); emboss.remove(); carbon.remove(); });
+      return;
+    }
+    const off = 'translate(1.5px, .9px)';
+    it.txt.animate([
+      { opacity: 0 },
+      { opacity: 0, offset: h, easing: 'cubic-bezier(.4,0,.4,1)' },
+      { opacity: end },
+    ], { duration: T });
+    quiet(carbon.animate([
+      { opacity: 0, transform: off },
+      { opacity: 0.72, transform: off, offset: LAND / T },
+      { opacity: 0.72, transform: off, offset: h, easing: 'cubic-bezier(.35,0,.25,1)' },
+      { opacity: 0.6, transform: 'translate(.35px, .2px)', offset: h + (1 - h) * 0.7, easing: 'ease-in' },
+      { opacity: 0, transform: 'translate(0px, 0px)' },
+    ], { duration: T })).then(() => carbon.remove());
+    quiet(emboss.animate([
+      { opacity: 1 },
+      { opacity: 1, offset: h, easing: 'ease-in' },
+      { opacity: 0, offset: Math.min(1, h + 0.4) },
+      { opacity: 0 },
+    ], { duration: T })).then(() => emboss.remove());
+  }
+
+  function arriveAdd(p, data, index, by) {
+    if (p.items.has(data.id)) return;
+    const restoring = index != null;
+    if (!restoring) clearPress(p);
+    const it = addItem(p, data, index);
+    if (restoring && !reduce()) {
+      const h = it.row.offsetHeight;
+      it.row.style.overflow = 'hidden';
+      quiet(it.row.animate([{ height: '0px', minHeight: '0px' }, { height: `${h}px`, minHeight: '0px' }], { duration: 240, easing: 'cubic-bezier(.2,.7,.3,1)' })).then(() => { it.row.style.overflow = ''; });
+    }
+    develop(it);
+    keepInView(p, it.row);
+    announce(p, restoring ? `Volvió «${it.text}»` : `${NAME[by]} escribió «${it.text}»`);
+  }
+
+  // ---------- (3) strikes ----------
+  function strikeState(it, mode) {
+    const { row, ip, cp } = it;
+    if (it.struck) row.style.setProperty('--strike-ink', INK[it.strikeInk]);
+    row.classList.toggle('done', !!it.struck);
+    if (it.words.tagName === 'BUTTON') it.words.setAttribute('aria-pressed', String(!!it.struck));
+    for (const a of [...ip.getAnimations(), ...cp.getAnimations()]) a.cancel();
+    if (!it.struck) {                             // un-striking: the line lifts away
+      if (reduce()) return;
+      if (mode === 'erase') ip.animate([{ opacity: 0.92 }, { opacity: 0 }], { duration: 200, easing: 'ease-in' });
+      else ip.animate([{ opacity: 0.92 }, { opacity: 0 }], { duration: 320, easing: 'ease-out' });
+      return;
+    }
+    const len = setGeometry(it);
+    if (mode === 'draw') {                        // my own pen, drawn quickly
+      ip.style.strokeDasharray = `${len}`;
+      ip.style.strokeDashoffset = '0';
+      if (!reduce()) ip.animate([{ strokeDashoffset: len }, { strokeDashoffset: 0 }], { duration: Math.min(300, 130 + len * 0.55), easing: 'cubic-bezier(.3,.6,.2,1)' });
+      return;
+    }
+    ip.style.strokeDasharray = 'none';
+    if (mode !== 'carbon') return;
+    if (reduce()) {                               // the carbon line, then the ink, no motion
+      row.classList.add('carboning');
+      later(500, () => row.classList.remove('carboning'));
+      return;
+    }
+    // the pressed carbon line is there at once, held a beat, then darkens into the striker's ink over 500 ms
+    const HOLD = 160, DARK = 500, T = HOLD + DARK, h = HOLD / T;
+    cp.animate([
+      { opacity: 0.8, transform: 'translate(1.3px, .9px)' },
+      { opacity: 0.8, transform: 'translate(1.3px, .9px)', offset: h, easing: 'cubic-bezier(.45,0,.6,1)' },
+      { opacity: 0, transform: 'translate(0px, 0px)' },
+    ], { duration: T });
+    ip.animate([
+      { opacity: 0 },
+      { opacity: 0, offset: h, easing: 'cubic-bezier(.3,0,.4,1)' },
+      { opacity: 0.92 },
+    ], { duration: T });
+  }
+
+  function toggleStrike(p, id) {
+    const it = p.items.get(id);
+    if (!it) return;
+    it.struck = !it.struck;
+    it.strikeInk = it.struck ? p.ink : null;
+    strikeState(it, it.struck ? 'draw' : 'erase');
+    send(p, { type: 'strike', id, on: it.struck, by: p.ink });
+  }
+  function arriveStrike(p, id, on, by) {
+    const it = p.items.get(id);
+    if (!it || !!it.struck === on) return;
+    it.struck = on;
+    it.strikeInk = on ? by : null;
+    strikeState(it, on ? 'carbon' : 'lift');
+    announce(p, `${NAME[by]} ${on ? 'tachó' : 'destachó'} «${it.text}»`);
+  }
+
+  // ---------- (4) deletions: correction fluid, then the row closes up ----------
+  function collapse(row, ms) {
+    row.style.overflow = 'hidden';
+    const h = row.offsetHeight;
+    return quiet(row.animate([
+      { height: `${h}px`, minHeight: '0px', opacity: 1 },
+      { opacity: 1, offset: 0.5 },
+      { height: '0px', minHeight: '0px', opacity: 0 },
+    ], { duration: ms, easing: 'cubic-bezier(.4,0,.2,1)', fill: 'forwards' }));
+  }
+
+  function localDelete(p, id) {
+    const it = p.items.get(id);
+    if (!it) return;
+    const index = itemRows(p).indexOf(it.row);
+    p.items.delete(id);
+    it.row.classList.add('going');
+    if (p.list.contains(document.activeElement) && it.row.contains(document.activeElement)) p.input.focus({ preventScroll: true });
+    if (reduce()) it.row.remove();
+    else collapse(it.row, 220).then(() => it.row.remove());
+    send(p, { type: 'delete', id, by: p.ink, index });
+  }
+
+  async function arriveDelete(p, id, by) {
+    const it = p.items.get(id);
+    if (!it) return;
+    const e = epoch;
+    const index = itemRows(p).indexOf(it.row);
+    const data = snap(it);
+    p.items.delete(id);
+    const row = it.row;
+    row.classList.add('going');
+    row.setAttribute('aria-hidden', 'true');
+    const lines = lineRects(it);
+    const still = reduce();
+    const glosses = [];
+    lines.forEach((ln, i) => {
+      const W = ln.right - ln.left + 15, H = 34;   // ascenders to descenders, a little past both ends
+      const wrap = el('span', 'fluid');
+      wrap.style.left = `${f(ln.left - 6 - 4)}px`;
+      wrap.style.top = `${f(ln.base - 23.5 - 4)}px`;
+      const { svg, gloss } = fluidSvg(it.id + ':' + i, W, H);
+      glosses.push(gloss);
+      wrap.append(svg);
+      it.inkEl.append(wrap);
+      if (!still) {
+        wrap.animate([
+          { clipPath: 'inset(0 100% 0 0 round 0 16px 16px 0)' },
+          { clipPath: 'inset(0 0% 0 0 round 0 16px 16px 0)' },
+        ], { duration: 450, delay: i * 420, easing: 'cubic-bezier(.35,.1,.3,1)', fill: 'backwards' });
+      }
+    });
+    announce(p, `${NAME[by]} borró «${data.text}»`);
+    try {
+      const swipe = still ? 0 : 450 + (lines.length - 1) * 420;
+      await sleep(swipe, e);
+      if (!still) for (const g of glosses) g.animate([{ opacity: 1 }, { opacity: 0.55 }], { duration: 650, easing: 'ease-out', fill: 'forwards' });
+      await sleep(650, e);                          // it holds a moment, drying
+      if (!still) await collapse(row, 340);
+      if (e !== epoch) return;
+      row.remove();
+      showToast(p, `${NAME[by]} borró «${data.text}»`, () => undoDelete(p, data, index));
+    } catch (err) { if (err !== CANCEL) throw err; }
+  }
+
+  function undoDelete(p, data, index) {
+    if (p.items.has(data.id)) return;
+    const it = addItem(p, data, index);
+    if (!reduce()) {
+      const h = it.row.offsetHeight;
+      it.row.style.overflow = 'hidden';
+      quiet(it.row.animate([{ height: '0px', minHeight: '0px' }, { height: `${h}px`, minHeight: '0px' }], { duration: 220, easing: 'cubic-bezier(.2,.7,.3,1)' })).then(() => { it.row.style.overflow = ''; });
+      it.inkEl.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 260, easing: 'ease-out' });
+    }
+    send(p, { type: 'restore', item: snap(it), index });
+  }
+
+  // ---------- toast ----------
+  function showToast(p, text, onUndo) {
+    p.msg.textContent = text;
+    p.onUndo = onUndo;
+    p.toast.hidden = false;
+    if (!reduce()) p.toast.animate([{ opacity: 0, transform: 'translateY(10px)' }, { opacity: 1, transform: 'none' }], { duration: 240, easing: 'cubic-bezier(.2,.7,.3,1)' });
+    clearTimeout(p.toastTimer);
+    p.toastTimer = setTimeout(() => hideToast(p), 6000);
+  }
+  function hideToast(p, now) {
+    clearTimeout(p.toastTimer);
+    p.onUndo = null;
+    if (p.toast.hidden) return;
+    if (now || reduce()) { p.toast.hidden = true; return; }
+    quiet(p.toast.animate([{ opacity: 1 }, { opacity: 0, transform: 'translateY(6px)' }], { duration: 200, easing: 'ease-in' })).then(() => { if (!p.onUndo) p.toast.hidden = true; });
+  }
+  for (const p of PHONES) {
+    p.undo.addEventListener('click', () => {
+      const fn = p.onUndo;
+      const hadFocus = p.toast.contains(document.activeElement);
+      hideToast(p);
+      if (fn) fn();
+      if (hadFocus && p.interactive) p.input.focus({ preventScroll: true });
+    });
+  }
+
+  // ---------- writing ----------
+  function typeInto(p, text) {
+    p.input.value = text;
+    relocatePress(p);
+    send(p, { type: 'typing', text });
+  }
+  function commit(p) {
+    const text = p.input.value.trim().replace(/\s+/g, ' ');
+    if (!text) return;
+    const it = addItem(p, { id: `n${++seq}`, text, ink: p.ink, struck: false, strikeInk: null });
+    p.input.value = '';
+    relocatePress(p);
+    keepInView(p, it.row);
+    send(p, { type: 'add', item: snap(it), by: p.ink });
+  }
+
+  // the left phone: your hands
+  L.input.addEventListener('input', () => { relocatePress(L); send(L, { type: 'typing', text: L.input.value }); });
+  L.input.addEventListener('keydown', (ev) => {
+    if (ev.key === 'Enter' && !ev.isComposing) { ev.preventDefault(); commit(L); }
+    else if (ev.key === 'Escape' && L.input.value) { L.input.value = ''; send(L, { type: 'typing', text: '' }); }
+  });
+  let pressTimer = 0, longPressed = null;
+  L.list.addEventListener('click', (ev) => {
+    const row = ev.target.closest('.row.item');
+    if (!row || row.classList.contains('going')) return;
+    if (ev.target.closest('.del')) { localDelete(L, row.dataset.id); return; }
+    if (longPressed === row) { longPressed = null; return; }
+    if (ev.target.closest('.words')) toggleStrike(L, row.dataset.id);
+  });
+  L.list.addEventListener('keydown', (ev) => {
+    const row = ev.target.closest('.row.item');
+    if (row && ev.target.classList.contains('words') && (ev.key === 'Delete' || ev.key === 'Backspace')) {
+      ev.preventDefault();
+      const next = row.nextElementSibling && row.nextElementSibling.querySelector('button.words');
+      localDelete(L, row.dataset.id);
+      if (next) next.focus({ preventScroll: true });
+    }
+  });
+  L.list.addEventListener('pointerdown', (ev) => {
+    const row = ev.target.closest('.row.item');
+    clearTimeout(pressTimer);
+    for (const r of L.list.querySelectorAll('.show-del')) if (r !== row) r.classList.remove('show-del');
+    if (!row || ev.pointerType === 'mouse') return;
+    pressTimer = setTimeout(() => { row.classList.add('show-del'); longPressed = row; }, 480);
+  });
+  for (const t of ['pointerup', 'pointercancel', 'pointerleave']) L.list.addEventListener(t, () => clearTimeout(pressTimer));
+  L.list.addEventListener('contextmenu', (ev) => { if (ev.target.closest('.row.item') && longPressed) ev.preventDefault(); });
+
+  // the right phone: the other person, driven by the buttons and the script
+  async function scriptWrite(p, word, e) {
+    const r = seeded(word + '/typing');
+    for (let i = 1; i <= word.length; i++) {
+      await sleep(i === 1 ? 60 : 105 + r() * 85, e);
+      typeInto(p, word.slice(0, i));
+    }
+    await sleep(340, e);
+    commit(p);
+  }
+  function strikeSomething(p, text) {
+    const it = findItem(p, text, (x) => !x.struck) || [...p.items.values()].find((x) => !x.struck) || p.items.values().next().value;
+    if (it) toggleStrike(p, it.id);
+  }
+  function deleteSomething(p, text) {
+    const it = findItem(p, text) || [...p.items.values()].pop();
+    if (it) localDelete(p, it.id);
+  }
+
+  const btnPlay = document.getElementById('play');
+  const btnWrite = document.getElementById('act-write');
+  const btnStrike = document.getElementById('act-strike');
+  const btnDelete = document.getElementById('act-delete');
+  let demoOn = false, writing = false, ran = false;
+  function syncButtons() {
+    btnWrite.disabled = demoOn || writing;
+    btnStrike.disabled = demoOn;
+    btnDelete.disabled = demoOn;
+  }
+  btnWrite.addEventListener('click', async () => {
+    if (writing || demoOn) return;
+    const word = MORE.find((w) => !findItem(R, w)) || 'otra cosa';
+    writing = true; syncButtons();
+    try { await scriptWrite(R, word, epoch); } catch (err) { if (err !== CANCEL) throw err; }
+    writing = false; syncButtons();
+  });
+  btnStrike.addEventListener('click', () => { if (!demoOn) strikeSomething(R, 'jitomate'); });
+  btnDelete.addEventListener('click', () => { if (!demoOn) deleteSomething(R, 'pan Bimbo'); });
+
+  // ---------- reset and the scripted demonstration ----------
+  function reset(flash) {
+    epoch++;
+    writing = false;
+    for (const p of PHONES) {
+      p.list.textContent = '';
+      p.items.clear();
+      p.press = null;
+      p.slot.textContent = '';
+      p.composer.classList.remove('pressing');
+      p.input.value = '';
+      p.body.scrollTop = 0;
+      hideToast(p, true);
+      for (const [id, text, ink] of START) addItem(p, { id, text, ink, struck: false, strikeInk: null });
+      if (flash && !reduce()) p.sheet.animate([{ opacity: 0.25 }, { opacity: 1 }], { duration: 260, easing: 'ease-out' });
+    }
+  }
+
+  async function demo(flash) {
+    ran = true;
+    reset(flash);
+    const e = epoch;
+    demoOn = true; syncButtons();
+    btnPlay.setAttribute('aria-busy', 'true');
+    try {
+      await sleep(450, e);
+      await scriptWrite(R, 'limones', e);           // typing shows as pressure marks on the left
+      await sleep(1650, e);                         // ...and arrives as a carbon impression
+      strikeSomething(R, 'jitomate');
+      await sleep(1450, e);
+      deleteSomething(R, 'pan Bimbo');
+      await sleep(2300, e);                         // corrector, the row closes, the toast
+      await scriptWrite(L, 'cilantro', e);
+      await sleep(1450, e);
+      strikeSomething(L, 'cebolla');
+      await sleep(1000, e);
+    } catch (err) { if (err !== CANCEL) throw err; return; }
+    demoOn = false; syncButtons();
+    btnPlay.removeAttribute('aria-busy');
+  }
+  btnPlay.addEventListener('click', () => demo(true));
+
+  // ---------- boot ----------
+  measure();
+  reset(false);
+  syncButtons();
+  const remeasure = () => {
+    measure();
+    for (const p of PHONES) for (const it of p.items.values()) if (it.struck) { setGeometry(it); it.ip.style.strokeDasharray = 'none'; }
+  };
+  if (document.fonts) {
+    document.fonts.ready.then(remeasure);
+    document.fonts.addEventListener && document.fonts.addEventListener('loadingdone', remeasure);
+  }
+  if ('ResizeObserver' in window) {
+    let w = 0;
+    new ResizeObserver(() => {
+      const nw = L.screen.clientWidth;
+      if (nw !== w) { w = nw; remeasure(); }
+    }).observe(L.screen);
+  }
+  const fontsOrTimeout = Promise.race([document.fonts ? document.fonts.ready : Promise.resolve(), new Promise((r) => setTimeout(r, 2500))]);
+  const start = () => fontsOrTimeout.then(() => setTimeout(() => { if (!ran) demo(false); }, 1200));
+  if (document.readyState === 'complete') start(); else window.addEventListener('load', start, { once: true });
+})();
+</script>

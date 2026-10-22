@@ -1,0 +1,1279 @@
+<title>Pluma fantasma</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@500..600&family=Instrument+Sans:wdth,wght@75..100,400..600&display=swap">
+<style>
+/* Layout: two phones lying side by side on a pale desk (stacked on a phone); the caption sits above
+   them like a label on the desk, and each phone keeps its own controls underneath it. */
+:root {
+  color-scheme: light;
+  --desk: #d8d3c8;
+  --desk-light: #e6e2d9;
+  --desk-ink: #26241f;
+  --desk-ink-hover: #3b3832;
+  --desk-muted: #5c564c;
+  --ui-line: rgba(38, 36, 31, .2);
+  --card: #fffdf8;
+  --paper: #fdfbf5;
+  --rule: rgba(66, 118, 190, .30);
+  --margin-line: rgba(212, 66, 88, .55);
+  --ink-blue: #1f3c96;
+  --ink-red: #b8232f;
+  --pencil: #8a867e;
+  --pencil-soft: rgba(128, 123, 114, .62);
+  --marker: rgba(255, 226, 48, .6);
+  --marker-dab: rgba(255, 214, 30, .22);
+  --bezel: #1b1a18;
+  --bezel-edge: #3d3a35;
+  --shadow-near: rgba(52, 40, 22, .22);
+  --shadow-far: rgba(52, 40, 22, .40);
+  --toast-shadow: rgba(60, 44, 20, .34);
+  --tap: rgba(38, 36, 31, .17);
+  --glint: rgba(255, 255, 255, .55);
+  --focus: #1f3c96;
+  --focus-line: rgba(31, 60, 150, .55);
+  --focus-tint: rgba(31, 60, 150, .028);
+  --hover-wash: rgba(38, 36, 31, .07);
+
+  --font-hand: 'Caveat', 'Segoe Print', 'Bradley Hand', 'Comic Sans MS', cursive;
+  --font-ui: 'Instrument Sans', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+
+  --rule-h: 48px;          /* one rule */
+  --margin-x: 44px;        /* the red margin line */
+  --text-x: 58px;          /* where handwriting starts */
+  --hand-size: 27px;
+  --hand-box: 34px;
+  --hand-shift: 18px;      /* measured once Caveat loads: puts the baseline just above the rule */
+  --title-shift: 9px;
+  --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n' x='0' y='0'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .32 0 0 0 0 .26 0 0 0 0 .16 0 0 0 .07 0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { background: var(--desk); }
+body {
+  margin: 0;
+  background: radial-gradient(1100px 620px at 50% -8%, var(--desk-light), transparent 72%), var(--desk);
+  color: var(--desk-ink);
+  font: 400 15px/1.5 var(--font-ui);
+  -webkit-text-size-adjust: 100%;
+}
+button { font: inherit; color: inherit; }
+:focus-visible { outline: 2.5px solid var(--focus); outline-offset: 3px; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+
+.stage {
+  max-width: 768px;
+  margin: 0 auto;
+  padding-inline: 16px;
+  padding-block: 24px 40px;
+  display: grid;
+  gap: 22px;
+}
+
+/* ---------- caption ---------- */
+.caption { display: grid; gap: 5px; }
+.caption h1 {
+  margin: 0 0 4px;
+  display: flex; align-items: center; gap: 12px;
+  font: 600 27px/1.15 var(--font-ui);
+  letter-spacing: -.01em;
+  text-wrap: balance;
+}
+.opt {
+  flex: 0 0 auto;
+  display: inline-grid; place-items: center;
+  width: 34px; height: 34px;
+  border: 1.5px solid var(--desk-ink);
+  border-radius: 9px;
+  font: 600 17px/1 var(--font-ui);
+}
+.caption .es { margin: 0; font-size: 16.5px; line-height: 1.45; text-wrap: pretty; }
+.caption .en { margin: 0; font-size: 13.5px; color: var(--desk-muted); text-wrap: pretty; }
+.controls { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px; }
+.btn-play {
+  appearance: none; border: 0; cursor: pointer;
+  display: inline-flex; align-items: center; gap: 9px;
+  padding: 11px 20px 11px 17px;
+  border-radius: 999px;
+  background: var(--desk-ink); color: var(--paper);
+  font: 600 15px/1 var(--font-ui);
+}
+.btn-play:hover { background: var(--desk-ink-hover); }
+.btn-play .tri { font-size: 11px; transform: translateY(.5px); }
+
+/* ---------- the two phones ---------- */
+.phones {
+  display: grid;
+  grid-template-columns: minmax(0, 340px);
+  justify-content: center;
+  gap: 40px 56px;
+}
+@media (min-width: 780px) {
+  .phones { grid-template-columns: repeat(2, minmax(0, 340px)); }
+}
+.col { margin: 0; min-width: 0; display: grid; gap: 12px; align-content: start; }
+.label {
+  margin: 0; display: flex; align-items: center; gap: 9px;
+  font: 600 14.5px/1.3 var(--font-ui);
+}
+.label .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--ink); flex: 0 0 auto; }
+.phone {
+  position: relative;
+  width: 100%; max-width: 340px; height: 640px;
+  padding: 10px;
+  border-radius: 50px;
+  background: var(--bezel);
+  box-shadow: inset 0 0 0 1.5px var(--bezel-edge), 0 2px 3px var(--shadow-near), 0 28px 50px -24px var(--shadow-far);
+}
+.screen {
+  position: relative; height: 100%;
+  border-radius: 40px; overflow: hidden;
+  background: var(--paper);
+  isolation: isolate;
+}
+.screen::after { /* the camera pill */
+  content: ''; position: absolute; z-index: 8; pointer-events: none;
+  top: 11px; left: 50%; width: 90px; height: 25px; margin-left: -45px;
+  border-radius: 13px; background: var(--bezel);
+}
+.hint { margin: 2px 4px 0; font-size: 13px; line-height: 1.45; color: var(--desk-muted); text-wrap: pretty; }
+.actions { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.btn {
+  appearance: none; cursor: pointer;
+  min-height: 50px;
+  padding: 8px 8px;
+  border: 1px solid var(--ui-line); border-radius: 14px;
+  background: var(--card); color: var(--desk-ink);
+  font: 500 14px/1.2 var(--font-ui);
+  text-align: center; text-wrap: balance;
+}
+.btn:hover { border-color: var(--desk-ink); }
+.btn[aria-disabled="true"] { opacity: .45; cursor: default; }
+.btn[aria-disabled="true"]:hover { border-color: var(--ui-line); }
+
+/* ---------- the sheet ---------- */
+.sheet {
+  position: absolute; inset: 0;
+  overflow-x: hidden; overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: none;
+}
+.sheet::-webkit-scrollbar { display: none; }
+.page {
+  position: relative;
+  min-height: 100%;
+  padding-bottom: calc(var(--rule-h) * 2);
+  background-color: var(--paper);
+  background-image:
+    linear-gradient(90deg, transparent calc(var(--margin-x) - .75px), var(--margin-line) calc(var(--margin-x) - .75px), var(--margin-line) calc(var(--margin-x) + .75px), transparent calc(var(--margin-x) + .75px)),
+    repeating-linear-gradient(180deg, transparent 0, transparent calc(var(--rule-h) - 1px), var(--rule) calc(var(--rule-h) - 1px), var(--rule) var(--rule-h)),
+    var(--grain);
+  background-size: auto, auto, 180px 180px;
+  -webkit-user-select: none; user-select: none;
+  -webkit-touch-callout: none;
+}
+.head-space { height: var(--rule-h); }
+.title { position: relative; height: var(--rule-h); margin: 0; }
+.title span {
+  position: absolute; left: calc(var(--text-x) - 1px); top: var(--title-shift);
+  font: 600 36px/42px var(--font-hand);
+  color: var(--ink-blue);
+  white-space: nowrap;
+}
+.items { list-style: none; margin: 0; padding: 0; }
+.row { position: relative; height: var(--rule-h); }
+.txt {
+  position: absolute; z-index: 2;
+  left: calc(var(--text-x) - 4px); top: var(--hand-shift);
+  height: var(--hand-box);
+  max-width: calc(100% - var(--text-x) - 40px);
+  margin: 0; padding: 0 4px; border: 0; border-radius: 6px;
+  background: none;
+  font: 540 var(--hand-size)/var(--hand-box) var(--font-hand);
+  color: var(--ink);
+  text-align: left; white-space: nowrap;
+  overflow: hidden; text-overflow: ellipsis;
+  transition: opacity .5s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+button.txt { cursor: pointer; }
+button.txt:focus-visible { outline-color: var(--ink); outline-offset: 2px; }
+.row.struck .txt { opacity: .45; }
+.row.leaving .txt { overflow: visible; text-overflow: clip; }
+.txt .l { position: absolute; top: 0; white-space: pre; }
+.strike { position: absolute; z-index: 3; left: 0; top: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
+.strike path { fill: none; stroke: var(--strike-ink, var(--ink)); stroke-width: 2.1; stroke-linecap: round; stroke-linejoin: round; opacity: .92; }
+.hl { position: absolute; z-index: 1; left: 0; top: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; mix-blend-mode: multiply; }
+.hl .body { fill: var(--marker); }
+.hl .dab { fill: var(--marker-dab); }
+.pencil, .ghost {
+  position: absolute; z-index: 1;
+  left: var(--text-x); top: var(--hand-shift);
+  height: var(--hand-box);
+  font: 540 var(--hand-size)/var(--hand-box) var(--font-hand);
+  color: var(--pencil);
+  white-space: pre;
+  pointer-events: none;
+}
+/* a long draft keeps its newest letters (and the nib) on the paper, like a text field does */
+.ghost { display: flex; justify-content: flex-end; max-width: calc(100% - var(--text-x) - 28px); clip-path: inset(-20px -40px -20px -5px); }
+/* the pencil under the arriving ink is laid out exactly like the ink (.txt) */
+.pencil { left: calc(var(--text-x) - 4px); padding: 0 4px; max-width: calc(100% - var(--text-x) - 40px); overflow: hidden; text-overflow: ellipsis; }
+.del {
+  position: absolute; z-index: 5; right: 8px; top: 18px;
+  width: 32px; height: 32px;
+  display: grid; place-items: center;
+  margin: 0; padding: 0 0 2px; border: 0; border-radius: 50%;
+  background: transparent; color: var(--pencil);
+  font: 400 23px/1 var(--font-ui);
+  opacity: 0; transition: opacity .15s ease, background-color .15s ease;
+  cursor: pointer;
+}
+.row:focus-within .del, .row.show-x .del { opacity: 1; }
+@media (hover: hover) { .mine .row:hover .del { opacity: 1; } }
+.del:hover { background: var(--hover-wash); color: var(--desk-ink); }
+.row.leaving .del { opacity: 0 !important; pointer-events: none; }
+
+/* the writing line */
+.writing { position: relative; height: var(--rule-h); margin: 0; }
+.writing:focus-within { background: var(--focus-tint); box-shadow: inset 0 -2px 0 var(--focus-line); }
+.write {
+  position: absolute; z-index: 2;
+  left: var(--text-x); right: 16px; top: var(--hand-shift);
+  height: var(--hand-box);
+  margin: 0; padding: 0; border: 0; border-radius: 0;
+  background: transparent; outline: none;
+  font: 540 var(--hand-size)/var(--hand-box) var(--font-hand);
+  white-space: pre; overflow: hidden;
+}
+input.write { color: var(--ink-blue); caret-color: var(--ink-blue); }
+input.write::placeholder { color: var(--pencil-soft); opacity: 1; }
+.writing.ghosting input.write::placeholder, .writing.hush input.write::placeholder { color: transparent; }
+.fake .draft { color: var(--ink-red); }
+.fake .ph { position: absolute; left: 0; top: 0; color: var(--pencil-soft); transition: opacity .3s ease; }
+.writing.has-text .ph, .writing.ghosting .ph, .writing.hush .ph { opacity: 0; transition: none; }
+.caret { display: none; width: 2px; height: 24px; margin-left: 1px; vertical-align: -4px; background: var(--ink-red); border-radius: 1px; animation: blink 1s steps(1) infinite; }
+.writing.typing .caret { display: inline-block; }
+@keyframes blink { 50% { opacity: 0; } }
+.ghostrow { position: relative; height: var(--rule-h); }
+
+/* the other phone's pen */
+.nib {
+  position: absolute; z-index: 4; left: 0; top: 0;
+  width: 7px; height: 7px; margin: -3.5px 0 0 -3.5px;
+  pointer-events: none; opacity: 0;
+  transition: opacity .14s ease, translate .24s ease;
+}
+.nib i {
+  display: block; width: 100%; height: 100%; border-radius: 50%;
+  background: radial-gradient(circle at 34% 30%, var(--glint) 0 16%, var(--nib-ink) 58%);
+  box-shadow: 0 .5px 1.5px var(--shadow-near);
+}
+.nib.on { opacity: 1; }
+.nib.lift { opacity: 0; translate: 0 -6px; }
+.nib.glide { transition: opacity .14s ease, translate .24s ease, transform .07s ease-out; }
+.nib.bob i { animation: bob .62s ease-in-out infinite alternate; }
+@keyframes bob { from { transform: translateY(1.5px); } to { transform: translateY(-2.5px); } }
+.mnote {
+  position: absolute; z-index: 2; left: 0; top: 11px; width: var(--margin-x);
+  display: flex; flex-direction: column; align-items: center; gap: 2px;
+  color: var(--note-ink);
+  font: 600 9px/1 var(--font-ui); font-stretch: 76%; letter-spacing: 0;
+  opacity: 0; transition: opacity .3s ease;
+  pointer-events: none;
+}
+.mnote svg { width: 12px; height: 12px; display: block; }
+.mnote.on { opacity: .85; }
+
+/* toast and the sending phone's taps */
+.toast-wrap { position: absolute; z-index: 7; left: 12px; right: 12px; bottom: 18px; display: flex; justify-content: center; pointer-events: none; }
+.toast {
+  pointer-events: auto;
+  max-width: 100%;
+  display: flex; align-items: center; gap: 7px;
+  padding: 6px 6px 6px 14px;
+  border-radius: 14px;
+  background: var(--card); color: var(--desk-ink);
+  box-shadow: 0 0 0 1px var(--ui-line), 0 10px 26px -10px var(--toast-shadow);
+  font: 500 14px/1.3 var(--font-ui);
+}
+.toast[hidden] { display: none; }
+.toast .msg { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.toast .who { color: var(--ink); font-weight: 600; }
+.toast .sep { color: var(--desk-muted); }
+.toast .undo {
+  appearance: none; border: 0; cursor: pointer; flex: 0 0 auto;
+  padding: 7px 9px; border-radius: 9px;
+  background: transparent; color: var(--desk-ink);
+  font: 600 14px/1 var(--font-ui);
+  text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1.5px;
+}
+.toast .undo:hover { background: var(--hover-wash); }
+.tap { position: absolute; z-index: 6; width: 44px; height: 44px; margin: -22px 0 0 -22px; border-radius: 50%; background: var(--tap); pointer-events: none; opacity: 0; }
+
+/* measuring Caveat's baseline */
+.probe { position: absolute; left: -9999px; top: 0; visibility: hidden; white-space: nowrap; }
+.probe span { display: inline-block; vertical-align: top; }
+.probe .p-item { font: 540 var(--hand-size)/var(--hand-box) var(--font-hand); }
+.probe .p-title { font: 600 36px/42px var(--font-hand); }
+.probe i { display: inline-block; width: 0; height: 0; vertical-align: baseline; }
+
+@media (prefers-reduced-motion: reduce) {
+  .txt, .nib, .nib.glide, .mnote, .fake .ph, .del { transition: none !important; }
+  .nib.bob i, .caret { animation: none !important; }
+}
+</style>
+
+<main class="stage">
+  <header class="caption">
+    <h1><span class="opt" aria-hidden="true">A</span><span class="sr">Opción A: </span>Pluma fantasma</h1>
+    <p class="es">Una mano invisible escribe en tu hoja con la pluma del otro teléfono, a su ritmo y sin hacer ruido.</p>
+    <p class="en" lang="en">An invisible hand writes on your sheet with the other phone's pen, at its own pace and without fuss.</p>
+    <div class="controls">
+      <button type="button" class="btn-play" id="play"><span class="tri" aria-hidden="true">▶</span>Ver la demostración</button>
+    </div>
+  </header>
+
+  <div class="phones">
+    <section class="col" aria-labelledby="label-left">
+      <h2 class="label" id="label-left"><span class="dot" style="--ink: var(--ink-blue)"></span>Tu teléfono (tinta azul)</h2>
+      <div class="phone"><div class="screen mine" id="screen-left"></div></div>
+      <p class="hint">Escribe y pulsa Enter. Toca una cosa para tacharla. Para borrarla, usa la × (pasa el ratón encima o mantén pulsado).</p>
+    </section>
+    <section class="col" aria-labelledby="label-right">
+      <h2 class="label" id="label-right"><span class="dot" style="--ink: var(--ink-red)"></span>El otro teléfono (tinta roja)</h2>
+      <div class="phone"><div class="screen" id="screen-right"></div></div>
+      <div class="actions" role="group" aria-label="Haz que el otro teléfono actúe">
+        <button type="button" class="btn" id="r-write">Que escriba algo</button>
+        <button type="button" class="btn" id="r-strike">Que tache algo</button>
+        <button type="button" class="btn" id="r-delete">Que borre algo</button>
+      </div>
+    </section>
+  </div>
+  <footer style="margin-top:8px;font-size:12.5px;line-height:1.45;color:var(--desk-muted);max-width:70ch"><p style="margin:0">Una simulación: los dos teléfonos viven en esta página y la red es una espera de 0.45 s (en la app real, el otro teléfono tardó 0.4–0.9 s en las pruebas). Tipografías: Caveat e Instrument Sans (SIL Open Font License), servidas por Google Fonts.</p><p style="margin:2px 0 0" lang="en">A simulation: both phones live on this page and the network is a 0.45 s wait (in the real app the other phone took 0.4–0.9 s in tests). Typefaces: Caveat e Instrument Sans (SIL Open Font License), served by Google Fonts.</p></footer>
+</main>
+
+<script>
+(() => {
+  'use strict';
+
+  /* ---------------------------------------------------------------- constants and helpers */
+  const LAG = 450;   // the simulated network between the two phones
+  const PAD = 4;     // .txt has 4px of padding each side so Caveat's swashes are never clipped
+  const ROW = 48;
+  const INK = {
+    blue: { css: 'var(--ink-blue)', name: 'Azul' },
+    red: { css: 'var(--ink-red)', name: 'Rojo' },
+  };
+  const START = [
+    { id: 'tortillas', text: 'tortillas', ink: 'blue' },
+    { id: 'jitomate', text: 'jitomate', ink: 'blue' },
+    { id: 'cebolla', text: 'cebolla', ink: 'blue' },
+    { id: 'aguacates', text: '2 aguacates', ink: 'red' },
+    { id: 'leche', text: 'leche', ink: 'blue' },
+    { id: 'pan-bimbo', text: 'pan Bimbo', ink: 'blue' },
+  ];
+  const MORE = ['limones', 'servilletas', 'queso Oaxaca', 'frijoles', 'huevo', 'café'];
+
+  const root = document.documentElement;
+  const motionPref = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const still = () => motionPref.matches;
+  const M = { base: 44, xh: 11, mid: 38.5 };   // baseline, x-height and x-height middle in row px
+
+  const wait = (ms) => new Promise((r) => setTimeout(r, Math.max(0, ms)));
+  const waitUntil = (t) => wait(t - performance.now());
+  /** Resolves when a Web Animation has really ended (it can start a frame or two late), or after `ms` at most. */
+  const settle = (anim, ms) => Promise.race([anim.finished.catch(() => {}), wait(ms)]);
+  const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+  const sine = (k) => 0.5 - 0.5 * Math.cos(Math.PI * k);
+  const handPace = (k) => 0.8 * k + 0.2 * sine(k);
+  const el = (tag, cls, text) => {
+    const e = document.createElement(tag);
+    if (cls) e.className = cls;
+    if (text != null) e.textContent = text;
+    return e;
+  };
+  const SVGNS = 'http://www.w3.org/2000/svg';
+  const sv = (tag, attrs = {}) => {
+    const e = document.createElementNS(SVGNS, tag);
+    for (const k of Object.keys(attrs)) e.setAttribute(k, attrs[k]);
+    return e;
+  };
+  const f1 = (n) => n.toFixed(1);
+
+  /** A small seeded PRNG, so a stroke is the same on both phones. */
+  function seeded(str) {
+    let h = 2166136261;
+    for (let i = 0; i < str.length; i++) { h ^= str.charCodeAt(i); h = Math.imul(h, 16777619); }
+    return () => { h ^= h << 13; h ^= h >>> 17; h ^= h << 5; return ((h >>> 0) % 10000) / 10000; };
+  }
+
+  // Every reset replaces the life token, so stale timers and tweens stop touching the sheets.
+  let life = { dead: false };
+
+  /** Wall-clock tween: progress is always (now - start) / duration, never a sum of frame deltas. */
+  function tween(dur, fn, tok) {
+    return new Promise((resolve) => {
+      const t0 = performance.now();
+      let done = false;
+      const end = () => { if (done) return; done = true; if (!tok.dead) fn(1); resolve(); };
+      const frame = () => {
+        if (done) return;
+        if (tok.dead) { done = true; resolve(); return; }
+        const k = (performance.now() - t0) / dur;
+        if (k >= 1) end(); else { fn(Math.max(0, k)); requestAnimationFrame(frame); }
+      };
+      requestAnimationFrame(frame);
+      setTimeout(end, dur + 200);   // a hidden or throttled pane still reaches the final state
+    });
+  }
+
+  /** The ballpoint strike: starts a little before the word, rises 1-2 degrees, wobbles once, overshoots. */
+  function strikePath(seed, a, b, mid) {
+    const r = seeded(seed + '/strike');
+    const x0 = a - 3 - r() * 4;
+    const x1 = b + 3 + r() * 6;
+    const w = x1 - x0;
+    const dy = Math.tan((1 + r()) * Math.PI / 180) * w;
+    const y0 = mid + dy / 2 + (r() - 0.5) * 0.8;
+    const y1 = mid - dy / 2;
+    const s = r() < 0.5 ? 1 : -1;   // which way the one wobble goes
+    const c1x = x0 + w * (0.28 + r() * 0.08);
+    const c1y = y0 + (y1 - y0) * 0.3 + s * (1.1 + r() * 0.8);
+    const c2x = x0 + w * (0.64 + r() * 0.08);
+    const c2y = y0 + (y1 - y0) * 0.66 - s * (0.9 + r() * 0.7);
+    return `M${f1(x0)} ${f1(y0)}C${f1(c1x)} ${f1(c1y)} ${f1(c2x)} ${f1(c2y)} ${f1(x1)} ${f1(y1)}`;
+  }
+
+  /** A chisel highlighter pass: slanted ends, slightly rough top and bottom edges. */
+  function markerShape(seed, a, b, top, bottom) {
+    const r = seeded(seed + '/marker');
+    const x0 = a - 5 - r() * 3;
+    const x1 = b + 5 + r() * 4;
+    const slant = 3.5;
+    const rise = 0.6 + r() * 1.2;   // the hand rises a little across the word
+    const steps = Math.max(4, Math.round((x1 - x0) / 9));
+    const pts = [];
+    for (let i = 0; i <= steps; i++) {
+      const t = i / steps;
+      pts.push([x0 + slant + (x1 - x0) * t, top - rise * t + (r() - 0.5) * 1.3]);
+    }
+    for (let i = steps; i >= 0; i--) {
+      const t = i / steps;
+      pts.push([x0 + (x1 - slant - x0) * t, bottom - rise * t + (r() - 0.5) * 1.3]);
+    }
+    const body = 'M' + pts.map((p) => `${f1(p[0])} ${f1(p[1])}`).join('L') + 'Z';
+    // where the tip lands and lifts, the ink pools a little darker
+    const dab = (x, y) => `M${f1(x)} ${f1(y)}m-3 0a3 ${f1((bottom - top) / 2)} 0 1 0 6 0a3 ${f1((bottom - top) / 2)} 0 1 0 -6 0Z`;
+    const midY = (top + bottom) / 2;
+    return { body, dabs: dab(x0 + slant / 2 + 2, midY) + dab(x1 - slant / 2 - 2, midY - rise), x0, x1 };
+  }
+
+  function pencilIcon() {
+    const s = sv('svg', { viewBox: '0 0 16 16', 'aria-hidden': 'true' });
+    s.append(sv('path', { d: 'M11.4 2.2l2.4 2.4-8.4 8.4-3.2.8.8-3.2zM10 3.6l2.4 2.4', fill: 'none', stroke: 'currentColor', 'stroke-width': '1.5', 'stroke-linejoin': 'round', 'stroke-linecap': 'round' }));
+    return s;
+  }
+
+  /* ---------------------------------------------------------------- the network */
+  let epoch = 0;
+  function send(to, ev) {
+    const e = epoch;
+    setTimeout(() => { if (e === epoch) to.receive(ev); }, LAG);
+  }
+
+  /* ---------------------------------------------------------------- the other phone's pen */
+  class Nib {
+    constructor(host, inkCss) {
+      this.e = el('span', 'nib');
+      this.e.setAttribute('aria-hidden', 'true');
+      this.e.append(el('i'));
+      this.e.style.setProperty('--nib-ink', inkCss);
+      if (host) host.append(this.e);
+    }
+    at(x, y) { this.e.style.transform = `translate(${f1(x)}px, ${f1(y)}px)`; return this; }
+    on() { void this.e.offsetWidth; this.e.classList.remove('lift'); this.e.classList.add('on'); return this; }
+    lift(remove = true) {
+      this.e.classList.add('lift');
+      this.e.classList.remove('on', 'bob');
+      if (remove) setTimeout(() => this.e.remove(), 320);
+    }
+  }
+
+  let counter = 0;
+  const newId = (text) => `n${++counter}-${text.toLowerCase().replace(/[^a-z0-9áéíóúñü]+/g, '-')}`;
+
+  /* ---------------------------------------------------------------- one phone */
+  class Phone {
+    constructor(ink, screen, mine) {
+      this.ink = ink;
+      this.screen = screen;
+      this.mine = mine;
+      this.items = [];
+      this.rows = new Map();
+      this.chains = new Map();
+      this.draft = '';
+      this.ghost = null;
+      this.peer = null;
+      this.typing = false;
+      this.build();
+    }
+
+    build() {
+      const s = this.screen;
+      s.textContent = '';
+      this.sheet = el('div', 'sheet');
+      const page = el('div', 'page');
+      const title = el('div', 'title');
+      title.append(el('span', null, 'Súper del sábado'));
+      this.list = el('ol', 'items');
+      this.list.setAttribute('aria-label', 'Súper del sábado');
+      if (this.mine) {
+        this.writing = el('form', 'writing');
+        this.writing.setAttribute('autocomplete', 'off');
+        this.input = el('input', 'write');
+        Object.assign(this.input, { type: 'text', id: 'escribe-tu-telefono', placeholder: 'Escribe lo que falta…', maxLength: 40, autocomplete: 'off', spellcheck: false });
+        this.input.setAttribute('aria-label', 'Escribe lo que falta');
+        this.input.setAttribute('enterkeyhint', 'done');
+        this.writing.append(this.input);
+      } else {
+        this.writing = el('div', 'writing');
+        const fake = el('div', 'write fake');
+        fake.setAttribute('aria-hidden', 'true');
+        this.ph = el('span', 'ph', 'Escribe lo que falta…');
+        this.fakeText = el('span', 'draft');
+        fake.append(this.ph, this.fakeText, el('span', 'caret'));
+        this.writing.append(fake);
+      }
+      this.ghostRow = el('div', 'ghostrow');
+      page.append(el('div', 'head-space'), title, this.list, this.writing, this.ghostRow);
+      this.sheet.append(page);
+      const wrap = el('div', 'toast-wrap');
+      wrap.setAttribute('role', 'status');
+      wrap.setAttribute('aria-live', 'polite');
+      this.toast = el('div', 'toast');
+      this.toast.hidden = true;
+      wrap.append(this.toast);
+      s.append(this.sheet, wrap);
+      if (this.mine) this.wire();
+    }
+
+    wire() {
+      this.input.addEventListener('input', () => {
+        this.placeGhost();
+        send(this.peer, { type: 'typing', text: this.input.value, ink: this.ink });
+      });
+      this.writing.addEventListener('submit', (e) => { e.preventDefault(); this.addLocal(this.input.value); });
+      this.list.addEventListener('click', (e) => {
+        const li = e.target.closest('.row');
+        if (!li || li.classList.contains('leaving')) return;
+        if (e.target.closest('.del')) { this.deleteLocal(li.dataset.id); return; }
+        if (e.target.closest('.txt')) {
+          if (this.swallow) { this.swallow = false; return; }
+          this.strikeLocal(li.dataset.id);
+        }
+      });
+      // a long press shows the ×
+      let lp = 0, sx = 0, sy = 0;
+      this.list.addEventListener('pointerdown', (e) => {
+        this.swallow = false;
+        if (e.pointerType === 'mouse') return;
+        const li = e.target.closest('.row');
+        if (!li) return;
+        sx = e.clientX; sy = e.clientY;
+        clearTimeout(lp);
+        lp = setTimeout(() => {
+          for (const r of this.list.querySelectorAll('.show-x')) r.classList.remove('show-x');
+          li.classList.add('show-x');
+          this.swallow = true;
+          setTimeout(() => { this.swallow = false; }, 900);
+        }, 480);
+      });
+      this.list.addEventListener('pointermove', (e) => { if (Math.hypot(e.clientX - sx, e.clientY - sy) > 8) clearTimeout(lp); });
+      for (const t of ['pointerup', 'pointercancel']) this.list.addEventListener(t, () => clearTimeout(lp));
+      this.list.addEventListener('contextmenu', (e) => { if (e.target.closest('.row')) e.preventDefault(); });
+      document.addEventListener('pointerdown', (e) => {
+        if (e.target.closest('.row.show-x')) return;
+        for (const r of this.list.querySelectorAll('.show-x')) r.classList.remove('show-x');
+      });
+    }
+
+    /* ----- model */
+    find(id) { return this.items.find((i) => i.id === id); }
+    indexOf(id) { return this.items.findIndex((i) => i.id === id); }
+    localDraft() { return this.mine ? this.input.value : this.draft; }
+    chain(id, fn) {
+      const next = (this.chains.get(id) || Promise.resolve()).then(fn).catch((err) => console.error(err));
+      this.chains.set(id, next);
+    }
+
+    reset(items) {
+      this.items = items.map((i) => ({ ...i, struck: false, strikeInk: null }));
+      this.rows.clear();
+      this.chains.clear();
+      this.list.textContent = '';
+      for (const it of this.items) this.list.append(this.makeRow(it));
+      this.ghost = null;
+      for (const g of this.screen.querySelectorAll('.ghost, .mnote, .nib, .tap, .pencil')) g.remove();
+      this.writing.classList.remove('ghosting', 'hush', 'typing', 'has-text');
+      this.setLocalDraft('', false);
+      this.typing = false;
+      clearTimeout(this.toastT);
+      this.toast.hidden = true;
+      this.undoData = null;
+      this.sheet.scrollTop = 0;
+    }
+
+    /* ----- rows */
+    makeRow(item) {
+      const li = el('li', 'row');
+      li.dataset.id = item.id;
+      li.style.setProperty('--ink', INK[item.ink].css);
+      const txt = el(this.mine ? 'button' : 'span', 'txt', item.text);
+      if (this.mine) { txt.type = 'button'; txt.setAttribute('aria-pressed', String(!!item.struck)); }
+      const svg = sv('svg', { class: 'strike', 'aria-hidden': 'true' });
+      svg.append(sv('path'));
+      li.append(txt, svg);
+      if (this.mine) {
+        const del = el('button', 'del', '×');
+        del.type = 'button';
+        del.setAttribute('aria-label', `Borrar «${item.text}»`);
+        li.append(del);
+      } else {
+        const del = el('span', 'del', '×');
+        del.setAttribute('aria-hidden', 'true');
+        li.append(del);
+      }
+      this.rows.set(item.id, li);
+      return li;
+    }
+    pressed(li, item) { if (this.mine) li.querySelector('.txt').setAttribute('aria-pressed', String(!!item.struck)); }
+    strikeGeometry(li, item) {
+      const txt = li.querySelector('.txt');
+      const a = txt.offsetLeft + PAD;
+      return strikePath(item.id, a, txt.offsetLeft + txt.offsetWidth - PAD, M.mid);
+    }
+    /** A strike that is still fading away is dropped at once if the item is struck again. */
+    stopFade(li) {
+      if (li._fade) { li._fade.cancel(); li._fade = null; }
+    }
+    fadeStrike(li, item, keyframes, dur, easing) {
+      const svg = li.querySelector('.strike'), path = svg.firstElementChild;
+      this.stopFade(li);
+      const a = svg.animate(keyframes, { duration: dur, easing, fill: 'forwards' });
+      li._fade = a;
+      return settle(a, dur + 400).then(() => {
+        if (li._fade !== a) return;   // struck again meanwhile: that stroke stays
+        li._fade = null;
+        if (!item.struck) path.removeAttribute('d');
+        a.cancel();
+      });
+    }
+    paintStrike(li, item) {
+      this.stopFade(li);
+      const path = li.querySelector('.strike path');
+      li.style.setProperty('--strike-ink', INK[item.strikeInk || item.ink].css);
+      path.setAttribute('d', this.strikeGeometry(li, item));
+      path.style.strokeDasharray = '';
+      path.style.strokeDashoffset = '';
+      li.classList.add('struck');
+    }
+
+    /** Measured before a DOM change: everything below `from` in the sheet. */
+    flipPrep(fromIndex) {
+      const els = [...this.list.children].slice(fromIndex);
+      els.push(this.writing, this.ghostRow);
+      return els.map((e) => [e, e.getBoundingClientRect().top]);
+    }
+    /** ...and played after it: each one slides from where it was to where it now is. */
+    flipPlay(prep, skip) {
+      if (still()) return Promise.resolve();
+      const D = 360;
+      for (const [e, y0] of prep) {
+        if (!e.isConnected || (skip && skip(e))) continue;
+        if (e._flip) { e._flip.cancel(); e._flip = null; }
+        const d = y0 - e.getBoundingClientRect().top;
+        if (Math.abs(d) < 0.5) continue;
+        e._flip = e.animate([{ transform: `translateY(${f1(d)}px)` }, { transform: 'translateY(0)' }], { duration: D, easing: 'cubic-bezier(.22,.8,.26,1)' });
+      }
+      return wait(D);
+    }
+    /** Keep a row in view inside this phone's sheet only (never scrolls the page). */
+    ensureVisible(elm, below = ROW * 1.6) {
+      const s = this.sheet;
+      const sr = s.getBoundingClientRect(), r = elm.getBoundingClientRect();
+      const y0 = r.top - sr.top + s.scrollTop, y1 = y0 + r.height + below;
+      const behavior = still() ? 'auto' : 'smooth';
+      if (y1 > s.scrollTop + s.clientHeight) s.scrollTo({ top: y1 - s.clientHeight, behavior });
+      else if (y0 < s.scrollTop + ROW) s.scrollTo({ top: Math.max(0, y0 - ROW), behavior });
+    }
+    moveFocusFrom(li) {
+      if (!this.mine || !li.contains(document.activeElement)) return;
+      const next = li.nextElementSibling || li.previousElementSibling;
+      (next ? next.querySelector('.txt') : this.input).focus({ preventScroll: true });
+    }
+
+    /* ----- this phone's own hand (quick: you already know what you did) */
+    setLocalDraft(text, broadcast) {
+      if (this.mine) this.input.value = text;
+      else { this.draft = text; this.fakeText.textContent = text; }
+      this.writing.classList.toggle('has-text', !!text);
+      this.placeGhost();
+      if (broadcast) send(this.peer, { type: 'typing', text, ink: this.ink });
+    }
+
+    addLocal(raw) {
+      const text = raw.trim().replace(/\s+/g, ' ').slice(0, 40);
+      if (!text) return;
+      const item = { id: newId(text), text, ink: this.ink, struck: false, strikeInk: null };
+      const index = this.items.length;
+      this.items.push(item);
+      this.list.append(this.makeRow(item));
+      this.setLocalDraft('', false);
+      // the words stay exactly where they were typed; the writing line is now one rule lower
+      if (!still()) (this.mine ? this.input : this.ph).animate([{ opacity: 0 }, { opacity: 1 }], { duration: 320, easing: 'ease-out' });
+      this.ensureVisible(this.writing);
+      send(this.peer, { type: 'add', item: { ...item }, index });
+      send(this.peer, { type: 'typing', text: '', ink: this.ink });
+      updateButtons();
+    }
+
+    strikeLocal(id) {
+      const item = this.find(id), li = this.rows.get(id);
+      if (!item || !li || li.classList.contains('leaving')) return;
+      item.struck = !item.struck;
+      const path = li.querySelector('.strike path');
+      if (item.struck) {
+        item.strikeInk = this.ink;
+        this.paintStrike(li, item);
+        if (!still()) {
+          const len = path.getTotalLength();
+          path.animate([{ strokeDasharray: `${len} ${len}`, strokeDashoffset: len }, { strokeDasharray: `${len} ${len}`, strokeDashoffset: 0 }], { duration: clamp(140 + len * 0.5, 180, 300), easing: 'cubic-bezier(.3,.6,.2,1)' });
+        }
+      } else {
+        item.strikeInk = null;
+        li.classList.remove('struck');
+        if (still()) { this.stopFade(li); path.removeAttribute('d'); }
+        else this.fadeStrike(li, item, [{ opacity: 1 }, { opacity: 0 }], 200, 'ease-in');
+      }
+      this.pressed(li, item);
+      send(this.peer, { type: 'strike', id, on: item.struck, ink: this.ink });
+      updateButtons();
+    }
+
+    deleteLocal(id) {
+      const idx = this.indexOf(id);
+      if (idx < 0) return;
+      const li = this.rows.get(id);
+      this.items.splice(idx, 1);
+      this.rows.delete(id);
+      li.classList.add('leaving');
+      this.moveFocusFrom(li);
+      send(this.peer, { type: 'delete', id, by: this.ink });
+      updateButtons();
+      const finish = () => { const prep = this.flipPrep(idx + 1); li.remove(); this.flipPlay(prep); };
+      if (still()) { finish(); return; }
+      const a = li.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 180, easing: 'ease-in', fill: 'forwards' });
+      setTimeout(finish, 180);
+      void a;
+    }
+
+    async typeWord(word, tok) {
+      this.typing = true;
+      updateButtons();
+      this.writing.classList.add('typing');
+      const r = seeded(word + '/keys');
+      const t0 = performance.now();
+      let at = 0;
+      for (let i = 1; i <= word.length; i++) {
+        at += 115 + r() * 95;   // a thumb on a phone keyboard
+        await waitUntil(t0 + at);
+        if (tok.dead) return;
+        this.setLocalDraft(word.slice(0, i), true);
+      }
+      await waitUntil(t0 + at + 360);
+      if (tok.dead) return;
+      this.writing.classList.remove('typing');
+      this.addLocal(this.localDraft());
+      this.typing = false;
+      updateButtons();
+    }
+
+    tapAt(target, where) {
+      if (still() || !target) return;
+      const sr = this.screen.getBoundingClientRect(), r = target.getBoundingClientRect();
+      const x = (where === 'start' ? r.left + 84 : r.left + r.width / 2) - sr.left;
+      const y = r.top + r.height / 2 - sr.top;
+      const t = el('span', 'tap');
+      t.style.left = `${f1(x)}px`;
+      t.style.top = `${f1(y)}px`;
+      this.screen.append(t);
+      t.animate([{ opacity: 0, transform: 'scale(.5)' }, { opacity: 1, transform: 'scale(1)', offset: 0.35 }, { opacity: 0, transform: 'scale(1.15)' }], { duration: 520, easing: 'ease-out' });
+      setTimeout(() => t.remove(), 560);
+    }
+
+    /* ----- the other phone's hand, arriving through the network */
+    receive(ev) {
+      const tok = life;
+      if (ev.type === 'typing') this.receiveTyping(ev);
+      else if (ev.type === 'add' || ev.type === 'restore') this.chain(ev.item.id, () => this.receiveAdd(ev, tok));
+      else if (ev.type === 'strike') this.chain(ev.id, () => this.receiveStrike(ev, tok));
+      else if (ev.type === 'delete') this.chain(ev.id, () => this.receiveDelete(ev, tok));
+      updateButtons();
+    }
+
+    /* (1) typing in progress: faint pencil letters on the writing line, a nib bobbing after them */
+    ghostSlot() { return this.localDraft() ? this.ghostRow : this.writing; }
+    placeGhost() {
+      const g = this.ghost;
+      if (!g) return;
+      const slot = this.ghostSlot();
+      if (g.slot !== slot) {
+        slot.append(g.box, g.note, g.nib.e);
+        g.slot = slot;
+        this.positionGhostNib(false);
+      }
+      this.writing.classList.toggle('ghosting', slot === this.writing);
+    }
+    positionGhostNib(glide) {
+      const g = this.ghost;
+      if (!g) return;
+      g.nib.e.classList.toggle('glide', glide && !still());
+      g.nib.at(g.box.offsetLeft + g.box.offsetWidth + 6, M.mid);
+    }
+    receiveTyping(ev) {
+      if (!ev.text) { this.dropGhost(true); return; }
+      let g = this.ghost;
+      if (!g) {
+        g = this.ghost = { ink: ev.ink, text: '', slot: null, idleT: 0, box: el('div', 'ghost'), note: el('div', 'mnote'), nib: new Nib(null, INK[ev.ink].css) };
+        g.box.setAttribute('aria-hidden', 'true');
+        g.note.setAttribute('aria-hidden', 'true');
+        g.note.style.setProperty('--note-ink', INK[ev.ink].css);
+        g.note.append(pencilIcon(), el('span', null, 'escribiendo'));
+        this.placeGhost();
+      }
+      const old = g.text, next = ev.text;
+      if (next.startsWith(old)) {
+        const span = el('span', 'gl', next.slice(old.length));
+        g.box.append(span);
+        if (!still()) span.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 170, easing: 'ease-out' });
+      } else {
+        g.box.textContent = '';
+        g.box.append(el('span', 'gl', next));
+      }
+      g.text = next;
+      const wasOn = g.nib.e.classList.contains('on');
+      this.positionGhostNib(wasOn);
+      if (!wasOn) g.nib.on();
+      g.nib.e.classList.add('bob');
+      g.note.classList.add('on');
+      clearTimeout(g.idleT);
+      g.idleT = setTimeout(() => { g.nib.e.classList.remove('on'); g.note.classList.remove('on'); }, 2600);
+      this.ensureVisible(g.slot);
+    }
+    dropGhost(fade) {
+      const g = this.ghost;
+      if (!g) return;
+      this.ghost = null;
+      clearTimeout(g.idleT);
+      const parts = [g.box, g.note, g.nib.e];
+      if (!fade || still()) { parts.forEach((p) => p.remove()); this.writing.classList.remove('ghosting'); return; }
+      g.nib.lift(false);
+      g.note.classList.remove('on');
+      g.box.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 260, easing: 'ease-in', fill: 'forwards' });
+      setTimeout(() => { parts.forEach((p) => p.remove()); if (!this.ghost) this.writing.classList.remove('ghosting'); }, 270);
+    }
+
+    /* (2) added: the word writes itself left to right, the nib just ahead, then a highlighter pass */
+    async receiveAdd(ev, tok) {
+      if (tok.dead || this.find(ev.item.id)) return;
+      const item = { ...ev.item };
+      const struck = !!item.struck;
+      item.struck = false;
+      const g = this.ghost;
+      const atEnd = ev.index == null || ev.index >= this.items.length;
+      const index = atEnd ? this.items.length : Math.max(0, ev.index);
+      // the pencil draft on the writing line becomes the row the ink is written over
+      const carry = atEnd && g && g.slot === this.writing && g.text.trim() === item.text;
+      let note = null;
+      if (g) {
+        clearTimeout(g.idleT);
+        g.box.remove();
+        g.nib.e.remove();
+        if (carry) note = g.note; else g.note.remove();
+        this.ghost = null;
+        this.writing.classList.remove('ghosting');
+      }
+      const li = this.makeRow(item);
+      const prep = this.flipPrep(index);
+      this.items.splice(index, 0, item);
+      this.list.insertBefore(li, this.list.children[index] || null);
+      const quiet = !this.localDraft();
+      this.flipPlay(prep, (e) => (e === this.writing && quiet) || e === this.ghostRow);
+      if (quiet) this.writing.classList.add('hush');
+      let pencil = null;
+      if (carry) {
+        pencil = el('span', 'pencil', item.text);
+        pencil.setAttribute('aria-hidden', 'true');
+        li.append(pencil);
+        if (note) li.append(note);
+      }
+      // an item added at the end scrolls this sheet exactly as it scrolled the writer's, so both stay alike
+      this.ensureVisible(atEnd ? this.writing : li);
+      await this.writeIn(li, item, tok);
+      if (tok.dead) return;
+      if (quiet) {
+        this.writing.classList.remove('hush');
+        if (!still() && !this.localDraft()) (this.mine ? this.input : this.ph).animate([{ opacity: 0 }, { opacity: 1 }], { duration: 360, easing: 'ease-out' });
+      }
+      if (pencil) {
+        if (still()) pencil.remove();
+        else { pencil.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 380, fill: 'forwards' }); setTimeout(() => pencil.remove(), 400); }
+      }
+      if (note) { note.classList.remove('on'); setTimeout(() => note.remove(), 340); }
+      this.markNew(li, item, tok);
+      if (struck && this.find(item.id)) {
+        await wait(still() ? 0 : 200);
+        if (tok.dead || !this.find(item.id)) return;
+        item.struck = true;
+        item.strikeInk = ev.item.strikeInk || ev.by || item.ink;
+        this.pressed(li, item);
+        await this.strikeRemote(li, item, tok);
+      }
+      updateButtons();
+    }
+
+    async writeIn(li, item, tok) {
+      if (still()) return;
+      const txt = li.querySelector('.txt');
+      const W = txt.offsetWidth, tw = W - 2 * PAD;
+      const n = Math.max(1, [...item.text].length);
+      const dur = clamp(n * 55, 330, 1800);   // handwriting speed: about 55 ms a letter
+      const x0 = txt.offsetLeft + PAD;
+      const clip = (rx) => { txt.style.clipPath = `inset(-14px ${f1(Math.max(0, W - PAD - rx))}px -14px -14px)`; };
+      clip(0);
+      const nib = new Nib(li, INK[item.ink].css).at(x0 - 2, M.base - M.xh * 0.4).on();
+      await wait(120);   // the pen lands
+      if (tok.dead) return;
+      await tween(dur, (k) => {
+        const p = handPace(k);
+        const rx = (tw + PAD) * p;
+        clip(rx);
+        const up = Math.abs(Math.sin(p * n * Math.PI));   // up and down once per letter
+        nib.at(x0 + rx + 2.5, M.base - 2 - (M.xh - 1) * up);
+      }, tok);
+      txt.style.clipPath = '';
+      nib.lift();
+    }
+
+    markNew(li, item, tok) {
+      if (tok.dead || !li.isConnected) return;
+      const txt = li.querySelector('.txt');
+      const a = txt.offsetLeft + PAD, b = txt.offsetLeft + txt.offsetWidth - PAD;
+      const shape = markerShape(item.id, a, b, M.base - M.xh - 5, M.base + 4);
+      const svg = sv('svg', { class: 'hl', 'aria-hidden': 'true' });
+      svg.append(sv('path', { class: 'body', d: shape.body }), sv('path', { class: 'dab', d: shape.dabs }));
+      li.prepend(svg);
+      const HOLD = 4000, SWIPE = 280, FADE = 1100;
+      if (still()) { setTimeout(() => svg.remove(), HOLD); return; }
+      const W = li.clientWidth;
+      const T = SWIPE + HOLD + FADE;
+      const hidden = `inset(-6px ${f1(W - shape.x0)}px -6px -6px)`;
+      const shown = `inset(-6px ${f1(Math.max(0, W - shape.x1 - 3))}px -6px -6px)`;
+      svg.animate([
+        { clipPath: hidden, opacity: 1, offset: 0, easing: 'cubic-bezier(.35,.7,.35,1)' },
+        { clipPath: shown, opacity: 1, offset: SWIPE / T },
+        { clipPath: shown, opacity: 1, offset: (SWIPE + HOLD) / T, easing: 'ease-in-out' },
+        { clipPath: shown, opacity: 0, offset: 1 },
+      ], { duration: T, fill: 'forwards' });
+      setTimeout(() => svg.remove(), T + 30);
+    }
+
+    /* (3) struck: the line draws itself with the nib riding its tip; then the word dims */
+    async receiveStrike(ev, tok) {
+      const item = this.find(ev.id), li = this.rows.get(ev.id);
+      if (tok.dead || !item || !li || item.struck === ev.on) return;
+      item.struck = ev.on;
+      item.strikeInk = ev.on ? ev.ink : null;
+      this.pressed(li, item);
+      updateButtons();
+      if (ev.on) await this.strikeRemote(li, item, tok);
+      else await this.unstrikeRemote(li, item, tok);
+    }
+    async strikeRemote(li, item, tok) {
+      this.stopFade(li);
+      const path = li.querySelector('.strike path');
+      li.style.setProperty('--strike-ink', INK[item.strikeInk].css);
+      path.setAttribute('d', this.strikeGeometry(li, item));
+      if (still()) { this.paintStrike(li, item); return; }
+      const len = path.getTotalLength();
+      path.style.strokeDasharray = `${len} ${len}`;
+      path.style.strokeDashoffset = `${len}`;
+      const dur = clamp(560 + len * 1.6, 700, 1000);
+      const p0 = path.getPointAtLength(0);
+      const nib = new Nib(li, INK[item.strikeInk].css).at(p0.x, p0.y).on();
+      await wait(110);   // the pen lands just before the word
+      if (tok.dead) return;
+      await tween(dur, (k) => {
+        const e = sine(k);
+        path.style.strokeDashoffset = `${len * (1 - e)}`;
+        const p = path.getPointAtLength(e * len);
+        nib.at(p.x, p.y);
+      }, tok);
+      nib.lift();
+      path.style.strokeDasharray = '';
+      path.style.strokeDashoffset = '';
+      if (item.struck) li.classList.add('struck');   // the ink dims once the line is through
+    }
+    async unstrikeRemote(li, item, tok) {
+      li.classList.remove('struck');
+      if (still()) { this.stopFade(li); li.querySelector('.strike path').removeAttribute('d'); return; }
+      // the line lifts off the paper the way deleted ink does
+      await this.fadeStrike(li, item, [{ opacity: 1, transform: 'none', filter: 'blur(0px)' }, { opacity: 0, transform: 'translateY(-5px)', filter: 'blur(1.6px)' }], 520, 'ease-in');
+    }
+
+    /* (4) deleted: the ink lifts off the paper letter by letter, then the rows close up */
+    async receiveDelete(ev, tok) {
+      const idx = this.indexOf(ev.id);
+      if (tok.dead || idx < 0) return;
+      const item = this.items[idx], li = this.rows.get(ev.id);
+      this.items.splice(idx, 1);
+      this.rows.delete(ev.id);
+      li.classList.add('leaving');
+      this.moveFocusFrom(li);
+      updateButtons();
+      if (!still()) {
+        await this.liftInk(li);
+        if (tok.dead) return;
+      }
+      const prep = this.flipPrep(idx + 1);
+      li.remove();
+      await this.flipPlay(prep);
+      if (tok.dead) return;
+      this.showToast(ev.by, item, idx);
+    }
+    liftInk(li) {
+      const txt = li.querySelector('.txt');
+      const node = txt.firstChild;
+      const chars = [...txt.textContent];
+      const box = txt.getBoundingClientRect();
+      const range = document.createRange();
+      const xs = [];
+      let off = 0;
+      for (const ch of chars) {
+        range.setStart(node, off);
+        range.setEnd(node, off + ch.length);
+        xs.push(range.getBoundingClientRect().left - box.left);
+        off += ch.length;
+      }
+      txt.style.width = `${box.width}px`;
+      txt.textContent = '';
+      const DUR = 540, STAG = 38;
+      let last = null;
+      chars.forEach((ch, i) => {
+        const s = el('span', 'l', ch);
+        s.style.left = `${xs[i].toFixed(2)}px`;
+        txt.append(s);
+        last = s.animate([
+          { opacity: 1, transform: 'translateY(0)', filter: 'blur(0px)' },
+          { opacity: 0, transform: 'translateY(-11px)', filter: 'blur(2.6px)' },
+        ], { duration: DUR, delay: i * STAG, easing: 'cubic-bezier(.4,0,.6,1)', fill: 'both' });
+      });
+      const total = DUR + Math.max(0, chars.length - 1) * STAG;
+      for (const extra of li.querySelectorAll('.strike, .hl')) {
+        const op = getComputedStyle(extra).opacity;   // a highlighter may already be fading
+        extra.animate([{ opacity: op, transform: 'none', filter: 'blur(0px)' }, { opacity: 0, transform: 'translateY(-8px)', filter: 'blur(2px)' }], { duration: total, easing: 'cubic-bezier(.4,0,.6,1)', fill: 'forwards' });
+      }
+      // the row closes only once the last letter has really left the paper
+      return last ? settle(last, total + 500) : Promise.resolve();
+    }
+
+    showToast(byInk, item, index) {
+      this.undoData = { item: { ...item }, index, by: byInk };
+      const t = this.toast;
+      t.textContent = '';
+      const who = el('b', 'who', INK[byInk].name);
+      who.style.setProperty('--ink', INK[byInk].css);
+      const msg = el('span', 'msg');
+      msg.append(who, document.createTextNode(` borró «${item.text}»`));
+      const sep = el('span', 'sep', '·');
+      sep.setAttribute('aria-hidden', 'true');
+      const undo = el('button', 'undo', 'Deshacer');
+      undo.type = 'button';
+      undo.addEventListener('click', () => this.undo());
+      t.append(msg, sep, undo);
+      this.toastGen = (this.toastGen || 0) + 1;   // a hide still in progress must not hide this one
+      t.getAnimations().forEach((a) => a.cancel());
+      t.hidden = false;
+      if (!still()) t.animate([{ opacity: 0, transform: 'translateY(10px)' }, { opacity: 1, transform: 'none' }], { duration: 260, easing: 'cubic-bezier(.2,.8,.3,1)' });
+      clearTimeout(this.toastT);
+      this.toastT = setTimeout(() => this.hideToast(), 6500);
+    }
+    hideToast() {
+      clearTimeout(this.toastT);
+      const t = this.toast;
+      if (t.hidden) return;
+      const hadFocus = t.contains(document.activeElement);
+      this.undoData = null;
+      const gen = this.toastGen;
+      const done = () => {
+        if (gen !== this.toastGen) return;
+        t.hidden = true;
+        if (hadFocus && this.mine) this.input.focus({ preventScroll: true });
+      };
+      if (still()) { done(); return; }
+      const a = t.animate([{ opacity: 1 }, { opacity: 0, transform: 'translateY(6px)' }], { duration: 200, easing: 'ease-in', fill: 'forwards' });
+      settle(a, 600).then(() => { if (gen !== this.toastGen) return; a.cancel(); done(); });
+    }
+    undo() {
+      const d = this.undoData;
+      if (!d) return;
+      this.hideToast();
+      if (this.find(d.item.id)) return;
+      // here it settles straight back (your own hand); the other phone sees it written again
+      const idx = clamp(d.index, 0, this.items.length);
+      const item = { ...d.item };
+      const li = this.makeRow(item);
+      const prep = this.flipPrep(idx);
+      this.items.splice(idx, 0, item);
+      this.list.insertBefore(li, this.list.children[idx] || null);
+      if (item.struck) { this.paintStrike(li, item); this.pressed(li, item); }
+      this.flipPlay(prep);
+      if (!still()) li.animate([{ opacity: 0, transform: 'translateY(-7px)', filter: 'blur(1.8px)' }, { opacity: 1, transform: 'none', filter: 'blur(0px)' }], { duration: 340, easing: 'cubic-bezier(.2,.7,.3,1)' });
+      this.ensureVisible(li);
+      send(this.peer, { type: 'restore', item: { ...item }, index: idx, by: this.ink });
+      updateButtons();
+    }
+  }
+
+  /* ---------------------------------------------------------------- the scene */
+  const L = new Phone('blue', document.getElementById('screen-left'), true);
+  const R = new Phone('red', document.getElementById('screen-right'), false);
+  L.peer = R;
+  R.peer = L;
+
+  const btnWrite = document.getElementById('r-write');
+  const btnStrike = document.getElementById('r-strike');
+  const btnDelete = document.getElementById('r-delete');
+  function updateButtons() {
+    btnWrite.setAttribute('aria-disabled', String(R.typing));
+    btnStrike.setAttribute('aria-disabled', String(!R.items.some((i) => !i.struck)));
+    btnDelete.setAttribute('aria-disabled', String(R.items.length === 0));
+  }
+
+  function resetAll() {
+    life.dead = true;
+    life = { dead: false };
+    epoch++;
+    L.reset(START);
+    R.reset(START);
+    updateButtons();
+    return life;
+  }
+
+  // the other phone acts
+  function otherWrites(tok) {
+    if (R.typing) return Promise.resolve();
+    const have = new Set(R.items.map((i) => i.text.toLowerCase()));
+    const word = MORE.find((w) => !have.has(w.toLowerCase())) || MORE[0];
+    R.tapAt(R.writing, 'start');
+    return R.typeWord(word, tok);
+  }
+  async function otherStrikes(tok) {
+    const it = R.items.find((i) => i.id === 'jitomate' && !i.struck) || R.items.find((i) => !i.struck);
+    if (!it) return;
+    R.tapAt(R.rows.get(it.id).querySelector('.txt'));
+    await wait(still() ? 0 : 130);
+    if (!tok.dead) R.strikeLocal(it.id);
+  }
+  async function otherDeletes(tok) {
+    const it = R.find('pan-bimbo') || R.items[R.items.length - 1];
+    if (!it) return;
+    const li = R.rows.get(it.id);
+    li.classList.add('show-x');   // a long press shows the ×
+    await wait(still() ? 0 : 480);
+    if (tok.dead) return;
+    R.tapAt(li.querySelector('.del'));
+    await wait(still() ? 0 : 130);
+    if (tok.dead) return;
+    li.classList.remove('show-x');
+    R.deleteLocal(it.id);
+  }
+  btnWrite.addEventListener('click', () => { touched = true; if (btnWrite.getAttribute('aria-disabled') !== 'true') otherWrites(life); });
+  btnStrike.addEventListener('click', () => { touched = true; if (btnStrike.getAttribute('aria-disabled') !== 'true') otherStrikes(life); });
+  btnDelete.addEventListener('click', () => { touched = true; if (btnDelete.getAttribute('aria-disabled') !== 'true') otherDeletes(life); });
+
+  /* The scripted demo, about 12 seconds. Each step is timed from the start (wall clock). */
+  async function demo() {
+    const tok = resetAll();
+    const t0 = performance.now();
+    const at = async (ms) => { await waitUntil(t0 + ms); return !tok.dead; };
+    // the other phone writes "limones" (the typing shows on yours), then strikes and deletes
+    if (!(await at(250))) return;
+    R.tapAt(R.writing, 'start');
+    if (!(await at(400))) return;
+    await R.typeWord('limones', tok);
+    if (!(await at(3300))) return;
+    await otherStrikes(tok);
+    if (!(await at(5000))) return;
+    await otherDeletes(tok);
+    // then your phone writes "cilantro" and strikes "cebolla"; they arrive on the other phone
+    if (!(await at(7450))) return;
+    L.tapAt(L.writing, 'start');
+    if (!(await at(7600))) return;
+    await L.typeWord('cilantro', tok);
+    if (!(await at(10450))) return;
+    const c = L.rows.get('cebolla');
+    if (c && !L.find('cebolla').struck) {
+      L.tapAt(c.querySelector('.txt'));
+      await wait(still() ? 0 : 130);
+      if (!tok.dead) L.strikeLocal('cebolla');
+    }
+  }
+
+  let touched = false;
+  document.getElementById('play').addEventListener('click', () => { touched = true; demo(); });
+  for (const t of ['pointerdown', 'keydown']) L.screen.addEventListener(t, () => { touched = true; });
+
+  /* ---------------------------------------------------------------- measuring Caveat */
+  function measure() {
+    const probe = el('div', 'probe');
+    const mk = (cls, text) => { const s = el('span', cls, text); const z = el('i'); s.append(z); probe.append(s); return [s, z]; };
+    const [ti, zi] = mk('p-item', 'xg');
+    const [tt, zt] = mk('p-title', 'Sg');
+    document.body.append(probe);
+    const bItem = zi.getBoundingClientRect().top - ti.getBoundingClientRect().top;
+    const bTitle = zt.getBoundingClientRect().top - tt.getBoundingClientRect().top;
+    probe.remove();
+    root.style.setProperty('--hand-shift', `${(M.base - bItem).toFixed(2)}px`);
+    root.style.setProperty('--title-shift', `${(M.base - bTitle).toFixed(2)}px`);
+    try {
+      const c = document.createElement('canvas').getContext('2d');
+      c.font = '500 27px Caveat';
+      const xh = c.measureText('x').actualBoundingBoxAscent;
+      if (xh > 6 && xh < 20) M.xh = xh;
+    } catch (e) { /* keep the default x-height */ }
+    M.mid = M.base - M.xh / 2;
+  }
+  function remeasure() {
+    measure();
+    for (const ph of [L, R]) {
+      for (const it of ph.items) {
+        const li = ph.rows.get(it.id);
+        if (it.struck && li && !li.classList.contains('leaving')) ph.paintStrike(li, it);
+      }
+      if (ph.ghost) ph.positionGhostNib(false);
+    }
+  }
+
+  resetAll();
+  remeasure();
+  const fonts = document.fonts;
+  if (fonts) {
+    fonts.ready.then(remeasure);
+    if (fonts.addEventListener) fonts.addEventListener('loadingdone', remeasure);
+  }
+  const fontsSettled = Promise.race([fonts ? fonts.ready : Promise.resolve(), wait(2500)]);
+  Promise.all([fontsSettled, wait(1200)]).then(() => { if (!touched) demo(); });
+})();
+</script>
