@@ -14,7 +14,7 @@ Write "huevos, leche" at home; it appears, in your ink, on the other phone at th
 ## What it does
 
 - **The first frame is the list.** It opens straight to the sheet, drawn from your phone's storage; the network only ever adds to it. Works offline; installs as an app.
-- **One sheet, two phones.** Tap *Compartir*, send the link (WhatsApp, or the QR code on a computer). Each phone writes in its own ink of a four-colour pen; the other phone's writing and strikes arrive in about half a second, through free public Nostr relays that only ever see encrypted, padded blobs.
+- **One sheet, two phones.** Tap *Compartir*, send the link (WhatsApp, or the QR code on a computer). Each phone writes in its own ink (six to choose from); the other phone's writing and strikes arrive in under a second (0.4–0.9 s measured), through free public Nostr relays that only ever see encrypted, padded blobs.
 - **Paper manners.** Commas, new lines and pasted WhatsApp lists become items. Tap to strike, or swipe and draw the line yourself. What you leave on the writing line stays on the paper. Everything can be undone, including what the other phone did.
 - **Mexican aisles.** *Ordenar por pasillo* groups the list in your store's walking order, from a dictionary built from PROFECO's price survey and INEGI's household-spending catalogue. Correct an aisle once; the list remembers it, on both phones.
 - **Lo de siempre.** Your household's own history suggests, in pencil, what is probably running out.
@@ -34,6 +34,7 @@ npm install
 npm run dev            # http://localhost:5177
 npm test               # model, parser, matcher, crypto, import, dictionary
 npm run smoke          # flows in a real browser (dev server up); --sync adds two phones on the real relays
+npm run keys           # keyboard and screen-reader paths in a real browser (dev server up)
 npm run live           # two phones through the real relays, timed, no browser
 npm run shots          # screenshots at exact phone and desktop sizes → data/cache/shots/
 npm run dict           # rebuild and check the aisle dictionary
@@ -41,7 +42,7 @@ npm run dict           # rebuild and check the aisle dictionary
 
 ## Credits
 
-Typefaces Caveat and Atkinson Hyperlegible Next (SIL Open Font License), Lit (BSD-3-Clause), noble-secp256k1 and uqr (MIT). Product vocabulary from «Quién es Quién en los Precios», PROFECO (CC BY 4.0), and the ENIGH 2024 spending catalogue (Fuente: INEGI); emoji names from Unicode CLDR (Unicode License v3). The grouping into aisles is ours; neither agency endorses this app. Full list in the app (Menú → Acerca de) and in `src/ui/credits.js`.
+Typefaces Caveat, Atkinson Hyperlegible Next and Noto Emoji for the margin doodles (SIL Open Font License), Lit (BSD-3-Clause), noble-secp256k1 and uqr (MIT). Product vocabulary from «Quién es Quién en los Precios», PROFECO (CC BY 4.0), and the ENIGH 2024 spending catalogue (Fuente: INEGI); emoji names from Unicode CLDR (Unicode License v3). The grouping into aisles is ours; neither agency endorses this app. Full list in the app (Menú → Acerca de) and in `src/ui/credits.js`.
 
 Built by Victor Mikhailov with AI (Gemini for the 2025 versions; Claude for the September 2026 checkpoint and this rebuild).
 

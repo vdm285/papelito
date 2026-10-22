@@ -12,6 +12,7 @@
     "icons": "node tools/build-icons.mjs",
     "live": "node tools/sync-live.mjs",
     "smoke": "node tools/smoke.mjs",
+    "keys": "node tools/keyboard.mjs",
     "shots": "node tools/shots.mjs",
     "lf": "node tools/lf.mjs",
     "fonts": "python -I tools/build-fonts.py",

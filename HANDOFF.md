@@ -2,6 +2,35 @@
 
 The state of the code, newest first. Each section is dated. Read `AGENTS.md` first.
 
+## 2026-10-22 · Round 1 self-audit, before the checkpoint
+
+Seven critics ran as sub-agents, each from the reader's seat with a real browser: design, interaction, accessibility, robustness (fixed below), then honesty, docs and performance (next section when done). Every finding was reproduced before fixing, and each fix group is one commit that says why.
+
+**Fixed** (commit subjects, oldest first):
+- *Closing a card never reopens an old link; deleting a sheet can be undone* — Back after rotating a link reopened the old one; sheet deletion used the wrong undo stack; blank untitled sheets piled up.
+- *Model resists hostile and broken copies* — a crafted `seen` claim could delete a young item (now only items older than the purge window); stamps more than a day ahead are refused and never drag the clock; live items and tombstones have separate caps; WhatsApp media placeholders, reactions and invisible characters are not items; long lines split at a word.
+- *Aisle dictionary from public sources* — the pipeline and its audit (1,717 terms, every one traced to a source row or an override line; `docs/PIPELINES.md`).
+- *Sync trusts only what decrypts…* — a junk event with a far-future date could have made every later record unpublishable; a phone with a fast clock is corrected from our own server's `Date` header; a date refusal shows "La hora de este teléfono no coincide…" and never bans a relay; "Enlace cambiado" when the link moved; a seventh phone borrows the quietest phone's ink instead of looping.
+- *Two tabs never clobber the list of sheets…* — merged index with `ll.gone`; a browser that cannot save says so; a link with a trailing period opens; an unknown aisle files under Otros.
+- *Typing a title is never overwritten…* — title draft while focused; strikes in a row settle together; notices go with the first action instead of a timer; the writing line, hint and suggestions are one sticky block; one toast and one Deshacer for several remote deletions; aisle order by tapping in walking order.
+- *Keyboard and screen-reader paths…* — focus survives strikes, deletes and cards; a bare click (screen reader) strikes; ink said in words; struck words ≥3:1 in every ink; 44 px targets; forced colours.
+- *The paper moves aside for a card…* — cards beside the paper on desks (the paper glides left when there is no room), a drawn marker stroke instead of a rectangle, doodles on the rule, a doodle borrowed from a word inside a phrase, no green, handwritten card titles.
+- *Production pages carry a Content-Security-Policy…* — no inline script (`public/pre.js`), connections only to this site and WebSocket relays; the doodle font is in the offline shell.
+
+**Numbers now**: `npm test` 74; `node tools/smoke.mjs` 34 (36 with `--sync`), also on the production build under the CSP with an empty console; `node tools/keyboard.mjs` 7; `node tools/sync-live.mjs` 14; `node tools/contrast.mjs`: text ≥4.5:1, struck words and placeholders ≥3:1, both themes.
+
+**Decisions taken without the owner in this round** (each reversible):
+1. The writing line has no length limit, because whole lists are pasted into it; a single line longer than the paper's 160 characters splits at a word.
+2. Notices go with your first action on the sheet, not after 14/40 s (a timer moved rows under a finger).
+3. Cards are modal everywhere (the paper is inert while one is open); on a desk the paper is not dimmed, and a click on it closes the card.
+4. Aisle order: tap the aisles in walking order; arrows only fine-tune.
+5. The keyboard shortcut "e" on a row is gone (screen-reader users type letters to move around); F2 and the context-menu key remain.
+6. One same-origin `HEAD` request per shared-sheet session reads the server's clock (only an offset over 90 s is used).
+7. Override files are named `<id>-<aisle name>.txt` (`con.txt` cannot exist on Windows).
+8. One commit message from this round said "16 checks" for the 14 live relay checks; it was corrected before pushing (history rewritten locally only).
+
+**Checked and left as is**: Atkinson Hyperlegible Next already draws a slashed zero by default (the design critic asked for one).
+
 ## 2026-10-22 · Round 1 (unguided, toward the first checkpoint) — state at night
 
 **Decision: rebuild from scratch, mine the old code for parts.** The live `main` (Gemini, Jan 2026) and the unmerged `design/checkpoint-1` (Sept 2026) were read in full by a parallel audit (`docs/research/2026-10-21-*.md`). Why not patch:
@@ -25,7 +54,7 @@ The state of the code, newest first. Each section is dated. Read `AGENTS.md` fir
 4. The model-written dictionary is not shipped; the vocabulary is rebuilt from PROFECO + INEGI + CLDR with per-aisle override files drafted by Claude and awaiting the owner's review.
 5. 16 aisles instead of 14: Tortillería and Salchichonería are their own counters (as in Mexican stores and both sources); "Despensa" is now "Abarrotes" [`AISLES` in `src/model/aisles.js`].
 6. Writing model: the paper (the next empty rule is the writing line, newest item just above it); struck items stay in place 1.4 s, then settle under "Tachados" [a setting could keep them in place].
-7. Each phone writes in its own ink of a four-colour ballpoint; the other phone's new writing carries a marcatextos highlight until seen.
+7. Each phone writes in its own ink (six to choose from, like a box of ballpoints); the other phone's new writing carries a marcatextos highlight until seen.
 8. Dark mode is a chalkboard (pizarrón) [`:root[data-theme='pizarron']` tokens].
 9. No custom microphone button: the keyboard's own dictation (es-MX on both platforms) plus a "¿Separar en N?" chip for comma-less dictation (research: the Web Speech API fails in iPhone home-screen apps).
 10. Handwriting font Caveat (most pen-like; needs 29–31 px) over Kalam (the media research's pick: lighter, more upright); print is Atkinson Hyperlegible Next [`tools/build-fonts.py`].

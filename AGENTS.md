@@ -24,14 +24,14 @@ A shared shopping list that behaves like **one piece of paper on two phones**: a
 
 ## Where things live
 
-- `index.html` (manifest choice per platform, paper colour before scripts), `src/main.js` (boot: storage first, then dictionary and sync), `src/style.css` (tokens for both themes; rule height and baselines).
+- `index.html` and `public/pre.js` (manifest choice per platform, paper colour before scripts; a file because production pages forbid inline scripts: the CSP is added by `vite.config.js`), `src/main.js` (boot: storage first, then dictionary and sync), `src/style.css` (tokens for both themes; rule height and baselines).
 - `src/model/` — pure logic, tested in `tests/`: `hlc.js` (hybrid logical clock), `doc.js` (the list as a CRDT: registers, tombstones, `seen`, merge, diff, sanitize, compact), `parse.js` (text → items, quantities), `aisles.js` (aisle matcher, 16 aisles in a default walking order), `legacy.js` (import of every storage layout the old versions wrote).
 - `src/app/` — `store.js` (local-first state, undo, inks, "lo de siempre", import once), `i18n.js` (every word), `sync-control.js` (the open list's session, the URL, share/rotate/open link, QR), `install.js` (install prompt, iPhone hint, wake lock).
 - `src/sync/` — `crypto.js` (HKDF keys from the link secret, deflate + padding + AES-GCM, slot tags), `nostr.js` (minimal relay pool, NIP-01/42/78), `session.js` (one slot per phone, read-back repair, presence and typing as ephemeral events; the relay list and why).
 - `src/ui/` — `app.js` (the sheet, gestures, ink and motion after each render), `cards.js` (menu, share, item, sheets, open link, aisle order, settings, about), `ink.js` (hand-drawn strike paths, the travelling pen, handwriting reveal, paper grain), `icons.js`, `theme.js`, `credits.js`.
 - `src/data/dict.js` — loads `public/dict/es-MX.json` after the first frame.
 - `public/` — `sw.js` (offline; stamped by `vite.config.js`), two manifests, icons (from `tools/build-icons.mjs`), the dictionary.
-- `tools/` — checks: `smoke.mjs` (flows in a browser, PASS/FAIL), `sync-live.mjs` (phones through the real relays, no browser: latency, inks, come-back, link rotation), `perf.mjs` (first load on a throttled phone, medians), `contrast.mjs` (WCAG ratios of every text colour, both themes), `check-text.mjs` (control characters), `lf.mjs` (line endings). Captures: `shots.mjs` (screenshots at exact sizes), `demo-anim.mjs` (animated two-phone capture), `og.mjs` (the link preview `public/og.png`). Assets: `build-icons.mjs` (app icons), `build-fonts.py` (subset fonts), `build-doodles.py` (the margin doodles font). Data: `vocab/` (the dictionary pipeline, `docs/PIPELINES.md`). `lib/seed.mjs` (demo lists for all of the above).
+- `tools/` — checks: `smoke.mjs` (flows in a browser, PASS/FAIL), `keyboard.mjs` (focus after strikes, deletes and cards; click activation; pressed states), `sync-live.mjs` (phones through the real relays, no browser: latency, inks, come-back, link rotation), `perf.mjs` (first load on a throttled phone, medians), `contrast.mjs` (WCAG ratios of every text colour, both themes), `check-text.mjs` (control characters), `lf.mjs` (line endings). Captures: `shots.mjs` (screenshots at exact sizes), `demo-anim.mjs` (animated two-phone capture), `og.mjs` (the link preview `public/og.png`). Assets: `build-icons.mjs` (app icons), `build-fonts.py` (subset fonts), `build-doodles.py` (the margin doodles font). Data: `vocab/` (the dictionary pipeline, `docs/PIPELINES.md`). `lib/seed.mjs` (demo lists for all of the above).
 - `docs/history/` — versions that never reached git.
 
 ## Checks before a commit
@@ -50,7 +50,7 @@ node tools/smoke.mjs
 node tools/shots.mjs
 ```
 
-and look at the captures in `data/cache/shots/` (phone and desk, both themes, cards). Before a commit that touches sync: `node tools/sync-live.mjs` and `node tools/smoke.mjs --sync` (they use the real relays). Before any commit: `node tools/lf.mjs` (Windows tools write CRLF) and `node tools/check-text.mjs` (invisible control characters).
+and look at the captures in `data/cache/shots/` (phone and desk, both themes, cards). After touching focus, cards or rows: `node tools/keyboard.mjs`. After touching colours: `node tools/contrast.mjs` (struck words need 3:1, text 4.5:1). Before a deploy, build and run the smoke test against the production build too (`npx vite build --outDir dist-audit`, `npx vite preview --outDir dist-audit --port 5181`, `node tools/smoke.mjs --base=http://localhost:5181/`): only it has the Content-Security-Policy. Before a commit that touches sync: `node tools/sync-live.mjs` and `node tools/smoke.mjs --sync` (they use the real relays). Before any commit: `node tools/lf.mjs` (Windows tools write CRLF) and `node tools/check-text.mjs` (invisible control characters).
 
 ## Gotchas (each one cost time)
 
@@ -66,6 +66,10 @@ and look at the captures in `data/cache/shots/` (phone and desk, both themes, ca
 - **The Vite dev server answers a missing JSON with `index.html` and 200**: `src/data/dict.js` checks the content type.
 - **Vite's `watch.ignored` must name only the top-level `data/` folder**: a pattern like `**/data/**` also hid `src/data/`, and the dev server kept serving a stale module with no error. If a change does not show up, `curl` the module from the dev server and grep it.
 - **Python patch scripts**: write them to `data/cache/patch-*.py` and run `python -I <file>`; open files with `newline=''`; a JS escape like `\uFE0F` must be written `\\uFE0F` inside a Python string.
+- **Windows reserved file names**: `con`, `prn`, `aux`, `nul`, `com1`… cannot be file names on Windows (git cannot even index `con.txt`). Aisle `con` is Congelados, so override files are named `<id>-<aisle name>.txt`; `tools/vocab/build.mjs` refuses a bare `<id>.txt`.
+- **`python -I` ignores `PYTHONIOENCODING`**: printing non-Latin-1 text to this console fails; call `sys.stdout.reconfigure(encoding='utf-8')` first.
+- **Focus and lit**: a row that moves between lists (pending → struck) is a new element, so the focused one is lost. `app.js` records the focused row in `willUpdate` and restores it in `updated` (`keepFocus`); keep that when restructuring rows.
+- **Notices must not move rows on a timer**: rows under a finger jump. They go with the first thing done on the sheet (`onStore`), except the ones about something still true (`lasting`).
 - **Margin doodles** come from `public/fonts/doodles.woff2` (monochrome Noto Emoji subset by `tools/build-doodles.py` to the dictionary's emoji): rebuild it after `npm run dict` whenever emoji change. Whether iPhone draws them with this font or with Apple's colour emoji is unverified on a device (the text-presentation selector U+FE0E is appended to ask for the font).
 
 ## Renaming (when the owner picks a name)
