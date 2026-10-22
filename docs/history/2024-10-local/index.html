@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ListoLista</title>
+    <style>
+      .input-wrapper {
+        position: relative;
+        width: 100%;
+      }
+
+      input[type="text"] {
+        width: 100%;
+        padding-right: 35px;
+        height: 30px;
+        line-height: 30px;
+      }
+
+      input[type="checkbox"] {
+        position: absolute;
+        right: 10px;
+        top: 0;
+        bottom: 0;
+        margin: auto;
+        transform: scale(1.5);
+        height: 20px;
+        width: 20px;
+        pointer-events: auto;
+      }
+
+      .done {
+        text-decoration: line-through;
+      }
+    </style>
+  </head>
+  <body>
+    <script>
+      function saveToLocalStorage() {
+        const inputValues = Array.from(
+          document.querySelectorAll(".input-wrapper")
+        ).map((wrapper) => {
+          const input = wrapper.querySelector("input[type='text']");
+          const checkbox = wrapper.querySelector("input[type='checkbox']");
+          return {
+            value: input.value,
+            done: checkbox.checked,
+          };
+        });
+        localStorage.setItem("inputs", JSON.stringify(inputValues));
+      }
+
+      function loadFromLocalStorage() {
+        const storedInputs = JSON.parse(localStorage.getItem("inputs")) || [];
+        storedInputs.forEach((item) => {
+          const wrapper = document.createElement("div");
+          wrapper.classList.add("input-wrapper");
+
+          const input = document.createElement("input");
+          input.type = "text";
+          input.value = item.value;
+          if (item.done) {
+            input.classList.add("done");
+          }
+          input.onfocus = handleFocus;
+          input.onblur = handleBlur;
+          wrapper.appendChild(input);
+
+          const checkbox = document.createElement("input");
+          checkbox.type = "checkbox";
+          checkbox.checked = item.done;
+          checkbox.addEventListener("change", toggleDone);
+          wrapper.appendChild(checkbox);
+
+          document.body.appendChild(wrapper);
+        });
+        ensureTwoEmptyInputs();
+      }
+
+      function ensureTwoEmptyInputs() {
+        const emptyInputs = Array.from(
+          document.querySelectorAll("input[type='text']")
+        ).filter((i) => i.value === "");
+        const inputsNeeded = 2 - emptyInputs.length;
+        for (let i = 0; i < inputsNeeded; i++) {
+          const wrapper = document.createElement("div");
+          wrapper.classList.add("input-wrapper");
+
+          const newInput = document.createElement("input");
+          newInput.type = "text";
+          newInput.onfocus = handleFocus;
+          newInput.onblur = handleBlur;
+          wrapper.appendChild(newInput);
+
+          const checkbox = document.createElement("input");
+          checkbox.type = "checkbox";
+          checkbox.addEventListener("change", toggleDone);
+          wrapper.appendChild(checkbox);
+
+          document.body.appendChild(wrapper);
+        }
+      }
+
+      let initialValue = "";
+
+      function handleFocus(event) {
+        initialValue = event.target.value;
+      }
+
+      function handleBlur(event) {
+        const input = event.target;
+        const currentValue = input.value;
+
+        setTimeout(() => {
+          if (initialValue === "" && currentValue !== "") {
+            input.parentElement.remove();
+            const emptyInputs = Array.from(
+              document.querySelectorAll("input[type='text']")
+            ).filter((i) => i.value === "");
+            document.body.insertBefore(
+              input.parentElement,
+              emptyInputs[0].parentElement
+            );
+          } else if (currentValue === "") {
+            input.parentElement.remove();
+          }
+          ensureTwoEmptyInputs();
+          saveToLocalStorage();
+        }, 80);
+      }
+
+      function toggleDone(event) {
+        const checkbox = event.target;
+        const input = checkbox.previousSibling;
+
+        // Prevent checking the box if the input is empty
+        if (input.value.trim() === "") {
+          checkbox.checked = false;
+          return; // Don't allow the checkbox to be checked
+        }
+
+        // Toggle the strikethrough
+        if (checkbox.checked) {
+          input.classList.add("done");
+        } else {
+          input.classList.remove("done");
+        }
+
+        // Always focus the next empty input after checking/unchecking
+        focusNextEmptyInput();
+        saveToLocalStorage();
+      }
+
+      function focusNextEmptyInput() {
+        const emptyInputs = Array.from(
+          document.querySelectorAll("input[type='text']")
+        ).filter((input) => input.value === "");
+        if (emptyInputs.length > 0) {
+          const nextInput = emptyInputs[0];
+          nextInput.focus({ preventScroll: true }); // Focus without scrolling
+        }
+      }
+
+      loadFromLocalStorage();
+    </script>
+  </body>
+</html>
