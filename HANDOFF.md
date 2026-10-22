@@ -2,6 +2,10 @@
 
 The state of the code, newest first. Each section is dated. Read `AGENTS.md` first.
 
+## 2026-10-22 · The owner's answers to checkpoint 1
+
+Papelito is the name (the repository and address stay `listolista`); option A, Pluma fantasma, is how the other phone's ink arrives (it is what the app does); the app stays at vdm285.github.io/listolista; the next round learns each list's aisle order from the order things get struck. Questions 5–10 of `docs/CHECKPOINT.md` are still open. Liberties 2 (the name) and 7b (option A) are now the owner's decisions.
+
 ## 2026-10-22 · Round 1 self-audit, before the checkpoint
 
 Seven critics ran as sub-agents, each from the reader's seat with a real browser on a production build: design, interaction, accessibility and robustness first (54 findings), then honesty, docs and performance. Every finding was reproduced before fixing, and each fix group is one commit that says why. Raw findings: `data/cache/audit/round1-findings.json` and `round1b-*.json` (local, not committed).

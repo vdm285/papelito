@@ -9,7 +9,7 @@ Write "huevos, leche" at home; it appears, in your ink, on the other phone at th
 
 ![Two phones, one sheet: the right phone wrote "limones" and it arrived on the left in red ink under a yellow highlight; the right phone struck "cebolla" and the red line is drawing itself across it on the left](docs/img/two-phones.jpg)
 
-*Working name: Papelito. The repository keeps its old name, ListoLista, until the owner picks one.*
+*The repository and its address keep the old name, ListoLista.*
 
 ## What it does
 

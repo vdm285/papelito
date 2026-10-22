@@ -14,7 +14,16 @@ page meant for the artifact host: no `<html>`/`<body>`, fonts from Google Fonts;
 The app already does A (the travelling pen and the handwriting reveal in `src/ui/ink.js`), built ahead of the choice
 because something had to arrive somehow; B or C would replace those two functions.
 
-## Names (working name: Papelito)
+## The owner's answers (2026-10-22)
+
+- **Name: Papelito.** The repository and its address keep the name `listolista`.
+- **How the other phone's ink arrives: A, Pluma fantasma** (already in the app; B and C stay in `docs/portfolio/` as records).
+- **Address: stay at vdm285.github.io/listolista.**
+- **Next round: learn each list's aisle order from the order things get struck.**
+
+Questions 5 to 10 below are still open.
+
+## Names (chosen: Papelito)
 
 - **Papelito**: the little paper a household writes the shopping on. Warm, Mexican, the metaphor itself; fits under an icon.
 - **ListoLista**: continuity with the old app and its address. Playful (listo = ready), but says "list app" rather than "paper".
