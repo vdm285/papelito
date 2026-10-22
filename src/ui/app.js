@@ -224,9 +224,23 @@ export class PapelApp extends LitElement {
   }
 
   onComposerBlur(e) {
+    // Tab to a suggestion or the split hint is still writing: the fragment stays on the line
+    // (committing it made "lec" an item before the keyboard could reach "leche")
+    const to = e.relatedTarget;
+    if (to && to.closest && to.closest('.writing')) return;
     this.composerFocus = false;
     // Notepad rule: what is written on the paper stays on the paper
     if (e.target.value.trim()) this.commit(e.target, true);
+    sync.typing('');
+  }
+
+  /** Focus left the writing block from a suggestion or the hint: now the fragment is committed. */
+  onWritingFocusOut(e) {
+    const to = e.relatedTarget;
+    if ((to && to.closest && to.closest('.writing')) || e.target.matches('.composer textarea')) return;
+    this.composerFocus = false;
+    const ta = this.querySelector('.composer textarea');
+    if (ta && ta.value.trim()) this.commit(ta, true);
     sync.typing('');
   }
 
@@ -489,7 +503,7 @@ export class PapelApp extends LitElement {
             ${this.renderStatus(rec)}
             ${byAisle ? this.renderByAisle(pending, idx, fixes) : html`<ol class="rows pending" role="list">${repeat(pending, (i) => i.id, (i) => this.renderRow(i, idx, fixes, false))}</ol>`}
             ${others.filter((o) => o.typing).map((o) => this.renderGhost(o))}
-            <div class="writing ${this.isLong ? 'sticky' : ''}" data-flip="writing">
+            <div class="writing ${this.isLong ? 'sticky' : ''}" data-flip="writing" @focusout=${(e) => this.onWritingFocusOut(e)}>
               ${this.renderComposer(myInk, items.length)}
               ${this.renderHint()}
               ${this.renderSuggestions(pending.length)}

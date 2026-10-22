@@ -50,6 +50,19 @@ try {
   await page.$eval('.pending .row[data-id]:not(.done)', (e) => e.click());
   await sleep(100);
   check('a bare click (screen reader activation) strikes', await page.evaluate((id) => window.__papelito.store.doc.items[id].d[0] !== '', id2));
+  // Tab from a half-written word to the suggestions does not make the fragment an item
+  await page.focus('.composer textarea');
+  await page.keyboard.type('lec');
+  await sleep(300);
+  await page.keyboard.press('Tab');
+  await sleep(200);
+  const onSuggestion = await page.evaluate(() => !!document.activeElement.closest('.usual'));
+  const fragment = await page.evaluate(() => window.__papelito.store.items().some((i) => i.t[0] === 'lec'));
+  check('Tab moves from a half-written word to the suggestions without writing it', onSuggestion && !fragment, { onSuggestion, fragment });
+  const pick = await page.evaluate(() => document.activeElement.textContent);
+  await page.keyboard.press('Enter');
+  await sleep(300);
+  check('Enter on a suggestion writes it', await page.evaluate((w) => window.__papelito.store.items().some((i) => i.t[0] === w), pick), pick);
   const pressed = await page.evaluate(async () => { document.querySelector('papel-app').openCard('settings'); await new Promise((r) => setTimeout(r, 200)); return [...document.querySelectorAll('.card .chip')].map((c) => `${c.textContent}:${c.getAttribute('aria-pressed')}:${c.getAttribute('lang') || ''}`); });
   check('settings choices say which is pressed; language names carry their language', pressed.includes('Español:true:es') && pressed.includes('English:false:en'), pressed.slice(0, 3));
 } finally { await browser.close(); }
