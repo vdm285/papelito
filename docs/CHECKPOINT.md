@@ -6,7 +6,7 @@ page meant for the artifact host: no `<html>`/`<body>`, fonts from Google Fonts;
 
 | What | Where |
 |---|---|
-| The checkpoint page (what was found, chosen, measured, the liberties, the questions) | Claude artifact "Papelito Checkpoint One" (owner's gallery) |
+| The checkpoint page (what was found, chosen, measured, the liberties, the questions) | artifact https://claude.ai/artifact/DmJMnuLxN3vYqd2Xxvsh7y ("Papelito Checkpoint One") |
 | Option A · Pluma fantasma: the other phone writes with an invisible pen; strikes draw themselves | `docs/portfolio/a-pluma-fantasma.html` · artifact https://claude.ai/artifact/6LvjjhQmT1mdPvmaVQt1uX |
 | Option B · Papel carbón: the two phones are a sheet and its carbon copy | `docs/portfolio/b-papel-carbon.html` · artifact https://claude.ai/artifact/GwJpPjRiutKoBheVnHVnfo |
 | Option C · Hilo entre hojas: an ink thread from the other phone's dot does the writing | `docs/portfolio/c-hilo-entre-hojas.html` · artifact https://claude.ai/artifact/TvkBuXsfjkpXxZDrrwvZjS |
