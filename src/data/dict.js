@@ -1,5 +1,5 @@
 // The aisle dictionary, loaded after the first frame (pay for what you use). Built by
-// tools/build-dict.mjs into public/dict/es-MX.json; see docs/PIPELINES.md.
+// tools/vocab/build.mjs into public/dict/es-MX.json; see docs/PIPELINES.md.
 import { buildIndex } from '../model/aisles.js';
 
 let index = null;

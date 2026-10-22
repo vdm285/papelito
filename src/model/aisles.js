@@ -1,5 +1,5 @@
 // Which aisle of the supermarket an item belongs to, from the words the person wrote.
-// The dictionary (public/dict/es-MX.json, built by tools/build-dict.mjs from sourced data and the
+// The dictionary (public/dict/es-MX.json, built by tools/vocab/build.mjs from sourced data and the
 // override files in data/overrides/aisles/) maps phrases to aisles; this file only matches.
 //
 // Matching (docs/PIPELINES.md, "Aisles"):
@@ -22,7 +22,9 @@ import { splitQuantity } from './parse.js';
 // starting point, not a fact about any store: each list keeps its own (doc.order).
 export const AISLES = ['fru', 'pan', 'tor', 'car', 'sal', 'lac', 'aba', 'bot', 'beb', 'lim', 'hig', 'bbe', 'mas', 'far', 'con', 'otr'];
 
-const FILLER = new Set('de del la el los las un una unos unas uno para con a al en y o mi tu su por que lo le les'.split(' '));
+// "unas"/"unos" are not filler: folded, "uñas" (nails) becomes "unas", and "lima de uñas" must not
+// read as "lima" (the fruit). The longest-phrase scan ignores a leading article on its own anyway.
+const FILLER = new Set('de del la el los las un una uno para con a al en y o mi tu su por que lo le les'.split(' '));
 
 export function fold(s) {
   return String(s ?? '')

@@ -41,6 +41,19 @@ The state of the code, newest first. Each section is dated. Read `AGENTS.md` fir
 - iPhone: the installed app is a sealed copy; links never open it (the menu has "Abrir una lista compartida" to paste one). Whether the home-screen icon keeps the `#k=` is unverified on a device (WebKit's code says yes).
 - Puppeteer audit findings (`npm audit`) are all in puppeteer-core's browser-download chain, which the app never ships and the tools never use.
 
+### Added later that night (each measured or tested)
+
+- **Link rotation scrubs the old link**: every old slot gets a NIP-09 deletion and a sealed "moved" marker (signed with the old key); a phone still on the old link shows "Esta hoja ahora tiene otro enlace…" and stops publishing there. Best effort per relay (in one of three live runs a relay still served an old copy for a few seconds); the guarantee is tested: nothing written after rotating reaches the old link.
+- **Relays**: a relay that refuses one kind (relay.coinos.io refuses the ephemeral presence kind) keeps carrying the others; presence has its own subscription; each list remembers its last sync (`syncedAt`) and asks only for newer records (relay.ditto.pub keeps every version of every slot); a phone coming back gets what changed in ~0.3 s.
+- **Inks**: this phone's ink is a preference (blue first, changed in the share card), claimed when sharing; collisions are resolved after every merge (whoever claimed first keeps it); the title is in the ink of whoever wrote it; a phone already on a sheet is told when a new phone joins, in its ink.
+- **Fonts**: subset and preloaded (Caveat as a static 520 instance, 49 KB; Atkinson 31 KB); **doodles** in the margin and on aisle headings from monochrome Noto Emoji subset to the dictionary's emoji (~19 KB).
+- **Accessibility**: pencil text 4.9:1 (AA), placeholders ≥3.2:1 (AA large); remote changes announced as a sentence; `tools/contrast.mjs` measures both themes.
+- **Performance** (`tools/perf.mjs`, 4x CPU, slow 4G, median of three): warm start from the service worker 0.55 s to the sheet with 0 KB over the network; cold start 2.0–2.2 s for 122 KB.
+- **Motion**: every block in the sheet glides together when rows settle; switching sheets places the new one on top; the first-visit note writes itself word by word.
+- **Keyboard on iPhone**: `--kb` from the visual viewport keeps the sticky writing line above it (unverified on a device).
+- **Tests**: 56 (`npm test`), smoke 34 (36 with `--sync`), live relay checks 14 (`tools/sync-live.mjs`).
+- **Captures**: `tools/demo-anim.mjs` records two real phones syncing through the real relays (animated WebP); `tools/og.mjs` makes the link preview.
+
 ### In flight at the time of writing
 
 - The dictionary pipeline (`tools/vocab/`, `data/vocab/`, `data/overrides/aisles/`) is being built and audited by sub-agents; `public/dict/es-MX.json` is a placeholder until then.

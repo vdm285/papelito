@@ -84,6 +84,13 @@ test('hand corrections win and are keyed by the stemmed phrase', () => {
   assert.equal(A('2 cafés', fixes), 'aba');
 });
 
+test('uñas is not the article unas', () => {
+  const idx2 = buildIndex({ terms: { lima: 'fru', 'lima de uñas': 'hig', jitomate: 'fru' } });
+  assert.equal(aisleOf('lima de uñas', idx2).aisle, 'hig');
+  assert.equal(aisleOf('lima', idx2).aisle, 'fru');
+  assert.equal(aisleOf('unos jitomates', idx2).aisle, 'fru');
+});
+
 test('unknown things go to Otros', () => {
   assert.equal(A('regalo para la tía'), 'otr');
   assert.equal(A(''), 'otr');

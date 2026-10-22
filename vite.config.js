@@ -1,5 +1,5 @@
 import { defineConfig } from 'vite';
-import { readFileSync, writeFileSync, existsSync, readdirSync } from 'node:fs';
+import { readFileSync, writeFileSync, existsSync, readdirSync, mkdirSync, copyFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
 // Stamp the service worker with a build id and the list of files to keep offline (public/sw.js).
@@ -17,6 +17,10 @@ const swVersion = () => ({
     const shell = ['./', './dict/es-MX.json', './fonts/caveat.woff2', './fonts/atkinson.woff2', './manifest.webmanifest', './manifest-ios.webmanifest', './favicon.svg', './icon-192.png', './icon-512.png', ...assets];
     const src = readFileSync(f, 'utf8').replace('__BUILD__', id).replace('/*__SHELL__*/[]', JSON.stringify(shell));
     writeFileSync(f, src);
+    // the licence texts travel with the fonts and data we ship (OFL, Unicode): dist/licenses/
+    mkdirSync(resolve('dist/licenses'), { recursive: true });
+    for (const n of readdirSync(resolve('LICENSES'))) copyFileSync(resolve('LICENSES', n), resolve('dist/licenses', n));
+    copyFileSync(resolve('LICENSE'), resolve('dist/licenses/LICENSE-code.txt'));
   },
 });
 

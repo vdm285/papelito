@@ -180,7 +180,12 @@ const CARDS = {
         : 'No accounts and no server of its own: the sheet lives on your phones and travels end-to-end encrypted through public Nostr relays, which only see scrambled bytes.'}</p>
       <h3>${t.credits}</h3>
       <ul class="credits">${CREDITS.map((c) => html`<li><a href=${c.url} target="_blank" rel="noopener">${c.name}</a> · ${c.what}. ${c.license}.</li>`)}</ul>
-      ${m ? html`<p class="credits">${lang === 'es' ? 'Diccionario de pasillos' : 'Aisle dictionary'}: ${m.terms} ${lang === 'es' ? 'palabras' : 'words'}, ${m.built}. ${m.sources.map((s) => s.name).join(' · ')}</p>` : nothing}
+      ${m ? html`
+        <h3>${lang === 'es' ? 'Diccionario de pasillos' : 'Aisle dictionary'}</h3>
+        <p class="credits">${m.terms} ${lang === 'es' ? 'palabras, armado el' : 'words, built'} ${m.built}.</p>
+        <ul class="credits">${m.sources.map((s) => html`<li>${s.url ? html`<a href=${s.url} target="_blank" rel="noopener">${s.name}</a>` : s.name}${s.credit ? html`. ${s.credit}` : nothing}${s.license ? html` (${s.license})` : nothing}</li>`)}</ul>` : nothing}
+      <h3>${lang === 'es' ? 'Licencias completas' : 'Full licences'}</h3>
+      <p class="credits">${[['OFL-Caveat.txt', 'Caveat'], ['OFL-AtkinsonHyperlegibleNext.txt', 'Atkinson Hyperlegible Next'], ['OFL-NotoEmoji.txt', 'Noto Emoji'], ['Unicode-3.0.txt', 'Unicode CLDR'], ['LICENSE-code.txt', lang === 'es' ? 'el código (dominio público)' : 'the code (public domain)']].map(([f, n], i) => html`${i ? ' · ' : ''}<a href=${`${import.meta.env.BASE_URL}licenses/${f}`} target="_blank" rel="noopener">${n}</a>`)}</p>
       <p class="credits"><a href="https://github.com/vdm285/listolista" target="_blank" rel="noopener">github.com/vdm285/listolista</a></p>`;
   },
 };
