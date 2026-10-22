@@ -31,7 +31,7 @@ Round 1b (performance critic), re-measured with its own scripts after the fixes 
 - Sync latency over 21 edits on the live relays: median 0.37 s, 0.21–0.68 s, both phones writing at once included (was median 0.8 s; about 3 s at once): a pending edit is never postponed by a republish, and records are spaced 0.6 s.
 - Not done, flagged: reading from all six relays doubles the download (each record comes back from every relay; about 1.4 MB down in 5 minutes on a 200-item two-phone sheet). Reading from three would halve it, at some cost in resilience: a decision for the next round.
 
-**Numbers now** (each from the tool's own output, 2026-10-22): `npm test` 76; `node tools/smoke.mjs` 44 (46 with `--sync`), on the dev server, the production build and the live site; `node tools/keyboard.mjs` 9; `node tools/sync-live.mjs` 14 (add 0.24–0.34 s, strike 0.49–0.64 s, both at once 0.66–0.68 s); `node tools/contrast.mjs`: text ≥4.5:1, struck words and placeholders ≥3:1, both themes; dictionary 1,717 terms, 11,989 B gzip; doodle font 74 emoji, 27,060 B.
+**Numbers now** (each from the tool's own output, 2026-10-22; updated after the verification round below): `npm test` 83; `node tools/smoke.mjs` 44 (46 with `--sync`), on the dev server, the production build and the live site; `node tools/keyboard.mjs` 9; `node tools/sync-live.mjs` 14 (add 0.24–0.34 s, strike 0.49–0.64 s, both at once 0.66–0.68 s); `node tools/contrast.mjs`: text ≥4.5:1, struck words and placeholders ≥3:1, both themes; dictionary 1,717 terms, 11,989 B gzip; doodle font 74 emoji, 27,060 B.
 
 **Decisions taken without the owner in this round** (the way back in brackets):
 1. The writing line has no length limit, because whole lists are pasted into it; a single line longer than the paper's 160 characters splits at a word [`MAX` in `src/model/parse.js`; a `maxlength` on the composer would cut pastes].
@@ -51,9 +51,11 @@ Round 1b (performance critic), re-measured with its own scripts after the fixes 
 
 **Deploy** (done 2026-10-22): GitHub Pages was on "deploy from a branch", serving the January app from the root of `main`. It was switched to "GitHub Actions" (`gh api -X PUT repos/vdm285/listolista/pages -f build_type=workflow`) just before the first push of the rebuild (`01821bd..ef1f85f`). The Pages run passed (tests, dictionary check, build, deploy); https://vdm285.github.io/listolista/ serves Papelito with its CSP; `node tools/smoke.mjs --base=https://vdm285.github.io/listolista/ --sync` passed 46 of 46 against the live site (a second phone opened the link in 1.4 s; an add reached it in 0.9 s). Lists the old app saved in a browser are imported the first time that browser opens the new one.
 
+**Verification round 1** (`data/cache/audit/verify1.js`, results in `verify1-results.json`, local): four fresh verifiers re-measured the 54 round-1 findings on a production build, default "not fixed": 31 fixed, 20 partial, 2 not fixed (both flagged on purpose: px sizes, the slashed zero), 1 regressed (the shared-sheet notice, which an automatic ink choice dismissed), and 23 new defects, the worst a fake "cambió el título" toast on a phone joining by link whose Deshacer blanked the shared title. Fixed in *Verification round, accessibility…* and *Verification round: the join toast…*; their messages list every item. Numbers after: `npm test` 83, smoke 46 with two phones, keyboard 9, live relays 14.
+
 ### In flight
 
-- A verification round: fresh critics re-measure every round-1 finding against the fixed build (default "not fixed") and hunt regressions (`data/cache/audit/verify1.js`).
+- Verification round 2 (`data/cache/audit/verify2.js`): the partials and new defects of round 1, re-measured on the newest build.
 
 ### Next
 
